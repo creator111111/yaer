@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Avatar_Gusha
+  serializedVersion: 2
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 6048d3e5903b1544d814c7249cad1246, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: b23aa390488f9704d94d4ec2fe33513f, type: 3}
+  - {fileID: 21300000, guid: 953de871ed02f184c80a66d8c6707958, type: 3}
+  - {fileID: 21300000, guid: 13dbca8497f99ed408e4cc40343ac965, type: 3}
+  - {fileID: 21300000, guid: b4a2d31667c60054d966f72be2c8a25b, type: 3}
+  - {fileID: 21300000, guid: bc425ae62b6d2274d91245ef9c8d479a, type: 3}
+  - {fileID: 21300000, guid: b8827627889c1e648adda8074067a135, type: 3}
+  - {fileID: 21300000, guid: 078b9e872956d0944b5c367e05f93e5d, type: 3}
+  - {fileID: 21300000, guid: 6b3f4e1972f2b4f45a8d82ec664b4019, type: 3}
+  - {fileID: 21300000, guid: 103b710aba61ac74bbba73f1caf75883, type: 3}
+  - {fileID: 21300000, guid: 582c87acac7501b48be690249f33e3a8, type: 3}
+  - {fileID: 21300000, guid: 42de5bcc5d27f874bb74fe46df595224, type: 3}
+  - {fileID: 21300000, guid: 1c77ae4ee0d97cf4ca467df48edfb98c, type: 3}
+  - {fileID: 21300000, guid: 170f349e7f24f124eb38d8b821011894, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Smile
+  - Hurt
+  - Surprised
+  - Angry
+  - VerySurprised
+  - Awkward
+  - Sad
+  - Normal
+  - Daze
+  - Happy
+  - Cry
+  - ForcedSmile
+  - Laugh
+  m_RenderDataMap: {}
+  m_Tag: Avatar_Gusha
+  m_IsVariant: 0
+  m_IsPlaceholder: 0

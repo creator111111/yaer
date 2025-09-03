@@ -1,0 +1,215 @@
+﻿using Game.GameMgr;
+using Game.Static.Enum.Map;
+using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+namespace Game.GameRuntime.UI.FormLogic.Archive.Control
+{
+    /// <summary>
+    ///     实现存档按钮控件
+    /// </summary>
+    public class ButtonArchive : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+    {
+        [SerializeField] private string guid;
+
+        [SerializeField] private Image imgBg; // 按钮背景
+        [SerializeField] private Image imgFg; // 前景
+        [SerializeField] private Image imgUsing; // 正在使用的存档
+        [SerializeField] private Image HasDataImgPointerEnterMark;
+        [SerializeField] private Image ImgPointerEnterMark;
+        // [SerializeField] private TMP_Text txTitle;
+        // [SerializeField] private TMP_Text txID;
+        // [SerializeField] private TMP_Text txCreateDate;
+        // [SerializeField] private TMP_Text txGameDuration;
+        [SerializeField] private Text txTitle;
+        [SerializeField] private Text txID;
+        [SerializeField] private Text txCreateDate;
+        [SerializeField] private Text txGameDuration;
+        [SerializeField] private Button btnDelete;
+        [SerializeField] private Transform playTimeNode;
+        [SerializeField] private Transform createDateNode;
+
+        [SerializeField] private Text txCreateTimeTitle;
+        [SerializeField] private Text txPlayTimeTitle;
+
+        [SerializeField] private Color NormalTextColor;
+        [SerializeField] private Color PointerEnterTextColor;
+
+        private int clickTimes; // 点击次数
+        private bool isSelect; // 被选中标识
+        public Action<ButtonArchive> onClickTwice; // 第二次点击处理的事件
+        public Action<ButtonArchive> onClickOnce; // 单机处理的事件
+        public Action<string> onClickDelete;
+
+        public string Guid => guid;
+
+        Dictionary<LanguageEnumType, string> textConfig_1 = new Dictionary<LanguageEnumType, string>() {
+            { LanguageEnumType.Chinese, "存档" }, { LanguageEnumType.English, "Archive"}, { LanguageEnumType.Japanese, "セーブデータ"},
+        };
+        Dictionary<LanguageEnumType, string> textConfig_2 = new Dictionary<LanguageEnumType, string>() {
+            { LanguageEnumType.Chinese, "序章" }, { LanguageEnumType.English, "Prologue"}, { LanguageEnumType.Japanese, "序章"},
+        };
+        Dictionary<LanguageEnumType, string> textConfig_3 = new Dictionary<LanguageEnumType, string>() {
+            { LanguageEnumType.Chinese, "保存日期:" }, { LanguageEnumType.English, "Save Data:"}, { LanguageEnumType.Japanese, "ほぞんび"},
+        };
+        Dictionary<LanguageEnumType, string> textConfig_4 = new Dictionary<LanguageEnumType, string>() {
+            { LanguageEnumType.Chinese, "游戏时长:" }, { LanguageEnumType.English, "Play Time"}, { LanguageEnumType.Japanese, "プレイ時間"},
+        };
+
+        public bool IsSelect
+        {
+            get => isSelect;
+            set
+            {
+                if (value)
+                {
+                    clickTimes++;
+                    // 选中切换为前景图片
+                    imgFg.gameObject.SetActive(true);
+                    imgBg.gameObject.SetActive(false);
+                    imgUsing.gameObject.SetActive(false);
+                }
+                else
+                {
+                    clickTimes = 0;
+                    imgFg.gameObject.SetActive(false);
+                    imgBg.gameObject.SetActive(true);
+                    imgUsing.gameObject.SetActive(false);
+                }
+
+                isSelect = value;
+            }
+        }
+
+        public void OnInit()
+        {
+            clickTimes = 0;
+            // 默认显示背景
+            imgFg.gameObject.SetActive(false);
+            imgUsing.gameObject.SetActive(false);
+            imgBg.gameObject.SetActive(true);
+
+            btnDelete.onClick.AddListener(() => onClickDelete?.Invoke(guid));
+            btnDelete.gameObject.SetActive(false);
+        }
+
+
+        /// <summary>
+        ///     单击选中
+        /// </summary>
+        /// <param name="eventData"></param>
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            // 右击无效
+            if (eventData.button == PointerEventData.InputButton.Right) return;
+
+            IsSelect = true;
+
+            // 第二次点击
+            if (clickTimes >= 2)
+            {
+                clickTimes = 0;
+                // 触发第二次点击事件
+                onClickTwice?.Invoke(this);
+                return;
+            }
+
+            onClickOnce?.Invoke(this);
+        }
+
+        /// <summary>
+        ///     更新按钮上的信息
+        /// </summary>
+        /// <param name="id">存档按钮序号</param>
+        /// <param name="guid">存档唯一标识guid</param>
+        /// <param name="createDate">创建日期</param>
+        /// <param name="gameDuration">游玩时间</param>
+        public void UpdateInfo(int id, string guid, string sceneName=default, DateTime createDate = default, float gameDuration = default)
+        {
+            var curLanagueType = GameManager.Instance.language;
+            var baseText_1 = textConfig_1.ContainsKey(curLanagueType) ? textConfig_1[curLanagueType] : textConfig_1[LanguageEnumType.English];
+            txID.text = $"{baseText_1}{id}";
+
+            // 创建的是空按钮
+            if (string.IsNullOrEmpty(guid))
+            {
+                // 隐藏地名和日期
+                txTitle.gameObject.SetActive(false);
+                txGameDuration.text = "";
+                txCreateDate.text = "";
+                createDateNode.gameObject.SetActive(false);
+                playTimeNode.gameObject.SetActive(false);
+            }
+            else
+            {
+                this.guid = guid;
+
+                // 显示地名和日期
+                txTitle.gameObject.SetActive(true);
+                var baseText_2 = textConfig_1.ContainsKey(curLanagueType) ? textConfig_2[curLanagueType] : textConfig_2[LanguageEnumType.English];
+                txTitle.text = $"{baseText_2}：{PlaceName.GetPlaceChsName(sceneName)}";
+                txCreateDate.text = createDate.ToString("yyyy-M-d");
+                TimeSpan playTimeSpan = new TimeSpan(0, 0, (int)gameDuration);
+                txGameDuration.text = playTimeSpan.ToString(@"hh\:mm\:ss");
+
+                btnDelete.gameObject.SetActive(true);
+
+                createDateNode.gameObject.SetActive(true);
+                playTimeNode.gameObject.SetActive(true);
+                // 设置创建日期和游玩时间多语言文本
+                var dateStr = textConfig_3.ContainsKey(curLanagueType) ? textConfig_3[curLanagueType] : textConfig_3[LanguageEnumType.English];
+                var palyTimeStr = textConfig_3.ContainsKey(curLanagueType) ? textConfig_4[curLanagueType] : textConfig_4[LanguageEnumType.English];
+                txCreateTimeTitle.text = dateStr;
+                txPlayTimeTitle.text = palyTimeStr;
+            }
+        }
+
+        public void SetUsing(bool value)
+        {
+            if (isSelect)
+            {
+                return;
+            }
+
+            imgUsing.gameObject.SetActive(value);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            if (!string.IsNullOrEmpty(guid))
+            {
+                HasDataImgPointerEnterMark.gameObject.SetActive(true);
+            }
+
+            ImgPointerEnterMark.gameObject.SetActive(true);
+
+            txCreateDate.color = PointerEnterTextColor;
+            txCreateTimeTitle.color = PointerEnterTextColor;
+            txGameDuration.color = PointerEnterTextColor;
+            txID.color = PointerEnterTextColor;
+            txPlayTimeTitle.color = PointerEnterTextColor;
+            txTitle.color = PointerEnterTextColor;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            if (!string.IsNullOrEmpty(guid))
+            {
+                HasDataImgPointerEnterMark.gameObject.SetActive(false);
+            }
+
+            ImgPointerEnterMark.gameObject.SetActive(false);
+
+            txCreateDate.color = NormalTextColor;
+            txCreateTimeTitle.color = NormalTextColor;
+            txGameDuration.color = NormalTextColor;
+            txID.color = NormalTextColor;
+            txPlayTimeTitle.color = NormalTextColor;
+            txTitle.color = NormalTextColor;
+        }
+    }
+}

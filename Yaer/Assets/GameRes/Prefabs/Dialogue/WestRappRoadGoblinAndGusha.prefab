@@ -1,0 +1,916 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &845975733312394530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7896583534623067353}
+  - component: {fileID: 8007876999426813943}
+  m_Layer: 5
+  m_Name: Gusha
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7896583534623067353
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845975733312394530}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7595294013755789649}
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8007876999426813943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 845975733312394530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u91D1\u53D1\u5973\u5B69"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 6
+--- !u!1 &1047626024150200597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 37704741067304273}
+  - component: {fileID: 456483720435322333}
+  m_Layer: 5
+  m_Name: Yaer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &37704741067304273
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7811335081324502867}
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &456483720435322333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u96C5\u5C14"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 1
+--- !u!1 &2883600314957397101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8965843069174312997}
+  - component: {fileID: 8277147156603116227}
+  - component: {fileID: 7396501391561145538}
+  m_Layer: 5
+  m_Name: WestRappRoadGoblinAndGusha
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8965843069174312997
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 37704741067304273}
+  - {fileID: 2858809354534504892}
+  - {fileID: 423150044700552625}
+  - {fileID: 7896583534623067353}
+  - {fileID: 8850884871088952798}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8277147156603116227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e4b851ebd8fa4ea0645b99be1cf97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"Visible":{},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":499.6396,"y":-886.7469},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"_action":{"eventArgs":{"_value":"CloseBGM"},"$type":"Game.GameRuntime.Story.Node.WestRappRoadBossBattleAction"},"_position":{"x":540.0436,"y":-772.0829},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"1"},{"_action":{"actions":[{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"313a1776-3bb2-40fd-8d92-2933d4bf27cc"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":439.0131,"y":-639.353},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"2"},{"_action":{"actions":[{"gameObjectName":{"_value":"GoblinAndGushaStoryTrigger"},"saveAs":{"_name":"mySimpleStoryTrigger","_targetVariableID":"80d7ec29-024e-4638-94b2-c3ff29d9948d"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"childName":{"_value":"CameraPos"},"saveAs":{"_name":"CameraPos","_targetVariableID":"a9ab3fe4-a417-4f13-837c-482750676944"},"overrideAgent":{"_type":"UnityEngine.Transform","_name":"mySimpleStoryTrigger","_targetVariableID":"80d7ec29-024e-4638-94b2-c3ff29d9948d"},"$type":"NodeCanvas.Tasks.Actions.FindChildByName"},{"saveComponentAs":{"_name":"myPlayerLogic","_targetVariableID":"2e7b0f40-716f-46e2-b3a6-45ffecf0d289"},"saveGameObjectAs":{"_name":""},"$type":"NodeCanvas.Tasks.Actions.FindObjectOfType`1[[Game.GameRuntime.Entities.Player.PlayerLogic,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},{"field":{"_baseInfo":"Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger|OptionPos"},"saveAs":{"_type":"UnityEngine.Transform","_name":"OptionPos","_targetVariableID":"75ce3b30-0990-4ede-a226-07a107bcc551"},"overrideAgent":{"_type":"Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger","_name":"mySimpleStoryTrigger","_targetVariableID":"80d7ec29-024e-4638-94b2-c3ff29d9948d"},"$type":"NodeCanvas.Tasks.Actions.GetField","$version":1},{"saveComponentAs":{"_name":"myBossMogutLogic","_targetVariableID":"1f03f85a-b733-400a-82b1-aefe308dfb16"},"saveGameObjectAs":{"_name":""},"$type":"NodeCanvas.Tasks.Actions.FindObjectOfType`1[[Game.GameRuntime.Entities.Monster.BossMogut.BossMogutLogic,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},{"saveAs":{"_name":"BossMogutAnimator","_targetVariableID":"38ddc561-42ca-41a2-a217-69114f6c6353"},"overrideAgent":{"_type":"UnityEngine.Transform","_name":"myBossMogutLogic","_targetVariableID":"1f03f85a-b733-400a-82b1-aefe308dfb16"},"$type":"NodeCanvas.Tasks.Actions.GetComponent`1[[UnityEngine.Animator,
+    UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},{"saveAs":{"_name":"BossMogutAnimationEventComponent","_targetVariableID":"990c236f-5959-448b-9fad-716931e9dbf1"},"overrideAgent":{"_type":"UnityEngine.Transform","_name":"myBossMogutLogic","_targetVariableID":"1f03f85a-b733-400a-82b1-aefe308dfb16"},"$type":"NodeCanvas.Tasks.Actions.GetComponent`1[[Game.GameRuntime.Entities.Component.Anima.AnimationEventComponent,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},{"gameObjectName":{"_value":"BOSSCameraImpluseTrigger"},"saveAs":{"_name":"CameraImpluseTrigger","_targetVariableID":"e5a7e449-204b-4545-b509-2ba28f14d09f"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"gameObjectName":{"_value":"Blood"},"saveAs":{"_name":"Blood","_targetVariableID":"1b224b4b-4cc9-4a76-acbc-8e418a8314f2"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"gameObjectName":{"_value":"Goblin"},"saveAs":{"_name":"Goblin","_targetVariableID":"12c81641-f5a5-4f0f-becd-c97d4fc0f397"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"setTo":0,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"Blood","_targetVariableID":"1b224b4b-4cc9-4a76-acbc-8e418a8314f2"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},{"gameObjectName":{"_value":"GushaStand"},"saveAs":{"_name":"GushaStand","_targetVariableID":"5c1ebbe5-55d1-4a24-b0ed-149f507b67bd"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"setTo":0,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"GushaStand","_targetVariableID":"5c1ebbe5-55d1-4a24-b0ed-149f507b67bd"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},{"gameObjectName":{"_value":"CameraBossArea"},"saveAs":{"_name":"bossCameraArea","_targetVariableID":"e18c0192-3dd0-4038-814b-55282aa8a83d"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"gameObjectName":{"_value":"startHeroPos"},"saveAs":{"_name":"startHeroPosNode","_targetVariableID":"94a72f8c-876d-463f-9d15-946609e4f9f1"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"gameObjectName":{"_value":"startBossPos"},"saveAs":{"_name":"startBossPosNode","_targetVariableID":"741be4f7-b671-400f-b296-99211366d5e0"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":768.4271,"y":-511.7084},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"3"},{"_action":{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"313a1776-3bb2-40fd-8d92-2933d4bf27cc"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":449.8727,"y":-167.651},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"4"},{"FaceType":{"_value":4},"statement":{"_text":"\u90a3\u662f\u3002\u3002\u3002\u3002","_text_en":"What''s
+    that\u2026","_text_jp":"\u3042\u308c\u306f\u2026\u2026"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":490.3015,"y":-94.82141},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"_action":{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"313a1776-3bb2-40fd-8d92-2933d4bf27cc"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":426.0639,"y":22.24936},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"6"},{"_action":{"StartPos":{"_name":"myPlayerLogic","_targetVariableID":"2e7b0f40-716f-46e2-b3a6-45ffecf0d289"},"EndPos":{"_name":"CameraPos","_targetVariableID":"a9ab3fe4-a417-4f13-837c-482750676944"},"Duration":{"_value":2.0},"$type":"Game.GameRuntime.Story.Node.CameraMoveTaskAction"},"_position":{"x":512.8471,"y":115.9406},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"7"},{"_action":{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{"_value":1.0},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":419.784,"y":225.6437},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"8"},{"FaceType":{"_value":12},"statement":{"_text":"\u563f\u563f\u563f\u3002\u3002\u3002\u4eca\u5929\u53ef\u662f\u5927\u6536\u83b7\u3002","_text_en":"Hehehe...
+    today\u2019s our lucky day.","_text_jp":"\u3078\u3063\u3078\u3063\u3078\u2026\u2026\u4eca\u65e5\u306f\u5927\u6f01\u3060\u305c\u3002"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":420.0031,"y":324.9853},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"9"},{"FaceType":{"_value":12},"statement":{"_text":"\u5bf9\u3002\u3002\u3002\u3002\u5bf9\u5bf9\u5bf9\uff01\u54e5\u54e5\u6211\u4eec\u597d\u4e45\u6ca1\u9047\u5230\u5973\u3002\u3002\u3002\u3002\u5973\u5973\u5973\u5973\u7cbe\u7075\u4e86\u54e5\u3002\u3002\u54e5","_text_en":"Y-yeah!
+    B-big score! It\u2019s b-been ages since we ran into an e-e-e-e-elf girl!","_text_jp":"\u305d\u2026\u2026\u305d\u3046\u3060\u306d\u3001\u5144\u3061\u3083\u3093\u2026\u2026\u3053\u3093\u306a\u53ef\u611b\u3044\u30a8\u30eb\u30d5\u306e\u5973\u306e\u5b50\u3001\u4e45\u3057\u3076\u308a\u2026\u2026\u3002"},"_actorName":"\u54e5\u5e03\u6797\u5f1f","_actorParameterID":"8609583b-e8a3-444e-9925-02642adf2ac0","_position":{"x":330.0,"y":427.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"10"},{"FaceType":{"_value":12},"statement":{"_text":"\u4f60\u8fd9\u5e9f\u7269\u8bf4\u8bdd\u7ed3\u5df4\u5c31\u5c11\u8bf4\u4e24\u53e5\uff0c\u4f60\u7785\u4f60\u4ed6\u5988\u62ce\u7740\u4e2a\u68d2\u5b50\u8ddf\u8981\u53bb\u6cb3\u8fb9\u6d17\u8863\u670d\u7684\u8001\u5987\u4eba\u4f3c\u7684\u3002","_text_en":"Ugh,
+    shut it with the stuttering already. You\u2019re holding that club like some
+    old lady about to do laundry at the river.","_text_jp":"\u304a\u524d\u3001\u3069\u3082\u3063\u3066\u3070\u3063\u304b\u3067\u3046\u308b\u305b\u3047\u3093\u3060\u3088\uff01\u305d\u306e\u68d2\u6301\u3063\u3066\u308b\u59ff\u3001\u307e\u308b\u3067\u5ddd\u8fba\u3067\u6d17\u6fef\u3057\u3066\u308b\u30d0\u30d0\u30a2\u304b\u3088\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":320.0,"y":525.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"11"},{"FaceType":{"_value":12},"statement":{"_text":"\u662f\u3002\u3002\u3002\u3002\u3002\u662f\u7684\u54e5\u3002\u3002\u3002\u54e5\u3002","_text_en":"S-sorry,
+    b-brother\u2026","_text_jp":"\u306f\u2026\u2026\u306f\u3044\u2026\u2026\u3054\u3001\u3054\u3081\u3093\u5144\u3061\u3083\u3093\u3002"},"_actorName":"\u54e5\u5e03\u6797\u5f1f","_actorParameterID":"8609583b-e8a3-444e-9925-02642adf2ac0","_position":{"x":399.0,"y":618.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"12"},{"FaceType":{"_value":12},"statement":{"_text":"\u5c0f\u59b9\u59b9\u4e00\u4e2a\u4eba\u51fa\u95e8\u591a\u5371\u9669\uff0c\u6765\u8ddf\u6211\u4eec\u56de\u5c71\u6d1e\uff0c\u6211\u4eec\u597d\u597d\u62db\u5f85\u4f60\u3002","_text_en":"Little
+    lady, it''s dangerous to wander around alone. Come with us to our cave\u2014we\u2019ll
+    take real good care of you.","_text_jp":"\u5c0f\u3063\u3053\u3044\u304a\u5b22\u3061\u3083\u3093\u3001\u4e00\u4eba\u65c5\u306a\u3093\u3066\u5371\u306a\u3044\u305e\u3002\u3055\u3042\u3001\u4ffa\u305f\u3061\u306e\u6d1e\u7a9f\u306b\u6765\u3044\u3002\u624b\u539a\u304f\u3082\u3066\u306a\u3057\u3066\u3084\u308b\u3088\u3002"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":316.0,"y":704.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"13"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{"_value":1.0},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":847.7386,"y":661.0064},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"14"},{"FaceType":{"_value":23},"statement":{"_text":"\u90a3\u4e2a\u3002\u3002\u3002\u3002\u6211\u770b\u8fd8\u662f\u4e0d\u7528\u4e86\uff0c\u6211\u4e0d\u997f\u3002\u3002\u3002\u3002\u3002","_text_en":"Um...
+    I-I think I\u2019ll pass. I\u2019m not hungry\u2026","_text_jp":"\u3042\u3001\u3042\u306e\u2026\u2026\u304a\u6c17\u6301\u3061\u3060\u3051\u3067\u5341\u5206\u3067\u3059\u3001\u304a\u8179\u3082\u7a7a\u3044\u3066\u307e\u305b\u3093\u3057\u2026\u2026"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"521ce09a-eee2-4aee-824e-21a6e7928cbb","_position":{"x":345.989,"y":802.033},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"15"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{"_value":1.0},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":829.1415,"y":858.2377},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"16"},{"FaceType":{"_value":12},"statement":{"_text":"\u4f60\u4e0d\u997f\uff0c\u6211\u4eec\u53ef\u662f\u997f\u6781\u4e86\uff01\u54c8\u54c8\u54c8\u54c8\uff01\uff01\uff01","_text_en":"We
+    are starving! Hahahaha!","_text_jp":"\u3053\u3063\u3061\u306f\u3082\u3046\u8179\u30da\u30b3\u306a\u3093\u3060\u3088\uff01\u3042\u306f\u306f\u306f\u3063\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":379.945,"y":899.0293},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"17"},{"FaceType":{"_value":12},"statement":{"_text":"\u6765\u6765\u6765\uff0c\u5148\u8ba9\u6211\u770b\u770b\u98df\u6750\u65b0\u9c9c\u4e0d\u65b0\u9c9c\u3002","_text_en":"Let
+    me check the goods first\u2014see if you''re fresh enough.","_text_jp":"\u3061\u3087\u3063\u3068\u65b0\u9bae\u304b\u3069\u3046\u304b\u898b\u3066\u307f\u3088\u3046\u304b\u3002"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":406.0,"y":973.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"18"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{"_value":1.0},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":911.2356,"y":1009.003},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"19"},{"FaceType":{"_value":8},"statement":{"_text":"\u5440\uff01\u4e0d\u8981\u62c9\u6211\u7684\u8863\u670d\uff01","_text_en":"Ah!
+    Don\u2019t pull on my clothes!","_text_jp":"\u3044\u3084\u3063\uff01\u670d\u306b\u89e6\u3089\u306a\u3044\u3067\u304f\u3060\u3055\u3044\uff01"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"521ce09a-eee2-4aee-824e-21a6e7928cbb","_position":{"x":456.0,"y":1073.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"20"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{"_value":1.0},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":902.9484,"y":1162.232},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"21"},{"FaceType":{"_value":12},"statement":{"_text":"\u54e5\u3002\u3002\u3002\u3002\u54e5\u5979\u8bf4\u4e0d\u3001\u3001\u3001\u3001\u3001\u8981\u62c9\u3002\u3002\u3002\u3002\u62c9\u62c9\u3002\u3002\u5979\u8863\u670d\u5462\u3002","_text_en":"B-b-b-bro,
+    she s-s-s-s-said not to pull\u2026","_text_jp":"\u306b\u3001\u5144\u3061\u3083\u3093\u2026\u2026\u5f7c\u5973\u3001\u5acc\u304c\u3063\u3066\u308b\u3088\uff1f"},"_actorName":"\u54e5\u5e03\u6797\u5f1f","_actorParameterID":"8609583b-e8a3-444e-9925-02642adf2ac0","_position":{"x":328.1176,"y":1184.948},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"22"},{"FaceType":{"_value":12},"statement":{"_text":"\u4f60\u4e0d\u61c2\uff0c\u5973\u4eba\u8bf4\u4e0d\u8981\u5c31\u662f\u8981\u7684\u610f\u601d\u3002","_text_en":"Idiot.
+    When a woman says no, she really means yes.","_text_jp":"\u5973\u304c\u300c\u3084\u3081\u3066\u300d\u3063\u3066\u8a00\u3046\u3068\u304d\u306f\u3001\u672c\u5f53\u306f\u300c\u3057\u3066\u300d\u3063\u3066\u610f\u5473\u306a\u3093\u3060\u3088\u3002"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":408.9962,"y":1286.032},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"23"},{"FaceType":{"_value":12},"statement":{"_text":"\u554a\u554a\u3002\u3002\u3002\u554a\uff0c\u4e0d\u3002\u3002\u3002\u4e0d\u3002\u3002\u3002\u4e0d\u4e8f\u662f\u54e5\u54e5\uff0c\u5c45\u7136\u8fd8\u61c2\u3002\u3002\u3002\u3002\u61c2\u3002\u3002\u61c2\u5973\u4eba\u3002","_text_en":"W-wow...
+    y-you really get women\u2026","_text_jp":"\u3055\u3001\u3055\u3059\u304c\u5144\u3061\u3083\u3093\u2026\u2026\u304a\u3001\u5973\u5fc3\u306b\u3082\u8a73\u3057\u3044\u306a\u3093\u3066\u2026\u2026"},"_actorName":"\u54e5\u5e03\u6797\u5f1f","_actorParameterID":"8609583b-e8a3-444e-9925-02642adf2ac0","_position":{"x":357.1147,"y":1376.969},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"24"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{"_value":1.0},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":854.0,"y":1407.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"25"},{"FaceType":{"_value":25},"statement":{"_text":"\u3002\u3002\u3002\u3002\u3002\u3002\u8fd9\u662f\u4ece\u54ea\u542c\u6765\u7684\u3002","_text_en":"...Where
+    on earth did you hear that?","_text_jp":"\u2026\u2026\u305d\u308c\u3001\u3069\u3053\u3067\u805e\u3044\u305f\u306e\u3088\u2026\u2026"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"521ce09a-eee2-4aee-824e-21a6e7928cbb","_position":{"x":448.9926,"y":1478.046},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"26"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{"_value":1.0},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":862.0,"y":1549.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"27"},{"FaceType":{"_value":12},"statement":{"_text":"\u522b\u5e9f\u8bdd\u4e86\uff0c\u8d70\uff0c\u8d76\u7d27\u7684\uff01\u6211\u5feb\u5fcd\u4e0d\u4f4f\u4e86\uff0c\u55c5\u55c5\uff0c\u771f\u9999\uff01","_text_en":"Enough
+    talk! Let\u2019s get moving! I can barely hold myself back\u2014sniff sniff\u2014she
+    smells amazing!","_text_jp":"\u3044\u3044\u304b\u3089\u3064\u3079\u3053\u3079\u8a00\u308f\u305a\u306b\u6765\u3044\uff01\u3082\u3046\u6211\u6162\u3067\u304d\u306d\u3047\u3093\u3060\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":389.942,"y":1575.23},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"28"},{"FaceType":{"_value":12},"statement":{"_text":"\u6211\u4e5f\u3002\u3002\u3002\u3002\u4e5f\u4e5f\u3002\u3002\u3002\u8981\u95fb\uff01","_text_en":"I-I
+    wanna s-sniff too!","_text_jp":"\u307c\u3001\u50d5\u3082\u2026\u2026\u5302\u3044\u55c5\u304e\u305f\u3044\u3063\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5f1f","_actorParameterID":"8609583b-e8a3-444e-9925-02642adf2ac0","_position":{"x":436.1327,"y":1664.917},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"29"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{"_value":1.0},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":800.0,"y":1688.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"30"},{"FaceType":{"_value":7},"statement":{"_text":"\u6551\u547d\u4e0d\u8981\u554a\uff01","_text_en":"Somebody,
+    help me!!","_text_jp":"\u3044\u3084\u3042\u3042\u3042\u3042\uff01\u8ab0\u304b\u52a9\u3051\u3066\u3047\uff01"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"521ce09a-eee2-4aee-824e-21a6e7928cbb","_position":{"x":476.9926,"y":1765.046},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"31"},{"_action":{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"313a1776-3bb2-40fd-8d92-2933d4bf27cc"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":829.0,"y":1805.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"32"},{"FaceType":{"_value":8},"statement":{"_text":"\u4f4f\u624b\uff0c\u4f60\u4eec\u5728\u5e72\u4ec0\u4e48\uff01","_text_en":"Stop!
+    What do you think you''re doing?!","_text_jp":"\u3084\u3081\u306a\u3055\u3044\uff01\u4f55\u3092\u3057\u3066\u3044\u308b\u306e\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":454.0,"y":1868.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"33"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":864.0,"y":1908.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"34"},{"FaceType":{"_value":12},"statement":{"_text":"\u54e5\u3002\u3002\u3002\u3002\u54e5\u3002\u3002\u53c8\u6765\u4e00\u3002\u3002\u3002\u4e00\u4e00\u4e00\u4e2a\u3002\u3002\u3002\u5973\u3002\u3002\u3002\u5973\u5973\u4eba\u3002","_text_en":"B-bro!
+    Another o-o-one! A-a-a-another girl!","_text_jp":"\u306b\u3001\u5144\u3061\u3083\u3093\u2026\u2026\u307e\u305f\u3072\u3068\u308a\u5973\u306e\u4eba\u304c\u2026\u2026"},"_actorName":"\u54e5\u5e03\u6797\u5f1f","_actorParameterID":"8609583b-e8a3-444e-9925-02642adf2ac0","_position":{"x":367.1327,"y":1952.917},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"35"},{"FaceType":{"_value":12},"statement":{"_text":"\u4eca\u5929\u53d1\u8fbe\u4e86\uff0c\u6b63\u597d\u54b1\u4eec\u4fe9\u4e00\u4eba\u4e00\u4e2a\u3002","_text_en":"Jackpot!
+    One each!","_text_jp":"\u4eca\u65e5\u306f\u30c4\u30a4\u3066\u308b\u306a\u3001\u3061\u3087\u3046\u3069\u4e8c\u4eba\u3001\u4ffa\u3068\u304a\u524d\u3067\u4e00\u4eba\u305a\u3064\u3063\u3066\u308f\u3051\u3060\u3002"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":413.942,"y":2046.23},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"36"},{"FaceType":{"_value":12},"statement":{"_text":"\u5c0f\u59b9\u59b9\uff0c\u6765\u8ddf\u6211\u4eec\u4e00\u8d77\u56de\u5c71\u6d1e\uff0c\u5f53\u6211\u4eec\u7684\u8001\u5a46\uff01","_text_en":"Come,
+    sweetie\u2014come be our wife in the mountains!","_text_jp":"\u3055\u3042\u304a\u5b22\u3061\u3083\u3093\u3001\u304a\u524d\u3082\u4ffa\u305f\u3061\u306e\u5965\u3055\u3093\u306b\u306a\u308b\u3093\u3060\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":384.942,"y":2133.23},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"37"},{"FaceType":{"_value":8},"statement":{"_text":"\u8bf4\u4ec0\u4e48\u80e1\u8bdd\u5462\uff01\uff08\u770b\u4ed6\u4eec\u7684\u6837\u5b50\u4e0d\u50cf\u662f\u80fd\u5f04\u5012\u90a3\u4e48\u7c97\u7684\u6811\uff09","_text_en":"What
+    nonsense are you spouting!? (Looks at the fallen tree)\r\n(They don''t look strong
+    enough to knock that down...)","_text_jp":"\u3075\u3056\u3051\u306a\u3044\u3067\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":365.0,"y":2235.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"38"},{"FaceType":{"_value":12},"statement":{"_text":"\u4f60\u957f\u5f97\u8fd9\u4e48\u6f02\u4eae\uff0c\u6211\u4e00\u5b9a\u8981\u8ddf\u4f60\u751f\u5341\u4e2a\u516b\u4e2a\u5b69\u5b50\u3002","_text_en":"With
+    a face that pretty, I wanna make ten, no\u2014twenty babies with you!","_text_jp":"\u304a\u524d\u3001\u3081\u3063\u3061\u3083\u53ef\u611b\u3044\u3058\u3083\u306d\u3047\u304b\uff01\u5b50\u3069\u308210\u4eba\u3050\u3089\u3044\u4f5c\u308d\u3046\u305c\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":372.942,"y":2334.23},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"39"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":867.0653,"y":2312.959},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"40"},{"FaceType":{"_value":23},"statement":{"_text":"\u54e5\u5e03\u6797\u5148\u751f\u3002\u3002\u90a3\u79cd\u4e8b\u8981\u4f60\u60c5\u6211\u613f\u624d\u597d\u5462\u3002\u3002\u3002","_text_en":"Mr.
+    Goblin... y-you know, that kind of thing needs mutual consent\u2026","_text_jp":"\u30b4\u30d6\u30ea\u30f3\u3055\u3093\u3001\u305d\u3046\u3044\u3046\u306e\u3063\u3066\u2026\u2026\u304a\u4e92\u3044\u540c\u610f\u304c\u5927\u4e8b\u3060\u3068\u601d\u3044\u307e\u3059\u3051\u3069\u2026\u2026\uff1f"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"521ce09a-eee2-4aee-824e-21a6e7928cbb","_position":{"x":389.9066,"y":2429.992},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"41"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":846.0212,"y":2479.965},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"42"},{"FaceType":{"_value":12},"statement":{"_text":"\u4f60\u4e5f\u662f\u6211\u7684\uff01","_text_en":"You''re
+    mine too!","_text_jp":"\u304a\u524d\u3082\u4ffa\u306e\u3082\u3093\u3060\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":452.942,"y":2538.23},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"43"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":850.0088,"y":2623.977},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"44"},{"FaceType":{"_value":9},"statement":{"_text":"\u54c8\u54c7\u54c7\u54c7\u54c7\u3002\u3002\u3002\u3002\u3002","_text_en":"Hawawawawa.........","_text_jp":"\u306f\u3001\u306f\u308f\u308f\u308f\u308f\u3063\u2026\u2026"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"521ce09a-eee2-4aee-824e-21a6e7928cbb","_position":{"x":434.9066,"y":2641.992},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"45"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":-8.37221,"y":2642.01},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"46"},{"FaceType":{"_value":12},"statement":{"_text":"\u72e1\u3002\u3002\u3002\u72e1\u733e\u3002\u3002\u3002\u3002\u6ed1\u6ed1\u3002\u3002\u54e5\u54e5\uff0c\u6211\u4e5f\u5f97\u8981\u3002\u3002\u3002\u3002\u8981\uff01","_text_en":"S-s-
+    sneaky... B-Brother, I w-want one too!","_text_jp":"\u305a\u3001\u305a\u308b\u3044\u2026\u2026\u5144\u3061\u3083\u3093\u3070\u3063\u304b\u308a\u2026\u2026\u50d5\u3082\u2026\u2026\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5f1f","_actorParameterID":"8609583b-e8a3-444e-9925-02642adf2ac0","_position":{"x":331.8223,"y":2732.166},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"47"},{"FaceType":{"_value":8},"statement":{"_text":"\u4f60\u8fd9\u4e0b\u6d41\u4e11\u964b\u7684\u5bb6\u4f19\uff01\u6211\u53ef\u662f\u9f99\u65cf\u7684\u738b\u5973\uff01\u4f60\u80c6\u6562\u5bf9\u6211\u5982\u6b64\u65e0\u793c\uff01","_text_en":"You
+    filthy, disgusting creatures!I am Yar, princess of the dragonkin Clan!\rHow dare
+    you speak to me like that!?","_text_jp":"\u3053\u306e\u4e0b\u54c1\u3067\u919c\u3044\u5974\u3089\u3081\uff01\u79c1\u306f\u7adc\u65cf\u306e\u738b\u5973\u3088\uff01\u3088\u304f\u3082\u305d\u3093\u306a\u7121\u793c\u306a\u3053\u3068\u3092\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":337.6875,"y":2827.52},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"48"},{"FaceType":{"_value":12},"statement":{"_text":"\u5c45\u7136\u662f\u516c\u4e3b\uff0c\u90a3\u5c31\u66f4\u597d\u4e86\uff01\u4f60\u662f\u6211\u7684\u5566\uff01","_text_en":"A
+    princess!? Even better! You\u2019re mine now!","_text_jp":"\u738b\u5973\u69d8\u3060\u3068\uff1f\u305d\u308a\u3083\u307e\u3059\u307e\u3059\u30a4\u30a4\u5973\u3058\u3083\u306d\u3047\u304b\uff01\u304a\u524d\u306f\u4ffa\u306e\u3082\u3093\u3060\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":419.528,"y":2921.023},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"49"},{"_action":{"ImpluseTrigger":{"_name":"CameraImpluseTrigger","_targetVariableID":"e5a7e449-204b-4545-b509-2ba28f14d09f"},"DelayEndAction":{"_value":2.0},"$type":"Game.GameRuntime.Story.Node.CameraImpluseActionTask"},"_position":{"x":774.7605,"y":2990.281},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"50"},{"_action":{"executionMode":1,"actions":[{"canvasGroup":{"_value":1},"StartAlpha":{"_value":1.0},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_value":2},"StartAlpha":{"_value":1.0},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_value":3},"StartAlpha":{"_value":1.0},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":923.092,"y":2833.3},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"51"},{"_action":{"actions":[{"targetColliderArea":{"_name":"bossCameraArea","_targetVariableID":"e18c0192-3dd0-4038-814b-55282aa8a83d"},"$type":"Game.GameRuntime.Story.Node.CameraChangeBoundingArea"},{"curSize":{},"targetSize":{"_value":12.2},"Duration":{"_value":1.0},"isUseDefaultBaseSize":{"_value":true},"$type":"Game.GameRuntime.Story.Node.CameraScaleTaskAction"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":1228.16,"y":2982.534},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"52"},{"FaceType":{"_value":12},"statement":{"_text":"\u600e\u3002\u3002\u3002\u3002\u600e\u4e48\u56de\u4e8b\uff1f","_text_en":"W-what
+    the...!?","_text_jp":"\u306a\u3001\u306a\u3093\u3060\u3088\u2026\u2026"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":452.528,"y":3092.023},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"53"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"313a1776-3bb2-40fd-8d92-2933d4bf27cc"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":37.5432,"y":3128.041},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"54"},{"_action":{"parameter":{"_value":"StoryStandUp"},"parameterHashID":{},"overrideAgent":{"_type":"UnityEngine.Animator","_name":"BossMogutAnimator","_targetVariableID":"38ddc561-42ca-41a2-a217-69114f6c6353"},"$type":"NodeCanvas.Tasks.Actions.MecanimSetTrigger"},"_position":{"x":454.6458,"y":3192.33},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"55"},{"_action":{"animationEventComponent":{"_name":"BossMogutAnimationEventComponent","_targetVariableID":"990c236f-5959-448b-9fad-716931e9dbf1"},"eventName":{"_value":"StandUpEnd"},"$type":"Game.GameRuntime.Story.Node.AnimationEventRegisterTaskAction"},"_position":{"x":378.5032,"y":3303.78},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"56"},{"_action":{"parameter":{"_value":"StoryLookGoblin"},"parameterHashID":{},"overrideAgent":{"_type":"UnityEngine.Animator","_name":"BossMogutAnimator","_targetVariableID":"38ddc561-42ca-41a2-a217-69114f6c6353"},"$type":"NodeCanvas.Tasks.Actions.MecanimSetTrigger"},"_position":{"x":492.0987,"y":3405.856},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"57"},{"_action":{"animationEventComponent":{"_name":"BossMogutAnimationEventComponent","_targetVariableID":"990c236f-5959-448b-9fad-716931e9dbf1"},"eventName":{"_value":"LookGoblinEnd"},"$type":"Game.GameRuntime.Story.Node.AnimationEventRegisterTaskAction"},"_position":{"x":389.2799,"y":3510.1},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"58"},{"_action":{"actions":[{"eventArgs":{"_value":"GoblinUpHead"},"$type":"Game.GameRuntime.Story.Node.WestRappRoadBossBattleAction"},{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":853.9995,"y":3572.669},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"59"},{"FaceType":{"_value":12},"statement":{"_text":"\u6211\u7684\u4e2a\u5988\u5929\u7956\u5976\u5976\u3002\u3002\u3002\u3002\u3002","_text_en":"H-holy
+    crap... oh no no no no\u2026","_text_jp":"\u3046\u304a\u304a\u304a\u304a\u304a\u2026\u2026\u3058\u3001\u3058\u3044\u3061\u3083\u3093\u2026\u2026\u52a9\u3051\u3066\u304f\u308c\u2026"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":469.9068,"y":3608.73},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"60"},{"FaceType":{"_value":12},"statement":{"_text":"\u54e5\u3002\u3002\u3002\u3002\u3002\u54e5\u3002\u3002\u3002\u3002\u54b1\u4eec\u58f0\u97f3\u592a\u5927\u4e86\u3002\u3002\u3002\u3002\u597d\u3002\u3002\u3002\u3002\u597d\u50cf\u3002\u3002\u3002\u3002","_text_en":"B-bro...
+    I th-think we were too l-loud\u2026","_text_jp":"\u306b\u3001\u5144\u3061\u3083\u3093\u2026\u2026\u307c\u3001\u50d5\u3089\u3001\u58f0\u3001\u3067\u304b\u3059\u304e\u305f\u306e\u304b\u3082\u2026\u2026"},"_actorName":"\u54e5\u5e03\u6797\u5f1f","_actorParameterID":"8609583b-e8a3-444e-9925-02642adf2ac0","_position":{"x":378.2809,"y":3709.157},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"61"},{"FaceType":{"_value":12},"statement":{"_text":"\u5f1f\u5f1f\uff0c\u54b1\u4eec\u53ef\u80fd\u8981\u6b7b\u7403\u4e86\u3002","_text_en":"L-lil
+    bro... we\u2019re probably gonna die.","_text_jp":"\u5f1f\u3088\u3001\u3069\u3046\u3084\u3089\u4ffa\u305f\u3061\u2026\u2026\u3082\u3046\u30c0\u30e1\u304b\u3082\u306a\u2026\u2026"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":479.4718,"y":3811.76},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"62"},{"FaceType":{"_value":12},"statement":{"_text":"\u54e5\u54e5\u6211\u8fd8\u4e0d\u60f3\u6b7b\uff0c\u6211\u8fd8\u6ca1\u8ddf\u5979\u4eec\u751f\u5b69\u5b50\u5462\u3002","_text_en":"B-but
+    I haven''t even had kids with them yet!","_text_jp":"\u5144\u3061\u3083\u3093\u3001\u50d5\u2026\u2026\u307e\u3060\u6b7b\u306b\u305f\u304f\u306a\u3044\u2026\u2026\u5b50\u3069\u3082\u3060\u3063\u3066\u307e\u3060\u2026\u2026"},"_actorName":"\u54e5\u5e03\u6797\u5f1f","_actorParameterID":"8609583b-e8a3-444e-9925-02642adf2ac0","_position":{"x":429.6357,"y":3895.502},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"63"},{"FaceType":{"_value":12},"statement":{"_text":"\u5947\u8ff9\u554a\uff0c\u5f1f\u5f1f\uff0c\u6ca1\u60f3\u5230\u4e34\u6b7b\u524d\u80fd\u542c\u5230\u4f60\u8bf4\u8bdd\u4e0d\u7ed3\u5df4\u4e86\u3002","_text_en":"M-miracle
+    of miracles! You''re not stuttering anymore!","_text_jp":"\u5947\u8de1\u3060\u2026\u2026\u304a\u524d\u304c\u307e\u3068\u3082\u306b\u558b\u308c\u3066\u308b\u2026\u2026\u305d\u308c\u304c\u6700\u5f8c\u306a\u3093\u3066\u306a\u2026\u2026"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":403.1414,"y":3994.957},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"64"},{"_action":{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":141.6543,"y":4078.727},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"65"},{"_action":{"parameter":{"_value":"StoryRaiseLeftHand"},"parameterHashID":{},"overrideAgent":{"_type":"UnityEngine.Animator","_name":"BossMogutAnimator","_targetVariableID":"38ddc561-42ca-41a2-a217-69114f6c6353"},"$type":"NodeCanvas.Tasks.Actions.MecanimSetTrigger"},"_position":{"x":545.0349,"y":4140.808},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"66"},{"_action":{"animationEventComponent":{"_name":"BossMogutAnimationEventComponent","_targetVariableID":"990c236f-5959-448b-9fad-716931e9dbf1"},"eventName":{"_value":"RaiseLeftHandEnd"},"$type":"Game.GameRuntime.Story.Node.AnimationEventRegisterTaskAction"},"_position":{"x":442.9886,"y":4230.076},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"67"},{"_action":{"targetTransform":{"_name":"OptionPos","_targetVariableID":"75ce3b30-0990-4ede-a226-07a107bcc551"},"$type":"Game.GameRuntime.Story.Node.NormalDialogueSetOptionGroupWorldPosTaskAction"},"_position":{"x":507.8964,"y":4324.266},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"68"},{"availableChoices":[{"statement":{"_text":"\u62ef\u6551\u5b83\u4eec","_text_en":"Help
+    Them","_text_jp":" \u6551\u3046 "}},{"statement":{"_text":"\u8ba9\u5b83\u4eec\u53bb\u6b7b","_text_en":"Let
+    Them Die","_text_jp":"\u898b\u6368\u3066\u308b"}}],"_position":{"x":556.538,"y":4425.507},"$type":"NodeCanvas.DialogueTrees.MultipleChoiceNode","$id":"69"},{"_action":{"hasSave":{"_value":true},"$type":"Game.GameRuntime.Story.Node.WRRoadBossBattleSaveMonsterAction"},"_position":{"x":319.7763,"y":4493.9},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"70"},{"_action":{"StartPos":{"_name":"CameraPos","_targetVariableID":"a9ab3fe4-a417-4f13-837c-482750676944"},"EndPos":{"_name":"myPlayerLogic","_targetVariableID":"2e7b0f40-716f-46e2-b3a6-45ffecf0d289"},"Duration":{"_value":1.0},"$type":"Game.GameRuntime.Story.Node.CameraMoveTaskAction"},"_position":{"x":155.5764,"y":4521.711},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"71"},{"_action":{"isFollowPlayer":{"_value":true},"$type":"Game.GameRuntime.Story.Node.CameraFollowPlayerActionTask"},"_position":{"x":315.3883,"y":4610.891},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"72"},{"_action":{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"313a1776-3bb2-40fd-8d92-2933d4bf27cc"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":166.1906,"y":4693.754},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"73"},{"FaceType":{"_value":8},"statement":{"_text":"\u554a\uff01","_text_en":"Ah!","_text_jp":"\u3042\u3042\u3042\u3063\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":303.9693,"y":4776.312},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"74"},{"_action":{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"313a1776-3bb2-40fd-8d92-2933d4bf27cc"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":-16.0,"y":4818.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"75"},{"_action":{"actions":[{"method":{"_baseInfo":"Game.GameRuntime.Entities.Player.PlayerLogic|AttackBossMogut|System.Void","_paramsInfo":""},"parameters":[],"returnValue":{},"overrideAgent":{"_type":"Game.GameRuntime.Entities.Player.PlayerLogic","_name":"myPlayerLogic","_targetVariableID":"2e7b0f40-716f-46e2-b3a6-45ffecf0d289"},"$type":"NodeCanvas.Tasks.Actions.ExecuteFunction_Multiplatform"},{"animationEventComponent":{"_name":"myPlayerLogic","_targetVariableID":"2e7b0f40-716f-46e2-b3a6-45ffecf0d289"},"eventName":{"_value":"AttackBossMogutEnd"},"$type":"Game.GameRuntime.Story.Node.AnimationEventRegisterTaskAction"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":229.0,"y":4892.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"76"},{"_action":{"parameter":{"_value":"StoryFallDown"},"parameterHashID":{},"overrideAgent":{"_type":"UnityEngine.Animator","_name":"BossMogutAnimator","_targetVariableID":"38ddc561-42ca-41a2-a217-69114f6c6353"},"$type":"NodeCanvas.Tasks.Actions.MecanimSetTrigger"},"_position":{"x":279.6857,"y":5010.22},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"77"},{"_action":{"animationEventComponent":{"_name":"BossMogutAnimationEventComponent","_targetVariableID":"990c236f-5959-448b-9fad-716931e9dbf1"},"eventName":{"_value":"FallDownEnd"},"$type":"Game.GameRuntime.Story.Node.AnimationEventRegisterTaskAction"},"_position":{"x":172.6186,"y":5109.322},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"78"},{"_action":{"waitTime":{"_value":2.0},"$type":"NodeCanvas.Tasks.Actions.Wait"},"_position":{"x":-29.0,"y":5098.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"79"},{"_action":{"actions":[{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"313a1776-3bb2-40fd-8d92-2933d4bf27cc"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":-123.0,"y":5186.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"80"},{"FaceType":{"_value":8},"statement":{"_text":"\u5feb\u8d70\u5427\uff0c\u522b\u518d\u5e72\u8fd9\u79cd\u4e8b\u4e86\uff01","_text_en":"Run!
+    And don\u2019t you ever do something like that again!","_text_jp":"\u3055\u3042\u3001\u9003\u3052\u306a\u3055\u3044\uff01\u3082\u3046\u3053\u3093\u306a\u3053\u3068\u3057\u3061\u3083\u30c0\u30e1\u3088\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":197.1349,"y":5267.531},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"81"},{"FaceType":{"_value":12},"statement":{"_text":"\u8c22\u8c22!\u5feb\u8d70\u5f1f\u5f1f\uff01","_text_en":"Thanks!
+    Let\u2019s go, bro!","_text_jp":"\u3042\u3001\u3042\u308a\u304c\u3068\u3046\uff01\u5f1f\u3001\u9003\u3052\u308b\u305e\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":241.1909,"y":5371.214},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"82"},{"FaceType":{"_value":12},"statement":{"_text":"\u8c22\u8c22\u516c\u4e3b\u6551\u547d\uff0c\u6211\u7ed9\u4f60\u751f\u5b69\u5b50\u62a5\u7b54\u4f60\u3002","_text_en":"Thank
+    you, princess! I\u2019ll repay you... by making babies with you!","_text_jp":"\u547d\u306e\u6069\u4eba\u2026\u2026\u4ffa\u3001\u5b50\u3069\u3082\u7523\u3093\u3067\u6069\u8fd4\u3057\u3059\u308b\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5f1f","_actorParameterID":"8609583b-e8a3-444e-9925-02642adf2ac0","_position":{"x":174.5246,"y":5474.214},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"83"},{"_action":{"actions":[{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":-152.0257,"y":5518.066},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"84"},{"FaceType":{"_value":25},"statement":{"_text":"\u8fd9\u4e0d\u662f\u6069\u5c06\u4ec7\u62a5\u5417\u3002\u3002\u3002","_text_en":"That\u2019s...
+    not how gratitude works.","_text_jp":"\u305d\u308c\u3063\u3066\u3001\u6069\u3092\u4ec7\u3067\u8fd4\u3057\u3066\u306a\u3044\u2026\u2026\uff1f"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"521ce09a-eee2-4aee-824e-21a6e7928cbb","_position":{"x":181.6116,"y":5599.324},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"85"},{"_action":{"actions":[{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":-154.0397,"y":5663.092},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"86"},{"FaceType":{"_value":12},"statement":{"_text":"\u4f60\u4e2a\u50bb\u5e3d\uff01","_text_en":"You
+    idiot!","_text_jp":"\u3053\u306e\u30d0\u30ab\uff01"},"_actorName":"\u54e5\u5e03\u6797\u5144","_actorParameterID":"e2ad64dc-a4de-4590-be57-34a207a37e25","_position":{"x":232.8342,"y":5745.921},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"87"},{"_action":{"setTo":0,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"Goblin","_targetVariableID":"12c81641-f5a5-4f0f-becd-c97d4fc0f397"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},"_position":{"x":429.1004,"y":5855.667},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"88"},{"_action":{"actions":[{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":2.0},"EndActonOnAnimationEnd":{"_value":true},"$type":"Game.GameRuntime.Story.Node.NormalDialogueBlackMaskTaskAction"},{"myObj":{"_name":"myPlayerLogic","_targetVariableID":"2e7b0f40-716f-46e2-b3a6-45ffecf0d289"},"targetObj":{"_name":"startHeroPosNode","_targetVariableID":"94a72f8c-876d-463f-9d15-946609e4f9f1"},"isOnlySetPosX":{"_value":true},"$type":"NodeCanvas.Tasks.Actions.SetGameObjNewPosByOtherObj"},{"myObj":{"_name":"myBossMogutLogic","_targetVariableID":"1f03f85a-b733-400a-82b1-aefe308dfb16"},"targetObj":{"_name":"startBossPosNode","_targetVariableID":"741be4f7-b671-400f-b296-99211366d5e0"},"isOnlySetPosX":{"_value":true},"$type":"NodeCanvas.Tasks.Actions.SetGameObjNewPosByOtherObj"},{"myObj":{"_name":"myBossMogutLogic","_targetVariableID":"1f03f85a-b733-400a-82b1-aefe308dfb16"},"targetRotationX":{},"targetRotationY":{"_value":-180.0},"targetRotationZ":{},"$type":"NodeCanvas.Tasks.Actions.ChangeGameObjRotation"},{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"313a1776-3bb2-40fd-8d92-2933d4bf27cc"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GoblinCanvasGroup","_targetVariableID":"d29d82ac-bde1-445c-8d86-8cb43e15810c"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":591.413,"y":6033.902},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"89"},{"_action":{"actions":[{"TargetValue":{"_value":true},"FieldName":{"_value":"AwakeBossMogut"},"$type":"Game.GameRuntime.Story.Node.SetArchiveBoolActionTask`1[[Game.GameMgr.Component.Archive.ArchiveDataClass.Scene.WestRappRoadData,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},{"method":{"_baseInfo":"Game.GameRuntime.Entities.Monster.BossMogut.BossMogutLogic|EnterBattleState|System.Void","_paramsInfo":""},"parameters":[],"returnValue":{},"overrideAgent":{"_type":"Game.GameRuntime.Entities.Monster.BossMogut.BossMogutLogic","_name":"myBossMogutLogic","_targetVariableID":"1f03f85a-b733-400a-82b1-aefe308dfb16"},"$type":"NodeCanvas.Tasks.Actions.ExecuteFunction_Multiplatform"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":570.8098,"y":6232.605},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"90"},{"_action":{"actions":[{"StartAlpha":{},"EndAlpha":{},"Duration":{},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},{"StartAlpha":{"_value":1.0},"EndAlpha":{},"Duration":{"_value":2.0},"EndActonOnAnimationEnd":{"_value":true},"$type":"Game.GameRuntime.Story.Node.NormalDialogueBlackMaskTaskAction"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":637.0,"y":6367.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"91"},{"_action":{"eventArgs":{"_value":"Start"},"$type":"Game.GameRuntime.Story.Node.WestRappRoadBossBattleAction"},"_position":{"x":709.426,"y":6494.657},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"92"},{"_action":{"Visible":{"_value":true},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":693.4992,"y":6595.318},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"93"},{"_action":{"hasSave":{},"$type":"Game.GameRuntime.Story.Node.WRRoadBossBattleSaveMonsterAction"},"_position":{"x":769.1631,"y":4533.176},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"94"},{"FaceType":{},"statement":{"_text":"\u543c~~~~~~~~~\uff01","_text_en":"RRRRRAAAAAHHHH!!","_text_jp":"\u30a6\u30a9\u30aa\u30aa\u30aa\u30aa\u30aa\u30fc\u30fc\u30fc\u30fc\u30c3\uff01\uff01"},"_actorName":"\u65c1\u767d","_actorParameterID":"8efa2897-90f7-4233-bef2-a1ddb4817929","_position":{"x":707.261,"y":4633.908},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"95"},{"_action":{"parameter":{"_value":"StoryAttackGoblin"},"parameterHashID":{},"overrideAgent":{"_type":"UnityEngine.Animator","_name":"BossMogutAnimator","_targetVariableID":"38ddc561-42ca-41a2-a217-69114f6c6353"},"$type":"NodeCanvas.Tasks.Actions.MecanimSetTrigger"},"_position":{"x":748.6799,"y":4726.056},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"96"},{"_action":{"actions":[{"animationEventComponent":{"_name":"BossMogutAnimationEventComponent","_targetVariableID":"990c236f-5959-448b-9fad-716931e9dbf1"},"eventName":{"_value":"AttackGoblinEnd"},"$type":"Game.GameRuntime.Story.Node.AnimationEventRegisterTaskAction"},{"setTo":1,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"Blood","_targetVariableID":"1b224b4b-4cc9-4a76-acbc-8e418a8314f2"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},{"setTo":0,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"Goblin","_targetVariableID":"12c81641-f5a5-4f0f-becd-c97d4fc0f397"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":644.9355,"y":4834.813},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"97"},{"_action":{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":715.7262,"y":4944.737},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"98"},{"FaceType":{"_value":8},"statement":{"_text":"\u545c\u554a\u554a\u554a\uff01\uff01\uff01\uff01","_text_en":"UWAAAAAH!!","_text_jp":"\u304d\u3083\u3042\u3042\u3042\u3042\u3042\u3042\uff01\uff01"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"521ce09a-eee2-4aee-824e-21a6e7928cbb","_position":{"x":775.428,"y":5036.922},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"99"},{"_action":{"canvasGroup":{"_name":"GushaCanvasGroup...","_targetVariableID":"5ab58aba-6021-4330-a71f-3965f862f9d8"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":750.8613,"y":5117.943},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"100"},{"_action":{"StartPos":{"_name":"CameraPos","_targetVariableID":"a9ab3fe4-a417-4f13-837c-482750676944"},"EndPos":{"_name":"myPlayerLogic","_targetVariableID":"2e7b0f40-716f-46e2-b3a6-45ffecf0d289"},"Duration":{"_value":1.0},"$type":"Game.GameRuntime.Story.Node.CameraMoveTaskAction"},"_position":{"x":857.4429,"y":5199.944},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"101"},{"_action":{"isFollowPlayer":{"_value":true},"$type":"Game.GameRuntime.Story.Node.CameraFollowPlayerActionTask"},"_position":{"x":843.9956,"y":5293.231},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"102"},{"_action":{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"313a1776-3bb2-40fd-8d92-2933d4bf27cc"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":776.0563,"y":5397.328},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"103"},{"FaceType":{"_value":9},"statement":{"_text":"\u3002\u3002\u3002\u3002\u3002\u3002\u6211\u80fd\u6253\u8d62\u5b83\u5417\u3002\u3002\u3002","_text_en":"...Can
+    I really win against this thing?","_text_jp":"\u2026\u2026\u3042\u305f\u3057\u3001\u4e00\u4eba\u3067\u52dd\u3066\u308b\u306e\u2026\u2026\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":777.7524,"y":5479.899},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"104"},{"FaceType":{},"statement":{"_text":"\u96c5\u5c14\u51b2\u5411\u524d\u7ed9BOSS\u780d\u4e00\u5200\uff0cBOSS\u8dcc\u5750\uff0c\u753b\u9762\u5b9a\u683c\u7136\u540e\u64ad\u653e\u540e\u7eed\u5267\u672c"},"_actorName":"\u65c1\u767d","_actorParameterID":"8efa2897-90f7-4233-bef2-a1ddb4817929","_position":{"x":-573.355,"y":4886.384},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"6"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"9"},"_targetNode":{"$ref":"10"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"10"},"_targetNode":{"$ref":"11"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"11"},"_targetNode":{"$ref":"12"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"12"},"_targetNode":{"$ref":"13"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"13"},"_targetNode":{"$ref":"14"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"14"},"_targetNode":{"$ref":"15"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"15"},"_targetNode":{"$ref":"16"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"16"},"_targetNode":{"$ref":"17"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"17"},"_targetNode":{"$ref":"18"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"18"},"_targetNode":{"$ref":"19"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"19"},"_targetNode":{"$ref":"20"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"20"},"_targetNode":{"$ref":"21"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"21"},"_targetNode":{"$ref":"22"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"22"},"_targetNode":{"$ref":"23"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"23"},"_targetNode":{"$ref":"24"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"24"},"_targetNode":{"$ref":"25"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"25"},"_targetNode":{"$ref":"26"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"26"},"_targetNode":{"$ref":"27"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"27"},"_targetNode":{"$ref":"28"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"28"},"_targetNode":{"$ref":"29"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"29"},"_targetNode":{"$ref":"30"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"30"},"_targetNode":{"$ref":"31"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"31"},"_targetNode":{"$ref":"32"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"32"},"_targetNode":{"$ref":"33"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"33"},"_targetNode":{"$ref":"34"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"34"},"_targetNode":{"$ref":"35"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"35"},"_targetNode":{"$ref":"36"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"36"},"_targetNode":{"$ref":"37"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"37"},"_targetNode":{"$ref":"38"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"38"},"_targetNode":{"$ref":"39"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"39"},"_targetNode":{"$ref":"40"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"40"},"_targetNode":{"$ref":"41"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"41"},"_targetNode":{"$ref":"42"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"42"},"_targetNode":{"$ref":"43"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"43"},"_targetNode":{"$ref":"44"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"44"},"_targetNode":{"$ref":"45"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"45"},"_targetNode":{"$ref":"46"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"46"},"_targetNode":{"$ref":"47"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"47"},"_targetNode":{"$ref":"48"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"48"},"_targetNode":{"$ref":"49"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"49"},"_targetNode":{"$ref":"50"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"50"},"_targetNode":{"$ref":"51"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"51"},"_targetNode":{"$ref":"52"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"52"},"_targetNode":{"$ref":"53"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"53"},"_targetNode":{"$ref":"54"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"54"},"_targetNode":{"$ref":"55"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"55"},"_targetNode":{"$ref":"56"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"56"},"_targetNode":{"$ref":"57"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"57"},"_targetNode":{"$ref":"58"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"58"},"_targetNode":{"$ref":"59"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"59"},"_targetNode":{"$ref":"60"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"60"},"_targetNode":{"$ref":"61"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"61"},"_targetNode":{"$ref":"62"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"62"},"_targetNode":{"$ref":"63"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"63"},"_targetNode":{"$ref":"64"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"64"},"_targetNode":{"$ref":"65"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"65"},"_targetNode":{"$ref":"66"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"66"},"_targetNode":{"$ref":"67"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"67"},"_targetNode":{"$ref":"68"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"68"},"_targetNode":{"$ref":"69"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"69"},"_targetNode":{"$ref":"70"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"69"},"_targetNode":{"$ref":"94"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"70"},"_targetNode":{"$ref":"71"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"71"},"_targetNode":{"$ref":"72"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"72"},"_targetNode":{"$ref":"73"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"73"},"_targetNode":{"$ref":"74"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"74"},"_targetNode":{"$ref":"75"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"75"},"_targetNode":{"$ref":"76"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"76"},"_targetNode":{"$ref":"77"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"77"},"_targetNode":{"$ref":"78"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"78"},"_targetNode":{"$ref":"79"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"79"},"_targetNode":{"$ref":"80"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"80"},"_targetNode":{"$ref":"81"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"81"},"_targetNode":{"$ref":"82"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"82"},"_targetNode":{"$ref":"83"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"83"},"_targetNode":{"$ref":"84"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"84"},"_targetNode":{"$ref":"85"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"85"},"_targetNode":{"$ref":"86"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"86"},"_targetNode":{"$ref":"87"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"87"},"_targetNode":{"$ref":"88"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"88"},"_targetNode":{"$ref":"89"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"89"},"_targetNode":{"$ref":"90"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"90"},"_targetNode":{"$ref":"91"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"91"},"_targetNode":{"$ref":"92"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"92"},"_targetNode":{"$ref":"93"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"94"},"_targetNode":{"$ref":"95"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"95"},"_targetNode":{"$ref":"96"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"96"},"_targetNode":{"$ref":"97"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"97"},"_targetNode":{"$ref":"98"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"98"},"_targetNode":{"$ref":"99"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"99"},"_targetNode":{"$ref":"100"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"100"},"_targetNode":{"$ref":"101"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"101"},"_targetNode":{"$ref":"102"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"102"},"_targetNode":{"$ref":"103"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"103"},"_targetNode":{"$ref":"104"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"104"},"_targetNode":{"$ref":"89"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":4},{"_keyName":"\u54e5\u5e03\u6797\u5144","_id":"e2ad64dc-a4de-4590-be57-34a207a37e25","_actorObject":5},{"_keyName":"\u54e5\u5e03\u6797\u5f1f","_id":"8609583b-e8a3-444e-9925-02642adf2ac0","_actorObject":6},{"_keyName":"\u91d1\u53d1\u5973\u5b69","_id":"521ce09a-eee2-4aee-824e-21a6e7928cbb","_actorObject":7},{"_keyName":"\u65c1\u767d","_id":"8efa2897-90f7-4233-bef2-a1ddb4817929","_actorObject":8}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _boundGraphObjectReferences:
+  - {fileID: 0}
+  - {fileID: 1494319267882046509}
+  - {fileID: 556502494969477716}
+  - {fileID: 6011021842041027165}
+  - {fileID: 456483720435322333}
+  - {fileID: 8121515473944439813}
+  - {fileID: 4086694830264629602}
+  - {fileID: 8007876999426813943}
+  - {fileID: 2966636438909756601}
+  _boundGraphSource:
+    _version: 3.31
+    _category: 
+    _comments: 
+    _translation: {x: 75, y: -4094}
+    _zoomFactor: 1
+  _firstActivation: 0
+  _enableAction: 1
+  _disableAction: 2
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 0}
+  _blackboard: {fileID: 7396501391561145538}
+--- !u!114 &7396501391561145538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{"mySimpleStoryTrigger":{"_name":"mySimpleStoryTrigger","_id":"80d7ec29-024e-4638-94b2-c3ff29d9948d","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"CameraPos":{"_name":"CameraPos","_id":"a9ab3fe4-a417-4f13-837c-482750676944","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Transform,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myPlayerLogic":{"_name":"myPlayerLogic","_id":"2e7b0f40-716f-46e2-b3a6-45ffecf0d289","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.Player.PlayerLogic,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"OptionPos":{"_name":"OptionPos","_id":"75ce3b30-0990-4ede-a226-07a107bcc551","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Transform,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myBossMogutLogic":{"_name":"myBossMogutLogic","_id":"1f03f85a-b733-400a-82b1-aefe308dfb16","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.Monster.BossMogut.BossMogutLogic,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"BossMogutAnimator":{"_name":"BossMogutAnimator","_id":"38ddc561-42ca-41a2-a217-69114f6c6353","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Animator,
+    UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"BossMogutAnimationEventComponent":{"_name":"BossMogutAnimationEventComponent","_id":"990c236f-5959-448b-9fad-716931e9dbf1","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.Component.Anima.AnimationEventComponent,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"YaerCanvasGroup":{"_value":1,"_name":"YaerCanvasGroup","_id":"313a1776-3bb2-40fd-8d92-2933d4bf27cc","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+    UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"GoblinCanvasGroup":{"_value":2,"_name":"GoblinCanvasGroup","_id":"d29d82ac-bde1-445c-8d86-8cb43e15810c","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+    UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"GushaCanvasGroup...":{"_value":3,"_name":"GushaCanvasGroup...","_id":"5ab58aba-6021-4330-a71f-3965f862f9d8","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+    UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"CameraImpluseTrigger":{"_name":"CameraImpluseTrigger","_id":"e5a7e449-204b-4545-b509-2ba28f14d09f","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Component.CameraImpluseTrigger,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"Blood":{"_name":"Blood","_id":"1b224b4b-4cc9-4a76-acbc-8e418a8314f2","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"Goblin":{"_name":"Goblin","_id":"12c81641-f5a5-4f0f-becd-c97d4fc0f397","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"GushaStand":{"_name":"GushaStand","_id":"5c1ebbe5-55d1-4a24-b0ed-149f507b67bd","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"bossCameraArea":{"_name":"bossCameraArea","_id":"e18c0192-3dd0-4038-814b-55282aa8a83d","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"startHeroPosNode":{"_name":"startHeroPosNode","_id":"94a72f8c-876d-463f-9d15-946609e4f9f1","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"startBossPosNode":{"_name":"startBossPosNode","_id":"741be4f7-b671-400f-b296-99211366d5e0","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  _objectReferences:
+  - {fileID: 0}
+  - {fileID: 6011021842041027165}
+  - {fileID: 556502494969477716}
+  - {fileID: 774301295862564167}
+  _serializedVariables:
+  - _json: '{"_name":"mySimpleStoryTrigger","_id":"80d7ec29-024e-4638-94b2-c3ff29d9948d","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"CameraPos","_id":"a9ab3fe4-a417-4f13-837c-482750676944","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Transform,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myPlayerLogic","_id":"2e7b0f40-716f-46e2-b3a6-45ffecf0d289","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.Player.PlayerLogic,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"OptionPos","_id":"75ce3b30-0990-4ede-a226-07a107bcc551","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Transform,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myBossMogutLogic","_id":"1f03f85a-b733-400a-82b1-aefe308dfb16","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.Monster.BossMogut.BossMogutLogic,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"BossMogutAnimator","_id":"38ddc561-42ca-41a2-a217-69114f6c6353","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Animator,
+      UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"BossMogutAnimationEventComponent","_id":"990c236f-5959-448b-9fad-716931e9dbf1","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.Component.Anima.AnimationEventComponent,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_value":1,"_name":"YaerCanvasGroup","_id":"313a1776-3bb2-40fd-8d92-2933d4bf27cc","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+      UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 6011021842041027165}
+  - _json: '{"_value":1,"_name":"GoblinCanvasGroup","_id":"d29d82ac-bde1-445c-8d86-8cb43e15810c","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+      UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 556502494969477716}
+  - _json: '{"_value":1,"_name":"GushaCanvasGroup...","_id":"5ab58aba-6021-4330-a71f-3965f862f9d8","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+      UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 774301295862564167}
+  - _json: '{"_name":"CameraImpluseTrigger","_id":"e5a7e449-204b-4545-b509-2ba28f14d09f","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Component.CameraImpluseTrigger,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"Blood","_id":"1b224b4b-4cc9-4a76-acbc-8e418a8314f2","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"Goblin","_id":"12c81641-f5a5-4f0f-becd-c97d4fc0f397","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"GushaStand","_id":"5c1ebbe5-55d1-4a24-b0ed-149f507b67bd","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"bossCameraArea","_id":"e18c0192-3dd0-4038-814b-55282aa8a83d","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"startHeroPosNode","_id":"94a72f8c-876d-463f-9d15-946609e4f9f1","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"startBossPosNode","_id":"741be4f7-b671-400f-b296-99211366d5e0","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+--- !u!1 &3745240604935003570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 423150044700552625}
+  - component: {fileID: 4086694830264629602}
+  m_Layer: 5
+  m_Name: GoblinYounger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &423150044700552625
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3745240604935003570}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4086694830264629602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3745240604935003570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u54E5\u5E03\u6797\u5F1F"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 8
+--- !u!1 &4457035514334884193
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2858809354534504892}
+  - component: {fileID: 8121515473944439813}
+  m_Layer: 5
+  m_Name: GoblinElder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2858809354534504892
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4457035514334884193}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3994487519339559057}
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 283, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8121515473944439813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4457035514334884193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u54E5\u5E03\u6797\u5144"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 7
+--- !u!1 &7793073381710283584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8850884871088952798}
+  - component: {fileID: 2966636438909756601}
+  m_Layer: 5
+  m_Name: Aside
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8850884871088952798
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7793073381710283584}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2966636438909756601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7793073381710283584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u65C1\u767D"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 0
+--- !u!1001 &4640119770738958740
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2858809354534504892}
+    m_Modifications:
+    - target: {fileID: 888961926572594485, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6178797841234199307, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_Name
+      value: GoblinPainting
+      objectReference: {fileID: 0}
+    - target: {fileID: 6178797841234199307, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 887
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 983
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 268
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -176
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8955458422882995076, guid: d565a63daf71b3c48bb35def12988670, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: d565a63daf71b3c48bb35def12988670, type: 3}
+--- !u!224 &3994487519339559057 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8577740341990299909, guid: d565a63daf71b3c48bb35def12988670,
+    type: 3}
+  m_PrefabInstance: {fileID: 4640119770738958740}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &556502494969477716 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 5178044779001256896, guid: d565a63daf71b3c48bb35def12988670,
+    type: 3}
+  m_PrefabInstance: {fileID: 4640119770738958740}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1494319267882046509 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 6114172146052249017, guid: d565a63daf71b3c48bb35def12988670,
+    type: 3}
+  m_PrefabInstance: {fileID: 4640119770738958740}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5615145088022854960
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 37704741067304273}
+    m_Modifications:
+    - target: {fileID: 829091939895077973, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Name
+      value: GoOutStoryYaerPainting
+      objectReference: {fileID: 0}
+    - target: {fileID: 829091939895077973, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 853.9938
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 949.0917
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -559
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4c0e9909764ce6e4eb37971a6fe20fd3, type: 3}
+--- !u!224 &7811335081324502867 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5615145088022854960}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &6011021842041027165 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 2199568825687050093, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 5615145088022854960}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8287887188277819358
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7896583534623067353}
+    m_Modifications:
+    - target: {fileID: 184122850819502079, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_Name
+      value: GushaPainting
+      objectReference: {fileID: 0}
+    - target: {fileID: 184122850819502079, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 723
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1554
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 446
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -330
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 82c4a3783a12c644580af126877bcccf, type: 3}
+--- !u!224 &7595294013755789649 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+    type: 3}
+  m_PrefabInstance: {fileID: 8287887188277819358}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &774301295862564167 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8771503069751685785, guid: 82c4a3783a12c644580af126877bcccf,
+    type: 3}
+  m_PrefabInstance: {fileID: 8287887188277819358}
+  m_PrefabAsset: {fileID: 0}

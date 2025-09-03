@@ -1,0 +1,566 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1047626024150200597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 37704741067304273}
+  - component: {fileID: 456483720435322333}
+  m_Layer: 5
+  m_Name: Yaer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &37704741067304273
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2674722408096380109}
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &456483720435322333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u96C5\u5C14"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 1
+--- !u!1 &2883600314957397101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8965843069174312997}
+  - component: {fileID: 8277147156603116227}
+  - component: {fileID: 7396501391561145538}
+  m_Layer: 5
+  m_Name: ForestSceneLaiFirstDialogue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8965843069174312997
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 37704741067304273}
+  - {fileID: 9071548752749318296}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8277147156603116227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e4b851ebd8fa4ea0645b99be1cf97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"Visible":{},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":547.5055,"y":-267.2722},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"_action":{"actions":[{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},{"canvasGroup":{"_name":"LaiCanvasGroup","_targetVariableID":"2c30809c-f1c7-4944-bb29-dfe17aef6575"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"ffd74bbe-d7f6-4c87-91b6-f5e45c28842d"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"saveComponentAs":{"_name":"myForestSceneLaiLogic","_targetVariableID":"c1a1c5f8-a432-4699-ac76-097653ce6e20"},"saveGameObjectAs":{"_name":""},"$type":"NodeCanvas.Tasks.Actions.FindObjectOfType`1[[Game.GameRuntime.Entities.MainNPC.ForestSceneLaiLogic,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},{"field":{"_baseInfo":"Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger|OptionPos"},"saveAs":{"_type":"UnityEngine.Transform","_name":"LaiDialogueOptionsPos","_targetVariableID":"4425337e-8647-4cce-8504-ac9cd35ed179"},"overrideAgent":{"_type":"Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger","_name":"myForestSceneLaiLogic","_targetVariableID":"c1a1c5f8-a432-4699-ac76-097653ce6e20"},"$type":"NodeCanvas.Tasks.Actions.GetField","$version":1}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":462.6711,"y":-163.1172},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"1"},{"_condition":{"method":{"_baseInfo":"Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger|get_TriggerCount|System.Int32","_paramsInfo":""},"checkValue":{"_type":"System.Int32","_value":{"$content":0,"$type":"System.Int32"}},"comparison":4,"overrideAgent":{"_type":"Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger","_name":"myForestSceneLaiLogic","_targetVariableID":"c1a1c5f8-a432-4699-ac76-097653ce6e20"},"$type":"NodeCanvas.Tasks.Conditions.CheckProperty_Multiplatform"},"_position":{"x":535.2976,"y":20.79071},"$type":"NodeCanvas.DialogueTrees.ConditionNode","$id":"2"},{"FaceType":{"_value":4},"statement":{"_text":"\u554a\uff0c\u83b1\uff0c\u597d\u4e45\u4e0d\u89c1\u54e6~","_text_en":"Ah,
+    Lai, long time no see~","_text_jp":"\u3042\u3001\u30e9\u30a4\u3001\u4e45\u3057\u3076\u308a\u306d\u301c"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":415.0,"y":231.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"3"},{"FaceType":{"_value":12},"statement":{"_text":"\u516c\u4e3b\u3002","_text_en":"Princess.","_text_jp":"\u738b\u5973\u69d8\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":465.0,"y":314.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"FaceType":{"_value":4},"statement":{"_text":"\u6700\u8fd1\u597d\u5417\u3002","_text_en":"How
+    have you been lately?","_text_jp":"\u6700\u8fd1\u306f\u3069\u3046\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":477.0,"y":419.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"FaceType":{"_value":13},"statement":{"_text":"\u611f\u8c22\u60a8\u7236\u4eb2\u7684\u5173\u7167
+    \uff0c\u6211\u5f88\u597d\u3002","_text_en":"Thanks to your father\u2019s care,
+    I\u2019m doing well.","_text_jp":"\u304a\u7236\u4e0a\u306e\u3054\u539a\u60c5\u306e\u304a\u304b\u3052\u3067\u3001\u79c1\u306f\u5143\u6c17\u3067\u3059\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":378.0,"y":513.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"6"},{"FaceType":{"_value":12},"statement":{"_text":"\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"\u2026\u2026","_text_jp":"\u2026\u2026"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":439.0,"y":616.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"7"},{"FaceType":{"_value":7},"statement":{"_text":"\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"\u2026\u2026","_text_jp":"\u2026\u2026"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":434.0,"y":712.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"8"},{"FaceType":{"_value":7},"statement":{"_text":"\u90a3\u4e2a\u4f24\u8fd8\u75bc\u5417\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"Does
+    that wound still hurt\u2026?","_text_jp":"\u305d\u306e\u50b7\u306f\u307e\u3060\u75db\u3080\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":382.0,"y":815.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"9"},{"FaceType":{"_value":11},"statement":{"_text":"\u4e0d\u7528\u8fc7\u4e8e\u5173\u5fc3\u5728\u4e0b\uff0c\u6211\u7684\u547d\u662f\u60a8\u7236\u4eb2\u6551\u7684\uff0c\u5373\u4fbf\u6b7b\u4e5f\u662f\u8fd8\u6069\u3002","_text_en":"You
+    don\u2019t need to worry about me. My life was saved by your father. Even if
+    I die, it\u2019s just repaying a debt.","_text_jp":"\u3042\u307e\u308a\u6c17\u306b\u3057\u306a\u304f\u3066\u3044\u3044\u3002\u547d\u306f\u304a\u7236\u4e0a\u306b\u6551\u308f\u308c\u305f\u3082\u306e\u3060\u3002\u305f\u3068\u3048\u6b7b\u3093\u3067\u3082\u6069\u8fd4\u3057\u306f\u3059\u308b"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":254.0,"y":912.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"10"},{"FaceType":{"_value":7},"statement":{"_text":"\u53ef\u90a3\u5929\u4e0d\u662f\u4f60\u5728\uff0c\u6211\u548c\u59b9\u59b9\u5c31\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"But
+    if you hadn\u2019t been there that day, my sister and I would\u2019ve\u2026","_text_jp":"\u3067\u3082\u3042\u306e\u65e5\u3001\u3042\u306a\u305f\u304c\u3044\u306a\u304b\u3063\u305f\u3089\u3001\u79c1\u3068\u59b9\u306f\u2026"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":388.0,"y":1016.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"11"},{"FaceType":{"_value":11},"statement":{"_text":"\u6211\u5c31\u662f\u4e3a\u4e86\u8fd9\u624d\u5b58\u5728\u7684\u3002","_text_en":"That\u2019s
+    exactly why I exist.","_text_jp":"\u305d\u308c\u3053\u305d\u304c\u79c1\u306e\u5b58\u5728\u610f\u7fa9\u3060\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":359.0,"y":1112.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"12"},{"FaceType":{"_value":7},"statement":{"_text":"\u83b1\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"Lai\u2026","_text_jp":"\u30e9\u30a4\u2026"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":421.0,"y":1220.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"13"},{"FaceType":{"_value":13},"statement":{"_text":"\u4eca\u5929\u51fa\u95e8\u5417\uff1f","_text_en":"Heading
+    out today?","_text_jp":"\u4eca\u65e5\u306f\u5916\u51fa\u3059\u308b\u306e\u304b\uff1f"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":432.0,"y":1313.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"14"},{"FaceType":{"_value":6},"statement":{"_text":"\u5443\u3002\u554a\u3002\u662f\u554a\uff0c\u51fa\u4e86\u70b9\u5c0f\u4e8b\u3002","_text_en":"Uh,
+    ah, yeah. Something came up.","_text_jp":"\u3048\u3048\u3001\u3042\u306e\u3001\u5c0f\u3055\u306a\u7528\u4e8b\u304c\u3042\u308b\u306e\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":415.0,"y":1396.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"15"},{"FaceType":{"_value":13},"statement":{"_text":"\u662f\u53c8\u80e1\u95f9\u95ef\u7978\u4e86\u5427\u3002","_text_en":"Let
+    me guess\u2014you caused trouble again.","_text_jp":"\u307e\u305f\u3075\u3056\u3051\u3066\u554f\u984c\u3092\u8d77\u3053\u3057\u305f\u3093\u3060\u308d\u3046\uff1f"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":486.0,"y":1506.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"16"},{"FaceType":{"_value":6},"statement":{"_text":"\u563f\u563f\u3002\u3002\u3002\u3002\u3002\u3002\u6253\u788e\u4e86\u4e00\u4e2a\u77f3\u5934\uff0c\u7238\u7238\u4ed6\u5927\u60ca\u5c0f\u602a\u7684\u3002","_text_en":"Hehe\u2026
+    I broke a stone, and Dad totally overreacted.","_text_jp":"\u3048\u3078\u3078\u2026\u77f3\u3092\u5272\u3063\u3066\u3057\u307e\u3063\u3066\u3001\u7236\u304c\u5927\u9a12\u304e\u3057\u3066\u305f\u306e\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":355.881,"y":1630.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"17"},{"FaceType":{"_value":11},"statement":{"_text":"\u90a3\u4e1c\u897f\u5bf9\u4ed6\u6765\u8bf4\u7b97\u662f\u4e00\u4e2a\u5ff5\u60f3\uff0c\u4f60\u4e0d\u80fd\u8fd9\u4e48\u8bf4\u3002","_text_en":"That
+    stone holds sentimental value for him. You shouldn\u2019t speak lightly of it.","_text_jp":"\u3042\u308c\u306f\u5f7c\u306b\u3068\u3063\u3066\u601d\u3044\u5165\u308c\u306e\u3042\u308b\u3082\u306e\u3060\u304b\u3089\u3001\u8efd\u304f\u8a00\u3063\u3066\u306f\u3044\u3051\u306a\u3044\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":462.4668,"y":1741.177},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"18"},{"FaceType":{"_value":4},"statement":{"_text":"\u6211\u4e00\u76f4\u6ca1\u542c\u8fc7\u4ed6\u8bf4\u8d77\u77f3\u5934\u7684\u6765\u5386\uff0c\u53ea\u8bf4\u4e86\u90a3\u662f\u9f99\u65cf\u5f88\u91cd\u8981\u7684\u4e1c\u897f\uff0c\u662f\u8c01\u9001\u7684\u5417\u3002","_text_en":"He
+    never told me where it came from. Just said it was something very important to
+    the dragon clan.Was it a gift from someone?","_text_jp":"\u5f7c\u304c\u77f3\u306e\u7531\u6765\u306b\u3064\u3044\u3066\u8a71\u3057\u3066\u3044\u308b\u306e\u306f\u805e\u3044\u305f\u3053\u3068\u304c\u306a\u3044\u3002\u305f\u3060\u9f8d\u65cf\u306b\u3068\u3063\u3066\u5927\u5207\u306a\u3082\u306e\u3060\u3068\u8a00\u3063\u3066\u305f\u3051\u3069\u3001\u8ab0\u304b\u3089\u3082\u3089\u3063\u305f\u306e\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":399.5968,"y":1857.326},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"19"},{"FaceType":{"_value":14},"statement":{"_text":"\u3002\u3002\u3002\u55ef\u5475\u5475\u3002\u3002\u4ed6\u9a97\u5b69\u5b50\u5012\u662f\u6709\u4e00\u624b\u3002\u8fd9\u4e2a\u4e8b\u6211\u4e5f\u4e0d\u597d\u8ddf\u4f60\u8bb2\uff0c\u53ea\u80fd\u770b\u4ed6\u51c6\u5907\u4ec0\u4e48\u65f6\u5019\u544a\u8bc9\u4f60\u4e86\u3002","_text_en":"\u2026Haha\u2026
+    He\u2019s good at keeping things from children. It\u2019s not really my place
+    to tell you.\rIt\u2019s up to him to decide when to let you know.","_text_jp":"\u2026\u3046\u3093\u3001\u306f\u306f\u2026\u5f7c\u306f\u5b50\u4f9b\u306b\u5618\u3092\u3064\u304f\u306e\u304c\u3046\u307e\u3044\u3002\u3053\u306e\u3053\u3068\u306f\u79c1\u3082\u8a71\u3057\u3065\u3089\u3044\u3002\u5f7c\u304c\u3044\u3064\u8a71\u3059\u304b\u3092\u5f85\u3064\u3057\u304b\u306a\u3044\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":384.4379,"y":1983.668},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"20"},{"FaceType":{"_value":5},"statement":{"_text":"\u55ef\uff1f\u4f60\u4eec\u6709\u4e8b\u7792\u6211\uff1f","_text_en":"Huh?
+    Are you two hiding something from me?","_text_jp":"\u3048\uff1f\u4f55\u304b\u96a0\u3057\u3066\u308b\u306e\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":477.0,"y":2109.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"21"},{"FaceType":{"_value":13},"statement":{"_text":"\u4e0d\u8981\u803d\u6401\u4e86\uff0c\u65e9\u70b9\u51fa\u95e8\u5427\uff0c\u4e5f\u8bb8\u7b49\u4f60\u56de\u6765\u4e86\u4ed6\u4f1a\u81ea\u5df1\u544a\u8bc9\u4f60\u3002","_text_en":"Don\u2019t
+    delay any longer. You should get going. Maybe when you return, he\u2019ll tell
+    you himself.","_text_jp":"\u3082\u3046\u9045\u308c\u3061\u3083\u3044\u3051\u306a\u3044\u3001\u65e9\u304f\u51fa\u304b\u3051\u305f\u307b\u3046\u304c\u3044\u3044\u3002\u623b\u3063\u305f\u3089\u5f7c\u306f\u81ea\u5206\u3067\u8a71\u3059\u304b\u3082\u3057\u308c\u306a\u3044\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":348.0,"y":2224.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"22"},{"FaceType":{"_value":4},"statement":{"_text":"\u55ef\uff0c\u83b1\u591a\u4fdd\u91cd\uff0c\u6211\u8d70\u4e86\u3002","_text_en":"Mm,
+    take care, Lai. I\u2019m off.","_text_jp":"\u3046\u3093\u3001\u30e9\u30a4\u3001\u79c1\u306f\u884c\u304f\u3088\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":438.0,"y":2342.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"23"},{"FaceType":{"_value":13},"statement":{"_text":"\u4fdd\u91cd\u3002","_text_en":"Safe
+    travels.","_text_jp":"\u6c17\u3092\u3064\u3051\u3066\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":449.0,"y":2474.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"24"},{"_action":{"TargetValue":{"_value":true},"FieldName":{"_value":"laiFirstDialogue"},"$type":"Game.GameRuntime.Story.Node.SetArchiveBoolActionTask`1[[Game.GameMgr.Component.Archive.ArchiveDataClass.Scene.ForestSceneData,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"_position":{"x":322.4539,"y":2570.781},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"25"},{"_action":{"Visible":{"_value":true},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":1208.275,"y":2709.867},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"26"},{"FaceType":{"_value":4},"statement":{"_text":"\u6211\u6709\u4e9b\u8bdd\u60f3\u95ee\u4f60\u3002","_text_en":"I
+    have some questions for you.","_text_jp":"\u5c11\u3057\u805e\u304d\u305f\u3044\u3053\u3068\u304c\u3042\u308b\u306e\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":818.8907,"y":147.6582},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"27"},{"FaceType":{"_value":12},"statement":{"_text":"\u6709\u4ec0\u4e48\u4e8b\u3002","_text_en":"What
+    is it?","_text_jp":"\u306a\u3093\u3067\u3057\u3087\u3046\u304b\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":891.8907,"y":237.6582},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"28"},{"_action":{"executionMode":1,"actions":[{"targetTransform":{"_name":"LaiDialogueOptionsPos","_targetVariableID":"4425337e-8647-4cce-8504-ac9cd35ed179"},"$type":"Game.GameRuntime.Story.Node.NormalDialogueSetOptionGroupWorldPosTaskAction"},{"setTo":0,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"YaerCanvasGroup","_targetVariableID":"ffd74bbe-d7f6-4c87-91b6-f5e45c28842d"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},{"setTo":0,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"LaiCanvasGroup","_targetVariableID":"2c30809c-f1c7-4944-bb29-dfe17aef6575"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":1040.266,"y":344.7013},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"29"},{"availableChoices":[{"statement":{"_text":"\u4f60\u600e\u4e48\u770b\u5f85\u6211\u7684\u7236\u4eb2","_text_en":"What
+    do you think of my father?","_text_jp":"\u304a\u7236\u69d8\u306e\u3053\u3068\u3001\u3069\u3046\u601d\u3063\u3066\u308b\uff1f"}},{"statement":{"_text":"\u73b0\u5728\u6218\u4e8b\u600e\u4e48\u6837\u4e86","_text_en":"How''s
+    the war going?","_text_jp":"\u4eca\u306e\u6226\u6cc1\u306f\uff1f"}},{"statement":{"_text":"\u6211\u6bcd\u4eb2\u5979\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"About
+    my mother\u2026","_text_jp":"\u6bcd\u69d8\u306f\u2026\u2026"}},{"statement":{"_text":"\u4f60\u53bb\u8fc7\u4eba\u7c7b\u9886\u5730\u5417","_text_en":"Have
+    you ever  in human territory?","_text_jp":"\u4eba\u9593\u306e\u9818\u5730\u306b\u884c\u3063\u305f\u3053\u3068\u3042\u308b\uff1f"}}],"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":1070.432,"y":492.4453},"$type":"NodeCanvas.DialogueTrees.MultipleChoiceNode","$id":"30"},{"_action":{"executionMode":1,"actions":[{"setTo":1,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"YaerCanvasGroup","_targetVariableID":"ffd74bbe-d7f6-4c87-91b6-f5e45c28842d"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},{"setTo":1,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"LaiCanvasGroup","_targetVariableID":"2c30809c-f1c7-4944-bb29-dfe17aef6575"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":771.9427,"y":722.9517},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"31"},{"FaceType":{"_value":12},"statement":{"_text":"\u516c\u4e3b\uff0c\u6211\u6ca1\u6709\u56e0\u4e3a\u5e73\u65f6\u548c\u4ed6\u4e89\u5435\u5c31\u5bf9\u4ed6\u6539\u89c2\u3002","_text_en":"Your
+    Highness, just because I argue with him doesn\u2019t mean I\u2019ve changed my
+    view.","_text_jp":"\u59eb\u69d8\u3001\u79c1\u306f\u666e\u6bb5\u5f7c\u3068\u53e3\u8ad6\u3059\u308b\u304b\u3089\u3068\u3044\u3063\u3066\u3001\u5f7c\u3092\u898b\u9650\u3063\u305f\u308f\u3051\u3067\u306f\u3042\u308a\u307e\u305b\u3093\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":747.9906,"y":878.8853},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"32"},{"FaceType":{"_value":12},"statement":{"_text":"\u4ed6\u5728\u6211\u773c\u4e2d\u4e00\u76f4\u662f\u4e2a\u53ef\u9760\u7684\u7537\u4eba\u3002","_text_en":"In
+    my eyes, he''s always been a dependable man.","_text_jp":"\u5f7c\u306f\u305a\u3063\u3068\u3001\u79c1\u306b\u3068\u3063\u3066\u983c\u308a\u306b\u306a\u308b\u7537\u3067\u3059"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":753.9906,"y":977.8853},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"33"},{"FaceType":{"_value":7},"statement":{"_text":"\u4ed6\u73b0\u5728\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"And
+    now\u2026","_text_jp":"\u3067\u3082\u3001\u4eca\u306e\u5f7c\u306f\u2026\u2026"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":806.9906,"y":1074.885},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"34"},{"FaceType":{"_value":11},"statement":{"_text":"\u90a3\u5e74\u7684\u786e\u662f\u4e2a\u707e\u96be\uff0c\u5bf9\u65cf\u7fa4\uff0c\u5bf9\u4ed6\u90fd\u662f\u3002","_text_en":"That
+    year was a disaster\u2014for our people, and for him.","_text_jp":"\u3042\u306e\u5e74\u306f\u6211\u3005\u306b\u3068\u3063\u3066\u3001\u305d\u3057\u3066\u5f7c\u306b\u3068\u3063\u3066\u3082\u3001\u672c\u5f53\u306b\u60b2\u5287\u3067\u3057\u305f\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":786.4315,"y":1178.315},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"35"},{"FaceType":{"_value":12},"statement":{"_text":"\u6211\u76f8\u4fe1\u4ed6\u603b\u4f1a\u8d70\u51fa\u6765\u7684\u3002","_text_en":"I
+    believe he\u2019ll pull through.","_text_jp":"\u3051\u308c\u3069\u3001\u79c1\u306f\u5f7c\u304c\u5fc5\u305a\u7acb\u3061\u76f4\u308b\u3068\u4fe1\u3058\u3066\u3044\u307e\u3059\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":774.4315,"y":1291.315},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"36"},{"FaceType":{"_value":7},"statement":{"_text":"\u6211\u80fd\u505a\u4ec0\u4e48\u5462\uff1f","_text_en":"Is
+    there anything I can do?","_text_jp":"\u79c1\u306f\u3001\u4f55\u3092\u3059\u308c\u3070\u3044\u3044\u306e\u2026\u2026\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":798.8713,"y":1375.796},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"37"},{"FaceType":{"_value":11},"statement":{"_text":"\u8c01\u4e5f\u5e2e\u4e0d\u4e86\u4ed6\uff0c\u53ea\u80fd\u9760\u4ed6\u81ea\u5df1\u3002","_text_en":"No
+    one can help him now. He has to pull himself up.","_text_jp":"\u8ab0\u306b\u3082\u624b\u52a9\u3051\u306f\u3067\u304d\u307e\u305b\u3093\u3002\u5f7c\u81ea\u8eab\u306e\u529b\u3067\u4e57\u308a\u8d8a\u3048\u308b\u3057\u304b\u306a\u3044\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":783.9906,"y":1496.885},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"38"},{"_action":{"executionMode":1,"actions":[{"setTo":1,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"YaerCanvasGroup","_targetVariableID":"ffd74bbe-d7f6-4c87-91b6-f5e45c28842d"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},{"setTo":1,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"LaiCanvasGroup","_targetVariableID":"2c30809c-f1c7-4944-bb29-dfe17aef6575"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":1265.116,"y":719.2852},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"39"},{"FaceType":{"_value":12},"statement":{"_text":"\u6211\u4eec\u548c\u4eba\u7c7b\u7cbe\u7075\u540c\u76df\uff0c\u4f46\u4e0e\u4eba\u7c7b\u7684\u540c\u76df\u534f\u8bae\u5feb\u8981\u5230\u671f\u4e86\u3002","_text_en":"We\u2019re
+    still allied with the humans and elves, but the treaty with the humans is about
+    to expire.","_text_jp":"\u6211\u3005\u306f\u4eca\u3001\u4eba\u9593\u3068\u7cbe\u970a\u3068\u540c\u76df\u3092\u7d50\u3093\u3067\u3044\u307e\u3059\u304c\u3001\u305d\u306e\u4eba\u9593\u3068\u306e\u540c\u76df\u5354\u5b9a\u304c\u3082\u3046\u3059\u3050\u671f\u9650\u3092\u8fce\u3048\u307e\u3059\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1220.178,"y":833.6733},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"40"},{"FaceType":{"_value":12},"statement":{"_text":"\u7cbe\u7075\u6682\u4e14\u4e0d\u8bf4\uff0c\u4eba\u7c7b\u7684\u52bf\u529b\u5728\u90a3\u5e74\u5f97\u5230\u4e86\u4fdd\u5b58\u3002","_text_en":"Leaving
+    aside the elves, human power was preserved that year","_text_jp":"\u7cbe\u970a\u306e\u3053\u3068\u306f\u3055\u3066\u304a\u304d\u3001\u4eba\u9593\u305f\u3061\u306f\u3042\u306e\u5e74\u3001\u6bd4\u8f03\u7684\u529b\u3092\u4fdd\u3064\u3053\u3068\u304c\u3067\u304d\u307e\u3057\u305f\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1262.178,"y":929.6733},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"41"},{"FaceType":{"_value":11},"statement":{"_text":"\u6211\u4eec\u4f24\u4ea1\u60e8\u91cd\uff0c\u516b\u5e74\u6765\u4e5f\u6ca1\u80fd\u6062\u590d\u5982\u521d\u3002","_text_en":"We\u2019ve
+    suffered heavy losses, and after eight years, we still haven\u2019t fully recovered.","_text_jp":"\u6211\u3005\u306f\u751a\u5927\u306a\u88ab\u5bb3\u3092\u53d7\u3051\u3001\u516b\u5e74\u7d4c\u3063\u3066\u3082\u307e\u3060\u5143\u306e\u529b\u306b\u306f\u623b\u308c\u3066\u3044\u307e\u305b\u3093\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1292.178,"y":1027.673},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"42"},{"FaceType":{"_value":11},"statement":{"_text":"\u9b54\u65cf\u7684\u52bf\u529b\u4f9d\u65e7\u5f3a\u5927\uff0c\u6709\u4f20\u8a00\u8bf4\u524d\u51e0\u4e2a\u6708\u5b83\u4eec\u53c8\u653b\u7834\u4eba\u7c7b\u8fb9\u9632\u3002","_text_en":"The
+    demons are still powerful. There\u2019s word they broke through the human defenses
+    again a few months back.","_text_jp":"\u9b54\u65cf\u306e\u52e2\u529b\u306f\u3044\u307e\u3060\u5065\u5728\u3067\u3001\u6570\u304b\u6708\u524d\u306b\u306f\u307e\u305f\u4eba\u9593\u306e\u56fd\u5883\u304c\u7a81\u7834\u3055\u308c\u305f\u3068\u3044\u3046\u5642\u3082\u3042\u308a\u307e\u3059\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1234.34,"y":1119.673},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"43"},{"FaceType":{"_value":7},"statement":{"_text":"\u6211\u4eec\u8be5\u600e\u4e48\u529e\uff0c\u8fd9\u573a\u6218\u4e89\u96be\u9053\u8981\u4e00\u76f4\u8fd9\u6837\u4e0b\u53bb\u5417\u3002","_text_en":"What
+    are we supposed to do? Is this war going to drag on forever?","_text_jp":"\u3069\u3046\u3057\u305f\u3089\u3044\u3044\u306e\uff1f\u3053\u306e\u6226\u4e89\u3001\u305a\u3063\u3068\u7d9a\u304f\u306e\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":1283.516,"y":1217.479},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"44"},{"FaceType":{"_value":11},"statement":{"_text":"\u6050\u6015\u662f\u7684\uff0c\u9b54\u65cf\u662f\u4e0d\u4f1a\u505c\u6b62\u4fb5\u7565\u7684\uff0c\u53ea\u6709\u6d88\u706d\u4ed6\u4eec\u3002","_text_en":"I\u2019m
+    afraid so. The demons won\u2019t stop. We either destroy them or get destroyed.","_text_jp":"\u6050\u3089\u304f\u3001\u305d\u3046\u306a\u308b\u3067\u3057\u3087\u3046\u3002\u9b54\u65cf\u304c\u4fb5\u7565\u3092\u3084\u3081\u308b\u3053\u3068\u306f\u306a\u3044\u3002\u6ec5\u307c\u3059\u3057\u304b\u3042\u308a\u307e\u305b\u3093\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1287.516,"y":1311.479},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"45"},{"FaceType":{"_value":7},"statement":{"_text":"\u7236\u4eb2\u4e00\u8e76\u4e0d\u632f\uff0c\u6211\u4eec\u80fd\u62b5\u6321\u7684\u4f4f\u5417\u3002","_text_en":"But
+    with Father like this\u2026 can we really hold the line?","_text_jp":"\u304a\u7236\u69d8\u304c\u3042\u3093\u306a\u72b6\u614b\u3067\u3001\u79c1\u305f\u3061\u3067\u5b88\u308a\u5207\u308c\u308b\u306e\u2026\u2026\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":1368.516,"y":1407.479},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"46"},{"FaceType":{"_value":11},"statement":{"_text":"\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"\u2026","_text_jp":"\u2026\u2026"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1390.516,"y":1501.479},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"47"},{"FaceType":{"_value":12},"statement":{"_text":"\u4f60\u8fd8\u5c0f\uff0c\u8fd9\u79cd\u4e8b\u4ea4\u7ed9\u6211\u4eec\u5904\u7406\uff0c\u9f99\u9a91\u56e2\u6218\u58eb\u4eec\u624b\u4e2d\u7684\u5927\u5251\u4e0d\u4f1a\u8ba9\u9b54\u65cf\u518d\u8e0f\u5165\u9886\u5730\u4e00\u6b65\u3002","_text_en":"You\u2019re
+    still young. Leave this to us.As long as the Dragon Riders wield their blades,
+    no demon will set foot on our land.","_text_jp":"\u307e\u3060\u3042\u306a\u305f\u306f\u82e5\u3044\u3002\u3053\u306e\u3053\u3068\u306f\u6211\u3005\u306b\u4efb\u305b\u3066\u304f\u3060\u3055\u3044\u3002\u7adc\u9a0e\u56e3\u306e\u6226\u58eb\u305f\u3061\u306e\u624b\u306e\u5927\u5263\u306f\u3001\u9b54\u65cf\u3092\u518d\u3073\u9818\u5730\u306b\u8e0f\u307f\u5165\u308c\u3055\u305b\u306a\u3044\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1271.515,"y":1596.479},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"48"},{"_action":{"executionMode":1,"actions":[{"setTo":1,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"YaerCanvasGroup","_targetVariableID":"ffd74bbe-d7f6-4c87-91b6-f5e45c28842d"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},{"setTo":1,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"LaiCanvasGroup","_targetVariableID":"2c30809c-f1c7-4944-bb29-dfe17aef6575"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":1699.973,"y":725.3015},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"49"},{"FaceType":{"_value":11},"statement":{"_text":"\u4f60\u4f1a\u602a\u6211\u5417\uff1f","_text_en":"Do
+    you blame me?","_text_jp":"\u541b\u306f\u2026\u2026\u79c1\u3092\u8cac\u3081\u3066\u3044\u308b\u304b\uff1f"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1730.568,"y":837.5151},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"50"},{"FaceType":{"_value":11},"statement":{"_text":"\u4f60\u4f1a\u602a\u6211\u90a3\u5e74\u6ca1\u80fd\u5e26\u5979\u4e00\u8d77\u51fa\u6765\u5417\uff1f","_text_en":"Do
+    you blame me for not bringing her out that day?","_text_jp":"\u3042\u306e\u5e74\u3001\u5f7c\u5973\u3092\u9023\u308c\u3066\u51fa\u308b\u3053\u3068\u304c\u3067\u304d\u306a\u304b\u3063\u305f\u79c1\u3092\u2026\u2026"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1728.29,"y":939.1879},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"51"},{"FaceType":{"_value":7},"statement":{"_text":"\u4e0d\uff0c\u867d\u7136\u6211\u90a3\u5e74\u8fd8\u5c0f\uff0c\u4f46\u6211\u4e5f\u80fd\u611f\u53d7\u5230\u5f53\u65f6\u7684\u7d27\u8feb\u3002","_text_en":"No\u2026
+    I was young, but I could feel how urgent everything was.","_text_jp":"\u3044\u3044\u3048\u3002\u3042\u306e\u3068\u304d\u79c1\u306f\u5e7c\u304b\u3063\u305f\u3051\u3069\u3001\u3042\u306e\u5834\u306e\u5207\u8feb\u611f\u306f\u308f\u304b\u3063\u3066\u305f\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":1746.291,"y":1051.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"52"},{"FaceType":{"_value":7},"statement":{"_text":"\u4f60\u80fd\u628a\u6211\u548c\u59b9\u59b9\u6551\u51fa\u6211\u4eec\u5df2\u7ecf\u5f88\u611f\u6fc0\u4e86\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"You
+    saved me and my sister. We are already very grateful\u2026","_text_jp":"\u3042\u306a\u305f\u304c\u79c1\u3068\u59b9\u3092\u52a9\u3051\u51fa\u3057\u3066\u304f\u308c\u305f\u3060\u3051\u3067\u3001\u672c\u5f53\u306b\u611f\u8b1d\u3057\u3066\u308b\u2026\u2026"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":1754.078,"y":1144.892},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"53"},{"FaceType":{"_value":7},"statement":{"_text":"\u600e\u4e48\u53ef\u80fd\u8fd8\u4f1a\u602a\u4f60\u3002","_text_en":"How
+    could we possibly blame you?","_text_jp":"\u8cac\u3081\u308b\u306a\u3093\u3066\u3001\u3042\u308a\u5f97\u306a\u3044\u3088\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":1817.728,"y":1239.464},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"54"},{"FaceType":{"_value":11},"statement":{"_text":"\u4f60\u7684\u6bcd\u4eb2\u662f\u4e2a\u4f1f\u5927\u7684\u4eba\u3002","_text_en":"Your
+    mother was a great woman.","_text_jp":"\u3042\u306a\u305f\u306e\u6bcd\u4e0a\u306f\u3001\u5049\u5927\u306a\u65b9\u3060\u3063\u305f\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1756.29,"y":1359.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"55"},{"FaceType":{"_value":11},"statement":{"_text":"\u90a3\u5e74\u5979\u628a\u4f60\u548c\u590f\u5c14\u6258\u4ed8\u7ed9\u6211\uff0c\u6211\u770b\u5230\u4e86\u5979\u7684\u8138\u3002","_text_en":"That
+    day, when she entrusted you and Shire to me\u2026 I saw her face.","_text_jp":"\u3042\u306e\u65e5\u3001\u3042\u306a\u305f\u3068\u30b7\u30e3\u30eb\u3092\u79c1\u306b\u8a17\u3057\u3066\u3001\u5f7c\u5973\u306e\u8868\u60c5\u3092\u898b\u305f\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1739.29,"y":1459.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"56"},{"FaceType":{"_value":11},"statement":{"_text":"\u90a3\u662f\u5979\u5e73\u65e5\u91cc\u4ece\u672a\u6d41\u9732\u8fc7\u7684\u8868\u60c5\u3002","_text_en":"A
+    look I had never seen on her before.","_text_jp":"\u305d\u308c\u306f\u3001\u666e\u6bb5\u306e\u5f7c\u5973\u304b\u3089\u306f\u8003\u3048\u3089\u308c\u306a\u3044\u3001\u899a\u609f\u306b\u6e80\u3061\u305f\u9854\u3060\u3063\u305f\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1773.29,"y":1554.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"57"},{"FaceType":{"_value":11},"statement":{"_text":"\u6211\u60f3\u5979\u5f53\u65f6\u5df2\u7ecf\u505a\u597d\u4e86\u89c9\u609f\u3002","_text_en":"I
+    think she already knew what was coming.","_text_jp":"\u5f7c\u5973\u306f\u3042\u306e\u6642\u3001\u3059\u3067\u306b\u899a\u609f\u3092\u6c7a\u3081\u3066\u3044\u305f\u306e\u3060\u3068\u601d\u3044\u307e\u3059\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1790.29,"y":1647.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"58"},{"FaceType":{"_value":7},"statement":{"_text":"\u545c\u545c\u545c\u545c\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"[soft
+    sobbing]","_text_jp":"\u3046\u3046\u3046\u3046\u2026\u2026"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":1819.315,"y":1750.813},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"59"},{"FaceType":{"_value":15},"statement":{"_text":"\u96c5\u5c14\uff0c\u4f60\u5fc5\u987b\u575a\u5f3a\u8d77\u6765\uff0c\u4f60\u548c\u4f60\u59b9\u59b9\u80a9\u8d1f\u7740\u91cd\u62c5\u3002","_text_en":"Yar,
+    you must stay strong. You and your sister have a great burden to carry.","_text_jp":"\u96c5\u30eb\u3001\u5f37\u304f\u306a\u308b\u3093\u3060\u3002\u541b\u3068\u59b9\u306b\u306f\u5927\u304d\u306a\u8cac\u4efb\u304c\u3042\u308b\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1721.29,"y":1850.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"60"},{"FaceType":{"_value":15},"statement":{"_text":"\u8fd9\u4e9b\u4eba\u7684\u6b7b\u4e0d\u80fd\u6789\u8d39\uff01","_text_en":"Their
+    deaths must not be in vain!","_text_jp":"\u5f7c\u3089\u306e\u72a0\u7272\u3092\u7121\u99c4\u306b\u306f\u3067\u304d\u306a\u3044\uff01"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1779.29,"y":1948.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"61"},{"FaceType":{"_value":15},"statement":{"_text":"\u6211\u548c\u4f60\u7236\u4eb2\u5b9a\u8981\u8ba9\u8fd9\u5e2e\u4eba\u4ed8\u51fa\u4ee3\u4ef7\uff01","_text_en":"Your
+    father and I will make them pay!","_text_jp":"\u79c1\u3068\u3042\u306a\u305f\u306e\u7236\u4e0a\u306f\u3001\u3042\u306e\u8005\u305f\u3061\u306b\u5fc5\u305a\u5831\u3044\u3092\u53d7\u3051\u3055\u305b\u308b\uff01"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":1733.29,"y":2049.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"62"},{"_action":{"executionMode":1,"actions":[{"setTo":1,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"YaerCanvasGroup","_targetVariableID":"ffd74bbe-d7f6-4c87-91b6-f5e45c28842d"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},{"setTo":1,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"LaiCanvasGroup","_targetVariableID":"2c30809c-f1c7-4944-bb29-dfe17aef6575"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":2091.597,"y":676.3383},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"63"},{"FaceType":{"_value":12},"statement":{"_text":"\u6211\u5e74\u8f7b\u7684\u65f6\u5019\u5728\u90a3\u9644\u8fd1\u751f\u6d3b\u8fc7\u4e00\u9635\u5b50\u3002","_text_en":"I
+    lived around there for a while when I was younger.","_text_jp":"\u82e5\u3044\u3053\u308d\u3001\u5c11\u3057\u3060\u3051\u305d\u306e\u8fd1\u304f\u3067\u751f\u6d3b\u3057\u305f\u3053\u3068\u304c\u3042\u308b\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":2044.578,"y":811.6949},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"64"},{"FaceType":{"_value":5},"statement":{"_text":"\u554a\uff0c\u83b1\u4f60\u8fd8\u548c\u4eba\u7c7b\u6253\u8fc7\u4ea4\u9053\u5462\u3002","_text_en":"Wow,
+    so you\u2019ve actually dealt with humans?","_text_jp":"\u30e9\u30a4\u3001\u4eba\u9593\u3068\u95a2\u308f\u3063\u305f\u3053\u3068\u304c\u3042\u308b\u3093\u3060\u306d\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":2122.292,"y":918.1877},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"65"},{"FaceType":{"_value":12},"statement":{"_text":"\u6ca1\u6709\u592a\u6df1\u4ea4\uff0c\u6211\u4e0d\u662f\u4e2a\u559c\u6b22\u4ea4\u6d41\u7684\u4eba\u3002","_text_en":"Not
+    deeply. I\u2019m not one for chatting.","_text_jp":"\u6df1\u304f\u4ed8\u304d\u5408\u3063\u305f\u308f\u3051\u3058\u3083\u306a\u3044\u3002\u4ffa\u306f\u3042\u307e\u308a\u4eba\u4ed8\u304d\u5408\u3044\u304c\u5f97\u610f\u3058\u3083\u306a\u3044\u304b\u3089\u306a\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":2147.579,"y":1008.695},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"66"},{"FaceType":{"_value":4},"statement":{"_text":"\u4ed6\u4eec\u597d\u76f8\u5904\u5417\uff1f","_text_en":"Are
+    they easy to get along with?","_text_jp":"\u4eba\u9593\u3063\u3066\u3001\u4ed8\u304d\u5408\u3044\u3084\u3059\u3044\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":2181.292,"y":1103.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"67"},{"FaceType":{"_value":12},"statement":{"_text":"\u4ed6\u4eec\u5f88\u590d\u6742\u3002","_text_en":"They\u2019re
+    complicated.","_text_jp":"\u5f7c\u3089\u306f\u8907\u96d1\u3060\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":2147.579,"y":1205.695},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"68"},{"FaceType":{"_value":4},"statement":{"_text":"\u4ec0\u4e48\u610f\u601d\uff1f","_text_en":"What
+    do you mean?","_text_jp":"\u3069\u3046\u3044\u3046\u610f\u5473\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":2166.292,"y":1306.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"69"},{"FaceType":{"_value":11},"statement":{"_text":"\u53ea\u8a00\u7247\u8bed\u8bf4\u4e0d\u6e05\uff0c\u5982\u679c\u4f60\u8981\u53bb\u90a3\u8fb9\uff0c\u5c0f\u5fc3\u5f53\u5730\u4eba\uff0c\u4e0d\u8981\u8f7b\u4fe1\u4ed6\u4eec\u7684\u8bdd\u3002","_text_en":"Hard
+    to explain in a few words. If you''re going there, be careful. Don\u2019t trust
+    what they say too easily.","_text_jp":"\u4e00\u8a00\u3067\u306f\u8a00\u3048\u306a\u3044\u3002\u3082\u3057\u541b\u304c\u5411\u3053\u3046\u306b\u884c\u304f\u306a\u3089\u3001\u5730\u5143\u306e\u4eba\u9593\u306b\u306f\u6c17\u3092\u3064\u3051\u308d\u3002\u8efd\u3005\u3057\u304f\u4fe1\u3058\u3066\u306f\u306a\u3089\u306a\u3044\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":2133.579,"y":1406.695},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"70"},{"FaceType":{"_value":5},"statement":{"_text":"\u8fd9\u4e48\u4e25\u8083\u5417\uff1f","_text_en":"Is
+    it that serious?","_text_jp":"\u305d\u3093\u306a\u306b\u53b3\u91cd\u306a\u306e\u2026\u2026\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":2243.292,"y":1518.188},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"71"},{"FaceType":{"_value":11},"statement":{"_text":"\u6211\u4e0d\u5e0c\u671b\u4f60\u4e5f\u9047\u5230\u6211\u8eab\u4e0a\u7684\u4e8b\u3002","_text_en":"I
+    don\u2019t want the same thing to happen to you.","_text_jp":"\u541b\u306b\u306f\u3001\u79c1\u3068\u540c\u3058\u76ee\u306b\u906d\u3063\u3066\u307b\u3057\u304f\u306a\u3044\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":2160.579,"y":1609.695},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"72"},{"FaceType":{"_value":6},"statement":{"_text":"\u90a3\uff0c\u7b49\u6211\u56de\u6765\uff0c\u6211\u5e26\u793c\u7269\u56de\u6765\u9001\u4f60","_text_en":"Then,
+    when I come back, I\u2019ll bring you a gift!","_text_jp":"\u3058\u3083\u3042\u2026\u2026\u5e30\u3063\u3066\u304d\u305f\u3089\u3001\u304a\u571f\u7523\u8cb7\u3063\u3066\u304f\u308b\u306d\u301c"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":2169.968,"y":1702.906},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"73"},{"FaceType":{"_value":13},"statement":{"_text":"\u522b\u62ff\u6211\u53d6\u7b11\u4e86\u3002","_text_en":"Don\u2019t
+    tease me.","_text_jp":"\u304b\u3089\u304b\u308f\u306a\u3044\u3067\u304f\u308c\u3002"},"_actorName":"\u83b1","_actorParameterID":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_position":{"x":2186.577,"y":1812.694},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"74"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"27"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"6"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"9"},"_targetNode":{"$ref":"10"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"10"},"_targetNode":{"$ref":"11"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"11"},"_targetNode":{"$ref":"12"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"12"},"_targetNode":{"$ref":"13"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"13"},"_targetNode":{"$ref":"14"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"14"},"_targetNode":{"$ref":"15"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"15"},"_targetNode":{"$ref":"16"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"16"},"_targetNode":{"$ref":"17"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"17"},"_targetNode":{"$ref":"18"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"18"},"_targetNode":{"$ref":"19"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"19"},"_targetNode":{"$ref":"20"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"20"},"_targetNode":{"$ref":"21"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"21"},"_targetNode":{"$ref":"22"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"22"},"_targetNode":{"$ref":"23"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"23"},"_targetNode":{"$ref":"24"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"24"},"_targetNode":{"$ref":"25"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"25"},"_targetNode":{"$ref":"26"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"27"},"_targetNode":{"$ref":"28"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"28"},"_targetNode":{"$ref":"29"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"29"},"_targetNode":{"$ref":"30"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"30"},"_targetNode":{"$ref":"31"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"30"},"_targetNode":{"$ref":"39"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"30"},"_targetNode":{"$ref":"49"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"30"},"_targetNode":{"$ref":"63"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"31"},"_targetNode":{"$ref":"32"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"32"},"_targetNode":{"$ref":"33"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"33"},"_targetNode":{"$ref":"34"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"34"},"_targetNode":{"$ref":"35"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"35"},"_targetNode":{"$ref":"36"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"36"},"_targetNode":{"$ref":"37"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"37"},"_targetNode":{"$ref":"38"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"38"},"_targetNode":{"$ref":"26"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"39"},"_targetNode":{"$ref":"40"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"40"},"_targetNode":{"$ref":"41"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"41"},"_targetNode":{"$ref":"42"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"42"},"_targetNode":{"$ref":"43"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"43"},"_targetNode":{"$ref":"44"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"44"},"_targetNode":{"$ref":"45"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"45"},"_targetNode":{"$ref":"46"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"46"},"_targetNode":{"$ref":"47"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"47"},"_targetNode":{"$ref":"48"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"48"},"_targetNode":{"$ref":"26"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"49"},"_targetNode":{"$ref":"50"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"50"},"_targetNode":{"$ref":"51"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"51"},"_targetNode":{"$ref":"52"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"52"},"_targetNode":{"$ref":"53"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"53"},"_targetNode":{"$ref":"54"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"54"},"_targetNode":{"$ref":"55"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"55"},"_targetNode":{"$ref":"56"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"56"},"_targetNode":{"$ref":"57"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"57"},"_targetNode":{"$ref":"58"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"58"},"_targetNode":{"$ref":"59"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"59"},"_targetNode":{"$ref":"60"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"60"},"_targetNode":{"$ref":"61"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"61"},"_targetNode":{"$ref":"62"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"62"},"_targetNode":{"$ref":"26"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"63"},"_targetNode":{"$ref":"64"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"64"},"_targetNode":{"$ref":"65"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"65"},"_targetNode":{"$ref":"66"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"66"},"_targetNode":{"$ref":"67"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"67"},"_targetNode":{"$ref":"68"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"68"},"_targetNode":{"$ref":"69"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"69"},"_targetNode":{"$ref":"70"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"70"},"_targetNode":{"$ref":"71"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"71"},"_targetNode":{"$ref":"72"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"72"},"_targetNode":{"$ref":"73"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"73"},"_targetNode":{"$ref":"74"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"74"},"_targetNode":{"$ref":"26"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":1},{"_keyName":"\u83b1","_id":"e0fe1e77-a465-4f74-af9a-c46c432ecab0","_actorObject":2}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _boundGraphObjectReferences:
+  - {fileID: 0}
+  - {fileID: 456483720435322333}
+  - {fileID: 1556376794508984670}
+  _boundGraphSource:
+    _version: 3.31
+    _category: 
+    _comments: 
+    _translation: {x: -487.39935, y: -351.13745}
+    _zoomFactor: 1
+  _firstActivation: 0
+  _enableAction: 1
+  _disableAction: 2
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 0}
+  _blackboard: {fileID: 7396501391561145538}
+--- !u!114 &7396501391561145538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{"myForestSceneLaiLogic":{"_name":"myForestSceneLaiLogic","_id":"c1a1c5f8-a432-4699-ac76-097653ce6e20","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.MainNPC.ForestSceneLaiLogic,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"LaiDialogueOptionsPos":{"_name":"LaiDialogueOptionsPos","_id":"4425337e-8647-4cce-8504-ac9cd35ed179","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"laiFirstDialogue":{"_name":"laiFirstDialogue","_id":"8b493a66-8aab-4354-8c41-8b360df3c840","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"YaerCanvasGroup":{"_value":1,"_name":"YaerCanvasGroup","_id":"ffd74bbe-d7f6-4c87-91b6-f5e45c28842d","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+    UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"LaiCanvasGroup":{"_value":2,"_name":"LaiCanvasGroup","_id":"2c30809c-f1c7-4944-bb29-dfe17aef6575","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+    UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  _objectReferences:
+  - {fileID: 0}
+  - {fileID: 1878733875140645315}
+  - {fileID: 5133711098892138661}
+  _serializedVariables:
+  - _json: '{"_name":"myForestSceneLaiLogic","_id":"c1a1c5f8-a432-4699-ac76-097653ce6e20","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.MainNPC.ForestSceneLaiLogic,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"LaiDialogueOptionsPos","_id":"4425337e-8647-4cce-8504-ac9cd35ed179","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"laiFirstDialogue","_id":"8b493a66-8aab-4354-8c41-8b360df3c840","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []
+  - _json: '{"_value":1,"_name":"YaerCanvasGroup","_id":"ffd74bbe-d7f6-4c87-91b6-f5e45c28842d","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+      UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 1878733875140645315}
+  - _json: '{"_value":1,"_name":"LaiCanvasGroup","_id":"2c30809c-f1c7-4944-bb29-dfe17aef6575","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+      UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 5133711098892138661}
+--- !u!1 &7192127020007026903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9071548752749318296}
+  - component: {fileID: 1556376794508984670}
+  m_Layer: 5
+  m_Name: Lai
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9071548752749318296
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7192127020007026903}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 8927665997524116341}
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1556376794508984670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7192127020007026903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u83B1"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 4
+--- !u!1001 &330146714698241710
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 37704741067304273}
+    m_Modifications:
+    - target: {fileID: 829091939895077973, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Name
+      value: GoOutStoryYaerPainting
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 853.9938
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 949.0917
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -554
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4c0e9909764ce6e4eb37971a6fe20fd3, type: 3}
+--- !u!224 &2674722408096380109 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 330146714698241710}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1878733875140645315 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 2199568825687050093, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 330146714698241710}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3116285057968402066
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9071548752749318296}
+    m_Modifications:
+    - target: {fileID: 878216559624863794, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1888
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 574
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -447
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6347329229954166475, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+        type: 3}
+      propertyPath: m_Name
+      value: LaiPainting
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2d0c83cd023c58e4087b257cd6a4ef35, type: 3}
+--- !u!224 &8927665997524116341 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5826026600601374183, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+    type: 3}
+  m_PrefabInstance: {fileID: 3116285057968402066}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &5133711098892138661 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 7782747598076663351, guid: 2d0c83cd023c58e4087b257cd6a4ef35,
+    type: 3}
+  m_PrefabInstance: {fileID: 3116285057968402066}
+  m_PrefabAsset: {fileID: 0}

@@ -1,0 +1,796 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1047626024150200597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 37704741067304273}
+  - component: {fileID: 456483720435322333}
+  m_Layer: 5
+  m_Name: Yaer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &37704741067304273
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3551469439465914750}
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &456483720435322333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u96C5\u5C14"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 1
+--- !u!1 &2883600314957397101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8965843069174312997}
+  - component: {fileID: 8277147156603116227}
+  - component: {fileID: 7396501391561145538}
+  m_Layer: 5
+  m_Name: WestRappRoadAfterKillBoss
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8965843069174312997
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 37704741067304273}
+  - {fileID: 9047595291342563082}
+  - {fileID: 8305072950870083484}
+  - {fileID: 6738274299279925335}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8277147156603116227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e4b851ebd8fa4ea0645b99be1cf97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"Visible":{},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":425.9385,"y":-406.9581},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"_action":{"actions":[{"canvasGroup":{"_name":"Gusha1CanvasGroup","_targetVariableID":"964114ed-a438-422b-8c93-6bb606784e38"},"StartAlpha":{},"EndAlpha":{},"Duration":{"_value":0.7},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"Gusha2CanvasGroup","_targetVariableID":"e8d0a8c2-20b9-413d-ad8d-0ab1f9ed8ef9"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"YaerCanvasGroup","_targetVariableID":"7f1b5e83-4cbb-4071-98c1-c36b78741f25"},"StartAlpha":{},"EndAlpha":{},"Duration":{"_value":0.7},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"gameObjectName":{"_value":"GushaSit"},"saveAs":{"_name":"GushaSit","_targetVariableID":"3d04c551-290a-4ae6-a079-f1b817ba9e3f"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"transformName":{"_value":"Objects"},"gameObjectName":{"_value":"GushaStand"},"saveAs":{"_name":"GushaStand","_targetVariableID":"91cbc7ad-9ce4-4671-9131-dac657ebb7da"},"$type":"NodeCanvas.Tasks.Actions.FindWithTransform"},{"gameObjectName":{"_value":"CameraArea"},"saveAs":{"_name":"normalCameraArea","_targetVariableID":"42a66805-52a8-4561-ac8c-8a7eebfb0891"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"gameObjectName":{"_value":"endHeroPos"},"saveAs":{"_name":"endHeroPosNode","_targetVariableID":"d74efc58-0922-4545-9abd-223f04133be4"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"gameObjectName":{"_value":"endBossPos"},"saveAs":{"_name":"endBossPosNode","_targetVariableID":"f0ec7179-766e-406f-9d9e-6b7ae31c70f6"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"gameObjectName":{"_value":"Player"},"saveAs":{"_name":"myPlayerLogic","_targetVariableID":"1dc44cd4-f3dd-49ba-b322-4ac2c7995a1d"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"gameObjectName":{"_value":"BossMogut"},"saveAs":{"_name":"bossObj","_targetVariableID":"6f9c6c25-2d38-4554-a336-2ace7b41bf58"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":633.8456,"y":-349.4191},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"1"},{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":335.5628,"y":-119.4695},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"2"},{"_action":{"actions":[{"curSize":{},"targetSize":{"_value":7.9},"Duration":{"_value":1.0},"isUseDefaultBaseSize":{"_value":true},"$type":"Game.GameRuntime.Story.Node.CameraScaleTaskAction"},{"targetColliderArea":{"_name":"normalCameraArea","_targetVariableID":"42a66805-52a8-4561-ac8c-8a7eebfb0891"},"$type":"Game.GameRuntime.Story.Node.CameraChangeBoundingArea"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":665.0,"y":-72.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"3"},{"FaceType":{"_value":1},"statement":{"_text":"\u547c\u3002\u3002\u547c\u3002\u3002\u547c\u3002\u3002\u3002\u7ec8\u4e8e\u5012\u4e0b\u4e86\u3002","_text_en":"Huff...
+    huff... huff... Finally... it''s down.","_text_jp":"\u306f\u3041\u2026\u2026\u306f\u3041\u2026\u2026\u3084\u3063\u3068\u5012\u308c\u305f\u2026\u2026\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":291.2101,"y":75.83304},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"FaceType":{"_value":1},"statement":{"_text":"\u4e0d\u4f1a\u518d\u8d77\u6765\u4e86\u5427\u3002\u554a\u3002\u5dee\u70b9\u5fd8\u4e86\u3002","_text_en":"It''s
+    not getting back up, right?Ah\u2014almost forgot!","_text_jp":"\u3082\u3046\u8d77\u304d\u4e0a\u304c\u3063\u3066\u3053\u306a\u3044\u3088\u306d\u2026\u2026\u3042\u3063\u3001\u3044\u3051\u306a\u3044\u3002\u5fd8\u308c\u3066\u305f\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":315.2732,"y":179.9717},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"FaceType":{},"statement":{"_text":"\u96c5\u5c14\u8dd1\u5230\u53e4\u838e\u65c1\u8fb9","_text_en":"Yar
+    ran to Gusha\u2019s side.","_text_jp":"\u30e4\u30fc\u30eb\u306f\u30b0\u30fc\u30b7\u30e3\u306e\u305d\u3070\u3078\u99c6\u3051\u5bc4\u3063\u305f\u3002"},"_actorName":"\u65c1\u767d","_actorParameterID":"f350550a-de28-4a1c-bd6f-7c25ad646b2b","_position":{"x":374.0655,"y":266.9723},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"6"},{"_action":{"actions":[{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":2.0},"EndActonOnAnimationEnd":{"_value":true},"$type":"Game.GameRuntime.Story.Node.NormalDialogueBlackMaskTaskAction"},{"myObj":{"_name":"myPlayerLogic","_targetVariableID":"1dc44cd4-f3dd-49ba-b322-4ac2c7995a1d"},"targetObj":{"_name":"endHeroPosNode","_targetVariableID":"d74efc58-0922-4545-9abd-223f04133be4"},"isOnlySetPosX":{"_value":true},"$type":"NodeCanvas.Tasks.Actions.SetGameObjNewPosByOtherObj"},{"myObj":{"_name":"bossObj","_targetVariableID":"6f9c6c25-2d38-4554-a336-2ace7b41bf58"},"targetObj":{"_name":"endBossPosNode","_targetVariableID":"f0ec7179-766e-406f-9d9e-6b7ae31c70f6"},"isOnlySetPosX":{"_value":true},"$type":"NodeCanvas.Tasks.Actions.SetGameObjNewPosByOtherObj"},{"myObj":{"_name":"bossObj","_targetVariableID":"6f9c6c25-2d38-4554-a336-2ace7b41bf58"},"targetRotationX":{},"targetRotationY":{},"targetRotationZ":{},"$type":"NodeCanvas.Tasks.Actions.ChangeGameObjRotation"},{"myObj":{"_name":"myPlayerLogic","_targetVariableID":"1dc44cd4-f3dd-49ba-b322-4ac2c7995a1d"},"targetRotationX":{},"targetRotationY":{},"targetRotationZ":{},"$type":"NodeCanvas.Tasks.Actions.ChangeGameObjRotation"},{"StartAlpha":{"_value":1.0},"EndAlpha":{},"Duration":{"_value":2.0},"EndActonOnAnimationEnd":{"_value":true},"$type":"Game.GameRuntime.Story.Node.NormalDialogueBlackMaskTaskAction"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":621.0,"y":331.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"7"},{"_action":{"canvasGroup":{"_name":"Gusha1CanvasGroup","_targetVariableID":"964114ed-a438-422b-8c93-6bb606784e38"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":328.9192,"y":467.7504},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"8"},{"FaceType":{"_value":5},"statement":{"_text":"\u8fd8\u597d\u5417\uff1f","_text_en":"Are
+    you okay?","_text_jp":"\u5927\u4e08\u592b\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":384.0,"y":551.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"9"},{"FaceType":{"_value":9},"statement":{"_text":"\u54c8\u54c7\u54c8\u54c7\u54c7\u54c7\u3002\u3002\u3002\u3002\u3002","_text_en":"HawaHawawawa.........","_text_jp":"\u306f\u308f\u308f\u308f\u308f\u2026\u2026"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"c1528c05-8b52-4eda-918e-f1f3b5217279","_position":{"x":381.0,"y":648.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"10"},{"FaceType":{"_value":9},"statement":{"_text":"\u5413\u6b7b\u6211\u4e86\uff0c\u4e00\u5929\u4e4b\u5185\u9047\u5230\u8fd9\u4e48\u591a\u5413\u4eba\u7684\u4e8b\u3002","_text_en":"that
+    was terrifying...So many scary things in just one day\u2026","_text_jp":"\u6016\u3059\u304e\u307e\u3057\u305f\u2026\u2026\u4e00\u65e5\u306b\u3053\u3093\u306a\u306b\u6016\u3044\u3053\u3068\u3070\u304b\u308a\u2026\u2026\u3002"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"c1528c05-8b52-4eda-918e-f1f3b5217279","_position":{"x":364.0,"y":735.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"11"},{"FaceType":{"_value":5},"statement":{"_text":"\u80fd\u7ad9\u8d77\u6765\u5417\uff0c\u6709\u53d7\u4f24\u5417\uff1f","_text_en":"Can
+    you stand? Are you hurt?","_text_jp":"\u7acb\u3066\u305d\u3046\uff1f\u3069\u3053\u304b\u75db\u3080\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":400.0,"y":839.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"12"},{"FaceType":{"_value":9},"statement":{"_text":"\u6211\u8bd5\u4e00\u4e0b\uff0c\u521a\u624d\u9003\u8dd1\u6709\u70b9\u5d34\u5230\u811a\u4e86\u3002","_text_en":"I\u2019ll
+    try... I twisted my ankle while running away\u2026","_text_jp":"\u3061\u3087\u3063\u3068\u8a66\u3057\u3066\u307f\u308b\u2026\u2026\u3055\u3063\u304d\u9003\u3052\u308b\u3068\u304d\u306b\u8db3\u3092\u3072\u306d\u3063\u305f\u304b\u3082\u3002"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"c1528c05-8b52-4eda-918e-f1f3b5217279","_position":{"x":365.0,"y":936.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"13"},{"_action":{"actions":[{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":1.0},"EndActonOnAnimationEnd":{"_value":true},"$type":"Game.GameRuntime.Story.Node.NormalDialogueBlackMaskTaskAction"},{"setTo":0,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"GushaSit","_targetVariableID":"3d04c551-290a-4ae6-a079-f1b817ba9e3f"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},{"setTo":1,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"GushaStand","_targetVariableID":"91cbc7ad-9ce4-4671-9131-dac657ebb7da"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":964.0256,"y":785.7209},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"14"},{"_action":{"StartAlpha":{"_value":1.0},"EndAlpha":{},"Duration":{"_value":1.0},"EndActonOnAnimationEnd":{"_value":true},"$type":"Game.GameRuntime.Story.Node.NormalDialogueBlackMaskTaskAction"},"_position":{"x":964.0,"y":1164.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"15"},{"FaceType":{"_value":4},"statement":{"_text":"\u4e0d\u8981\u7d27\uff0c\u521a\u624d\u4e00\u76f4\u5750\u7740\u597d\u4e00\u4e9b\u4e86\u3002","_text_en":"It\u2019s
+    alright now\u2014I was resting for a bit, so it feels better.","_text_jp":"\u3046\u3046\u3093\u3001\u5927\u4e08\u592b\u3002\u305a\u3063\u3068\u5ea7\u3063\u3066\u305f\u304b\u3089\u3001\u5c11\u3057\u697d\u306b\u306a\u3063\u305f\u308f\u3002"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"c1528c05-8b52-4eda-918e-f1f3b5217279","_position":{"x":377.6393,"y":1139.361},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"16"},{"FaceType":{"_value":5},"statement":{"_text":"\u4f60\u4e5f\u662f\u9f99\u65cf\u5417\uff0c\u89d2\u548c\u6211\u4eec\u7684\u4e0d\u592a\u4e00\u6837\u3002","_text_en":"Are
+    you dragonkin too?Your horns look different from ours.","_text_jp":"\u3042\u306a\u305f\u3082\u7adc\u65cf\uff1f\u3067\u3082\u3001\u305d\u306e\u89d2\u2026\u2026\u79c1\u305f\u3061\u306e\u3068\u306f\u5c11\u3057\u9055\u3046\u3088\u3046\u306a\u2026\u2026\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":371.0,"y":1247.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"17"},{"FaceType":{"_value":12},"statement":{"_text":"\u6211\u662f\u9644\u8fd1\u6751\u5b50\u7684\u7cbe\u7075\u3002","_text_en":"I''m
+    actually an elf\u2014from a village nearby.","_text_jp":"\u79c1\u306f\u8fd1\u304f\u306e\u6751\u306b\u4f4f\u3080\u30a8\u30eb\u30d5\u306a\u306e\u3002"},"_actorName":"\u91d1\u53d1\u5973\u5b69","_actorParameterID":"c1528c05-8b52-4eda-918e-f1f3b5217279","_position":{"x":389.0,"y":1346.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"18"},{"FaceType":{"_value":5},"statement":{"_text":"\u539f\u6765\u7cbe\u7075\u5c31\u957f\u8fd9\u6837\u7684\u554a\uff0c\u6211\u8fd8\u662f\u7b2c\u4e00\u6b21\u89c1\u3002","_text_en":"Ohh,
+    that\u2019s what elves look like?It\u2019s my first time seeing one.","_text_jp":"\u305d\u3046\u306a\u3093\u3060\uff01\u30a8\u30eb\u30d5\u3063\u3066\u3001\u3053\u3046\u3044\u3046\u898b\u305f\u76ee\u306a\u3093\u3060\u306d\u3002\u521d\u3081\u3066\u898b\u305f\u3088\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":342.0,"y":1437.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"19"},{"FaceType":{"_value":4},"statement":{"_text":"\u6211\u53eb\u96c5\u5c14\uff0c\u662f\u9f99\u738b\u5973\u3002","_text_en":"I\u2019m
+    Yar, princess of the dragonkin Clan.","_text_jp":"\u79c1\u306f\u30e4\u30fc\u30eb\u3002\u7adc\u65cf\u306e\u738b\u5973\u3088\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":401.9388,"y":1530.763},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"20"},{"_action":{"actions":[{"canvasGroup":{"_name":"Gusha1CanvasGroup","_targetVariableID":"964114ed-a438-422b-8c93-6bb606784e38"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"Gusha2CanvasGroup","_targetVariableID":"e8d0a8c2-20b9-413d-ad8d-0ab1f9ed8ef9"},"StartAlpha":{},"EndAlpha":{},"Duration":{},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":829.7993,"y":1600.103},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"21"},{"FaceType":{"_value":12},"statement":{"_text":"\u6211\u53eb\u53e4\u838e\uff0c\u672c\u6765\u662f\u6751\u5916\u91c7\u8611\u83c7\u7684\u3002\u6ca1\u60f3\u5230\u56de\u6765\u7684\u65f6\u5019\u9047\u5230\u8fd9\u6837\u7684\u4e8b\u3002\u3002\u3002","_text_en":"I\u2019m
+    Gusha. I was just out picking mushrooms outside the village\u2026 Never thought
+    I\u2019d get caught up in all this..","_text_jp":"\u79c1\u306f\u30b0\u30fc\u30b7\u30e3\u3002\u4eca\u65e5\u306f\u6751\u306e\u5916\u3067\u30ad\u30ce\u30b3\u3092\u63a1\u3063\u3066\u305f\u306e\u3002\u307e\u3055\u304b\u5e30\u308a\u9053\u3067\u3001\u3042\u3093\u306a\u3053\u3068\u306b\u306a\u308b\u306a\u3093\u3066\u2026\u2026"},"_actorName":"\u53e4\u838e","_actorParameterID":"fed13337-fcba-4275-bdd6-c8382f93cebe","_position":{"x":378.6668,"y":1654.334},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"22"},{"FaceType":{"_value":4},"statement":{"_text":"\u90a3\u8981\u5148\u628a\u4f60\u9001\u56de\u6751\u5b50\u5427\u3002","_text_en":"Then
+    let\u2019s get you back to your village first.","_text_jp":"\u307e\u305a\u306f\u3042\u306a\u305f\u3092\u6751\u307e\u3067\u9001\u308a\u5c4a\u3051\u306a\u3044\u3068\u306d\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":389.6668,"y":1735.336},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"23"},{"FaceType":{"_value":25},"statement":{"_text":"\u7b49\u4e00\u4e0b\uff0c\u6211\u521a\u624d\u9003\u8dd1\u7684\u65f6\u5019\u628a\u9879\u94fe\u5f04\u4e22\u4e86\u3002\u80fd\u5e2e\u6211\u627e\u4e00\u4e0b\u5417\uff1f","_text_en":"Wait\u2014when
+    I was running, I dropped my necklace\u2026Could you help me find it?  ","_text_jp":"\u3061\u3087\u3001\u3061\u3087\u3063\u3068\u5f85\u3063\u3066\u3002\u3055\u3063\u304d\u9003\u3052\u3066\u308b\u3068\u304d\u306b\u30cd\u30c3\u30af\u30ec\u30b9\u3092\u843d\u3068\u3057\u3061\u3083\u3063\u305f\u306e\u3002\u63a2\u3057\u3066\u304f\u308c\u306a\u3044\u304b\u306a\uff1f"},"_actorName":"\u53e4\u838e","_actorParameterID":"fed13337-fcba-4275-bdd6-c8382f93cebe","_position":{"x":274.0055,"y":1825.295},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"24"},{"FaceType":{"_value":23},"statement":{"_text":"\u90a3\u4e2a\u662f\u6bcd\u4eb2\u751f\u524d\u7559\u7ed9\u6211\u7684\uff0c\u65e9\u77e5\u9053\u8fd9\u6837\u4eca\u5929\u5c31\u4e0d\u6234\u7740\u4e86","_text_en":"It
+    was a keepsake from my late mother...If I\u2019d known this would happen, I wouldn\u2019t
+    have worn it today\u2026","_text_jp":"\u305d\u308c\u3001\u6bcd\u304c\u4ea1\u304f\u306a\u308b\u524d\u306b\u6b8b\u3057\u3066\u304f\u308c\u305f\u3082\u306e\u306a\u306e\u3002\u3053\u3093\u306a\u3053\u3068\u306b\u306a\u308b\u306a\u3089\u3001\u4eca\u65e5\u3064\u3051\u3066\u3053\u306a\u3051\u308c\u3070\u3088\u304b\u3063\u305f\u2026\u2026\u3002"},"_actorName":"\u53e4\u838e","_actorParameterID":"fed13337-fcba-4275-bdd6-c8382f93cebe","_position":{"x":303.4599,"y":1917.963},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"25"},{"_action":{"SaveAs":{"_name":"PickGushaNacklace","_targetVariableID":"182e5cbf-228e-4775-bacf-61946d151d5d"},"FieldName":{"_value":"PickGushaNacklace"},"$type":"Game.GameRuntime.Story.Node.GetArchiveBoolActionTask`1[[Game.GameMgr.Component.Archive.ArchiveDataClass.Scene.VerdantCorridorData,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"_position":{"x":365.8678,"y":2016.241},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"26"},{"_condition":{"valueA":{"_name":"PickGushaNacklace","_targetVariableID":"182e5cbf-228e-4775-bacf-61946d151d5d"},"valueB":{"_value":true},"$type":"NodeCanvas.Tasks.Conditions.CheckBoolean"},"_position":{"x":413.0,"y":2101.0},"$type":"NodeCanvas.DialogueTrees.ConditionNode","$id":"27"},{"FaceType":{"_value":4},"statement":{"_text":"\u662f\u8fd9\u4e2a\u5417\uff1f\u6211\u5728\u9f99\u65cf\u9057\u5740\u524d\u6361\u5230\u7684\u3002","_text_en":"Is
+    this it? I found it near the ruins of the Dragon Clan.","_text_jp":"\u3082\u3057\u304b\u3057\u3066\u3001\u3053\u308c\u306e\u3053\u3068\uff1f\u7adc\u65cf\u306e\u907a\u8de1\u306e\u524d\u3067\u62fe\u3063\u305f\u306e\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":232.9448,"y":2264.945},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"28"},{"FaceType":{"_value":10},"statement":{"_text":"\u554a\u554a\u554a\uff0c\u5c31\u662f\u8fd9\u4e2a\uff01\u592a\u611f\u8c22\u4e86\uff01","_text_en":"Aaaah!
+    That\u2019s the one!Thank you so much!","_text_jp":"\u3042\u3042\u3042\u3063\uff01\u305d\u308c\u3001\u305d\u308c\u3088\uff01\u672c\u5f53\u306b\u3042\u308a\u304c\u3068\u3046\uff01\uff01"},"_actorName":"\u53e4\u838e","_actorParameterID":"fed13337-fcba-4275-bdd6-c8382f93cebe","_position":{"x":204.4078,"y":2402.065},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"29"},{"_action":{"actions":[{"setTo":0,"overrideAgent":{"_type":"UnityEngine.Transform","_name":"GushaStand","_targetVariableID":"91cbc7ad-9ce4-4671-9131-dac657ebb7da"},"$type":"NodeCanvas.Tasks.Actions.SetObjectActive"},{"Visible":{"_value":true},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":167.8949,"y":3174.171},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"30"},{"FaceType":{"_value":9},"statement":{"_text":"\u600e\u4e48\u627e\u5462\uff0c\u8fd9\u91cc\u8fd9\u4e48\u5927\uff0c\u4f60\u90fd\u53bb\u8fc7\u4ec0\u4e48\u5730\u65b9\uff1f","_text_en":"How
+    are we supposed to find it?This place is huge. Can you tell me everywhere you
+    went?","_text_jp":"\u63a2\u3059\u306b\u3057\u3066\u3082\u2026\u2026\u3053\u3053\u3001\u5e83\u3059\u304e\u308b\u308f\u3002\u3069\u306e\u8fba\u306b\u884c\u3063\u305f\u306e\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":570.9536,"y":2239.241},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"31"},{"FaceType":{"_value":25},"statement":{"_text":"\u6211\u4e4b\u524d\u53bb\u4e86\u6751\u5b50\u6bd4\u8f83\u8fdc\u7684\u6865\u5bf9\u5cb8\uff0c\u6709\u4e00\u6761\u5c0f\u8def\u76f4\u901a\u5411\u4e00\u4e2a\u5de8\u5927\u7684\u77f3\u50cf\u524d\uff0c\u6211\u5728\u90a3\u91cc\u9047\u5230\u4e86\u4e00\u4e9b\u602a\u7269\u3002","_text_en":"I
+    crossed a bridge a bit far from the village\u2014there\u2019s a narrow path that
+    leads to a giant statue.That\u2019s where I ran into some monsters.","_text_jp":"\u6751\u304b\u3089\u3061\u3087\u3063\u3068\u96e2\u308c\u305f\u6a4b\u306e\u5411\u3053\u3046\u5074\u306b\u884c\u3063\u305f\u306e\u3002\u7d30\u3044\u9053\u3092\u9032\u3080\u3068\u3001\u5927\u304d\u306a\u77f3\u50cf\u306e\u524d\u306b\u51fa\u305f\u306e\u3002\u305d\u3053\u3067\u3001\u9b54\u7269\u306b\u8972\u308f\u308c\u305f\u306e\u3088\u3002"},"_actorName":"\u53e4\u838e","_actorParameterID":"fed13337-fcba-4275-bdd6-c8382f93cebe","_position":{"x":512.1757,"y":2332.389},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"32"},{"FaceType":{"_value":23},"statement":{"_text":"\u4e00\u53ea\u602a\u7269\u8df3\u5411\u6211\uff0c\u6211\u614c\u5fd9\u8eb2\u95ea\uff0c\u9879\u94fe\u5e94\u8be5\u662f\u90a3\u65f6\u88ab\u6811\u679d\u522e\u65ad\u4e86","_text_en":"One
+    of them lunged at me.I dodged, but my necklace must\u2019ve gotten snagged on
+    a branch\u2026","_text_jp":"\u4e00\u5339\u304c\u98db\u3073\u304b\u304b\u3063\u3066\u304d\u305f\u6642\u306b\u3001\u79c1\u304c\u3068\u3063\u3055\u306b\u907f\u3051\u3066\u2026\u2026\u305f\u3076\u3093\u305d\u306e\u3068\u304d\u306b\u3001\u679d\u304b\u4f55\u304b\u3067\u30cd\u30c3\u30af\u30ec\u30b9\u304c\u5f15\u3063\u304b\u304b\u3063\u3066\u843d\u3061\u305f\u3093\u3060\u3068\u601d\u3046\u2026\u2026\u3002"},"_actorName":"\u53e4\u838e","_actorParameterID":"fed13337-fcba-4275-bdd6-c8382f93cebe","_position":{"x":519.2221,"y":2430.852},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"33"},{"FaceType":{"_value":9},"statement":{"_text":"\u6865\u5bf9\u5cb8\u554a\u3002\u3002\u3002\u3002\u3002","_text_en":"If
+    it\u2019s on the other side of the bridge\u2026","_text_jp":"\u6a4b\u306e\u5411\u3053\u3046\u5074\u304b\u3041\u2026\u2026\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":623.0,"y":2536.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"34"},{"FaceType":{"_value":12},"statement":{"_text":"\u6709\u4ec0\u4e48\u95ee\u9898\u5417\uff1f","_text_en":"Did
+    something happen?","_text_jp":"\u3048\u3063\u3001\u4f55\u304b\u554f\u984c\u3067\u3082\uff1f"},"_actorName":"\u53e4\u838e","_actorParameterID":"fed13337-fcba-4275-bdd6-c8382f93cebe","_position":{"x":640.0,"y":2639.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"35"},{"FaceType":{"_value":9},"statement":{"_text":"\u95ee\u9898\u53ef\u5927\u4e86\uff0c\u6211\u6765\u7684\u65f6\u5019\u5728\u6865\u6d1e\u91cc\u6218\u6597\u65f6\u6865\u4e0d\u582a\u91cd\u8d1f\u6389\u4e0b\u60ac\u5d16\u3002\u8fde\u6211\u90fd\u4e0d\u77e5\u9053\u8be5\u600e\u4e48\u56de\u53bb\u4e86\u3002  
+    ","_text_en":"Yeah, pretty big problem...When I came here, I was fighting in
+    the bridge cave, and it couldn''t bear the weight\u2014it collapsed and fell
+    into the ravine. Even I don''t know how to get back now.","_text_jp":"\u5927\u554f\u984c\u3088\u3002\u79c1\u304c\u6765\u305f\u6642\u3001\u6a4b\u306e\u4e0b\u3067\u6226\u3063\u3066\u305f\u3089\u3001\u91cd\u3055\u306b\u8010\u3048\u304d\u308c\u305a\u5d29\u308c\u843d\u3061\u305f\u306e\u3002\u79c1\u3060\u3063\u3066\u3069\u3046\u3084\u3063\u3066\u623b\u308c\u3070\u3044\u3044\u304b\u308f\u304b\u3089\u306a\u3044\u304f\u3089\u3044\u3088\u3002 
+    "},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":506.0,"y":2732.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"36"},{"FaceType":{"_value":9},"statement":{"_text":"\u5982\u679c\u771f\u7684\u6389\u5728\u90a3\uff0c\u6050\u6015\u4e00\u65f6\u95f4\u4e5f\u6ca1\u6cd5\u56de\u53bb\u627e\u4e86\u3002","_text_en":"If
+    it really fell down there,  I\u2019m afraid there\u2019s no way to go back and
+    retrieve it anytime soon.\"","_text_jp":"\u3082\u3057\u672c\u5f53\u306b\u3042\u305d\u3053\u306b\u843d\u3061\u3066\u305f\u3089\u3001\u3057\u3070\u3089\u304f\u306f\u53d6\u308a\u306b\u623b\u308c\u305d\u3046\u306b\u306a\u3044\u308f\u2026\u2026\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":512.0,"y":2850.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"37"},{"FaceType":{"_value":24},"statement":{"_text":"\u8fd9\u6837\u554a\u3002\u3002\u3002\u3002\u90a3\u5148\u56de\u6751\u5b50\u5427\u3002","_text_en":"Then
+    let\u2019s head back to the village for now\u2026","_text_jp":"\u305d\u3046\u306a\u3093\u3060\u2026\u2026\u3058\u3083\u3042\u3001\u5148\u306b\u6751\u306b\u623b\u308d\u3046\u304b\u2026\u2026\u3002"},"_actorName":"\u53e4\u838e","_actorParameterID":"fed13337-fcba-4275-bdd6-c8382f93cebe","_position":{"x":555.0,"y":2949.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"38"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"6"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"9"},"_targetNode":{"$ref":"10"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"10"},"_targetNode":{"$ref":"11"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"11"},"_targetNode":{"$ref":"12"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"12"},"_targetNode":{"$ref":"13"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"13"},"_targetNode":{"$ref":"14"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"14"},"_targetNode":{"$ref":"15"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"15"},"_targetNode":{"$ref":"16"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"16"},"_targetNode":{"$ref":"17"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"17"},"_targetNode":{"$ref":"18"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"18"},"_targetNode":{"$ref":"19"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"19"},"_targetNode":{"$ref":"20"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"20"},"_targetNode":{"$ref":"21"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"21"},"_targetNode":{"$ref":"22"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"22"},"_targetNode":{"$ref":"23"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"23"},"_targetNode":{"$ref":"24"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"24"},"_targetNode":{"$ref":"25"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"25"},"_targetNode":{"$ref":"26"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"26"},"_targetNode":{"$ref":"27"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"27"},"_targetNode":{"$ref":"28"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"27"},"_targetNode":{"$ref":"31"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"28"},"_targetNode":{"$ref":"29"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"29"},"_targetNode":{"$ref":"30"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"31"},"_targetNode":{"$ref":"32"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"32"},"_targetNode":{"$ref":"33"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"33"},"_targetNode":{"$ref":"34"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"34"},"_targetNode":{"$ref":"35"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"35"},"_targetNode":{"$ref":"36"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"36"},"_targetNode":{"$ref":"37"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"37"},"_targetNode":{"$ref":"38"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"38"},"_targetNode":{"$ref":"30"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":1},{"_keyName":"\u91d1\u53d1\u5973\u5b69","_id":"c1528c05-8b52-4eda-918e-f1f3b5217279","_actorObject":2},{"_keyName":"\u65c1\u767d","_id":"f350550a-de28-4a1c-bd6f-7c25ad646b2b","_actorObject":3},{"_keyName":"\u53e4\u838e","_id":"fed13337-fcba-4275-bdd6-c8382f93cebe","_actorObject":4}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _boundGraphObjectReferences:
+  - {fileID: 0}
+  - {fileID: 456483720435322333}
+  - {fileID: 4372079286402865123}
+  - {fileID: 8960251786660522186}
+  - {fileID: 5299111455193079936}
+  _boundGraphSource:
+    _version: 3.31
+    _category: 
+    _comments: 
+    _translation: {x: 284, y: 640}
+    _zoomFactor: 0.86161315
+  _firstActivation: 0
+  _enableAction: 1
+  _disableAction: 2
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 0}
+  _blackboard: {fileID: 7396501391561145538}
+--- !u!114 &7396501391561145538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{"PickGushaNacklace":{"_name":"PickGushaNacklace","_id":"182e5cbf-228e-4775-bacf-61946d151d5d","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
+    mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"YaerCanvasGroup":{"_value":1,"_name":"YaerCanvasGroup","_id":"7f1b5e83-4cbb-4071-98c1-c36b78741f25","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+    UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"Gusha1CanvasGroup":{"_value":2,"_name":"Gusha1CanvasGroup","_id":"964114ed-a438-422b-8c93-6bb606784e38","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+    UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"Gusha2CanvasGroup":{"_value":3,"_name":"Gusha2CanvasGroup","_id":"e8d0a8c2-20b9-413d-ad8d-0ab1f9ed8ef9","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+    UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"GushaSit":{"_name":"GushaSit","_id":"3d04c551-290a-4ae6-a079-f1b817ba9e3f","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"GushaStand":{"_name":"GushaStand","_id":"91cbc7ad-9ce4-4671-9131-dac657ebb7da","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"normalCameraArea":{"_name":"normalCameraArea","_id":"42a66805-52a8-4561-ac8c-8a7eebfb0891","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"endHeroPosNode":{"_name":"endHeroPosNode","_id":"d74efc58-0922-4545-9abd-223f04133be4","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"endBossPosNode":{"_name":"endBossPosNode","_id":"f0ec7179-766e-406f-9d9e-6b7ae31c70f6","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myPlayerLogic":{"_name":"myPlayerLogic","_id":"1dc44cd4-f3dd-49ba-b322-4ac2c7995a1d","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"bossObj":{"_name":"bossObj","_id":"6f9c6c25-2d38-4554-a336-2ace7b41bf58","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  _objectReferences:
+  - {fileID: 0}
+  - {fileID: 1028305026647942256}
+  - {fileID: 3796010025031854704}
+  - {fileID: 4631826331917474779}
+  _serializedVariables:
+  - _json: '{"_name":"PickGushaNacklace","_id":"182e5cbf-228e-4775-bacf-61946d151d5d","$type":"NodeCanvas.Framework.Variable`1[[System.Boolean,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}'
+    _references: []
+  - _json: '{"_value":1,"_name":"YaerCanvasGroup","_id":"7f1b5e83-4cbb-4071-98c1-c36b78741f25","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+      UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 1028305026647942256}
+  - _json: '{"_value":1,"_name":"Gusha1CanvasGroup","_id":"964114ed-a438-422b-8c93-6bb606784e38","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+      UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 3796010025031854704}
+  - _json: '{"_value":1,"_name":"Gusha2CanvasGroup","_id":"e8d0a8c2-20b9-413d-ad8d-0ab1f9ed8ef9","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+      UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 4631826331917474779}
+  - _json: '{"_name":"GushaSit","_id":"3d04c551-290a-4ae6-a079-f1b817ba9e3f","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"GushaStand","_id":"91cbc7ad-9ce4-4671-9131-dac657ebb7da","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"normalCameraArea","_id":"42a66805-52a8-4561-ac8c-8a7eebfb0891","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"endHeroPosNode","_id":"d74efc58-0922-4545-9abd-223f04133be4","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"endBossPosNode","_id":"f0ec7179-766e-406f-9d9e-6b7ae31c70f6","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myPlayerLogic","_id":"1dc44cd4-f3dd-49ba-b322-4ac2c7995a1d","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"bossObj","_id":"6f9c6c25-2d38-4554-a336-2ace7b41bf58","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.GameObject,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+--- !u!1 &3195958113905524899
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6738274299279925335}
+  - component: {fileID: 5299111455193079936}
+  m_Layer: 5
+  m_Name: Gusha
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6738274299279925335
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3195958113905524899}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2566687603511136205}
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5299111455193079936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3195958113905524899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u53E4\u838E"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 6
+--- !u!1 &6033587666213625795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9047595291342563082}
+  - component: {fileID: 4372079286402865123}
+  m_Layer: 5
+  m_Name: Gusha
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &9047595291342563082
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6033587666213625795}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6302535089839128166}
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4372079286402865123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6033587666213625795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u91D1\u53D1\u5973\u5B69"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 6
+--- !u!1 &6517578647942196044
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8305072950870083484}
+  - component: {fileID: 8960251786660522186}
+  m_Layer: 5
+  m_Name: Aside
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8305072950870083484
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6517578647942196044}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8960251786660522186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6517578647942196044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u65C1\u767D"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 0
+--- !u!1001 &1207868259383173917
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 37704741067304273}
+    m_Modifications:
+    - target: {fileID: 829091939895077973, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Name
+      value: GoOutStoryYaerPainting
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 853.9938
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 949.0917
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -559
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4c0e9909764ce6e4eb37971a6fe20fd3, type: 3}
+--- !u!224 &3551469439465914750 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1207868259383173917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &1028305026647942256 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 2199568825687050093, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1207868259383173917}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4178546691327256898
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6738274299279925335}
+    m_Modifications:
+    - target: {fileID: 184122850819502079, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_Name
+      value: GushaPainting
+      objectReference: {fileID: 0}
+    - target: {fileID: 184122850819502079, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 723
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1554
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 446
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -330
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 82c4a3783a12c644580af126877bcccf, type: 3}
+--- !u!224 &2566687603511136205 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+    type: 3}
+  m_PrefabInstance: {fileID: 4178546691327256898}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &4631826331917474779 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8771503069751685785, guid: 82c4a3783a12c644580af126877bcccf,
+    type: 3}
+  m_PrefabInstance: {fileID: 4178546691327256898}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5554205600630724841
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 9047595291342563082}
+    m_Modifications:
+    - target: {fileID: 184122850819502079, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_Name
+      value: GushaPainting
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 723
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1554
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 446
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -330
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 82c4a3783a12c644580af126877bcccf, type: 3}
+--- !u!224 &6302535089839128166 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1901533708999976591, guid: 82c4a3783a12c644580af126877bcccf,
+    type: 3}
+  m_PrefabInstance: {fileID: 5554205600630724841}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &3796010025031854704 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 8771503069751685785, guid: 82c4a3783a12c644580af126877bcccf,
+    type: 3}
+  m_PrefabInstance: {fileID: 5554205600630724841}
+  m_PrefabAsset: {fileID: 0}

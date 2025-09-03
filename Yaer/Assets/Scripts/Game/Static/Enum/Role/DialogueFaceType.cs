@@ -1,0 +1,34 @@
+namespace Game.Static.Enum.Dialogue
+{
+    public enum DialogueFaceType
+    {
+        None,
+        Unhappy,
+        Angry,
+        Smug,
+        Smile,
+        Surprised,
+        Laugh,
+        Sad,
+        VerySurprised,
+        Daze,
+        Happy,
+        CloseEyes,
+        Normal,
+        NormalSmile,
+        CloseEyesSmile,
+        Shout,
+        Amazed,
+        AmazedShout,
+        OEyesOMouth,
+        CEyesOMouth,
+        OEyesCMouth,
+        CEyesCMouth,
+        ChiBie,
+        Awkward,
+        Cry,
+        ForcedSmile,
+        Hurt,
+        Scared
+    }
+}

@@ -1,0 +1,152 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1047626024150200597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 37704741067304273}
+  - component: {fileID: 456483720435322333}
+  m_Layer: 5
+  m_Name: Yaer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &37704741067304273
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &456483720435322333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u96C5\u5C14"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 1
+--- !u!1 &2883600314957397101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8965843069174312997}
+  - component: {fileID: 8277147156603116227}
+  - component: {fileID: 7396501391561145538}
+  m_Layer: 5
+  m_Name: HomeScene2Box
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8965843069174312997
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 37704741067304273}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8277147156603116227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e4b851ebd8fa4ea0645b99be1cf97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"executionMode":1,"actions":[{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},{"saveComponentAs":{"_name":"HomeScene2Box","_targetVariableID":"a4e86ea7-bad1-4d8b-8f0a-e42ed0324f87"},"saveGameObjectAs":{"_name":""},"$type":"NodeCanvas.Tasks.Actions.FindObjectOfType`1[[Game.GameRuntime.Entities.SceneEntities.HomeScene2.HomeScene2Box,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":437.7672,"y":103.1697},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"FaceType":{"_value":4},"statement":{"_text":"\u4ee5\u524d\u5c31\u60f3\u6253\u5f00\u770b\u770b\uff0c\u4e00\u76f4\u88ab\u53d1\u73b0\uff0c\u4eca\u5929\u8d81\u673a\u4f1a\u6253\u5f00\u770b\u770b\u54af~","_text_en":"I\u2019ve
+    wanted to open it and take a look for a long time, but it was always discovered.
+    Today, I\u2019m taking the chance to open it and see~","_text_jp":"\u6614\u304b\u3089\u958b\u3051\u3066\u307f\u305f\u304b\u3063\u305f\u3093\u3060\u3088\u306d\u301c\u3044\u3064\u3082\u898b\u3064\u304b\u3063\u3061\u3083\u3063\u3066\u3055\u3001\u4eca\u65e5\u306f\u30c1\u30e3\u30f3\u30b9\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":387.1825,"y":232.6267},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"1"},{"_action":{"method":{"_baseInfo":"Game.GameRuntime.Entities.SceneEntities.HomeScene2.HomeScene2Box|OnHomeScene2Box_OpenBox|System.Void","_paramsInfo":""},"parameters":[],"returnValue":{},"overrideAgent":{"_type":"Game.GameRuntime.Entities.SceneEntities.HomeScene2.HomeScene2Box","_name":"HomeScene2Box","_targetVariableID":"a4e86ea7-bad1-4d8b-8f0a-e42ed0324f87"},"$type":"NodeCanvas.Tasks.Actions.ExecuteFunction_Multiplatform"},"_position":{"x":845.3594,"y":358.9669},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"2"},{"FaceType":{"_value":6},"statement":{"_text":"\u5c45\u7136\u6ca1\u6709\u9501\u3002","_text_en":"Surprisingly,
+    there\u2019s no lock.","_text_jp":"\u9375\u2026\u2026\u304b\u304b\u3063\u3066\u306a\u3044\uff01\uff1f  
+    "},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":523.5912,"y":413.6534},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"3"},{"FaceType":{"_value":5},"statement":{"_text":"\u539f\u6765\u8fd9\u91cc\u9762\u662f\u4e00\u628a\u5251\u554a\uff0c\u6211\u8fd8\u4ee5\u4e3a\u6709\u4ec0\u4e48\u5b9d\u77f3\u4e4b\u7c7b\u7684\uff0c\u4e0d\u8fc7\u6211\u8981\u51fa\u95e8\u6b63\u597d\u5e26\u7740\u5427~","_text_en":"So
+    it turns out there\u2019s a sword inside. I thought it might be some kind of
+    gem or something. Well, I\u2019m going out anyway, so I might as well bring it
+    along~","_text_jp":"\u4e2d\u8eab\u306f\u5263\u3060\u3063\u305f\u3093\u3060\u3001\u5b9d\u77f3\u3068\u304b\u304b\u3068\u601d\u3063\u305f\u306e\u306b\u3002\u307e\u3001\u5916\u51fa\u308b\u3057\u3061\u3087\u3046\u3069\u3044\u3044\u304b\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":343.362,"y":511.3573},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"_action":{"method":{"_baseInfo":"Game.GameRuntime.Entities.SceneEntities.HomeScene2.HomeScene2Box|OnHomeScene2Box_GetSword|System.Void","_paramsInfo":""},"parameters":[],"returnValue":{},"overrideAgent":{"_type":"Game.GameRuntime.Entities.SceneEntities.HomeScene2.HomeScene2Box","_name":"HomeScene2Box","_targetVariableID":"a4e86ea7-bad1-4d8b-8f0a-e42ed0324f87"},"$type":"NodeCanvas.Tasks.Actions.ExecuteFunction_Multiplatform"},"_position":{"x":664.1014,"y":625.2438},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"5"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":1}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _boundGraphObjectReferences:
+  - {fileID: 0}
+  - {fileID: 456483720435322333}
+  _boundGraphSource:
+    _version: 3.31
+    _category: 
+    _comments: 
+    _translation: {x: -262, y: 52}
+    _zoomFactor: 0.87959695
+  _firstActivation: 0
+  _enableAction: 1
+  _disableAction: 2
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 0}
+  _blackboard: {fileID: 7396501391561145538}
+--- !u!114 &7396501391561145538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{"HomeScene2Box":{"_name":"HomeScene2Box","_id":"a4e86ea7-bad1-4d8b-8f0a-e42ed0324f87","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.SceneEntities.HomeScene2.HomeScene2Box,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  _objectReferences: []
+  _serializedVariables:
+  - _json: '{"_name":"HomeScene2Box","_id":"a4e86ea7-bad1-4d8b-8f0a-e42ed0324f87","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.SceneEntities.HomeScene2.HomeScene2Box,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []

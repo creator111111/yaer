@@ -1,0 +1,215 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1047626024150200597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 37704741067304273}
+  - component: {fileID: 456483720435322333}
+  m_Layer: 5
+  m_Name: Yaer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &37704741067304273
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &456483720435322333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u96C5\u5C14"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 1
+--- !u!1 &2883600314957397101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8965843069174312997}
+  - component: {fileID: 8277147156603116227}
+  - component: {fileID: 7396501391561145538}
+  m_Layer: 5
+  m_Name: ForestEastSceneEnterTreeBridge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8965843069174312997
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 37704741067304273}
+  - {fileID: 5114026393439231965}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8277147156603116227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e4b851ebd8fa4ea0645b99be1cf97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"actions":[{"saveComponentAs":{"_name":"myPlayerLogic","_targetVariableID":"10917032-1a78-45b0-8eef-b6cb537ed82d"},"saveGameObjectAs":{"_name":""},"$type":"NodeCanvas.Tasks.Actions.FindObjectOfType`1[[Game.GameRuntime.Entities.Player.PlayerLogic,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},{"gameObjectName":{"_value":"EnterTreeBridgeStoryTrigger"},"saveAs":{"_name":"EnterTreeBridgeStoryTrigger","_targetVariableID":"f0e4a48d-feac-4dac-a716-e896dbc26444"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"childName":{"_value":"CameraPos"},"saveAs":{"_name":"CameraPos","_targetVariableID":"aa9b1c0e-01e1-4aaa-9a64-a4eec1ca3b17"},"overrideAgent":{"_type":"UnityEngine.Transform","_name":"EnterTreeBridgeStoryTrigger","_targetVariableID":"f0e4a48d-feac-4dac-a716-e896dbc26444"},"$type":"NodeCanvas.Tasks.Actions.FindChildByName"},{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":654.7108,"y":-202.2664},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"FaceType":{"_value":1},"statement":{"_text":"\u8fd9\u3002\u3002\u3002\u3002\u3002\u3002","_text_en":"This......","_text_jp":"\u2026\u2026\u3048\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":811.9932,"y":-9.325186},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"1"},{"_action":{"StartPos":{"_name":"myPlayerLogic","_targetVariableID":"10917032-1a78-45b0-8eef-b6cb537ed82d"},"EndPos":{"_name":"CameraPos","_targetVariableID":"aa9b1c0e-01e1-4aaa-9a64-a4eec1ca3b17"},"Duration":{"_value":4.0},"$type":"Game.GameRuntime.Story.Node.CameraMoveTaskAction"},"_position":{"x":864.0364,"y":123.0484},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"2"},{"FaceType":{"_value":6},"statement":{"_text":"\u4f60\u60f3\u8ba9\u6211\u5f80\u524d\u8d70\uff1f","_text_en":"Do
+    you want me to move forward?","_text_jp":"\u79c1\u306b\u3001\u524d\u306b\u9032\u3081\u3063\u3066\u8a00\u3063\u3066\u308b\u306e\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":822.9918,"y":240.3252},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"3"},{"FaceType":{"_value":6},"statement":{"_text":"\u8d70\u5230\u90a3\u5806\u9b3c\u4e1c\u897f\u91cc\u9762\u53bb\uff1f","_text_en":"Go
+    into that pile of ghostly things?","_text_jp":"\u3042\u306e\u6c17\u6301\u3061\u60aa\u3044\u306e\u306e\u4e2d\u3092\u901a\u308c\u3063\u3066\uff01\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":815.6601,"y":336.6579},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"FaceType":{"_value":8},"statement":{"_text":"\u6ca1\u95e8\uff01\u60f3\u90fd\u522b\u60f3\uff01\u4f60\u770b\u4e0d\u5230\u90a3\u90fd\u662f\u4ec0\u4e48\u5417!","_text_en":"No
+    way! Don''t even think about it! Can''t you see what all that is!","_text_jp":"\u7121\u7406\u7121\u7406\u7121\u7406\u7121\u7406\uff01\uff01\u898b\u3048\u306a\u3044\u306e\uff1f\u3042\u3093\u306a\u306e\u7d76\u5bfe\u7121\u7406\uff01\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":744.6624,"y":430.6592},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"FaceType":{"_value":8},"statement":{"_text":"\u6211\u6700\u8ba8\u538c\u866b\u5b50\u4e86!\u6211\u5c31\u5446\u5728\u8fd9\uff01\u7edd\u4e0d\u8d70\u4e00\u6b65\uff01","_text_en":"I
+    hate insects the most! I''ll just stay here! Never take a step!","_text_jp":"\u866b\u306a\u3093\u3066\u5927\u3063\u5acc\u3044\u306a\u3093\u3060\u304b\u3089\uff01\u79c1\u306f\u3053\u3053\u3067\u5f85\u3063\u3066\u308b\uff01\u4e00\u6b69\u3082\u52d5\u304b\u306a\u3044\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":733.6636,"y":536.3247},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"6"},{"FaceType":{},"statement":{"_text":"\u58f0\u97f3\u4f3c\u4e4e\u662f\u5438\u5f15\u4e86\u866b\u5b50\u7684\u6ce8\u610f\u3002","_text_en":"The
+    sound seemed to attract the attention of the insects.","_text_jp":"\u58f0\u304c\u866b\u3092\u5f15\u304d\u5bc4\u305b\u308b"},"_actorName":"\u65c1\u767d","_actorParameterID":"6aa85c51-8f46-4acd-98d2-94e524ef90ce","_position":{"x":790.5544,"y":657.8854},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"7"},{"FaceType":{},"statement":{"_text":"\u51e0\u53ea\u866b\u5b50\u5f00\u59cb\u722c\u5411\u96c5\u5c14\u3002","_text_en":"Several
+    insects began to crawl towards Yar.","_text_jp":"\u6570\u5339\u306e\u866b\u304c\u96c5\u5c14\u306b\u8fd1\u3065\u304f"},"_actorName":"\u65c1\u767d","_actorParameterID":"6aa85c51-8f46-4acd-98d2-94e524ef90ce","_position":{"x":797.446,"y":757.0467},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"8"},{"_action":{"StartPos":{"_name":"CameraPos","_targetVariableID":"aa9b1c0e-01e1-4aaa-9a64-a4eec1ca3b17"},"EndPos":{"_name":"myPlayerLogic","_targetVariableID":"10917032-1a78-45b0-8eef-b6cb537ed82d"},"Duration":{"_value":2.0},"$type":"Game.GameRuntime.Story.Node.CameraMoveTaskAction"},"_position":{"x":1130.0,"y":855.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"9"},{"_action":{"isFollowPlayer":{"_value":true},"$type":"Game.GameRuntime.Story.Node.CameraFollowPlayerActionTask"},"_position":{"x":1120.0,"y":932.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"10"},{"FaceType":{"_value":8},"statement":{"_text":"\u554a\u554a\uff01\uff01\u522b\u8fc7\u6765\u554a\uff01","_text_en":"Ah
+    ah!! Don''t come over here!","_text_jp":"\u304d\u3083\u3042\u3042\u3042\u3042\u3042\uff01\uff01\u6765\u306a\u3044\u3067\u3048\u3048\u3048\u3048\u3048\uff01\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":761.8416,"y":1014.44},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"11"},{"_action":{"isStart":{"_value":true},"$type":"Game.GameRuntime.Story.Node.ForestEastTreeBridgeStoryAction"},"_position":{"x":838.6962,"y":1151.84},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"12"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"6"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"9"},"_targetNode":{"$ref":"10"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"10"},"_targetNode":{"$ref":"11"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"11"},"_targetNode":{"$ref":"12"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":1},{"_keyName":"\u65c1\u767d","_id":"6aa85c51-8f46-4acd-98d2-94e524ef90ce","_actorObject":2}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _boundGraphObjectReferences:
+  - {fileID: 0}
+  - {fileID: 456483720435322333}
+  - {fileID: 4546930355268314327}
+  _boundGraphSource:
+    _version: 3.31
+    _category: 
+    _comments: 
+    _translation: {x: -516, y: -950}
+    _zoomFactor: 1
+  _firstActivation: 0
+  _enableAction: 1
+  _disableAction: 2
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 0}
+  _blackboard: {fileID: 7396501391561145538}
+--- !u!114 &7396501391561145538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{"EnterTreeBridgeStoryTrigger":{"_name":"EnterTreeBridgeStoryTrigger","_id":"f0e4a48d-feac-4dac-a716-e896dbc26444","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"CameraPos":{"_name":"CameraPos","_id":"aa9b1c0e-01e1-4aaa-9a64-a4eec1ca3b17","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Transform,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myPlayerLogic":{"_name":"myPlayerLogic","_id":"10917032-1a78-45b0-8eef-b6cb537ed82d","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.Player.PlayerLogic,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  _objectReferences: []
+  _serializedVariables:
+  - _json: '{"_name":"EnterTreeBridgeStoryTrigger","_id":"f0e4a48d-feac-4dac-a716-e896dbc26444","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"CameraPos","_id":"aa9b1c0e-01e1-4aaa-9a64-a4eec1ca3b17","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Transform,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myPlayerLogic","_id":"10917032-1a78-45b0-8eef-b6cb537ed82d","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.Player.PlayerLogic,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+--- !u!1 &4187118333914039776
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5114026393439231965}
+  - component: {fileID: 4546930355268314327}
+  m_Layer: 5
+  m_Name: Aside
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5114026393439231965
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4187118333914039776}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4546930355268314327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4187118333914039776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u65C1\u767D"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 0

@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!74 &7400000
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: "SquatAtk_\u6218\u635F\u53D7\u4F24\u65E0\u51A0"
+  serializedVersion: 7
+  m_Legacy: 0
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves: []
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves: []
+  m_ScaleCurves: []
+  m_FloatCurves: []
+  m_PPtrCurves:
+  - curve:
+    - time: 0.083333336
+      value: {fileID: 21300000, guid: 4bf0ec552a7ee2947811dfbf52c977ce, type: 3}
+    - time: 0.15
+      value: {fileID: 21300000, guid: a22efc640fb35f74cbb2522ccc5f6369, type: 3}
+    - time: 0.2
+      value: {fileID: 21300000, guid: 146c7550067f5ff44a0699cf41b70534, type: 3}
+    - time: 0.26666668
+      value: {fileID: 21300000, guid: d542bb7f36712314299d8eb24d3a6f58, type: 3}
+    - time: 0.4
+      value: {fileID: 21300000, guid: eb7b97071dd8fd846af463bfb6c285a9, type: 3}
+    - time: 0.53333336
+      value: {fileID: 21300000, guid: b3e1a260d0820e24abe247001c75609a, type: 3}
+    attribute: m_Sprite
+    path: Animation
+    classID: 212
+    script: {fileID: 0}
+  - curve:
+    - time: 0.083333336
+      value: {fileID: 21300000, guid: 66729b78d0cc6ee45a60ce4aba011d70, type: 3}
+    - time: 0.15
+      value: {fileID: 21300000, guid: 7195762d9be126a4facbda68fd1f8797, type: 3}
+    - time: 0.2
+      value: {fileID: 21300000, guid: 051b6cb649d6fe043bc629e6ad609738, type: 3}
+    - time: 0.26666668
+      value: {fileID: 21300000, guid: a0772b1c0b40e8f4ab21070068e325c8, type: 3}
+    - time: 0.4
+      value: {fileID: 21300000, guid: bf63e901165423d428a29fb7195035af, type: 3}
+    - time: 0.53333336
+      value: {fileID: 21300000, guid: 823be2813afbda6428672d0e4a24acb8, type: 3}
+    attribute: m_Sprite
+    path: Animation/ShadowAnimator
+    classID: 212
+    script: {fileID: 0}
+  m_SampleRate: 60
+  m_WrapMode: 0
+  m_Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_ClipBindingConstant:
+    genericBindings:
+    - serializedVersion: 2
+      path: 262342271
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+    - serializedVersion: 2
+      path: 1768410432
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+    pptrCurveMapping:
+    - {fileID: 21300000, guid: 4bf0ec552a7ee2947811dfbf52c977ce, type: 3}
+    - {fileID: 21300000, guid: a22efc640fb35f74cbb2522ccc5f6369, type: 3}
+    - {fileID: 21300000, guid: 146c7550067f5ff44a0699cf41b70534, type: 3}
+    - {fileID: 21300000, guid: d542bb7f36712314299d8eb24d3a6f58, type: 3}
+    - {fileID: 21300000, guid: eb7b97071dd8fd846af463bfb6c285a9, type: 3}
+    - {fileID: 21300000, guid: b3e1a260d0820e24abe247001c75609a, type: 3}
+    - {fileID: 21300000, guid: 66729b78d0cc6ee45a60ce4aba011d70, type: 3}
+    - {fileID: 21300000, guid: 7195762d9be126a4facbda68fd1f8797, type: 3}
+    - {fileID: 21300000, guid: 051b6cb649d6fe043bc629e6ad609738, type: 3}
+    - {fileID: 21300000, guid: a0772b1c0b40e8f4ab21070068e325c8, type: 3}
+    - {fileID: 21300000, guid: bf63e901165423d428a29fb7195035af, type: 3}
+    - {fileID: 21300000, guid: 823be2813afbda6428672d0e4a24acb8, type: 3}
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_AdditiveReferencePoseClip: {fileID: 0}
+    m_AdditiveReferencePoseTime: 0
+    m_StartTime: 0
+    m_StopTime: 0.55
+    m_OrientationOffsetY: 0
+    m_Level: 0
+    m_CycleOffset: 0
+    m_HasAdditiveReferencePose: 0
+    m_LoopTime: 0
+    m_LoopBlend: 0
+    m_LoopBlendOrientation: 0
+    m_LoopBlendPositionY: 0
+    m_LoopBlendPositionXZ: 0
+    m_KeepOriginalOrientation: 0
+    m_KeepOriginalPositionY: 1
+    m_KeepOriginalPositionXZ: 0
+    m_HeightFromFeet: 0
+    m_Mirror: 0
+  m_EditorCurves: []
+  m_EulerEditorCurves: []
+  m_HasGenericRootTransform: 0
+  m_HasMotionFloatCurves: 0
+  m_Events:
+  - time: 0.083333336
+    functionName: AnimaEventTrigger
+    data: CreateAtkCollsion:SquatAtk
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.2
+    functionName: AnimaEventTrigger
+    data: RemoveAtkCollsion:SquatAtk
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

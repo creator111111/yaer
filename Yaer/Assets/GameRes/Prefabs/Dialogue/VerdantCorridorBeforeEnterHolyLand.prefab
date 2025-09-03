@@ -1,0 +1,213 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1047626024150200597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 37704741067304273}
+  - component: {fileID: 456483720435322333}
+  m_Layer: 5
+  m_Name: Yaer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &37704741067304273
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &456483720435322333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u96C5\u5C14"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 1
+--- !u!1 &2157631532710961294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 681534173202625091}
+  - component: {fileID: 3349752140444569539}
+  m_Layer: 5
+  m_Name: Aside
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &681534173202625091
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2157631532710961294}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3349752140444569539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2157631532710961294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u65C1\u767D"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 0
+--- !u!1 &2883600314957397101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8965843069174312997}
+  - component: {fileID: 8277147156603116227}
+  - component: {fileID: 7396501391561145538}
+  m_Layer: 5
+  m_Name: VerdantCorridorBeforeEnterHolyLand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8965843069174312997
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 37704741067304273}
+  - {fileID: 681534173202625091}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8277147156603116227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e4b851ebd8fa4ea0645b99be1cf97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"actions":[{"saveComponentAs":{"_name":"myPlayerLogic","_targetVariableID":"88e595e5-6aea-4a83-bc0a-b394db78ed2e"},"saveGameObjectAs":{"_name":""},"$type":"NodeCanvas.Tasks.Actions.FindObjectOfType`1[[Game.GameRuntime.Entities.Player.PlayerLogic,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":340.0659,"y":-117.9855},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"_action":{"actions":[{"gameObjectName":{"_value":"BeforeEnterHolyLandStoryTrigger"},"saveAs":{"_name":"BeforeEnterHolyLandStoryTrigger","_targetVariableID":"6db47b02-d77a-4932-94d4-8f8047c70745"},"$type":"NodeCanvas.Tasks.Actions.FindWithName"},{"childName":{"_value":"CameraPos"},"saveAs":{"_name":"CameraPos","_targetVariableID":"7e899bd5-2eee-4cab-af51-40ebe6aad934"},"overrideAgent":{"_type":"UnityEngine.Transform","_name":"BeforeEnterHolyLandStoryTrigger","_targetVariableID":"6db47b02-d77a-4932-94d4-8f8047c70745"},"$type":"NodeCanvas.Tasks.Actions.FindChildByName"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":201.0818,"y":15.71674},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"1"},{"FaceType":{"_value":9},"statement":{"_text":"\u8fd9\u91cc\u662f\u3002\u3002\u3002\u3002","_text_en":"This
+    is... ","_text_jp":"\u3053\u3053\u306f\u2026\u2026"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":401.0,"y":174.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"2"},{"_action":{"StartPos":{"_name":"myPlayerLogic","_targetVariableID":"88e595e5-6aea-4a83-bc0a-b394db78ed2e"},"EndPos":{"_name":"CameraPos","_targetVariableID":"7e899bd5-2eee-4cab-af51-40ebe6aad934"},"Duration":{"_value":1.0},"$type":"Game.GameRuntime.Story.Node.CameraMoveTaskAction"},"_position":{"x":784.0,"y":236.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"3"},{"FaceType":{"_value":7},"statement":{"_text":"\u6211\u4eec\u5723\u5730\u7684\u6b63\u95e8","_text_en":"The
+    main gate of our sacred sanctuary.","_text_jp":"\u6211\u3089\u306e\u8056\u5730\u306e\u6b63\u9580\u2026\u2026"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":406.0,"y":341.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"FaceType":{"_value":7},"statement":{"_text":"\u5982\u4eca\u5df2\u7ecf\u8352\u5e9f\u7834\u70c2\u6210\u8fd9\u6837\u4e86\u3002\u3002\u3002\u3002","_text_en":"Now,
+    it''s crumbling, abandoned, left in ruin\u2026","_text_jp":"\u4eca\u3067\u306f\u5ec3\u308c\u3066\u30dc\u30ed\u30dc\u30ed\u306b\u306a\u3063\u3066\u308b\u3051\u3069\u2026\u2026"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":351.0,"y":454.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"FaceType":{"_value":8},"statement":{"_text":"\u4f46\u90a3\u4e5f\u4e0d\u662f\u4f60\u4eec\u8fd9\u4e9b\u602a\u7269\u7684\u4e50\u56ed\uff01","_text_en":"But
+    this is no paradise for you monsters!","_text_jp":"\u3067\u3082\u3001\u3060\u304b\u3089\u3063\u3066\u3042\u3093\u305f\u305f\u3061\u602a\u7269\u306e\u697d\u5712\u3058\u3083\u306a\u3044\u306e\u3088\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":323.0,"y":559.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"6"},{"_action":{"StartPos":{"_name":"CameraPos","_targetVariableID":"7e899bd5-2eee-4cab-af51-40ebe6aad934"},"EndPos":{"_name":"myPlayerLogic","_targetVariableID":"88e595e5-6aea-4a83-bc0a-b394db78ed2e"},"Duration":{"_value":1.0},"$type":"Game.GameRuntime.Story.Node.CameraMoveTaskAction"},"_position":{"x":707.0,"y":615.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"7"},{"_action":{"isFollowPlayer":{"_value":true},"$type":"Game.GameRuntime.Story.Node.CameraFollowPlayerActionTask"},"_position":{"x":713.0,"y":716.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"8"},{"FaceType":{"_value":8},"statement":{"_text":"\u4e3a\u4f60\u4eec\u7684\u4eb5\u6e0e\u8d4e\u7f6a\u5427\uff01\uff01\uff01\uff01","_text_en":"You
+    shall pay for your desecration!\"","_text_jp":"\u305d\u306e\u5192\u6d9c\u3001\u4ee3\u511f\u3092\u6255\u3063\u3066\u3082\u3089\u3046\u308f\uff01\uff01\uff01"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":317.0,"y":750.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"9"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"6"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":1},{"_keyName":"\u65c1\u767d","_id":"904bab71-4e7d-4812-8dab-e627baca0657","_actorObject":2}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _boundGraphObjectReferences:
+  - {fileID: 0}
+  - {fileID: 456483720435322333}
+  - {fileID: 3349752140444569539}
+  _boundGraphSource:
+    _version: 3.31
+    _category: 
+    _comments: 
+    _translation: {x: 660.0234, y: 242.70047}
+    _zoomFactor: 1
+  _firstActivation: 0
+  _enableAction: 1
+  _disableAction: 2
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 0}
+  _blackboard: {fileID: 7396501391561145538}
+--- !u!114 &7396501391561145538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{"BeforeEnterHolyLandStoryTrigger":{"_name":"BeforeEnterHolyLandStoryTrigger","_id":"6db47b02-d77a-4932-94d4-8f8047c70745","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"CameraPos":{"_name":"CameraPos","_id":"7e899bd5-2eee-4cab-af51-40ebe6aad934","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Transform,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"myPlayerLogic":{"_name":"myPlayerLogic","_id":"88e595e5-6aea-4a83-bc0a-b394db78ed2e","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.Player.PlayerLogic,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  _objectReferences: []
+  _serializedVariables:
+  - _json: '{"_name":"BeforeEnterHolyLandStoryTrigger","_id":"6db47b02-d77a-4932-94d4-8f8047c70745","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.SceneEntities.SimpleStoryTrigger,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"CameraPos","_id":"7e899bd5-2eee-4cab-af51-40ebe6aad934","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.Transform,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []
+  - _json: '{"_name":"myPlayerLogic","_id":"88e595e5-6aea-4a83-bc0a-b394db78ed2e","$type":"NodeCanvas.Framework.Variable`1[[Game.GameRuntime.Entities.Player.PlayerLogic,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references: []

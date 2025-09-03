@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MainItem_Detail
+  serializedVersion: 2
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: -532590318042224793, guid: 186cab6d2151c584db629258c01fab27, type: 3}
+    - {fileID: 1063520791389769809, guid: d08ad1dca766792439227397c49ca6b1, type: 3}
+    - {fileID: 4718080673198127496, guid: 0914bc7bb065d614e8fd7ce6821e4ccc, type: 3}
+    - {fileID: -8394406531125240621, guid: 204990ef5f3a0704ea1cf372cef1e977, type: 3}
+    - {fileID: -3815250104955808425, guid: 7c831befdbd13db429b567439f069d6e, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 4718080673198127496, guid: 0914bc7bb065d614e8fd7ce6821e4ccc, type: 3}
+  - {fileID: 1063520791389769809, guid: d08ad1dca766792439227397c49ca6b1, type: 3}
+  - {fileID: -532590318042224793, guid: 186cab6d2151c584db629258c01fab27, type: 3}
+  - {fileID: -8394406531125240621, guid: 204990ef5f3a0704ea1cf372cef1e977, type: 3}
+  - {fileID: -3815250104955808425, guid: 7c831befdbd13db429b567439f069d6e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - MpBall
+  - Map
+  - HpBall
+  - XiaerPower
+  - AiLinSword
+  m_RenderDataMap: {}
+  m_Tag: MainItem_Detail
+  m_IsVariant: 0
+  m_IsPlaceholder: 0

@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: YaerQImgAtlas
+  serializedVersion: 2
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 1
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 3d2693872f88c7143b02bf4b7d16ceee, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 092ea9a5803153d42858cbaa32d89660, type: 3}
+  - {fileID: 21300000, guid: 8c943f066ee7a694797a574371d7485d, type: 3}
+  - {fileID: 21300000, guid: c809c156e6816e844af761f152262cba, type: 3}
+  - {fileID: 21300000, guid: 02b8e9086003b9345adf81d6760ac32a, type: 3}
+  - {fileID: 21300000, guid: 7050080c1a326e54797f5c88632fbe5d, type: 3}
+  - {fileID: 21300000, guid: 58943efdb824c304bb35e33da125d7bc, type: 3}
+  - {fileID: 21300000, guid: 83d67c6f8c4a071419f7431c07175a2e, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - 3
+  - 6
+  - 4
+  - 5
+  - 7
+  - 1
+  - 2
+  m_RenderDataMap: {}
+  m_Tag: YaerQImgAtlas
+  m_IsVariant: 0
+  m_IsPlaceholder: 0

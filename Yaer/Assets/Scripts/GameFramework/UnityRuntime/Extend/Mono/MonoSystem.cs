@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections;
+using GameFramework.UnityRuntimeExtend.Base;
+using UnityEngine;
+using UnityEngine.Internal;
+
+namespace GameFramework.UnityRuntimeExtend.Mono
+{
+    public class MonoSystem : BaseMonoAutoSingleton<MonoSystem>
+    {
+        private Action action;
+
+        private void Update()
+        {
+            // 一直执行事件
+            action?.Invoke();
+        }
+
+        // 添加事件
+        public void AddUpdateEvent(Action newEvent)
+        {
+            action += newEvent;
+        }
+
+        // 移除事件
+        public void RemoveUpdateEvent(Action oldEvent)
+        {
+            action -= oldEvent;
+        }
+
+        // 协程开启
+        public Coroutine StartCoroutineFrameWork(string methodName)
+        {
+            return StartCoroutine(methodName);
+        }
+
+        public Coroutine StartCoroutineFrameWork(string methodName, [DefaultValue("null")] object value)
+        {
+            return StartCoroutine(methodName, value);
+        }
+
+        public Coroutine StartCoroutineFrameWork(IEnumerator routine)
+        {
+            return StartCoroutine(routine);
+        }
+
+        // 协程关闭
+        public void StopCoroutineFrameWork(Coroutine coroutine)
+        {
+            StopCoroutine(coroutine);
+        }
+
+        public void StopCoroutineFrameWork(IEnumerator routine)
+        {
+            StopCoroutine(routine);
+        }
+    }
+}
