@@ -53,14 +53,14 @@ namespace Game.GameMgr.Manager.Settings.Helper
 
         public Dictionary<ControlInputType, KeyCode> KeyboardMouseInputConfig = new Dictionary<ControlInputType, KeyCode>() 
         {
-            { ControlInputType.Left, KeyCode.LeftArrow },
-            { ControlInputType.Right, KeyCode.RightArrow },
-            { ControlInputType.Squat, KeyCode.E },
+            { ControlInputType.Left, KeyCode.A},
+            { ControlInputType.Right, KeyCode.D },
+            { ControlInputType.Squat, KeyCode.S },
             { ControlInputType.Jump, KeyCode.Space },
-            { ControlInputType.NormalAttack, KeyCode.Q },
-            { ControlInputType.SmashAttack, KeyCode.W },
-            { ControlInputType.DashAttack, KeyCode.R },
-            { ControlInputType.Interact, KeyCode.T },
+            { ControlInputType.NormalAttack, KeyCode.J },
+            { ControlInputType.SmashAttack, KeyCode.K },
+            { ControlInputType.DashAttack, KeyCode.L },
+            { ControlInputType.Interact, KeyCode.E },
             { ControlInputType.SitDown, KeyCode.LeftShift },
             { ControlInputType.NextSentence, KeyCode.Space },
             { ControlInputType.SkipDialogue, KeyCode.LeftAlt }
