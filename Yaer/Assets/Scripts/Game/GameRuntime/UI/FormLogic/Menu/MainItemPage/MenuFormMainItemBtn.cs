@@ -125,6 +125,8 @@ namespace Game.GameRuntime.UI.FormLogic.Menu.MainItemPage
 
         public void OnEndDrag(PointerEventData eventData)
         {
+            if (root == null) { return; }
+            if (item == null) { return; }
             root.transform.SetSiblingIndex(item.index);
             grid.enabled = true;
             MenuFormMainItemBtn cell = null;

@@ -7,7 +7,9 @@ using Game.GameRuntime.UI.Component;
 using Game.GameRuntime.UI.Control;
 using Game.GameRuntime.UI.FormLogic.Archive.LoadGamePanel;
 using Game.GameRuntime.UI.FormLogic.Base;
-using Game.GameRuntime.UI.FormLogic.Menu.MainItemPage;
+using Game.GameRuntime.UI.FormLogic.Cartoon;
+
+//using Game.GameRuntime.UI.FormLogic.Menu.MainItemPage;
 using Game.GameRuntime.UI.FormLogic.SystemTips;
 using Game.Static.Path;
 using System.Collections.Generic;
@@ -24,20 +26,25 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
         [SerializeField] private UIListener btnBack;
         [SerializeField] private UIListener btnExit;
 
-        [SerializeField] private MenuFormMainItemPage mainItemPage;
-        [SerializeField] private DetailFormLogic detailForm;
+        //[SerializeField] private MenuFormMainItemPage mainItemPage;
+        //[SerializeField] private DetailFormLogic detailForm;
         private MenuFormProxy proxy;
 
         public GameObject imgItemNor;
         public GameObject imgItemClick;
+        public GameObject imgItemSelect;
         public GameObject imgSaveNor;
         public GameObject imgSaveClick;
+        public GameObject imgSaveSelect;
         public GameObject imgLoadNor;
         public GameObject imgLoadClick;
+        public GameObject imgLoadSelect;
         public GameObject imgBackNor;
         public GameObject imgBackClick;
+        public GameObject imgBackSelect;
         public GameObject imgExitNor;
         public GameObject imgExitClick;
+        public GameObject imgExitSelect;
         SpriteAtlas spriteAtlas;
         SpriteAtlas spriteAtlas_en;
         SpriteAtlas spriteAtlas_jp;
@@ -53,7 +60,7 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             btnExit.OnPressed += OnClickBtnExit;
 
             proxy = GetProxy<MenuFormProxy>();
-            mainItemPage.OnInit(proxy, this);
+            //mainItemPage.OnInit(proxy, this);
 
             LoadAtlas(3);
         }
@@ -87,14 +94,19 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             });
             imgItemNor.SetActive(false);
             imgItemClick.SetActive(false);
+            imgItemSelect.SetActive(false);
             imgSaveNor.SetActive(false);
             imgSaveClick.SetActive(false);
+            imgSaveSelect.SetActive(false);
             imgLoadNor.SetActive(false);
             imgLoadClick.SetActive(false);
+            imgLoadSelect.SetActive(false);
             imgBackNor.SetActive(false);
             imgBackClick.SetActive(false);
+            imgBackSelect.SetActive(false);
             imgExitNor.SetActive(false);
             imgExitClick.SetActive(false);
+            imgExitSelect.SetActive(false);
         }
 
         public override void UpdateUI()
@@ -125,14 +137,19 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             imgExitNor.SetActive(true);
             GameTools.loadTextureByAtlas(imgItemNor, mySpriteAtlas, "贵重物品");
             GameTools.loadTextureByAtlas(imgItemClick, mySpriteAtlas, "贵重物品点");
+            GameTools.loadTextureByAtlas(imgItemSelect, mySpriteAtlas, "贵重物品选择");
             GameTools.loadTextureByAtlas(imgSaveNor, mySpriteAtlas, "保存");
             GameTools.loadTextureByAtlas(imgSaveClick, mySpriteAtlas, "保存点");
+            GameTools.loadTextureByAtlas(imgSaveSelect, mySpriteAtlas, "保存选择");
             GameTools.loadTextureByAtlas(imgLoadNor, mySpriteAtlas, "读取");
             GameTools.loadTextureByAtlas(imgLoadClick, mySpriteAtlas, "读取点");
+            GameTools.loadTextureByAtlas(imgLoadSelect, mySpriteAtlas, "读取选择");
             GameTools.loadTextureByAtlas(imgBackNor, mySpriteAtlas, "返回");
             GameTools.loadTextureByAtlas(imgBackClick, mySpriteAtlas, "返回点");
+            GameTools.loadTextureByAtlas(imgBackSelect, mySpriteAtlas, "返回选择");
             GameTools.loadTextureByAtlas(imgExitNor, mySpriteAtlas, "退出旅途");
             GameTools.loadTextureByAtlas(imgExitClick, mySpriteAtlas, "退出旅途点");
+            GameTools.loadTextureByAtlas(imgExitSelect, mySpriteAtlas, "退出旅途选择");
         }
 
         protected internal override void OnOpen(object userData)
@@ -142,8 +159,8 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             proxy.OnMenuActive(true);
 
             // 默认关闭物品栏
-            mainItemPage.gameObject.SetActive(false);
-            detailForm.gameObject.SetActive(false);
+            //mainItemPage.gameObject.SetActive(false);
+            //detailForm.gameObject.SetActive(false);
 
             // 打开菜单界面时暂停游戏
             var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
@@ -200,14 +217,22 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
         private void OnClickBtnItem(UIListener listener)
         {
             UIUtils.PlayBtnAudio(this);
-            if (mainItemPage.IsOpen)
+            UIUtils.OpenPanel("ItemShowPanel", EUIGroup.Top, null,
+            (logic) =>
             {
-                mainItemPage.OnClose();
-            }
-            else
-            {
-                mainItemPage.OnOpen();
-            }
+                if (logic is ItemShowFormLogic uiLogic)
+                {
+                    uiLogic.initData(proxy, this);
+                }
+            });
+            //if (mainItemPage.IsOpen)
+            //{
+            //    mainItemPage.OnClose();
+            //}
+            //else
+            //{
+            //    mainItemPage.OnOpen();
+            //}
         }
 
         private void OnClickBtnSave(UIListener listener)

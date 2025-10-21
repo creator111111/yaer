@@ -12,6 +12,8 @@ namespace Game.GameRuntime.BagPack
         {
             MenuFormLogic menuFormLogic = data as MenuFormLogic;
             GameManager.GetGMComponent<UIComponentGM>().CloseUIForm(menuFormLogic.UIForm);
+            // 打开地图前先关闭道具界面
+            UIUtils.ClosePanel("ItemShowPanel");
             string uiPrefabPath = UIPrefabPath.GetUIPrefabPath("MapPanel");
 
             var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(uiPrefabPath);

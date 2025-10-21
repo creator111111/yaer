@@ -9,8 +9,10 @@ using Game.GameRuntime.GameSceneManager.Component;
 using Game.GameRuntime.GameSceneManager.Component.Story;
 using Game.GameRuntime.UI.FormLogic.Base;
 using Game.GameRuntime.UI.FormLogic.SystemTips;
+using Game.Static.Enum.Goods;
 using Game.Static.Name.Clothes;
 using Game.Static.Name.Res;
+using Game.Static.Name.Settings;
 using Game.Static.Path;
 using UnityEngine;
 using UnityEngine.U2D;
@@ -45,6 +47,10 @@ namespace Game.GameRuntime.UI.FormLogic.SelectClothes
         
         private List<Toggle> togglesList = new List<Toggle>();
 
+        public Button returnBtn;
+        public GameObject mainTabArea; // 主页签区域
+        public GameObject subTabArea; // 子页签区域
+
         public GameObject imgClothes;
         public GameObject imgBra;
         public GameObject imgUnderwear;
@@ -56,6 +62,7 @@ namespace Game.GameRuntime.UI.FormLogic.SelectClothes
         SpriteAtlas spriteAtlas;
         SpriteAtlas spriteAtlas_en;
         SpriteAtlas spriteAtlas_jp;
+        SpriteAtlas returnBtnAtlas;
 
         protected internal override void OnInit(object userData)
         {
@@ -69,11 +76,16 @@ namespace Game.GameRuntime.UI.FormLogic.SelectClothes
             btnHeadWear.onClick.AddListener(() => OnClickClothesBtn(BoneName.Headwear));
             btnWeapon.onClick.AddListener(() => OnClickClothesBtn(BoneName.Weapon));
             btnBack.onClick.AddListener(Exit);
+            returnBtn.onClick.AddListener(() =>
+            {
+                // 隐藏子页签，显示主页签区域
+                ShowTabArea(true);
+            });
 
             proxy = GetProxy<SelectClothesFormProxy>();
             proxy.onUpdateClothesNamesForBones = UpdatedClothesList;
 
-            LoadAtlas(3);
+            LoadAtlas(4);
         }
 
         protected override void LoadAtlas(int targetAtlasCount)
@@ -101,6 +113,14 @@ namespace Game.GameRuntime.UI.FormLogic.SelectClothes
                 if (atlas == null) { return; }
                 if (spriteAtlas_jp != null) { return; }
                 spriteAtlas_jp = atlas;
+                loadAtlasCallFunc();
+            });
+            path = "Assets/GameRes/Atlas/CommonBtn/returnBtnAtlas.spriteatlas";
+            GameManager.GetGMComponent<ResComponentGM>().LoadAsset<SpriteAtlas>(path, atlas =>
+            {
+                if (atlas == null) { return; }
+                if (returnBtnAtlas != null) { return; }
+                returnBtnAtlas = atlas;
                 loadAtlasCallFunc();
             });
         }
@@ -133,6 +153,21 @@ namespace Game.GameRuntime.UI.FormLogic.SelectClothes
             GameTools.loadTextureByAtlas(imgHeadWear, mySpriteAtlas, "头饰");
             GameTools.loadTextureByAtlas(imgWeapon, mySpriteAtlas, "武器");
 
+
+            var curResTag = GameManager.GetCurLanguageResTag();
+            if (curLaunageType == LanguageEnumType.Japanese)
+            {
+                // 日语用英文的资源
+                curResTag = LanguageType.GetLanaguageResTag(LanguageEnumType.English);
+            }
+            var norResName = "returnNor" + curResTag;
+            var clickResName = "returnClick" + curResTag;
+            var selectResName = "returnSelect" + curResTag;
+            var norResSprite = returnBtnAtlas.GetSprite(norResName);
+            var clickResSprite = returnBtnAtlas.GetSprite(clickResName);
+            var selectResSprite = returnBtnAtlas.GetSprite(selectResName);
+            GameTools.loadBtnSprite(returnBtn, norResSprite, selectResSprite, clickResSprite);
+
         }
 
         protected internal override void OnOpen(object userData)
@@ -142,9 +177,14 @@ namespace Game.GameRuntime.UI.FormLogic.SelectClothes
             // 重新刷新proxy
             proxy = GetProxy<SelectClothesFormProxy>();
             storyComponentGSM = GameManager.GetGameSceneManager().GetModule<StoryComponentGSM>();
-
+            if (GameManager.GetGameSceneManager().GetArchiveData<PlayerBagData>().HasMainItem(EMainItemName.AiLinSword.ToString()))
+            {
+                // 如果拾取了剑则进入换装之后自动装备剑
+                ChangeClothes(BoneName.Weapon, ClothesName.Weapon.AiLinSword);
+            }
             animator.Rebind();
-            btnClothes.onClick.Invoke();
+            ShowTabArea(true);
+            //btnClothes.onClick.Invoke();
             AllowOpenMenu(false);
         }
 
@@ -159,6 +199,8 @@ namespace Game.GameRuntime.UI.FormLogic.SelectClothes
             PlayChangeTapSfx();
             selectBoneName = clothesName;
             proxy.GetAllClothesNamesForBones(clothesName);
+            // 进入子页签
+            ShowTabArea(false);
         }
 
         /// <summary>
@@ -336,6 +378,12 @@ namespace Game.GameRuntime.UI.FormLogic.SelectClothes
         public override void PlayerOpenAudio()
         {
 
+        }
+
+        void ShowTabArea(bool showMainArea = true)
+        {
+            mainTabArea.SetActive(showMainArea);
+            subTabArea.SetActive(!showMainArea);
         }
     }
 }

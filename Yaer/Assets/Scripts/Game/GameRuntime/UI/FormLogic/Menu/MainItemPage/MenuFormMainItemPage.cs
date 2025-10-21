@@ -52,7 +52,7 @@ namespace Game.GameRuntime.UI.FormLogic.Menu.MainItemPage
             }
 
             // 填充到20个
-            for (var i = itemList.Count; i < 20; i++)
+            for (var i = itemList.Count; i < 24; i++)
             {
                 GameObject go = Instantiate(itemPrefab, content, false);
                 var button = go.GetComponentInChildren<MenuFormMainItemBtn>();
