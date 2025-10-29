@@ -32,6 +32,7 @@ namespace Game.GameRuntime.Entities.Player.Components
         private bool cantLeft;
         private bool cantRight;
 
+        private float lastRealTime = 0;
         public bool canInputContorll { get; set; } = true;// 是否接受控制输入
         //public Action<bool> onRightInput;
         //public Action<bool> onLeftInput;
@@ -118,6 +119,11 @@ namespace Game.GameRuntime.Entities.Player.Components
             return false; 
         }
 
+        void Start()
+        {
+            lastRealTime = Time.realtimeSinceStartup;
+        }
+
         protected override void OnInit()
         {
             inputActions = new InputActions();
@@ -136,15 +142,20 @@ namespace Game.GameRuntime.Entities.Player.Components
                 if (ingoreKeyList.Contains(cmd)) { continue; }
                 keyCodeToCmdDict[key] = cmd;
             }
+            
         }
 
         public override void OnUpdate()
         {
             base.OnUpdate();
+
+            checkGameHasPasueByOther();
+            
             if (!canInputContorll) { return; }
             // 检测按键输入
             if (!cantMove)
             {
+                
                 // 如果当前按下指定按键则添加对应的指令
                 foreach (var keyCode in keyCodeToCmdDict.Keys)
                 {
@@ -172,9 +183,13 @@ namespace Game.GameRuntime.Entities.Player.Components
                         }
                     }
                 }
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    Debug.Log("============curPlayerAllCmds" + curPlayerAllCmds);
+                }
             }
 
-            PasePlayerCmd();
+            ParsePlayerCmd();
             //Move();
             //Jump();
         }
@@ -235,7 +250,7 @@ namespace Game.GameRuntime.Entities.Player.Components
         //    if (axisX < 0) onLeftInput?.Invoke(true);
         //}
 
-        private void PasePlayerCmd()
+        private void ParsePlayerCmd()
         {
             // 自动移动时自动设置对应的指令
             switch (AutoMoveState)
@@ -283,7 +298,6 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         void ParseMoveCmd(ControlInputType curPlayerCmd)
         {
-            
             if (PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>().IsMoveUp ||
                 PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>().IsMoveDown)
             {
@@ -340,6 +354,7 @@ namespace Game.GameRuntime.Entities.Player.Components
             {
                 // 游戏失去焦点时，清空所有输入并停止人物移动
                 curPlayerAllCmds.Clear();
+                Input.ResetInputAxes();
             }
         }
 
@@ -348,7 +363,21 @@ namespace Game.GameRuntime.Entities.Player.Components
             if (pauseStatus)
             {
                 curPlayerAllCmds.Clear();
+                Input.ResetInputAxes();
             }
+        }
+
+        // 检测游戏是否因为其他原因暂停了
+        private void checkGameHasPasueByOther()
+        {
+            float delta = Time.realtimeSinceStartup - lastRealTime;
+            if (delta > 0.1f) // 阈值可调
+            {
+                curPlayerAllCmds.Clear();
+                Input.ResetInputAxes();
+            }
+            lastRealTime = Time.realtimeSinceStartup;
+
         }
 
         #region 键鼠
