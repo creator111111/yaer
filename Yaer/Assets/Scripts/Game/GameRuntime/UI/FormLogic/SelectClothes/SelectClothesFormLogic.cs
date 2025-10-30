@@ -153,6 +153,8 @@ namespace Game.GameRuntime.UI.FormLogic.SelectClothes
             GameTools.loadTextureByAtlas(imgHeadWear, mySpriteAtlas, "头饰");
             GameTools.loadTextureByAtlas(imgWeapon, mySpriteAtlas, "武器");
 
+            // 调用方法更新标签按钮精灵
+            UpdateTabText(mySpriteAtlas);
 
             var curResTag = GameManager.GetCurLanguageResTag();
             if (curLaunageType == LanguageEnumType.Japanese)
@@ -167,6 +169,82 @@ namespace Game.GameRuntime.UI.FormLogic.SelectClothes
             var clickResSprite = returnBtnAtlas.GetSprite(clickResName);
             var selectResSprite = returnBtnAtlas.GetSprite(selectResName);
             GameTools.loadBtnSprite(returnBtn, norResSprite, selectResSprite, clickResSprite);
+        }
+
+        /// <summary>
+        /// 更新标签按钮图片
+        /// </summary>
+        private void UpdateTabText(SpriteAtlas mySpriteAtlas)
+        {
+            // 检查mySpriteAtlas是否为空
+            if (mySpriteAtlas != null)
+            {
+                // 为衣服按钮设置精灵
+                var clothesNorName = "衣服";
+                var clothesClickName = "衣服点击";
+                var clothesSelectName = "衣服选择";
+                var clothesNorSprite = mySpriteAtlas.GetSprite(clothesNorName);
+                var clothesClickSprite = mySpriteAtlas.GetSprite(clothesClickName);
+                var clothesSelectSprite = mySpriteAtlas.GetSprite(clothesSelectName);
+                GameTools.loadBtnSprite(btnClothes, clothesNorSprite, clothesSelectSprite, clothesClickSprite);
+                
+                // 为文胸按钮设置精灵
+                var braNorName = "文胸";
+                var braClickName = "文胸点击";
+                var braSelectName = "文胸选择";
+                var braNorSprite = mySpriteAtlas.GetSprite(braNorName);
+                var braClickSprite = mySpriteAtlas.GetSprite(braClickName);
+                var braSelectSprite = mySpriteAtlas.GetSprite(braSelectName);
+                GameTools.loadBtnSprite(btnBra, braNorSprite, braSelectSprite, braClickSprite);
+                
+                // 为内裤按钮设置精灵
+                var underwearNorName = "内裤";
+                var underwearClickName = "内裤点击";
+                var underwearSelectName = "内裤选择";
+                var underwearNorSprite = mySpriteAtlas.GetSprite(underwearNorName);
+                var underwearClickSprite = mySpriteAtlas.GetSprite(underwearClickName);
+                var underwearSelectSprite = mySpriteAtlas.GetSprite(underwearSelectName);
+                GameTools.loadBtnSprite(btnUnderwear, underwearNorSprite, underwearSelectSprite, underwearClickSprite);
+                
+                // 为丝袜按钮设置精灵
+                var trousersNorName = "丝袜";
+                var trousersClickName = "丝袜点击";
+                var trousersSelectName = "丝袜选择";
+                var trousersNorSprite = mySpriteAtlas.GetSprite(trousersNorName);
+                var trousersClickSprite = mySpriteAtlas.GetSprite(trousersClickName);
+                var trousersSelectSprite = mySpriteAtlas.GetSprite(trousersSelectName);
+                GameTools.loadBtnSprite(btnTrousers, trousersNorSprite, trousersSelectSprite, trousersClickSprite);
+                
+                // 为鞋子按钮设置精灵
+                var shoesNorName = "鞋";
+                var shoesClickName = "鞋点击";
+                var shoesSelectName = "鞋选择";
+                var shoesNorSprite = mySpriteAtlas.GetSprite(shoesNorName);
+                var shoesClickSprite = mySpriteAtlas.GetSprite(shoesClickName);
+                var shoesSelectSprite = mySpriteAtlas.GetSprite(shoesSelectName);
+                GameTools.loadBtnSprite(btnShoes, shoesNorSprite, shoesSelectSprite, shoesClickSprite);
+                
+                // 为头饰按钮设置精灵
+                var headWearNorName = "头饰";
+                var headWearClickName = "头饰点击";
+                var headWearSelectName = "头饰选择";
+                var headWearNorSprite = mySpriteAtlas.GetSprite(headWearNorName);
+                var headWearClickSprite = mySpriteAtlas.GetSprite(headWearClickName);
+                var headWearSelectSprite = mySpriteAtlas.GetSprite(headWearSelectName);
+                GameTools.loadBtnSprite(btnHeadWear, headWearNorSprite, headWearSelectSprite, headWearClickSprite);
+                
+                // 为武器按钮设置精灵
+                var weaponNorName = "武器" ;
+                var weaponClickName = "武器点击" ;
+                var weaponSelectName = "武器选择" ;
+                var weaponNorSprite = mySpriteAtlas.GetSprite(weaponNorName);
+                var weaponClickSprite = mySpriteAtlas.GetSprite(weaponClickName);
+                var weaponSelectSprite = mySpriteAtlas.GetSprite(weaponSelectName);
+                GameTools.loadBtnSprite(btnWeapon, weaponNorSprite, weaponSelectSprite, weaponClickSprite);
+            }
+
+
+            
 
         }
 
