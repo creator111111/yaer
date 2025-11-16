@@ -57,8 +57,11 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
 
         private void OnEnable()
         {
-            mul = Screen.width / CanvasScaler.referenceResolution.x;
-            rec = GetWorldRect(transform as RectTransform);
+            // 初始化相机
+            if (!camera)
+            {
+                camera = Camera.main;
+            }
         }
 
         private void SetEffect()
@@ -66,15 +69,53 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
             
         }
 
-        private Rect GetWorldRect(RectTransform rectTransform)
+        private Rect GetScreenRect(RectTransform rectTransform)
         {
-            var corners = new Vector3[4];
-            rectTransform.GetLocalCorners(corners);
-            var width = Mathf.Abs(Vector2.Distance(corners[0], corners[3])) * mul;
-            var height = Mathf.Abs(Vector2.Distance(corners[0], corners[1])) * mul;
-            var s = CanvasScaler.referenceResolution;
-            var a = transform.localPosition + corners[0] + new Vector3(s.x / 2, s.y / 2);
-            return new Rect(a * mul, new Vector2(width, height));
+
+            Vector2 screenPointMin = new Vector2(float.MaxValue, float.MaxValue);
+            Vector2 screenPointMax = new Vector2(float.MinValue, float.MinValue);
+            
+            // 获取UI元素的四个角点
+            Vector3[] worldCorners = new Vector3[4];
+            rectTransform.GetWorldCorners(worldCorners);
+            
+            // 对于每个角点，转换为屏幕坐标
+            for (int i = 0; i < 4; i++)
+            {
+                // 使用Canvas的相机（如果有）或主相机进行转换
+                Camera uiCamera = rectTransform.GetComponentInParent<Canvas>().worldCamera;
+                if (uiCamera == null)
+                {
+                    uiCamera = camera; // 使用主相机
+                }
+                
+                Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(uiCamera, worldCorners[i]);
+                
+                // 更新最小和最大屏幕坐标
+                screenPointMin.x = Mathf.Min(screenPointMin.x, screenPoint.x);
+                screenPointMin.y = Mathf.Min(screenPointMin.y, screenPoint.y);
+                screenPointMax.x = Mathf.Max(screenPointMax.x, screenPoint.x);
+                screenPointMax.y = Mathf.Max(screenPointMax.y, screenPoint.y);
+            }
+            
+            // 创建屏幕空间中的矩形
+            float width = screenPointMax.x - screenPointMin.x;
+            float height = screenPointMax.y - screenPointMin.y;
+            
+            // 计算中心位置
+            float centerX = screenPointMin.x + width / 2;
+            float centerY = screenPointMin.y + height / 2;
+            
+            // 将矩形扩大10%
+            float scaleFactor = 1.2f; // 扩大10%
+            float newWidth = width * scaleFactor;
+            float newHeight = height * scaleFactor;
+            
+            // 基于中心位置重新计算矩形
+            return new Rect(centerX - newWidth / 2, 
+                           centerY - newHeight / 2, 
+                           newWidth, 
+                           newHeight);
         }
 
         private void GetPlayer()
@@ -95,16 +136,22 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
                 camera = Camera.main;
                 return;
             }
-
+            rec = GetScreenRect(transform as RectTransform);
             Vector2 playerScreenPoint = camera.WorldToScreenPoint(playerLogic.transform.position);
-
             bool currentIsIn = rec.Contains(playerScreenPoint);
-
-            if (currentIsIn && !isIn)
+            if (currentIsIn)
             {
-                SetAlpha(0);
+                // 确保矩形有合理的尺寸
+                if (rec.width > 0 && rec.height > 0)
+                {
+                    if (!isIn)
+                    {
+                        // 玩家进入UI区域，隐藏UI
+                        SetAlpha(0);
+                    }
+                }
             }
-            else if (!currentIsIn && isIn)
+            else if (isIn)
             {
                 SetAlpha(1f);
             }

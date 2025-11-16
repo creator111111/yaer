@@ -3,6 +3,7 @@ using Game.GameMgr.Component;
 using Game.GameMgr.Component.ChangeScene;
 using Game.GameRuntime.GameSceneManager.Component;
 using Game.Static.MVC;
+using Game.Static.Name.Clothes;
 using Game.Static.Name.Res;
 using GameFramework.CoreExtend.Component;
 using UnityEngine;
@@ -28,7 +29,10 @@ namespace GameDebug
                 SceneName.HomeScene1,
                 SceneName.HomeScene2,
                 SceneName.SelectClothesScene,
-                SceneName.ForestScene
+                SceneName.ForestScene,
+                SceneName.WestRappRoad,
+                SceneName.ShenLin
+
             };
 
             gm = GameManager.Instance;
@@ -101,7 +105,12 @@ namespace GameDebug
                         GameManager.GetGameSceneManager().GetModule<LoadSceneComponentGSM>().LoadScene(sName);
                         break;
                     case SceneName.ForestScene:
-                        LoadForestScene();
+                        WearBattleClothes();
+                        GameManager.GetGameSceneManager().GetModule<LoadSceneComponentGSM>().LoadScene(sName);
+                        break;
+                    default:
+                        WearBattleClothes();
+                        GameManager.GetGameSceneManager().GetModule<LoadSceneComponentGSM>().LoadScene(sName);
                         break;
                 }
             }
@@ -113,7 +122,7 @@ namespace GameDebug
 
         #region 跳转场景
 
-        private void LoadForestScene()
+        private void WearBattleClothes()
         {
             // 衣服数据
             // var pd = GameManager.GetManager<IPlayerDataManager>().PlayerData;
@@ -121,8 +130,11 @@ namespace GameDebug
             // pd.PlayerClothesData.AddClothes(BoneName.Clothes, ClothesName.Clothes.Armor);
             // pd.PlayerClothesData.AddClothes(BoneName.Trousers, ClothesName.Trousers.ArmorTrousers);
             // pd.PlayerClothesData.AddClothes(BoneName.Shoes, ClothesName.Shoes.ArmorShoes);
-
-            LoadSceneOldArgs args = new LoadSceneOldArgs(SceneName.Editor, SceneName.ForestScene);
+            var pd = GameManager.GetGMComponent<PlayerDataComponentGM>().GetClothesData();
+            pd.AddClothes(BoneName.Headwear, ClothesName.HeadWear.NoHeadWear);
+            pd.AddClothes(BoneName.Clothes, ClothesName.Clothes.Armor);
+            pd.AddClothes(BoneName.Trousers, ClothesName.Trousers.ArmorTrousers);
+            pd.AddClothes(BoneName.Shoes, ClothesName.Shoes.ArmorShoes);
             gm.SetCanChangeScene(true);
             // gm.LoadScene(args);
             

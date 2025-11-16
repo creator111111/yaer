@@ -33,7 +33,7 @@ namespace Game.GameMgr.Manager.Res.SceneRes
             // RegisterConfig(SceneName.ForestScene, ScriptableObject.CreateInstance<ForestSceneResConfig>());
             // RegisterConfig(SceneName.ForestEastScene, ScriptableObject.CreateInstance<ForestEastSceneResConfig>());
             // RegisterConfig(SceneName.VerdantCorridor, ScriptableObject.CreateInstance<VerdantCorridorSceneResConfig>());
-            // RegisterConfig(SceneName.WestRappRoad, ScriptableObject.CreateInstance<WestRappRoadSceneResConfig>());
+            // RegisterConfig(SceneName.WestRappRoadBox, ScriptableObject.CreateInstance<WestRappRoadSceneResConfig>());
         }
 
         public T GetSubManager<T>() where T : class, IGameResourcesSubManager

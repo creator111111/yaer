@@ -8,6 +8,8 @@ using Game.GameRuntime.UI.Control;
 using Game.GameRuntime.UI.FormLogic.Archive.LoadGamePanel;
 using Game.GameRuntime.UI.FormLogic.Base;
 using Game.GameRuntime.UI.FormLogic.Cartoon;
+using Game.GameRuntime.UI.FormLogic.Settings;
+
 
 //using Game.GameRuntime.UI.FormLogic.Menu.MainItemPage;
 using Game.GameRuntime.UI.FormLogic.SystemTips;
@@ -24,6 +26,7 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
         [SerializeField] private UIListener btnSave;
         [SerializeField] private UIListener btnLoad;
         [SerializeField] private UIListener btnBack;
+        [SerializeField] private UIListener btnSetting;
         [SerializeField] private UIListener btnExit;
 
         //[SerializeField] private MenuFormMainItemPage mainItemPage;
@@ -42,6 +45,9 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
         public GameObject imgBackNor;
         public GameObject imgBackClick;
         public GameObject imgBackSelect;
+        public GameObject imgSettingNor;
+        public GameObject imgSettingClick;
+        public GameObject imgSettingSelect;
         public GameObject imgExitNor;
         public GameObject imgExitClick;
         public GameObject imgExitSelect;
@@ -58,12 +64,14 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             btnLoad.OnPressed += OnClickBtnLoad;
             btnBack.OnPressed += OnClickBtnBack;
             btnExit.OnPressed += OnClickBtnExit;
-
+            btnSetting.OnPressed += BtnSetting_OnPressed;
             proxy = GetProxy<MenuFormProxy>();
             //mainItemPage.OnInit(proxy, this);
 
             LoadAtlas(3);
         }
+
+
 
         protected override void LoadAtlas(int targetAtlasCount)
         {
@@ -71,7 +79,7 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             var path = "Assets/GameRes/Atlas/MenuPanel/btn.spriteatlas";
             GameManager.GetGMComponent<ResComponentGM>().LoadAsset<SpriteAtlas>(path, atlas =>
             {
-                if (atlas == null) {  return; }
+                if (atlas == null) { return; }
                 if (spriteAtlas != null) { return; }
                 spriteAtlas = atlas;
                 loadAtlasCallFunc();
@@ -147,6 +155,9 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             GameTools.loadTextureByAtlas(imgBackNor, mySpriteAtlas, "返回");
             GameTools.loadTextureByAtlas(imgBackClick, mySpriteAtlas, "返回点");
             GameTools.loadTextureByAtlas(imgBackSelect, mySpriteAtlas, "返回选择");
+            GameTools.loadTextureByAtlas(imgSettingNor, mySpriteAtlas, "设置");
+            GameTools.loadTextureByAtlas(imgSettingClick, mySpriteAtlas, "设置点");
+            GameTools.loadTextureByAtlas(imgSettingSelect, mySpriteAtlas, "设置选择");
             GameTools.loadTextureByAtlas(imgExitNor, mySpriteAtlas, "退出旅途");
             GameTools.loadTextureByAtlas(imgExitClick, mySpriteAtlas, "退出旅途点");
             GameTools.loadTextureByAtlas(imgExitSelect, mySpriteAtlas, "退出旅途选择");
@@ -164,11 +175,12 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
 
             // 打开菜单界面时暂停游戏
             var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
-            
-            if (sceneMgr != null) {
+
+            if (sceneMgr != null)
+            {
                 sceneMgr.SetSceneObjIsPause(true);
                 sceneMgr.SetSceneObjAniIsPause(true);
-                
+
             }
             // 部分条件下按钮需要隐藏
             btnSave.gameObject.SetActive(sceneMgr.canShowSaveGame);
@@ -184,12 +196,14 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             btnSave.GetComponent<UIStateMachine>().ChangeTo("Normal");
             btnLoad.GetComponent<UIStateMachine>().ChangeTo("Normal");
             btnBack.GetComponent<UIStateMachine>().ChangeTo("Normal");
+            btnSetting.GetComponent<UIStateMachine>().ChangeTo("Normal");
             btnExit.GetComponent<UIStateMachine>().ChangeTo("Normal");
 
             btnItem.ResetNormalState();
             btnSave.ResetNormalState();
             btnLoad.ResetNormalState();
             btnBack.ResetNormalState();
+            btnSetting.ResetNormalState();
             btnExit.ResetNormalState();
         }
 
@@ -200,7 +214,8 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             proxy.OnMenuActive(false);
             // 关闭菜单界面时恢复游戏
             var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
-            if (sceneMgr != null) {
+            if (sceneMgr != null)
+            {
                 sceneMgr.SetSceneObjAniIsPause(false);
                 var playerEntity = sceneMgr.GetPlayerEntity();
                 if (playerEntity != null && playerEntity.Logic is PlayerLogic playerLogic)
@@ -295,5 +310,19 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
                     }
                 });
         }
+        private void BtnSetting_OnPressed(UIListener obj)
+        {
+            UIUtils.PlayBtnAudio(this);
+            GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(UIPrefabPath.GetUIPrefabPath("SettingPanel"), EUIGroup.Middle, new OpenFormArgs()
+            {
+                callBack = logic =>
+                {
+                    if (logic is SettingFormLogic settingFormLogic)
+                    {
+                        CloseForm();
+                    }
+                }
+            });
+        }     
     }
 }

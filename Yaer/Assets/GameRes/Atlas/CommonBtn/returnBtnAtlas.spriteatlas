@@ -31,13 +31,26 @@ SpriteAtlas:
       enableTightPacking: 1
     secondaryTextureSettings: {}
     variantMultiplier: 1
-    packables: []
+    packables:
+    - {fileID: 102900000, guid: cbe1487656a206148810b3aee5902b60, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: d17ae3204c0e6204b89784925fb2c47f, type: 3}
+  - {fileID: 21300000, guid: e4f3e352b86e1224ea1234c03b7bcd2b, type: 3}
+  - {fileID: 21300000, guid: 8e120933eee402843bf2f802c3ba6702, type: 3}
+  - {fileID: 21300000, guid: e2230b77063e5a6469dfcdcfa2409671, type: 3}
+  - {fileID: 21300000, guid: ab36e17be685a5342bd006160744521b, type: 3}
+  - {fileID: 21300000, guid: 8f8b14abbb415bd4f9dfcd71aef4c3e2, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - returnClick
+  - returnSelect_en
+  - returnClick_en
+  - returnSelect
+  - returnNor_en
+  - returnNor
   m_RenderDataMap: {}
   m_Tag: returnBtnAtlas
   m_IsVariant: 0

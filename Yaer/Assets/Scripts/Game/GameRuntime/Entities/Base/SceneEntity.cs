@@ -25,7 +25,7 @@ namespace Game.GameRuntime.Entities.Base
         public object Handle => handle;
         public IEntityGroup EntityGroup => entityGroup;
 
-        public EntityLogic EntityLogic => entityLogic;
+        public EntityLogic  EntityLogic => entityLogic;
 
         /// <summary>
         ///  场景实体初始化

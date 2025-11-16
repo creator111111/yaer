@@ -7,16 +7,20 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Scene
         public bool KillBossMogut;
         public bool AwakeBossMogut;
 
+        public bool BoxOpened;
+
         public override void ParseInternal(MasterGameData masterData)
         {
             KillBossMogut = masterData.GetValue("WestRappRoadData_KillBossMogut", false);
             AwakeBossMogut = masterData.GetValue("WestRappRoadData_AwakeBossMogut", false);
+            BoxOpened = masterData.GetValue("WestRappRoadData_BoxOpened", false);
         }
 
         public override void SerializeInternal(MasterGameData masterData)
         {
             masterData.SetValue("WestRappRoadData_KillBossMogut", KillBossMogut);
             masterData.SetValue("WestRappRoadData_AwakeBossMogut", AwakeBossMogut);
+            masterData.SetValue("WestRappRoadData_BoxOpened", BoxOpened);
         }
     }
 }

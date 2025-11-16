@@ -354,6 +354,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\DataNode\DataNodeComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\WWWWebRequestAgentHelper.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Path\SpriteAtlasPath.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\ShenLin\ShenLinSceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\UI\EUIGroup.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\ChapterEndAction.cs" />
     <Compile Include="Assets\Scripts\Library\PureMVC\Core\Model.cs" />
@@ -374,6 +375,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\PhysicsDetect\GroundCheck\BaseGroundChecker.cs" />
     <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\Types\Collection Types\ES3QueueType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Base\BaseUIFormLogic.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\ImportantEvent\ImportantEvent.cs" />
     <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\Types\Collection Types\ES32DArrayType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\SetArchiveStringActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Path\SceneAssetPath.cs" />
@@ -914,8 +916,9 @@
     <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\Types\Unity Types\ES3Type_PhysicsMaterial2D.cs" />
     <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Camera.cs" />
     <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\Types\Collection Types\ES3DictionaryType.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Shader.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\ItemShowPanel\ItemShowFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\ChangeSceneInfo.cs" />
+    <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Shader.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Attack\AttackType.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\DefaultSoundGroupHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Interactive\InteractiveComponent.cs" />
@@ -1008,6 +1011,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveManagerOld.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\WebRequestFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Audio\VolumeChangedListener.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\ShenLinSceneData.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\NewGameSceneResConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\PureMVC\MVCComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\HardComponentGM.cs" />
@@ -1167,6 +1171,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\SlimeWoundState.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\BaseSceneResConfig.cs" />
     <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\Types\Unity Types\ES3Type_TriggerModule.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\WestRappRoad\WestRappRoadBox.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\AttackBossMogutState.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Event\EventComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\PlayerSceneData.cs" />
@@ -1226,7 +1231,7 @@
     <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\Types\Collection Types\ES3ArrayType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\ItemShowPanel\ItemShowFormLogic.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\ForestSceneSoldierHeadTurn.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Packages\System.Buffers.4.4.0\LICENSE.TXT" />

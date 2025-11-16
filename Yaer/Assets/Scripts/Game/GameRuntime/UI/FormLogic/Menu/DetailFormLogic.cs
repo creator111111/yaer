@@ -33,8 +33,9 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             frameCanvas2.sortingOrder = canvas.sortingOrder + 1;
             charCanvas2.sortingOrder = canvas.sortingOrder + 2;
             txInfo.text = info;
-            GameTools.setText(textInfo, info);
-            textInfo.GetComponent<Text>().color = Color.white;
+            //这里设置的是Text，而非TMP_Text
+            //GameTools.setText(textInfo, info);
+            txInfo.color = Color.white;
 
             SetPos();
         }

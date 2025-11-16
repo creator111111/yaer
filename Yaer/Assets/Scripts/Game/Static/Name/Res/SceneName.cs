@@ -9,6 +9,7 @@ namespace Game.Static.Name.Res
         public const string NewGameScene = "NewGameScene";
         public const string HomeScene1 = "HomeScene1";
         public const string HomeScene2 = "HomeScene2";
+ 
         public const string SelectClothesScene = "SelectClothesScene";
         /// <summary>
         /// 龙城郊
@@ -26,5 +27,9 @@ namespace Game.Static.Name.Res
         /// 拉普路西
         /// </summary>
         public const string WestRappRoad = "WestRappRoad";
+        /// <summary>
+        /// 深林
+        /// </summary>
+        public const string ShenLin = "ShenLinTest";
     }
 }

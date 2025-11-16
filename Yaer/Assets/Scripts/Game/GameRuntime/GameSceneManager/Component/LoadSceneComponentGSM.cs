@@ -3,6 +3,7 @@ using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.ChangeScene;
 using Game.GameMgr.Component.UI;
+using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.UI.FormLogic.Black;
 using Game.Static.Path;
 
@@ -42,12 +43,8 @@ namespace Game.GameRuntime.GameSceneManager.Component
                             {
                                 // 初始化场景中的怪物
                                 manager.GetModule<LoadSceneComponentGSM>().OnSceneManagerInit();
-                                blackFormLogic.CloseFormFade(() =>
-                                {
-                                    // 触发黑幕结束事件
-                                    // 获取下一个场景上的该组件触发
-                                    manager.GetModule<LoadSceneComponentGSM>().OnBlackFadeEnd();
-                                });
+                                // 延迟1秒后再关闭黑幕
+                                GameManager.Instance.StartCoroutine(WaitAndCloseBlackPanel(1f, blackFormLogic, manager));
                             };
                             // 加载场景
                             GameManager.GetGMComponent<ChangeSceneComponentGM>().LoadScene(new LoadSceneArgs()
@@ -69,8 +66,8 @@ namespace Game.GameRuntime.GameSceneManager.Component
                 GameManager.Instance.onGameSceneManagerReady += manager =>
                 {
                     manager.GetModule<LoadSceneComponentGSM>().OnSceneManagerInit();
-                    // 获取下一个场景上的该组件触发
-                    manager.GetModule<LoadSceneComponentGSM>().OnBlackFadeEnd();
+                    // 延迟1秒后触发黑幕结束事件
+                     GameManager.Instance.StartCoroutine(WaitAndTriggerBlackFadeEnd(1f, manager));
                 };
                 // 加载场景
                 GameManager.GetGMComponent<ChangeSceneComponentGM>().LoadScene(new LoadSceneArgs()
@@ -80,7 +77,28 @@ namespace Game.GameRuntime.GameSceneManager.Component
             }
             
         }
-        
+       
+        // 延迟关闭黑幕的协程
+        private System.Collections.IEnumerator WaitAndCloseBlackPanel(float seconds, BlackFormLogic blackFormLogic, IGameSceneManager manager)
+        {
+            yield return new UnityEngine.WaitForSeconds(seconds);
+            Action callback = () =>
+            {
+                // 触发黑幕结束事件
+                manager.GetModule<LoadSceneComponentGSM>().OnBlackFadeEnd();
+            };
+            blackFormLogic.CloseFormFade(callback);          
+        }
+
+        // 延迟触发黑幕结束事件的协程
+        private System.Collections.IEnumerator WaitAndTriggerBlackFadeEnd(float seconds, IGameSceneManager manager)
+        {
+            yield return new UnityEngine.WaitForSeconds(seconds);
+
+            // 触发黑幕结束事件
+            manager.GetModule<LoadSceneComponentGSM>().OnBlackFadeEnd();
+        }
+
         public void OnBlackFadeEnd() => onEndLoadingSceneEvent?.Invoke();
         public void OnSceneManagerInit()
         {

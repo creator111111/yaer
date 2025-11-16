@@ -6,11 +6,13 @@ using Game.GameRuntime.GameSceneManager.Component;
 using Game.GameRuntime.GameSceneManager.Component.Story;
 using Game.GameRuntime.Story.ForestSceneFirstEnter;
 using Game.Static.Path;
+using UnityEngine.SceneManagement;
 
 namespace Game.GameRuntime.Entities.SceneEntities.ForestScene
 {
     public class HomeDoorStoryTriggerLogic : BaseSceneEntityLogic
     {
+        public ForestSceneSoldierHeadTurn SoldierHeadTurn;
         protected internal override void OnInit(object userData)
         {
             base.OnInit(userData);
@@ -19,8 +21,11 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestScene
             {
                 if (SceneManager.GetArchiveData<ForestSceneData>().homeDoorStoryComplete == false)
                 {
+                   
                     SceneManager.GetModule<StoryComponentGSM>().TriggerStory("ForestSceneLaiFlyStory");
+                    SoldierHeadTurn.SetTurnedHead();
                 }
+
             };
         }
     }
