@@ -861,6 +861,12 @@ namespace Game.GameRuntime.Entities.Player
             }
             
         }
+
+        public void ChangeStateToClimb() 
+        {
+            var csAnimator = componentSystem.GetComponent<PlayerCsAnimator>();
+            csAnimator.ChangeState<ClimbUpState>();
+        }
         // 改变为站立状态
         public void ChangeStateToIdle()
         {

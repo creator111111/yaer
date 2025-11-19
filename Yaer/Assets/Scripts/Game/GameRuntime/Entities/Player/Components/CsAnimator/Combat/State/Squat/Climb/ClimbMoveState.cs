@@ -36,18 +36,18 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Sq
                     ForestEastTreeBridgeStoryMgr.getInstance().CameraAction();
                 }
             }
-            if (inputComponent.HasMoveInput() == false)
-            {
-                ChangeState<ClimbUpState>();
-                return;
-            }
+            //if (inputComponent.HasMoveInput() == false)
+            //{
+            //    ChangeState<ClimbUpState>();
+            //    return;
+            //}
             // 如果松开按键则取消蹲下状态
             if (!inputComponent.HasSquatInput())
             {
                 SquatUpAction();
                 return;
             }
-            
+
         }
 
         public override void Exit()

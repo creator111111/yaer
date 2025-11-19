@@ -58,9 +58,11 @@ public class CanNotSomeActionArea : MonoBehaviour
             case DisableAcitonType.None:
             case DisableAcitonType.SquatUp:
                 playerLogic.isEnableSquatUp = !isEnterArea; // 进入当前区域则禁用
+
                 break;
             case DisableAcitonType.Jump:
                 playerLogic.isEnableJump = !isEnterArea;
+                break;
                 break;
             default:
                 break;

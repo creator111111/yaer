@@ -5,6 +5,7 @@ using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Scene;
 using Game.GameMgr.Manager.Settings;
 using Game.GameMgr.Manager.Settings.Helper;
+using Game.GameMgr.Manager.Settings.interf;
 using Game.GameRuntime.Entities.Component;
 using Game.GameRuntime.Entities.Component.Health;
 using Game.GameRuntime.Entities.Player;
@@ -13,6 +14,7 @@ using Game.GameRuntime.UI.FormLogic.Fighting;
 using Game.Static.Name.Clothes;
 using UnityEngine;
 using UnityEngine.UI;
+using static Game.GameRuntime.UI.FormLogic.Fighting.FightingIllustration;
 
 namespace Game.GameRuntime.UI.FormLogic
 {
@@ -39,7 +41,7 @@ namespace Game.GameRuntime.UI.FormLogic
         private float MaxStamina;
 
         private bool FirstRefresh;
-
+        private IllustrationState currentState = IllustrationState.Normal;
         bool hasUpdateIllustration = false; // 是否刷新当前战斗立绘
         bool hasInitUI = false; // 是否初始化某些UI
         GameObject itemImgBgArea;
@@ -52,7 +54,8 @@ namespace Game.GameRuntime.UI.FormLogic
                 if (GameManager.GetGameSceneManager() != null)
                 {
                     return GameManager.GetGameSceneManager().GetArchiveData<ForestSceneData>();
-                }else { return null; }
+                }
+                else { return null; }
             }
         }
 
@@ -79,7 +82,7 @@ namespace Game.GameRuntime.UI.FormLogic
         protected internal override void OnOpen(object userData)
         {
             base.OnOpen(userData);
-
+            settingManager.onSettingsUpdated += SettingManager_onSettingsUpdated;
             settingManager.OnBattleImageChange += this.UpdateBattleImageVisiable;
             settingManager.OnShowWoundChange += this.UpdateWoundVisiable;
 
@@ -103,6 +106,17 @@ namespace Game.GameRuntime.UI.FormLogic
             hasUpdateIllustration = false;
             //UpdateIllustrationState();
             itemImgBgArea.GetComponent<CanvasGroup>().alpha = 1f;
+        }
+
+        private void SettingManager_onSettingsUpdated(object obj)
+        {
+
+            SettingsConfigData settingsConfigData = obj as SettingsConfigData;
+            bool ShowImage = settingsConfigData.showBattleImage;
+            illustration.SetBattleImageShow(ShowImage);
+            var hp = GameManager.GetGMComponent<EntityComponentGM>().GetEntityLogic<PlayerLogic>().componentSystem.GetComponent<HealthComponent>().hp;
+            UpdateHp(hp);
+            UpdateIllustrationState();
         }
 
         protected internal override void OnClose(bool isShutdown, object userData)
@@ -147,7 +161,7 @@ namespace Game.GameRuntime.UI.FormLogic
                 hasUpdateIllustration = true;
                 var clothesData = GameManager.GetGameSceneManager().GetArchiveData<PlayerClothesData>();
                 string headWear = clothesData.GetClothesName(BoneName.Headwear);
-                illustration.Initialize(FightingIllustration.IllustrationState.Normal, headWear);
+                illustration.Initialize(this.currentState, headWear);
 
                 broken.Initialize(headWear);
             }
@@ -216,23 +230,31 @@ namespace Game.GameRuntime.UI.FormLogic
                 if (clothesBroken)
                 {
                     illustration.SetState(FightingIllustration.IllustrationState.Damaged);
+                    currentState = FightingIllustration.IllustrationState.Damaged;
                 }
                 else
                 {
                     illustration.SetState(FightingIllustration.IllustrationState.Normal);
+                    currentState = FightingIllustration.IllustrationState.Normal;
                 }
             }
             else if (hp > 0.25f && hp <= 0.5f)
+            {
                 illustration.SetState(FightingIllustration.IllustrationState.Damaged);
+                currentState = FightingIllustration.IllustrationState.Damaged;
+            }
+
             else if (hp <= 0.25f)
             {
                 if (isShowWound)
                 {
                     illustration.SetState(FightingIllustration.IllustrationState.DamagedAndWounded);
+                    currentState = FightingIllustration.IllustrationState.DamagedAndWounded;
                 }
                 else
                 {
                     illustration.SetState(FightingIllustration.IllustrationState.Damaged);
+                    currentState = FightingIllustration.IllustrationState.Damaged;
                 }
             }
         }
@@ -282,17 +304,27 @@ namespace Game.GameRuntime.UI.FormLogic
 
         public void Show()
         {
+            bool _show = settingManager.GetBool("showBattleImage");
+            if (!_show)
+            {
+                return;
+            }
             animator.SetTrigger("Show");
+          
             WoundEffectCanvasGroup.DOKill();
             WoundEffectCanvasGroup.DOFade(1, 0.5f);
 
             UpdateBattleImageVisiable(settingManager.LoadSetting<SettingsConfigData>().showBattleImage);
+
         }
 
         public void UpdateBattleImageVisiable(bool isShow)
         {
             if (ForestSceneData == null) { return; }
             illustration.gameObject.SetActive(isShow && ForestSceneData.homeDoorStoryComplete);
+            var hp = GameManager.GetGMComponent<EntityComponentGM>().GetEntityLogic<PlayerLogic>().componentSystem.GetComponent<HealthComponent>().hp;
+            UpdateHp(hp);
+            UpdateIllustrationState();
         }
 
         private void UpdateWoundVisiable(bool showWound)

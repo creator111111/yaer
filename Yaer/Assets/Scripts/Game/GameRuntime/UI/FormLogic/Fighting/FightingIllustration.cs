@@ -27,13 +27,14 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
         private Animator Animator;
         private new Camera camera;
 
+        private bool _imageShow = true;
+
         private float mul;
         private Rect rec;
         private bool isIn = false;
 
         private PlayerLogic playerLogic;
         private IllustrationState State = IllustrationState.Normal;
-
         private bool IllustrationShowSign = false;
 
         private void Awake()
@@ -51,8 +52,14 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
 
         private void Update()
         {
+            updateImageShow(this._imageShow);
             CheckPlayerPosition();
             RandomBlink();
+        }
+
+        private void updateImageShow(bool value)
+        {
+            this.gameObject.SetActive(value);
         }
 
         private void OnEnable()
@@ -64,9 +71,14 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
             }
         }
 
+        public void SetBattleImageShow(bool b)
+        {
+            _imageShow = b;
+        }
+
         private void SetEffect()
         {
-            
+
         }
 
         private Rect GetScreenRect(RectTransform rectTransform)
@@ -74,11 +86,11 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
 
             Vector2 screenPointMin = new Vector2(float.MaxValue, float.MaxValue);
             Vector2 screenPointMax = new Vector2(float.MinValue, float.MinValue);
-            
+
             // 获取UI元素的四个角点
             Vector3[] worldCorners = new Vector3[4];
             rectTransform.GetWorldCorners(worldCorners);
-            
+
             // 对于每个角点，转换为屏幕坐标
             for (int i = 0; i < 4; i++)
             {
@@ -88,33 +100,33 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
                 {
                     uiCamera = camera; // 使用主相机
                 }
-                
+
                 Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(uiCamera, worldCorners[i]);
-                
+
                 // 更新最小和最大屏幕坐标
                 screenPointMin.x = Mathf.Min(screenPointMin.x, screenPoint.x);
                 screenPointMin.y = Mathf.Min(screenPointMin.y, screenPoint.y);
                 screenPointMax.x = Mathf.Max(screenPointMax.x, screenPoint.x);
                 screenPointMax.y = Mathf.Max(screenPointMax.y, screenPoint.y);
             }
-            
+
             // 创建屏幕空间中的矩形
             float width = screenPointMax.x - screenPointMin.x;
             float height = screenPointMax.y - screenPointMin.y;
-            
+
             // 计算中心位置
             float centerX = screenPointMin.x + width / 2;
             float centerY = screenPointMin.y + height / 2;
-            
+
             // 将矩形扩大10%
             float scaleFactor = 1.2f; // 扩大10%
             float newWidth = width * scaleFactor;
             float newHeight = height * scaleFactor;
-            
+
             // 基于中心位置重新计算矩形
-            return new Rect(centerX - newWidth / 2, 
-                           centerY - newHeight / 2, 
-                           newWidth, 
+            return new Rect(centerX - newWidth / 2,
+                           centerY - newHeight / 2,
+                           newWidth,
                            newHeight);
         }
 
@@ -201,18 +213,18 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
             State = state;
             switch (State)
             {
-                 case IllustrationState.Normal:
-                     Animator.SetTrigger("Normal");
-                     break;
-                 case IllustrationState.Damaged:
-                     Animator.SetTrigger("Damaged");
-                     break;
-                 case IllustrationState.DamagedAndWounded:
-                     Animator.SetTrigger("DamagedAndWounded");
-                     break;
-                 default:
+                case IllustrationState.Normal:
+                    Animator.SetTrigger("Normal");
+                    break;
+                case IllustrationState.Damaged:
+                    Animator.SetTrigger("Damaged");
+                    break;
+                case IllustrationState.DamagedAndWounded:
+                    Animator.SetTrigger("DamagedAndWounded");
+                    break;
+                default:
                     Debug.LogError("未知状态！");
-                     break;
+                    break;
             }
         }
 

@@ -89,10 +89,10 @@ namespace Game.GameRuntime.Entities.SceneEntities
             {
                 playerLogic.ChangeStateToSquat();
             }
-            //else
-            //{
-            //    ChangePlayerStateOnOutTree();
-            //}
+            else
+            {
+                ChangePlayerStateOnOutTree();
+            }
             ForestEastTreeBridgeStoryMgr.getInstance().ChangeEnterAndOutNodeActive(isEnterTree);
             // 设置人物走动一段距离后再黑屏
             var moveCpn = playerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
