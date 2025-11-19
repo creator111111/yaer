@@ -167,6 +167,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Goods\Sword\SwordFall2State.cs" />
     <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\ES3Crypto.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasExtend\DialogueTMPUGUI.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\ForestSceneSoldierHeadTurn.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Setting\ISettingHelper.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Setting\DefaultSettingHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\PureMVC\GameFacade.cs" />
@@ -1231,7 +1232,6 @@
     <Compile Include="Assets\Scripts\Library\Easy Save 3\Scripts\Types\Collection Types\ES3ArrayType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\ForestSceneSoldierHeadTurn.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Packages\System.Buffers.4.4.0\LICENSE.TXT" />

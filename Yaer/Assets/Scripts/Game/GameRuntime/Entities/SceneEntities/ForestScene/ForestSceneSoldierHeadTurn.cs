@@ -30,7 +30,10 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestScene
 
         private HeadState currentHeadState = HeadState.Normal;
         private Animator bodyAnimator;
-
+        protected override void Start()
+        {
+            base.Start();
+        }
         protected internal override void OnInit(object userData)
         {
             base.OnInit(userData);

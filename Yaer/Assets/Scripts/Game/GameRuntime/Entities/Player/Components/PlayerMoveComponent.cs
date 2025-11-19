@@ -20,17 +20,17 @@ namespace Game.GameRuntime.Entities.Player.Components
         [SerializeField] private float forwardDetDistance = 0.5f;
         [SerializeField] private Transform forwardDetTsf;
 
-        [Header("移动")] 
+        [Header("移动")]
         [SerializeField] private float runSpeed;
         [SerializeField] private float walkSpeed;
         [SerializeField] private float climbSpeed;
         [SerializeField] private float climbSpeedScale;
 
-        [Header("跳跃")] 
+        [Header("跳跃")]
         [SerializeField] private float jumpHeight = 2f;
         [SerializeField] private float jumpDistance = 1f;
 
-        [Header("击飞")] 
+        [Header("击飞")]
         [SerializeField] private float damageFlyHeight = 3f;
         [SerializeField] private float damageFlyDistance = 10f;
 
@@ -91,7 +91,7 @@ namespace Game.GameRuntime.Entities.Player.Components
             {
                 return;
             }
-            
+
             base.OnUpdate();
         }
 
@@ -101,7 +101,7 @@ namespace Game.GameRuntime.Entities.Player.Components
             {
                 return;
             }
-            
+
             base.OnFixedUpdate();
         }
 

@@ -1,5 +1,6 @@
 using Game.GameMgr;
 using Game.GameMgr.Component;
+using Game.GameRuntime.GameSceneManager.Base;
 using Game.Static.Enum;
 using System.Collections.Generic;
 using UnityEngine;
@@ -85,6 +86,11 @@ namespace Game.GameRuntime.Entities.Component
         // 获取某个动作状态消耗的体力值
         public float GetCostStamina(string stateName)
         {
+            var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
+            if (sceneMgr.GetSceneObjIsPause())
+            {
+                return 0;
+            }
             switch (stateName)
             {
                 case "NorAtkState_1":

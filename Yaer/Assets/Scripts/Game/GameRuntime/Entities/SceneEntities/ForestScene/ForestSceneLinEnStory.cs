@@ -17,9 +17,13 @@ namespace Game.GameRuntime.Story.ForestSceneFirstEnter
 {
     public class ForestSceneLinEnStory : BaseSceneEntityLogic
     {
+
+        
         [SerializeField] private GameObject linEn;
         [SerializeField] private Transform cameraTrack;
 
+
+        public const string Soldier1HeadTurnLogic = "Soldier1HeadTurnLogic";
         public void PrepaerPlay()
         {
             linEn.gameObject.SetActive(true);
@@ -53,14 +57,8 @@ namespace Game.GameRuntime.Story.ForestSceneFirstEnter
         public void OnCameraMoveEnd()
         {
             SceneManager.GetModule<SceneEntityComponentGSM>().GetAllSceneEntities().
-               Find(X => X.name == "Soldier1").
+               Find(X => X.name == Soldier1HeadTurnLogic).
                transform.GetComponent<ForestSceneSoldierHeadTurn>().SetNormalHead();
-            
-            Invoke("SwitchCameraToPlayer", 2.0f);
-        }
-
-        private void SwitchCameraToPlayer()
-        {
             SceneManager.GetModule<CameraComponentGSM>().SetLock(false);
             // 摄像机移动回雅尔
             SceneManager.GetModule<CameraComponentGSM>().SetFollow(GameManager.GetGMComponent<EntityComponentGM>().GetEntityLogic<PlayerLogic>().transform);

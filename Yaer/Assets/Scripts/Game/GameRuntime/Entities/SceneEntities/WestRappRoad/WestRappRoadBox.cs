@@ -57,6 +57,7 @@ namespace Game.GameRuntime.Entities.SceneEntities.HomeScene2
             SceneManager.GetModule<TipsComponentGSM>().OpenTipsForm("GetHpBall");
             SceneManager.GetArchiveData<PlayerBagData>().AddMainItem(EMainItemName.MpBall, 3);
             SceneManager.GetModule<TipsComponentGSM>().OpenTipsForm("GetMpBall");
+            SceneManager.GetModule<TipsComponentGSM>().OpenTipsForm("ImportantEvent");
         }
 
         private void OpenBox(InteractiveComponent component)

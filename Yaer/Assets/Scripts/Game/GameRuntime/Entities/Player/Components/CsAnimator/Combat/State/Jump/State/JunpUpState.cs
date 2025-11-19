@@ -55,12 +55,20 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Ju
         public override void Update()
         {
             base.Update();
-            if (playerLogic.hasInStoryEventState) {
+            if (playerLogic.hasInStoryEventState)
+            {
                 moveComponent.StopMove();
                 ChangeState<JumpFallState>();
                 return;
             }
-            if (moveComponent.IsMoveDown) ChangeState<JumpFallState>();
+            if (moveComponent.IsMoveUp)
+            {
+
+            }
+            if (moveComponent.IsMoveDown)
+            {
+                ChangeState<JumpFallState>();
+            }
         }
 
         private void JumpAddSpeed(string msg)
