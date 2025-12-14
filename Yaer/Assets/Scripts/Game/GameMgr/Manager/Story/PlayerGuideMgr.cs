@@ -6,15 +6,15 @@ using Game.Static.Enum;
 using System;
 using UnityEngine.Rendering;
 
-//   Íæ¼ÒÖ¸Òı¹ÜÀíÆ÷
+//   ç©å®¶æŒ‡å¼•ç®¡ç†å™¨
 public class PlayerGuideMgr
 {
-    public bool inShowJumpTips { get; set; } // ÊÇ·ñÔÚÌáÊ¾ÌøÔ¾
-    public bool inShowSquatTips { get; set; } // ÊÇ·ñÔÚÌáÊ¾¶×ÏÂ
-    public bool inShowNorAtkTips { get; set; } // ÊÇ·ñÌáÊ¾ÆÕÍ¨¹¥»÷
-    public bool inShowSmashAtkTips { get; set; } // ÊÇ·ñÌáÊ¾ÖØ»÷
-    public bool inShowDashAtkTips { get; set; } // ÊÇ·ñÌáÊ¾³å´Ì
-    public bool inShowSitTips { get; set; } // ÊÇ·ñÌáÊ¾×øÏÂ
+    public bool inShowJumpTips { get; set; } // æ˜¯å¦åœ¨æç¤ºè·³è·ƒ
+    public bool inShowSquatTips { get; set; } // æ˜¯å¦åœ¨æç¤ºè¹²ä¸‹
+    public bool inShowNorAtkTips { get; set; } // æ˜¯å¦æç¤ºæ™®é€šæ”»å‡»
+    public bool inShowSmashAtkTips { get; set; } // æ˜¯å¦æç¤ºé‡å‡»
+    public bool inShowDashAtkTips { get; set; } // æ˜¯å¦æç¤ºå†²åˆº
+    public bool inShowSitTips { get; set; } // æ˜¯å¦æç¤ºåä¸‹
 
 
     public readonly string JUMP_GUIDE = "Jump";
@@ -44,7 +44,7 @@ public class PlayerGuideMgr
         inShowDashAtkTips = DASHATK_GUIDE == value;
         if (inShowJumpTips)
         {
-            // ÌáÊ¾ÌøÔ¾
+            // æç¤ºè·³è·ƒ
             ShowPlayerKeyTipsNode(ControlInputType.Jump);
         }
         else if (inShowSquatTips)
@@ -69,7 +69,7 @@ public class PlayerGuideMgr
         }
     }
 
-    // È¥µôÄ³¸ö°´¼üÌáÊ¾
+    // å»æ‰æŸä¸ªæŒ‰é”®æç¤º
     public void RemoveKeyTips(string value)
     {
         inShowJumpTips = JUMP_GUIDE == value ? false : inShowJumpTips;
@@ -95,7 +95,7 @@ public class PlayerGuideMgr
         if (playerLogic && !playerLogic.isDead) { playerLogic.ShowActionKeyTipsNode(false); }
     }
 
-    // ÊÇ·ñ´¦ÓÚÈÎÒâÖ¸Òı×´Ì¬ÖĞ
+    // æ˜¯å¦å¤„äºä»»æ„æŒ‡å¼•çŠ¶æ€ä¸­
     public bool hasAnyKeyTips()
     {
         return inShowJumpTips || inShowSquatTips || inShowNorAtkTips || inShowSitTips

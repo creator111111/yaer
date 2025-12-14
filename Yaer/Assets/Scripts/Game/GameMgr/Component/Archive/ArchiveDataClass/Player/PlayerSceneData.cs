@@ -16,7 +16,7 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
         public Vector2 pos { get; set; }
         public string lastSceneName;
         public string playerState;
-        public bool isInTreeBridge { get; set; } // 当前人物是否处于东城郊区的树洞中
+        public bool isInTreeBridge { get; set; } // 褰撳墠浜虹墿鏄惁澶勪簬涓滃煄閮婂尯鐨勬爲娲炰腑
 
         public override void ParseInternal(MasterGameData masterData)
         {
