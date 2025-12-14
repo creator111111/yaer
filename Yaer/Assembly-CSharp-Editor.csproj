@@ -67,14 +67,11 @@
     <Compile Include="Assets\Scripts\Debug\Editor\Components\ChangeClothesEditorComponentGT.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\FileSystemComponentInspector.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceBuilder\ResourceBuilderController.ResourceCode.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3GlobalReferencesEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Misc\ConfigPathAttribute.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3PlayMakerEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\DataNodeComponentInspector.cs" />
     <Compile Include="Assets\Editor\Tool\ResLocationTool\ResLocationTool.cs" />
     <Compile Include="Assets\Editor\Tool\AnimationTool\Shadow\AnimaShadowTool.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\ProcedureComponentInspector.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3ScriptingDefineSymbols.cs" />
     <Compile Include="Assets\Editor\CustomInspector\BossMogutLogicEditor.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\PhysicsDetect\FindTarget\Editor\DetectorComponentInspector.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\EntityComponentInspector.cs" />
@@ -85,7 +82,6 @@
     <Compile Include="Assets\Editor\Tool\XmlTool\XmlGenerateCsharp.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\SelectClothes\Editor\SelectClothesSceneMgrInsp.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceCollection\Resource.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3EditorUtility.cs" />
     <Compile Include="Assets\Editor\Hierarchy\UIPanelHierarchy.cs" />
     <Compile Include="Assets\Editor\Tool\AnimationTool\Pos\RecordingSpeedData.cs" />
     <Compile Include="Assets\Editor\Tool\ConfigTool\OpenJsonFileHandler.cs" />
@@ -106,13 +102,10 @@
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceEditor\SourceFolder.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceBuilder\ResourceBuilderController.FileSystemHelper.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceBuilder\ResourceBuilderController.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\SettingsWindow.cs" />
     <Compile Include="Assets\Scripts\Debug\Editor\Components\AddItemEditorComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\DebuggerComponentInspector.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\TypesWindow.cs" />
     <Compile Include="Assets\Editor\Tool\ExcelTool\DialogueConfigExcelTool.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceBuilder\IBuildEventHandler.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\AutoSaveWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceAnalyzer\AssetsOrder.cs" />
     <Compile Include="Assets\Editor\Tool\ExcelTool\ExcelGenerateBinary.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\BaseComponentInspector.cs" />
@@ -121,28 +114,21 @@
     <Compile Include="Assets\Editor\Tool\ConfigTool\ConfigTool.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourcePackBuilder\ResourcePackBuilderController.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceAnalyzer\ResourceAnalyzerController.Stamp.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ToolsWindow.cs" />
     <Compile Include="Assets\Editor\Tool\Map\MapEditorWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceSyncTools\ResourceSyncTools.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3AutoSaveMgrEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceEditor\ResourceEditorConfigPathAttribute.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\AddES3Prefab.cs" />
     <Compile Include="Assets\Editor\Tool\ExcelTool\AchievementConfigExcelTool.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ReferencesWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GFExtend\ComponentSystemEditor\ComponentSystemMonoInspector.cs" />
     <Compile Include="Assets\Editor\Tool\ExcelTool\MainItemConfigExcelTool.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceAnalyzer\ResourceAnalyzerController.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\EventComponentInspector.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3GameObjectEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\SoundComponentInspector.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Misc\BuildSettingsConfigPathAttribute.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\HomeWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\UIComponentInspector.cs" />
     <Compile Include="Assets\Editor\Tool\Sprite\SpritePivotTool.cs" />
     <Compile Include="Assets\Editor\Tool\ExcelTool\DataInfoExcelTool.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Misc\OpenFolder.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceAnalyzer\ScatteredAssetsOrder.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\EnableES3AssemblyDefinitions.cs" />
     <Compile Include="Assets\Editor\Tool\UITool\UITool.cs" />
     <Compile Include="Assets\Editor\Tool\XmlTool\XmlTool.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceCollection\LoadType.cs" />
@@ -150,20 +136,17 @@
     <Compile Include="Assets\Editor\Tool\PlayerStatsEditorWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceAnalyzer\DependencyData.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\SettingComponentInspector.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3SettingsEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceSyncTools\ResourceSyncToolsController.cs" />
     <Compile Include="Assets\Editor\CustomInspector\PlayerLogicEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\GameFrameworkInspector.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceEditor\ResourceEditor.ResourceItem.cs" />
     <Compile Include="Assets\Editor\Tool\Sprite\SpritePivotAlignToolComponentEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\SceneComponentInspector.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3ReferenceMgrEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceBuilder\ResourceBuilderController.AssetData.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceBuilder\ResourceBuilderController.ResourceData.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Misc\Type.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GFExtend\ComponentSystemEditor\FindComponentEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceBuilder\AssetBundleCompressionType.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3Postprocessor.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Settings\Helper\Editor\SettingManagerVisionHelperInspector.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Forest\Editor\ForestSceMgrInspector.cs" />
     <Compile Include="Assets\Editor\Tool\AnimationTool\Pos\CurveSerializer.cs" />
@@ -176,13 +159,9 @@
     <Compile Include="Assets\Editor\Tool\AnimationTool\Pos\AnimationTool.cs" />
     <Compile Include="Assets\Scripts\Debug\Editor\GameToolEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Misc\LogRedirection.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3EditorStyle.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceCollection\AssetType.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceEditor\ResourceEditor.MenuState.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3PrefabEditor.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3Window.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Component\Editor\UIStateEditor.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3InspectorInfoEditor.cs" />
     <Compile Include="Assets\Editor\Tool\ExcelTool\MonsterConfigExcelTool.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\UI\EditorUI.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Inspector\EditorResourceComponentInspector.cs" />
@@ -195,7 +174,6 @@
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Misc\BuildSettings.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Misc\Help.cs" />
     <Compile Include="Assets\Editor\Tool\ResLocationTool\SaveData.cs" />
-    <Compile Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3AutoSaveEditor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceBuilder\ResourceBuilderConfigPathAttribute.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceBuilder\ResourceBuilderController.VersionListData.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Misc\HelperInfo.cs" />
@@ -203,14 +181,8 @@
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceEditor\AssetSorterType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3ValueTypeTemplate.txt" />
-    <None Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3ComponentTypeTemplate.txt" />
     <None Include="Assets\Editor\GFAssetBundleSettings\xml\ResourceCollection.xml" />
-    <None Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3TypeTemplate.txt" />
-    <None Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3Type_MaterialTemplate.txt" />
-    <None Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3ScriptableObjectTypeTemplate.txt" />
     <None Include="Assets\Editor\GFAssetBundleSettings\xml\ResourceEditor.xml" />
-    <None Include="Assets\Scripts\Library\Easy Save 3\Editor\ES3ClassTypeTemplate.txt" />
     <None Include="Assets\Editor\GFAssetBundleSettings\xml\ResourceBuilder.xml" />
   </ItemGroup>
   <ItemGroup>
