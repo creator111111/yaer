@@ -1,4 +1,4 @@
-﻿using Game.GameMgr;
+using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.UI;
 using Game.GameRuntime.UI.Component;
@@ -60,6 +60,11 @@ namespace Game.GameRuntime.UI.FormLogic.SelectHard
             btnHardest.OnNormal += OnNormal;
 
             componentSystemUI.GetComponent<BlackFadeComponent>().AddControl(btnEasy.Control, btnNormal.Control, btnHard.Control, btnHardest.Control);
+
+            var buttonGroup = GetComponent<SelectHardButtonGroup>();
+            if (buttonGroup != null)
+                buttonGroup.Init(btnEasy, btnNormal, btnHard, btnHardest);
+
             LoadAtlas(3);
         }
         protected override void LoadAtlas(int targetAtlasCount)
@@ -156,7 +161,7 @@ namespace Game.GameRuntime.UI.FormLogic.SelectHard
 
         private void OnNormal(UIListener listener)
         {
-            listener.GetComponent<Animator>().SetTrigger("Normal");
+            listener.GetComponent<Animator>().SetTrigger("ReturnToNormal");
             listener.GetComponent<UIStateMachine>().ChangeTo("Normal");
 
             var listenerName = listener.gameObject.name;

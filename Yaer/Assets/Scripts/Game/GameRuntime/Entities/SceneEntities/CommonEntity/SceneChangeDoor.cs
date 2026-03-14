@@ -64,7 +64,7 @@ namespace Game.GameRuntime.Entities.Component.Map
         {
             if (string.IsNullOrEmpty(NextSceneName))
             {
-                Debug.LogError($"Î´ÅäÖÃÏÂÒ»¸ö³¡¾°µÄÃû³Æ");
+                Debug.LogError($"Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             }
             else
             {
@@ -72,7 +72,7 @@ namespace Game.GameRuntime.Entities.Component.Map
                 {
                     if (isEnter)
                     {
-                        Debug.LogWarning($"SceneChangeDoorÒÑ½øÈë¹ý");
+                        Debug.LogWarning($"SceneChangeDoorï¿½Ñ½ï¿½ï¿½ï¿½ï¿½");
                     }
                     else
                     {
@@ -102,7 +102,7 @@ namespace Game.GameRuntime.Entities.Component.Map
                 else
                 {
                     OnEnterFail();
-                    Debug.Log($"³¡¾°{NextSceneName}Î´½âËø");
+                    Debug.Log($"ï¿½ï¿½ï¿½ï¿½{NextSceneName}Î´ï¿½ï¿½ï¿½ï¿½");
                 }
             }
         }

@@ -39,6 +39,7 @@ namespace EditorC.Tool.GameTool
         {
             AddComponent<AddItemEditorComponent>();
             AddComponent<ChangeClothesEditorComponentGT>();
+            AddComponent<AddDateEditorComponentGT>();
         }
 
         private T GetComponent<T>() where T : BaseGTEditorComponent
