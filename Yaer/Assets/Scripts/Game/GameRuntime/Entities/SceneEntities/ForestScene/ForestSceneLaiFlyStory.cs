@@ -1,4 +1,4 @@
-﻿using Game.GameMgr;
+using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Scene;
 using Game.GameRuntime.Entities.Base.BaseSceneObj;
@@ -15,6 +15,7 @@ namespace Game.GameRuntime.Story.ForestSceneFirstEnter
         [SerializeField] private GameObject lai;
 
         [SerializeField] private GameObject NormalLai;
+        [SerializeField] private Animator soldierTurnAnimator;
         public SoundToggleComponent soundSfxCpn;
         public SoundToggleComponent kingSoundSfxCpn;
 
@@ -42,13 +43,28 @@ namespace Game.GameRuntime.Story.ForestSceneFirstEnter
 
         public void ShowKing()
         {
-            // king移动
-            king.GetComponent<Animator>().Play("ShowKing");
+            StartSoldierTurn();
         }
 
         public void LaiFly()
         {
             lai.GetComponent<Animator>().Play("LaiFly");
+        }
+
+        public void StartSoldierTurn()
+        {
+            if (soldierTurnAnimator == null)
+            {
+                PlayKingShowAnim();
+                return;
+            }
+
+            soldierTurnAnimator.SetTrigger("Turn");
+        }
+
+        public void OnSoldierTurnEnd()
+        {
+            PlayKingShowAnim();
         }
 
         void ShowLaiFlyAudio(string arg)
@@ -68,6 +84,12 @@ namespace Game.GameRuntime.Story.ForestSceneFirstEnter
             var realResPath = string.Format(baseFilePath, resName);
             kingSoundSfxCpn.ChangeSoundRes(realResPath);
             PlayAudio(kingSoundSfxCpn, true); // 播放一次走路音效
+        }
+
+        void PlayKingShowAnim()
+        {
+            // king移动
+            king.GetComponent<Animator>().Play("ShowKing");
         }
     }
 }
