@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Game.GameMgr;
 using Game.GameMgr.Component;
@@ -10,6 +10,9 @@ namespace Game.GameRuntime.Entities.Component.Interactive
 {
     public class InteractiveComponent : BaseGFComponentEntity
     {
+        // 交互判定使用 collider bounds 相交时，适当放宽容差，避免因为偏移/动画导致“明明靠近但不相交”。
+        private const float OverlapPadding = 0.2f;
+
         [SerializeField] private Collider2D interactiveCollider; // 触发交互的碰撞盒区域
         [SerializeField] private List<RaycastListener> raycastListeners = new List<RaycastListener>(); // 用于射线检测的 Collider2D 列表
         [SerializeField] public List<CldInteractiveListener> cldListeners = new List<CldInteractiveListener>(); // 用于碰撞检测的 Collider2D 列表
@@ -106,12 +109,20 @@ namespace Game.GameRuntime.Entities.Component.Interactive
         /// </summary>
         public bool AreCollidersOverlapping(Collider2D other)
         {
-            return interactiveCollider.bounds.Intersects(other.bounds);
+            if (interactiveCollider == null || other == null) return false;
+            var a = interactiveCollider.bounds;
+            var b = other.bounds;
+            a.Expand(new Vector3(OverlapPadding, OverlapPadding, 0));
+            return a.Intersects(b);
         }
 
         public bool AreCollidersOverlapping(InteractiveComponent other)
         {
-            return interactiveCollider.bounds.Intersects(other.InteractiveCollider.bounds);
+            if (interactiveCollider == null || other == null || other.InteractiveCollider == null) return false;
+            var a = interactiveCollider.bounds;
+            var b = other.InteractiveCollider.bounds;
+            a.Expand(new Vector3(OverlapPadding, OverlapPadding, 0));
+            return a.Intersects(b);
         }
 
         /// <summary>

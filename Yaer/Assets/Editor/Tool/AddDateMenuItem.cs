@@ -22,8 +22,16 @@ public static class AddDateMenuItem
             Debug.Log("增加日期: 存档不可用");
             return;
         }
+
+        // 存档日期 +1
         archive.GetData<DateData>().AddOneDay();
-        var display = Object.FindObjectOfType<CalendarDateDisplay>(true);
-        display?.RefreshFromArchive();
+
+        // 刷新文本日期
+        var textDisplay = Object.FindObjectOfType<CalendarDateDisplay>(true);
+        textDisplay?.RefreshFromArchive();
+
+        // 刷新菜单里数字图片日期
+        var spriteDisplay = Object.FindObjectOfType<MenuCalendarDayNumDisplay>(true);
+        spriteDisplay?.RefreshFromArchive();
     }
 }

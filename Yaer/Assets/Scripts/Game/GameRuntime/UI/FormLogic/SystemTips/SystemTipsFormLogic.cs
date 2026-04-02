@@ -1,4 +1,4 @@
-﻿using Game.GameMgr.Component;
+using Game.GameMgr.Component;
 using Game.GameMgr;
 using Game.GameRuntime.UI.FormLogic.Base;
 using Game.GameRuntime.UI.FormLogic.SystemTips.Args;
@@ -113,6 +113,7 @@ namespace Game.GameRuntime.UI.FormLogic.SystemTips
             base.OnOpen(userData);
 
             proxy.onUpdateTips = UpdateInfo;
+            proxy.ResetCallbacks();
             proxy.UpdateTips((ESystemTipsType)userData);
         }
 

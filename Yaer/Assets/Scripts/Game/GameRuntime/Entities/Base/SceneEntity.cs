@@ -10,7 +10,7 @@ namespace Game.GameRuntime.Entities.Base
     /// <summary>
     /// 场景实体
     /// </summary>
-    public sealed class SceneEntity : MonoBehaviour, IEntity
+    public sealed class SceneEntity : MonoBehaviour, IEntity//场景实体容器，负责把“逻辑类”接起来
     {
         private int id;
         private bool isInit;

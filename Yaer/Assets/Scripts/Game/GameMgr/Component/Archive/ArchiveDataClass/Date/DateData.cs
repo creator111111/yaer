@@ -8,6 +8,8 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Date
         private DateTime date;
         public string Date => $"??????{date.Year}??{date.Month}??{date.Day}??";
 
+        public int Day => date.Day;
+
         public void AddOneDay()
         {
             ThroughDate(0, 0, 1);

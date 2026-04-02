@@ -7,7 +7,6 @@ SpriteAtlas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: returnBtnAtlas
-  serializedVersion: 2
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -31,14 +30,22 @@ SpriteAtlas:
       enableTightPacking: 1
     secondaryTextureSettings: {}
     variantMultiplier: 1
-    packables: []
+    packables:
+    - {fileID: 2800000, guid: e1e54d7e0b877c7468abdbb01aa45e9f, type: 3}
+    - {fileID: 2800000, guid: dc28caa51df93ed4cbd4614176732243, type: 3}
+    - {fileID: 2800000, guid: d028bc2914bd7cd45afba0000200e430, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300000, guid: dc28caa51df93ed4cbd4614176732243, type: 3}
+  - {fileID: 21300000, guid: d028bc2914bd7cd45afba0000200e430, type: 3}
+  - {fileID: 21300000, guid: e1e54d7e0b877c7468abdbb01aa45e9f, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - returnClick
+  - returnSelect
+  - returnNor
   m_RenderDataMap: {}
   m_Tag: returnBtnAtlas
   m_IsVariant: 0
-  m_IsPlaceholder: 0

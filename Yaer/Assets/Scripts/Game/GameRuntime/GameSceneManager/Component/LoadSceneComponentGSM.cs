@@ -1,15 +1,23 @@
-﻿using System;
+using System;
 using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.ChangeScene;
 using Game.GameMgr.Component.UI;
+using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.UI.FormLogic.Black;
 using Game.Static.Path;
+using UnityEngine;
 
 namespace Game.GameRuntime.GameSceneManager.Component
 {
     public class LoadSceneComponentGSM : BaseComponentGSM
     {
+        [Tooltip("地图黑幕转场：场景就绪后全黑多停留的秒数，掩盖玩家 Home 控制器异步加载前的战斗待机闪现")]
+        [SerializeField] private float mapTransitionBlackHoldSeconds = 0.3f;
+
+        /// <summary>供转场回调读取「目标场景」上配置的停留时长。</summary>
+        public float MapTransitionBlackHoldSeconds => mapTransitionBlackHoldSeconds;
+
         public event Action onStartLoadingSceneEvent;
         public event Action onEndLoadingSceneEvent;
         public event Action onInitSceneMonsterEvent;
@@ -40,14 +48,28 @@ namespace Game.GameRuntime.GameSceneManager.Component
                             // 监听场景Manger初始化完成事件
                             GameManager.Instance.onGameSceneManagerReady += (manager) =>
                             {
-                                // 初始化场景中的怪物
-                                manager.GetModule<LoadSceneComponentGSM>().OnSceneManagerInit();
-                                blackFormLogic.CloseFormFade(() =>
+                                var loadModule = manager.GetModule<LoadSceneComponentGSM>();
+                                loadModule.OnSceneManagerInit();
+
+                                void CloseBlackAndNotify()
                                 {
-                                    // 触发黑幕结束事件
-                                    // 获取下一个场景上的该组件触发
-                                    manager.GetModule<LoadSceneComponentGSM>().OnBlackFadeEnd();
-                                });
+                                    blackFormLogic.CloseFormFade(() =>
+                                    {
+                                        // 触发黑幕结束事件
+                                        // 获取下一个场景上的该组件触发
+                                        manager.GetModule<LoadSceneComponentGSM>().OnBlackFadeEnd();
+                                    });
+                                }
+
+                                float hold = loadModule.MapTransitionBlackHoldSeconds;
+                                if (hold > 0f && manager is BaseGameSceneManager baseGsm)
+                                {
+                                    baseGsm.WaitForInvoke(hold, CloseBlackAndNotify);
+                                }
+                                else
+                                {
+                                    CloseBlackAndNotify();
+                                }
                             };
                             // 加载场景
                             GameManager.GetGMComponent<ChangeSceneComponentGM>().LoadScene(new LoadSceneArgs()

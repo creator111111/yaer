@@ -1,4 +1,4 @@
-﻿using Game.GameMgr;
+using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.PureMVC;
 using Game.GameMgr.Component.UI;
@@ -6,6 +6,7 @@ using Game.GameRuntime.Entities.Component.Interactive;
 using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.UI.FormLogic.Menu;
 using Game.Static.Path;
+using UnityEngine;
 
 namespace Game.GameRuntime.GameSceneManager.Component
 {
@@ -61,12 +62,14 @@ namespace Game.GameRuntime.GameSceneManager.Component
         /// </summary>
         private void OnEKeyPressed()
         {
+            Debug.Log($"[InputComponentGSM] E pressed. cantEKey={cantEKey}");
             if (cantEKey)
             {
                 return;
             }
 
             var closestComponent = SceneManager.GetFirstCanTouchEntiy(playerInteractiveComponent);
+            Debug.Log($"[InputComponentGSM] closestComponent={(closestComponent != null ? closestComponent.gameObject.name : "null")}");
             // 交互最近的对象
             if (closestComponent != null)
             {

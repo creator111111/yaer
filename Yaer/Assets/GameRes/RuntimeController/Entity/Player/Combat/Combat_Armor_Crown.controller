@@ -1998,27 +1998,27 @@ AnimatorStateMachine:
   - {fileID: 7057807169745229645}
   - {fileID: 3139231142981437391}
   m_StateMachineTransitions:
-  - first: {fileID: 4700819861828793973}
-    second:
-    - {fileID: 2147394469386566485}
-  - first: {fileID: 2715618559222659903}
-    second:
-    - {fileID: 2634601638189582485}
-  - first: {fileID: -1915149017486376208}
-    second:
-    - {fileID: -2659697798178075797}
   - first: {fileID: 34786055640190580}
     second:
     - {fileID: 8511008923152486732}
   - first: {fileID: -5120168236863115284}
     second:
     - {fileID: 2944915076632023036}
+  - first: {fileID: 4700819861828793973}
+    second:
+    - {fileID: 2147394469386566485}
+  - first: {fileID: -1915149017486376208}
+    second:
+    - {fileID: -2659697798178075797}
   - first: {fileID: -4042571540008155654}
     second:
     - {fileID: 4303797956747065369}
   - first: {fileID: 3621339011281511606}
     second:
     - {fileID: -8695907850152960163}
+  - first: {fileID: 2715618559222659903}
+    second:
+    - {fileID: 2634601638189582485}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: -90, y: -30, z: 0}
   m_EntryPosition: {x: -270, y: 410, z: 0}

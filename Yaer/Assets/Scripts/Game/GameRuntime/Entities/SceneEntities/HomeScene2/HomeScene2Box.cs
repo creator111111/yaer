@@ -1,4 +1,4 @@
-﻿using Game.GameMgr;
+using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Scene;

@@ -31,6 +31,7 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
 
         private static SpriteAtlas iconAtlas;
         private static IDataTable<MainItemDataTableRow> table;
+        private static bool hasInitRequested;
         private int lastIndex;
 
         private Dictionary<string, MenuFormMainItemInfo> mainItemDic = new Dictionary<string, MenuFormMainItemInfo>();
@@ -42,6 +43,8 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
 
         public static void Init()
         {
+            if (hasInitRequested) return;
+            hasInitRequested = true;
             GameManager.GetGMComponent<ResComponentGM>().LoadAsset<SpriteAtlas>(SpriteAtlasPath.GetPath("MainItem_Icon"), spriteAtlas => iconAtlas = spriteAtlas);
             GameManager.GetGMComponent<ResComponentGM>().LoadConfig<MainItemDataTableRow>("Assets/GameRes/Config/MainItemConfig/MainItemConfig.json", rows => table = rows);
         }
@@ -66,16 +69,17 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
                 mainItemDic[itemName].num += count;
             else
             {
+                var row = GetItemRow(itemName);
                 mainItemDic.Add(itemName, new MenuFormMainItemInfo
                 {
                     index = lastIndex++,
                     name = itemName,
-                    icon = iconAtlas.GetSprite(itemName),
-                    detail = table.GetDataRow(condition: row => row.name == itemName).detail,
-                    detail_en = table.GetDataRow(condition: row => row.name == itemName).detail_en,
-                    detail_jp = table.GetDataRow(condition: row => row.name == itemName).detail_jp,
-                    id = table.GetDataRow(condition: row => row.name == itemName).id,
-                    itemType = (BagItemType)table.GetDataRow(condition: row => row.name == itemName).itemType,
+                    icon = iconAtlas != null ? iconAtlas.GetSprite(itemName) : null,
+                    detail = row?.detail ?? string.Empty,
+                    detail_en = row?.detail_en ?? string.Empty,
+                    detail_jp = row?.detail_jp ?? string.Empty,
+                    id = row?.id ?? 0,
+                    itemType = row != null ? (BagItemType)row.itemType : GuessItemType(itemName),
                     num = count
                 });
             }
@@ -86,6 +90,11 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
         // 因为道具数据可以回随着时间修改，而部分道具数据存入存档之后还是旧数据，就需要同步数据
         public void RefreshMainItemDataInTest()
         {
+            if (table == null)
+            {
+                Init();
+                return;
+            }
             var itemNames = new List<string>(mainItemDic.Keys);
             lastIndex = 0;
             var costItem = 0;
@@ -279,9 +288,17 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
 
         public bool IsCanUse(string name)
         {
-            //return name == "HpBall" || name == "MpBall";
-            var itemType = (BagItemType)table.GetDataRow(condition: row => row.name == name).itemType;
-            return itemType == BagItemType.CostItem;
+            var item = GetMainItem(name);
+            if (item != null)
+            {
+                return item.itemType == BagItemType.CostItem;
+            }
+            var row = GetItemRow(name);
+            if (row != null)
+            {
+                return (BagItemType)row.itemType == BagItemType.CostItem;
+            }
+            return GuessItemType(name) == BagItemType.CostItem;
         }
 
 
@@ -323,18 +340,17 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
 
         public override void ParseInternal(MasterGameData masterData)
         {
+            Init();
             var bytes = masterData.GetValue<byte[]>("PlayerBagData_mainItemDic");
             if (bytes != default)
             {
                 mainItemDic = ES3.Deserialize<Dictionary<string, MenuFormMainItemInfo>>(bytes);
-                foreach (var pair in mainItemDic)
-                {
-                    pair.Value.icon = iconAtlas.GetSprite(pair.Value.name);
-                    pair.Value.detail = table.GetDataRow(condition: row => row.name == pair.Value.name).detail;
-                    pair.Value.detail_en = table.GetDataRow(condition: row => row.name == pair.Value.name).detail_en;
-                    pair.Value.detail_jp = table.GetDataRow(condition: row => row.name == pair.Value.name).detail_jp;
-                }
             }
+            else
+            {
+                mainItemDic = new Dictionary<string, MenuFormMainItemInfo>();
+            }
+            RefreshMainItemRuntimeData();
             lastIndex = masterData.GetValue("PlayerBagData_lastIndex", 0);
             bytes = masterData.GetValue<byte[]>("PlayerBagData_quickItem");
             if (bytes != default)
@@ -345,6 +361,9 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
             {
                 quickItem = new string[6];
             }
+            EnsureQuickItemLength();
+            RefreshCostItem();
+            OnDataChange?.Invoke(this);
         }
 
         public override void SerializeInternal(MasterGameData masterData)
@@ -364,6 +383,7 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
         public void DataChanged(string name)
         {
 
+            EnsureQuickItemLength();
             if (!IsCanUse(name)) return;
 
             int index = -1;
@@ -485,6 +505,62 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
                 }
             }
             return newQuickItemNames;
+        }
+
+        private MainItemDataTableRow GetItemRow(string itemName)
+        {
+            if (table == null) { return null; }
+            return table.GetDataRow(condition: row => row.name == itemName);
+        }
+
+        private BagItemType GuessItemType(string itemName)
+        {
+            if (itemName == EMainItemName.HpBall.ToString() || itemName == EMainItemName.MpBall.ToString())
+            {
+                return BagItemType.CostItem;
+            }
+            return BagItemType.TaskItem;
+        }
+
+        private void RefreshMainItemRuntimeData()
+        {
+            if (mainItemDic == null) { return; }
+            foreach (var pair in mainItemDic)
+            {
+                var item = pair.Value;
+                if (item == null) { continue; }
+                item.icon = iconAtlas != null ? iconAtlas.GetSprite(item.name) : null;
+                var row = GetItemRow(item.name);
+                if (row != null)
+                {
+                    item.detail = row.detail;
+                    item.detail_en = row.detail_en;
+                    item.detail_jp = row.detail_jp;
+                    item.id = row.id;
+                    item.itemType = (BagItemType)row.itemType;
+                }
+                else
+                {
+                    item.itemType = GuessItemType(item.name);
+                }
+            }
+        }
+
+        private void EnsureQuickItemLength()
+        {
+            if (quickItem == null)
+            {
+                quickItem = new string[6];
+                return;
+            }
+
+            if (quickItem.Length == 6) { return; }
+            var oldData = quickItem;
+            quickItem = new string[6];
+            for (int i = 0; i < oldData.Length && i < quickItem.Length; i++)
+            {
+                quickItem[i] = oldData[i];
+            }
         }
 
         #endregion

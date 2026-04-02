@@ -1,4 +1,4 @@
-﻿using Game.GameMgr;
+using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.UI;
 using Game.GameRuntime.Entities.Player;
@@ -29,6 +29,8 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
         //[SerializeField] private MenuFormMainItemPage mainItemPage;
         //[SerializeField] private DetailFormLogic detailForm;
         private MenuFormProxy proxy;
+        private bool isExitTipsOpening;
+        private string systemTipsPanelPath;
 
         public GameObject imgItemNor;
         public GameObject imgItemClick;
@@ -52,6 +54,7 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
         protected internal override void OnInit(object userData)
         {
             base.OnInit(userData);
+            systemTipsPanelPath = UIPrefabPath.GetUIPrefabPath("SystemTipsPanel");
 
             btnItem.OnPressed += OnClickBtnItem;
             btnSave.OnPressed += OnClickBtnSave;
@@ -63,6 +66,22 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             //mainItemPage.OnInit(proxy, this);
 
             LoadAtlas(3);
+        }
+
+        protected internal override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(elapseSeconds, realElapseSeconds);
+
+            if (!isExitTipsOpening)
+            {
+                return;
+            }
+
+            var tipsForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(systemTipsPanelPath);
+            if (tipsForm == null)
+            {
+                isExitTipsOpening = false;
+            }
         }
 
         protected override void LoadAtlas(int targetAtlasCount)
@@ -155,6 +174,7 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
         protected internal override void OnOpen(object userData)
         {
             base.OnOpen(userData);
+            isExitTipsOpening = false;
 
             proxy.OnMenuActive(true);
 
@@ -174,6 +194,10 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             btnSave.gameObject.SetActive(sceneMgr.canShowSaveGame);
             btnLoad.gameObject.SetActive(sceneMgr.canShowLoadGame);
             btnItem.gameObject.SetActive(sceneMgr.canShowItemBag);
+
+            // 打开菜单时刷新一次日历数字图片，确保与存档日期一致
+            var dayNumDisplay = GetComponentInChildren<MenuCalendarDayNumDisplay>(true);
+            dayNumDisplay?.RefreshFromArchive();
         }
 
         protected internal override void OnReveal()
@@ -196,6 +220,7 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
         protected internal override void OnClose(bool isShutdown, object userData)
         {
             base.OnClose(isShutdown, userData);
+            isExitTipsOpening = false;
 
             proxy.OnMenuActive(false);
             // 关闭菜单界面时恢复游戏
@@ -276,6 +301,12 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
 
         private void OnClickBtnExit(UIListener listener)
         {
+            if (isExitTipsOpening)
+            {
+                return;
+            }
+
+            isExitTipsOpening = true;
             UIUtils.PlayBtnAudio(this);
             // 提示
             GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(UIPrefabPath.GetUIPrefabPath("SystemTipsPanel"), UIForm.UIGroup.Name,
@@ -286,11 +317,17 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
                     {
                         if (logic is SystemTipsFormLogic systemTipsFormLogic)
                         {
-                            systemTipsFormLogic.GetProxy<SystemTipsFormProxy>().onSureEvent = () =>
+                            var tipsProxy = systemTipsFormLogic.GetProxy<SystemTipsFormProxy>();
+                            tipsProxy.ResetCallbacks();
+                            tipsProxy.onSureEvent = () =>
                             {
+                                isExitTipsOpening = false;
                                 proxy.OnReturnMainMenu();
                             };
-                            systemTipsFormLogic.GetProxy<SystemTipsFormProxy>().onCancelEvent = null;
+                            tipsProxy.onCancelEvent = () =>
+                            {
+                                isExitTipsOpening = false;
+                            };
                         }
                     }
                 });

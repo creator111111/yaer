@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.GameMgr;
@@ -7,6 +7,9 @@ using Game.GameMgr.Component.Archive.ArchiveDataClass;
 using Game.GameMgr.Component.Story;
 using Game.GameMgr.Component.UI;
 using Game.GameRuntime.GameSceneManager.Base;
+using Game.GameRuntime.UI.FormLogic;
+using Game.GameMgr.Manager.Settings;
+using Game.GameMgr.Manager.Settings.Helper;
 using Game.GameRuntime.UI.FormLogic.Story.Dialogue;
 using Game.Static.Path;
 using GameFramework.UnityRuntime.Utility;
@@ -158,6 +161,22 @@ namespace Game.GameRuntime.GameSceneManager.Component.Story
             // 对话结束之后设置对话预制体为null
             var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
             if (sceneMgr != null) { sceneMgr.curStoryPrefab = null; }
+
+            // 剧情结束后，根据当前设置重新同步一次战斗立绘的显示状态（兜底）
+            var settingManager = GameManager.GetManager<SettingManager>();
+            if (settingManager != null)
+            {
+                var configData = settingManager.LoadSetting<SettingsConfigData>();
+                if (configData != null)
+                {
+                    string fightingPanelPath = UIPrefabPath.GetUIPrefabPath("FightingPanel");
+                    var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(fightingPanelPath);
+                    if (uiForm != null && uiForm.Logic is FightingFormLogic fightingFormLogic)
+                    {
+                        fightingFormLogic.UpdateBattleImageVisiable(configData.showBattleImage);
+                    }
+                }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Game.GameMgr;
 using Game.GameMgr.Component;
@@ -156,14 +156,23 @@ namespace Game.GameRuntime.UI.FormLogic.SystemTips
         }
         
         public void OnSure()
-        { 
-            onSureEvent?.Invoke();
+        {
+            var sureAction = onSureEvent;
+            ResetCallbacks();
+            sureAction?.Invoke();
         }
 
         public void OnCancel()
         {
-            onCancelEvent?.Invoke();
-            onCancelEvent = null;// 每次调用之后都需要自动置空
+            var cancelAction = onCancelEvent;
+            ResetCallbacks();
+            cancelAction?.Invoke();
+        }
+
+        public void ResetCallbacks()
+        {
+            onSureEvent = null;
+            onCancelEvent = null;
         }
     }
 }

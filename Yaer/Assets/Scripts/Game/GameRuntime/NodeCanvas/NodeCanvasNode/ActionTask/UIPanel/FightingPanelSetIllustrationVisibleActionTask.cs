@@ -1,5 +1,7 @@
 using Game.GameMgr.Component.UI;
 using Game.GameMgr;
+using Game.GameMgr.Manager.Settings;
+using Game.GameMgr.Manager.Settings.Helper;
 using Game.GameRuntime.UI.FormLogic;
 using Game.Static.Path;
 using NodeCanvas.Framework;
@@ -9,7 +11,7 @@ using ParadoxNotion.Design;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("UI")]
-    [Name("Õ½¶·Á¢»æÏÔÊ¾¿ª¹Ø")]
+    [Name("Õ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½")]
     public class FightingPanelSetIllustrationVisibleActionTask : ActionTask
     {
         public BBParameter<bool> visible;
@@ -23,7 +25,7 @@ namespace Game.GameRuntime.Story.Node
             var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(panelPath);
             if (uiForm == null)
             {
-                Debug.LogError($"FightingPanelÎ´´ò¿ª");
+                Debug.LogError($"FightingPanelÎ´ï¿½ï¿½");
             }
             else
             {
@@ -37,7 +39,24 @@ namespace Game.GameRuntime.Story.Node
         {
             if (formLogic != null)
             {
-                formLogic.UpdateBattleImageVisiable(visible.value);
+                // ï¿½ï¿½ visible Îª true Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾Õ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Â³ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾
+                // ï¿½ï¿½ visible Îª false Ê±ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½
+                bool finalVisible = false;
+
+                if (visible.value)
+                {
+                    var settingManager = GameManager.GetManager<SettingManager>();
+                    if (settingManager != null)
+                    {
+                        var configData = settingManager.LoadSetting<SettingsConfigData>();
+                        if (configData != null)
+                        {
+                            finalVisible = configData.showBattleImage;
+                        }
+                    }
+                }
+
+                formLogic.UpdateBattleImageVisiable(finalVisible);
             }
             EndAction();
         }
