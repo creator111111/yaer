@@ -5913,6 +5913,7 @@ MonoBehaviour:
   kingSoundSfxCpn: {fileID: 943160270}
   kingShowAniEventCpn: {fileID: 534194819}
   LaiFlyAniEventCpn: {fileID: 1843064200}
+  soldierTurnLeadBeforeKingSeconds: 1.5
 --- !u!114 &621581209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14061,7 +14062,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512959109}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 54.01, y: 0, z: 0}
+  m_LocalPosition: {x: 18.1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1732629455}
@@ -21106,7 +21107,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132163533838781009}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03845787, y: 0, z: -10}
+  m_LocalPosition: {x: 0.047114372, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4425017523823135756}

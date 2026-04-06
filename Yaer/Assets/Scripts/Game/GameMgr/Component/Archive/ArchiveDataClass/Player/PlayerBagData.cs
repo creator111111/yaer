@@ -24,6 +24,8 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
     [Serializable]
     public class PlayerBagData : BaseArchiveData
     {
+        /// <summary> 每种主道具的最大堆叠数量（策划约定与文档一致）。 </summary>
+        public const int MaxStackPerItem = 10;
 
         #region 属性
 
@@ -65,11 +67,16 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
 
         public void AddMainItem(string itemName, int count = 1)
         {
+            if (count <= 0) { return; }
             if (mainItemDic.ContainsKey(itemName))
+            {
                 mainItemDic[itemName].num += count;
+                mainItemDic[itemName].num = Math.Min(mainItemDic[itemName].num, MaxStackPerItem);
+            }
             else
             {
                 var row = GetItemRow(itemName);
+                var addNum = Math.Min(count, MaxStackPerItem);
                 mainItemDic.Add(itemName, new MenuFormMainItemInfo
                 {
                     index = lastIndex++,
@@ -80,7 +87,7 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
                     detail_jp = row?.detail_jp ?? string.Empty,
                     id = row?.id ?? 0,
                     itemType = row != null ? (BagItemType)row.itemType : GuessItemType(itemName),
-                    num = count
+                    num = addNum
                 });
             }
             DataChanged(itemName);
@@ -101,7 +108,7 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
             quickItem = new string[6];
             foreach (var itemName in itemNames)
             {
-                var count = mainItemDic[itemName].num;
+                var count = Math.Min(mainItemDic[itemName].num, MaxStackPerItem);
                 var itemType = (BagItemType)table.GetDataRow(condition: row => row.name == itemName).itemType;
                 var newItemData = new MenuFormMainItemInfo
                 {
@@ -351,6 +358,7 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
                 mainItemDic = new Dictionary<string, MenuFormMainItemInfo>();
             }
             RefreshMainItemRuntimeData();
+            ClampAllItemStacks();
             lastIndex = masterData.GetValue("PlayerBagData_lastIndex", 0);
             bytes = masterData.GetValue<byte[]>("PlayerBagData_quickItem");
             if (bytes != default)
@@ -542,6 +550,20 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
                 else
                 {
                     item.itemType = GuessItemType(item.name);
+                }
+            }
+        }
+
+        /// <summary> 读档等场景：将旧存档中超过上限的数量钳制到 MaxStackPerItem。 </summary>
+        private void ClampAllItemStacks()
+        {
+            if (mainItemDic == null) { return; }
+            foreach (var pair in mainItemDic)
+            {
+                if (pair.Value == null) { continue; }
+                if (pair.Value.num > MaxStackPerItem)
+                {
+                    pair.Value.num = MaxStackPerItem;
                 }
             }
         }

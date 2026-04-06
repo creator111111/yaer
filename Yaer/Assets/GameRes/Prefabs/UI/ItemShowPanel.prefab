@@ -1533,6 +1533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: {fileID: 1591185746786869947}
   detailForm: {fileID: 3270199048791819553}
+  detailAnchorRect: {fileID: 6321052876634344668}
   imgIcon: {fileID: 6314792911620827454}
   num: {fileID: 6742647703808152642}
   mask: {fileID: 5747652459711326392}
@@ -1982,6 +1983,7 @@ MonoBehaviour:
   charCanvas: {fileID: 8612962203863216093}
   frameCanvas2: {fileID: 2545090677564233809}
   charCanvas2: {fileID: 4382875682950757395}
+  cornerOffset: {x: -1.5, y: 0.5}
 --- !u!1 &7459025397580205118
 GameObject:
   m_ObjectHideFlags: 0

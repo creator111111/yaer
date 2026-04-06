@@ -71,7 +71,7 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
             {
                 procedureComp.onCompleteLoadingSceneEvent -= RefreshAfterLoadArchive;
             }
-            if (GameManager.GetGameSceneManager() == null) { return; }
+            // OnDataChange 为 PlayerBagData 的静态事件，取消订阅不依赖 SceneManager；若仅在 GetGameSceneManager()==null 时 return，会导致死亡/切场景时未 -=，下次 OnEnable 重复订阅，读档后快捷栏表现异常。
             PlayerBagData.OnDataChange -= OnDataChange;
         }
 
