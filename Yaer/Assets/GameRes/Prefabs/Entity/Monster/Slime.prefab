@@ -799,7 +799,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.65, y: 0.65}
+    oldSize: {x: 0.7, y: 0.42}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -1006,7 +1006,6 @@ MonoBehaviour:
   atkDistance: 0
   attackCdTimer: 0
   baseMoveSpeed: 1
-  angerRate: 0
   weakRate: 40
   sceneMonsterTag: 0
   sr: {fileID: 7229788379589253520}
@@ -2012,6 +2011,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7603514590842789189, guid: dc382d117724cd2418451234ab841a71,
+        type: 3}
+      propertyPath: breakTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8073515153402621176, guid: dc382d117724cd2418451234ab841a71,
         type: 3}

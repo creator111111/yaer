@@ -828,7 +828,6 @@ MonoBehaviour:
   atkDistance: 0
   attackCdTimer: 0
   baseMoveSpeed: 1
-  angerRate: 20
   weakRate: 40
   sceneMonsterTag: 0
   curBornWormCount: 0
@@ -1965,6 +1964,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7603514590842789189, guid: a8db0f3437256764ca92bb83f29f0ea5,
+        type: 3}
+      propertyPath: breakHight
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7603514590842789189, guid: a8db0f3437256764ca92bb83f29f0ea5,
+        type: 3}
+      propertyPath: breakWidth
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 8073515153402621176, guid: a8db0f3437256764ca92bb83f29f0ea5,
         type: 3}
       propertyPath: m_RootOrder
@@ -2075,6 +2084,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7603514590842789189, guid: 1d53f789ea789a948bb364580981a329,
+        type: 3}
+      propertyPath: breakHight
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7603514590842789189, guid: 1d53f789ea789a948bb364580981a329,
+        type: 3}
+      propertyPath: breakWidth
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 8073515153402621176, guid: 1d53f789ea789a948bb364580981a329,
         type: 3}
@@ -2464,6 +2483,16 @@ PrefabInstance:
         type: 3}
       propertyPath: atkType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7603514590842789189, guid: e9341b2f3f86e2940a2a9ffed4f8c701,
+        type: 3}
+      propertyPath: breakHight
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7603514590842789189, guid: e9341b2f3f86e2940a2a9ffed4f8c701,
+        type: 3}
+      propertyPath: breakWidth
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8073515153402621176, guid: e9341b2f3f86e2940a2a9ffed4f8c701,
         type: 3}
