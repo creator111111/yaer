@@ -11,6 +11,7 @@ using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using Game.Static.Enum.Dialogue;
 using Game.GameMgr;
+using Game.GameRuntime.Story;
 
 namespace Game.GameRuntime.Story.NodeCanvasExtend
 {
@@ -138,6 +139,7 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
         void OnDialogueStarted(DialogueTree dlg) {
             subtitlesCanvasGroup.DOKill();
             DialogueOptionsGroup.gameObject.SetActive(false);
+            DialoguePreBossSaveTipGate.ResetSubtitleLineCounter();
         }
 
         void OnDialoguePaused(DialogueTree dlg) {
@@ -224,7 +226,16 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
                 await TextAnimation(text);
             }
 
-            await WaitForInputToMoveNext();
+            // Boss 战前保存提示：在指定句展示完毕后、未调用 Continue 前阻塞，点击 SystemTipsPanel2 确认后再允许玩家推进
+            var waitedBossTip = await DialoguePreBossSaveTipGate.WaitIfNeededBeforeContinueAsync(text);
+            if (!waitedBossTip)
+            {
+                await WaitForInputToMoveNext();
+            }
+            else
+            {
+                await UniTask.Yield();
+            }
 
             subtitlesGroup.gameObject.SetActive(false);
             info.Continue();

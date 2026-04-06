@@ -41,6 +41,7 @@ namespace GameDebug
         {
             AddComponent<AddItemComponentGT>();
             AddComponent<ChangeClothesComponentGT>();
+            AddComponent<AddDateComponentGT>();
         }
 
         private void WriteLog(string info)

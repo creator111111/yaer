@@ -8,70 +8,73 @@ using UnityEngine;
 
 enum ENTITY_TYPE
 {
-    None, // Î´ÖªÊµÌå
-    PLAYER, // ÈËÎï
-    MONSTER, // ¹ÖÎï
+    None, // æœªçŸ¥å®ä½“
+    PLAYER, // ç©å®¶
+    MONSTER, // æ€ªç‰©
     NPC, // NPC
-    SCENE_SPC_ITEM, // ÌØÊâ³¡¾°¿É»¥¶¯ÊµÌå
+    SCENE_SPC_ITEM, // ç‰¹æ®Šåœºæ™¯å¯äº’åŠ¨å®ä½“
 }
 
-// ³¡¾°ÊµÌå¿ØÖÆÆ÷,ÓÃÀ´´¦ÀíÊµÌåÏà¹ØµÄÒ»Ğ©¶îÍâÂß¼­
+// äº¤äº’é—¨ç¦ + æŒ‰é”®æç¤ºçš„é€šç”¨æ§åˆ¶å™¨
 public class BaseEntityControll : MonoBehaviour
 {
-    public int entityType = (int)ENTITY_TYPE.None; // ³¡¾°ÊµÌåÀàĞÍ
-    public bool canTouchWithPlayer = true; // ÊÇ·ñÄÜ¹»ÓëÍæ¼Ò²úÉú½»»¥
+    public int entityType = (int)ENTITY_TYPE.None; // å®ä½“ç±»å‹
+    public bool canTouchWithPlayer = true; // æ˜¯å¦å…è®¸ä¸ç©å®¶äº¤äº’ï¼ˆå¼€å…³é—¨ç¦ï¼‰
 
-    public SceneEntity sceneEntity = null; // µ±Ç°¿ØÖÆÆ÷¿ØÖÆµÄ³¡¾°ÖĞµÄÊµÌå
+    public SceneEntity sceneEntity = null; // å½“å‰æ§åˆ¶å™¨æ§åˆ¶çš„åœºæ™¯å®ä½“
+    public InteractiveComponent interactiveComponent = null; // å½“å‰å®ä½“ä¸­çš„å¯äº¤äº’ç»„ä»¶
 
-    public InteractiveComponent interactiveComponent = null; // µ±Ç°ÊµÌåÖĞµÄ¿É½»»¥×é¼ş
-
-    public float keyTipsPosX = 0;// °´¼üÌáÊ¾½ÚµãX×ø±êµÄÎ»ÖÃ
-    public float keyTipsPosY = 0;// °´¼üÌáÊ¾½ÚµãY×ø±êµÄÎ»ÖÃ
+    public float keyTipsPosX = 0; // æŒ‰é”®æç¤ºèŠ‚ç‚¹åœ¨æœ¬åœ° X çš„ä½ç½®
+    public float keyTipsPosY = 0; // æŒ‰é”®æç¤ºèŠ‚ç‚¹åœ¨æœ¬åœ° Y çš„ä½ç½®
 
     // Start is called before the first frame update
     void Start()
     {
-        // °ó¶¨ÊµÌå¿ØÖÆÆ÷
+        // ä¸ºå¯äº¤äº’ç»„ä»¶è¡¥é½åå‘å¼•ç”¨ + è®¢é˜…ç‚¹å‡»äº‹ä»¶
         if (interactiveComponent != null)
         {
             interactiveComponent.entityControll = this;
-            interactiveComponent.onClickInteractiveEvent += (interactiveComponent) =>OnInteractiveComponentTriggerWithPlayer();
+            interactiveComponent.onClickInteractiveEvent += (interactiveComponent) => OnInteractiveComponentTriggerWithPlayer();
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    // Ìí¼Ó°´¼üÌáÊ¾µ½Ä³¸ö³¡¾°ÊµÌåÖĞ
-    public void AddKeyTipsNode(GameObject keyTipsNode, ControlInputType inputType= ControlInputType.Interact)
+    // å°†æŒ‰é”®æç¤ºèŠ‚ç‚¹æŒ‚åˆ°å½“å‰å®ä½“ä¸Šï¼ˆå‰æï¼šcanTouchWithPlayer=trueï¼‰
+    public void AddKeyTipsNode(GameObject keyTipsNode, ControlInputType inputType = ControlInputType.Interact)
     {
         if (!canTouchWithPlayer) { return; }
         if (keyTipsNode != null)
         {
             keyTipsNode.SetActive(true);
-            // Ìí¼ÓÌáÊ¾½Úµãµ½µ±Ç°¶ÔÏóÉÏ
-            keyTipsNode.transform.SetParent(gameObject.transform, false);
-            keyTipsNode.transform.rotation = new Quaternion(0, 0, 0, 0); // ÖØÖÃĞı×ª
-            // µ÷ÕûÏÔÊ¾½ÚµãÎ»ÖÃ
-            keyTipsNode.transform.localPosition = new Vector3(keyTipsPosX, keyTipsPosY, 0);
-            //var textKeyTips = UIUtils.findChild(keyTipsNode, "textKey");
-            //textKeyTips.SetActive(!isMouseTips);
 
+            // æŠŠæç¤ºèŠ‚ç‚¹ä½œä¸ºå½“å‰å®ä½“çš„å­ç‰©ä½“
+            keyTipsNode.transform.SetParent(gameObject.transform, false);
+
+            // é‡ç½®æ—‹è½¬ï¼Œé¿å…å‡ºç°å¥‡æ€ªçš„æœå‘
+            keyTipsNode.transform.rotation = new Quaternion(0, 0, 0, 0);
+
+            // è®¾ç½®æç¤ºèŠ‚ç‚¹çš„æœ¬åœ°åæ ‡
+            keyTipsNode.transform.localPosition = new Vector3(keyTipsPosX, keyTipsPosY, 0);
+
+            // åˆå§‹åŒ–æç¤ºèŠ‚ç‚¹æ˜¾ç¤ºçŠ¶æ€ï¼ˆæ­¤å¤„ä¸å¼€â€œè§¦å‘å˜è‰²â€ï¼Œäº¤ç»™äº¤äº’è§¦å‘äº‹ä»¶æ§åˆ¶ï¼‰
             keyTipsNode.GetComponent<KeyTipsNodeSrc>().ShowStoryTriggerEffect(false, inputType);
-            //if (!isMouseTips) {
-            //    var realKeyStr = string.Format("<color=white>{0}</color>", keyStr);
-            //    GameTools.setTMPUGUIText(textKeyTips, realKeyStr);
-            //}
+
+            // var textKeyTips = UIUtils.findChild(keyTipsNode, "textKey");
+            // textKeyTips.SetActive(!isMouseTips);
         }
     }
 
-    // È¥³ıÌáÊ¾°´Å¥½Úµã
-    public void RemoveKeyTipsNode(GameObject keyTipsNode, bool isRealRemove=false)
+    // éšè—æŒ‰é”®æç¤ºèŠ‚ç‚¹ï¼ˆå¯é€‰ï¼šæ˜¯å¦é”€æ¯ï¼‰
+    public void RemoveKeyTipsNode(GameObject keyTipsNode, bool isRealRemove = false)
     {
         keyTipsNode.SetActive(false);
+
+        // è‹¥éœ€è¦çœŸå®é”€æ¯ï¼ˆä¸€èˆ¬ä¸å»ºè®®é¢‘ç¹é”€æ¯/é‡å»ºï¼‰
         if (isRealRemove)
         {
             keyTipsNode = null;
@@ -79,10 +82,10 @@ public class BaseEntityControll : MonoBehaviour
         }
     }
 
-    // µ±ÈÎÒâÊµÌå×é¼şºÍÍæ¼Ò¿ªÊ¼½»»¥Ê±
+    // å½“ä»»æ„å¯äº¤äº’å®ä½“å¼€å§‹è¢«ç©å®¶ç‚¹å‡»/äº¤äº’æ—¶è§¦å‘
+    // ä½œç”¨ï¼šå¦‚æœç©å®¶èº«ä¸Šçš„ keyTipsNode å¤„äºæ¿€æ´»çŠ¶æ€ï¼Œåˆ™è§¦å‘ KeyTipsNodeSrc çš„è§¦å‘æ€ç‰¹æ•ˆ/å˜è‰²
     public void OnInteractiveComponentTriggerWithPlayer(ControlInputType inputType = ControlInputType.Interact)
     {
-        // ¿ªÊ¼½»»¥Ê±£¬°´¼üÌáÊ¾ĞèÒª±äÉ«´¦Àí
         var playerLogic = GameManager.GetGMComponent<EntityComponentGM>().GetEntityLogic<PlayerLogic>();
         if (playerLogic)
         {

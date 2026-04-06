@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -310,6 +310,10 @@ namespace Game.GameMgr.Component.Archive
             {
                 // 确保数据版本为当前版本
                 masterGameData.version = CurrentDataVersion;
+
+                // 背包数据是药水数量的唯一来源，保存前强制写回一次，避免因缓存时机导致漏存。
+                var bagData = GetData<PlayerBagData>();
+                bagData.SerializeInternal(masterGameData);
 
                 // 序列化所有缓存数据
                 foreach (var cache in archiveDataDic.Values)

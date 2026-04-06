@@ -199,6 +199,25 @@ namespace Game.GameRuntime.UI.FormLogic.AA_TestPanel
                 GameManager.GetGameSceneManager().GetArchiveData<PlayerBagData>().AddMainItem(itemName, itemNum);
                 Debug.Log("============添加：" + itemName + " X " + itemNum);
             };
+            // 每种主道具各加若干，数量受 PlayerBagData.MaxStackPerItem 约束；不填参数则每种加满（10）。
+            actionDict["一键添加全部主道具(数量默认10,可填一个数字)"] = (argStr) =>
+            {
+                var valueList = getValueListFromArgs(argStr);
+                var qty = valueList.Count > 0 ? valueList[0] : PlayerBagData.MaxStackPerItem;
+                if (qty <= 0) { return; }
+                var sceneMgr = GameManager.GetGameSceneManager();
+                if (sceneMgr == null)
+                {
+                    Debug.LogError("============一键添加：当前无 GameSceneManager，请在游戏场景内使用");
+                    return;
+                }
+                var bag = sceneMgr.GetArchiveData<PlayerBagData>();
+                foreach (EMainItemName itemName in Enum.GetValues(typeof(EMainItemName)))
+                {
+                    bag.AddMainItem(itemName, qty);
+                }
+                Debug.Log($"============一键添加全部主道具：每种尝试 +{qty}（堆叠上限 {PlayerBagData.MaxStackPerItem}）");
+            };
             actionDict["重置本地语言保存情况"] = (argStr) =>
             {
 

@@ -12,17 +12,16 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
     public class FightingCanUsed : MonoBehaviour
     {
 
-        #region ÊôĞÔ
+        #region ????
 
         [SerializeField] private List<Image> images;
         [SerializeField] private List<GameObject> textItemCounts;
 
-        [SerializeField] int maxUseItemCount = 6; // ×î´ó¿ÉÊ¹ÓÃµÀ¾ßÊıÁ¿
+        [SerializeField] int maxUseItemCount = 6; // ??????????????
         Dictionary<KeyCode, int> keyToItemIndexData = new Dictionary<KeyCode, int>() {
             {KeyCode.Alpha1, 0}, {KeyCode.Alpha2, 1}, {KeyCode.Alpha3, 2}, {KeyCode.Alpha4, 3}, {KeyCode.Alpha5, 4}, {KeyCode.Alpha6, 5},
         };
-        bool hasUpdateItemArea = false;
-        #region ÒıÓÃ
+        #region ????
 
         private PlayerLogic PlayerLogic => GameManager.GetGMComponent<EntityComponentGM>().GetEntityLogic<PlayerLogic>();
         private PlayerInputComponent InputComponent => PlayerLogic.componentSystem.GetComponent<PlayerInputComponent>();
@@ -42,32 +41,43 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
 
         #endregion
 
-        #region ÉúÃüÖÜÆÚ
+        #region ????????
 
         private void Start()
         {
-            // ÓÎÏ·´ò°üºóĞèÒª×¢ÊÍ¸Ã·½·¨
-            // Í¬²½µ±Ç°´æµµµÄµÀ¾ßÊı¾İÎªÅäÖÃ±íÊı¾İ
+            // ???????????????????
+            // ????????????????????????????
             //PlayerBagData.RefreshMainItemDataInTest();
         }
 
         private void OnEnable()
         {
+            var bagData = PlayerBagData;
+            if (bagData == null) { return; }
             PlayerBagData.OnDataChange += OnDataChange;
-            OnDataChange(PlayerBagData);
+            var procedureComp = GameManager.GetGMComponent<ProcedureComponentGM>();
+            if (procedureComp != null)
+            {
+                procedureComp.onCompleteLoadingSceneEvent -= RefreshAfterLoadArchive;
+                procedureComp.onCompleteLoadingSceneEvent += RefreshAfterLoadArchive;
+            }
+            OnDataChange(bagData);
         }
 
         private void OnDisable()
         {
+            var procedureComp = GameManager.GetGMComponent<ProcedureComponentGM>();
+            if (procedureComp != null)
+            {
+                procedureComp.onCompleteLoadingSceneEvent -= RefreshAfterLoadArchive;
+            }
+            // OnDataChange ä¸º PlayerBagData çš„é™æ€äº‹ä»¶ï¼Œå–æ¶ˆè®¢é˜…ä¸ä¾èµ– SceneManagerï¼›è‹¥ä»…åœ¨ GetGameSceneManager()==null æ—¶ returnï¼Œä¼šå¯¼è‡´æ­»äº¡/åˆ‡åœºæ™¯æ—¶æœª -=ï¼Œä¸‹æ¬¡ OnEnable é‡å¤è®¢é˜…ï¼Œè¯»æ¡£åå¿«æ·æ è¡¨ç°å¼‚å¸¸ã€‚
             PlayerBagData.OnDataChange -= OnDataChange;
         }
 
         private void Update()
         {
-            if (!hasUpdateItemArea)
-            {
-                OnDataChange(PlayerBagData);
-            }
+            OnDataChange(PlayerBagData);
             if (PlayerLogic == null) { return; }
             if (!PlayerLogic.isEnableQuickUseItem) { return; }
             foreach (var data in keyToItemIndexData)
@@ -76,7 +86,7 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
                 var itemIndex = data.Value;
                 if (Input.GetKeyDown(keyCode))
                 {
-                    // °´ÏÂ¶ÔÓ¦µÄÊı×Ö¼üÔòÊ¹ÓÃ¶ÔÓ¦Î»ÖÃµÄµÀ¾ß
+                    // ????????????????????????????
                     ShowItemEffect(itemIndex);
                 }
             }
@@ -84,19 +94,18 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
 
         #endregion
 
-        #region ·½·¨
+        #region ????
 
         private void OnDataChange(PlayerBagData data)
         {
             if (data == null) { return; }
-            hasUpdateItemArea = true;
             for (int i = 0; i < data.quickItem.Length; i++)
             {
                 if (!string.IsNullOrEmpty(data.quickItem[i]) && data.HasMainItem(data.quickItem[i]))
                 {
                     images[i].sprite = data.GetMainItem(data.quickItem[i]).icon;
                     images[i].color = Color.white;
-                    // Ë¢ĞÂµÀ¾ßÊıÁ¿
+                    // ??????????
                     var itemCount = data.GetMainItemCount(data.quickItem[i]);
                     if (!textItemCounts[i].activeSelf) { textItemCounts[i].SetActive(true); }
                     GameTools.setTMPUGUIText(textItemCounts[i], itemCount.ToString());
@@ -115,17 +124,22 @@ namespace Game.GameRuntime.UI.FormLogic.Fighting
             var itemName = PlayerBagData.quickItem.Length > itemIndex ? PlayerBagData.quickItem[itemIndex] : "";
             if (itemName == "" || itemName == null)
             {
-                Debug.LogWarning("=====================µÀ¾ß²»´æÔÚ:" + itemName + ",ÏÂ±ê:"+ itemIndex);
+                Debug.LogWarning("=====================?????????:" + itemName + ",????:"+ itemIndex);
                 return;
             }
             var itemData = PlayerBagData.GetMainItem(itemName);
             if (itemData == null) { return; }
             if (itemData.num <= 0)
             {
-                Debug.Log("===================µÀ¾ßÊıÁ¿²»×ã:" + itemName);
+                Debug.Log("===================????????????:" + itemName);
                 return;
             }
             ItemEffectDataMgr.getInstance().UseItem(itemName);
+        }
+
+        private void RefreshAfterLoadArchive()
+        {
+            OnDataChange(PlayerBagData);
         }
         #endregion
     }

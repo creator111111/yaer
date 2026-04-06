@@ -16,7 +16,7 @@ namespace GameFramework.UnityRuntimeExtend.Component
     /// <summary>
     /// 仅仅使用Mono的 可视化
     /// </summary>
-    public class ComponentSystemMono : MonoBehaviour
+    public class ComponentSystemMono : MonoBehaviour//组件系统的“运行时载体”，负责把可视化组件同步到系统
     {
         [SerializeField] private List<BaseGFComponentMono> componentsList = new List<BaseGFComponentMono>();
 

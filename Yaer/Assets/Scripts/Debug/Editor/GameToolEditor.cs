@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Game.GameRuntime.UI.FormLogic.KnockbackTestPanel;
 using GameDebug;
 using GameDebug.Editor.Components;
 using GameFramework.CoreExtend.Component;
@@ -39,6 +40,7 @@ namespace EditorC.Tool.GameTool
         {
             AddComponent<AddItemEditorComponent>();
             AddComponent<ChangeClothesEditorComponentGT>();
+            AddComponent<AddDateEditorComponentGT>();
         }
 
         private T GetComponent<T>() where T : BaseGTEditorComponent
@@ -115,6 +117,83 @@ namespace EditorC.Tool.GameTool
                 {
                     kvp.Key.OnGUI();
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 受击/击退调试窗口：与 GameManagerTool 同文件、同命名空间，确保与已有 Editor 菜单项一起编译。
+    /// Unity 通过 MenuItem("Editor/...") 把入口挂到顶部菜单「Editor」下；本类继承 EditorWindow，在 OnGUI 里画参数并调用 KnockbackTestRunner.TryApply。
+    /// </summary>
+    public class KnockbackTestEditorWindow : EditorWindow
+    {
+        private KnockbackTestRunner.TestMode _mode = KnockbackTestRunner.TestMode.FullNormal;
+        private float _dirX = 1f;
+        private float _dirY;
+        private float _breakWidth = 2f;
+        private float _breakHight = 0.5f;
+        private float _breakTime = 0.5f;
+        private float _bounceFrequency = 2f;
+        private string _lastMessage;
+
+        [MenuItem("Editor/受击击退测试")]
+        public static void OpenKnockbackTest()
+        {
+            var win = GetWindow<KnockbackTestEditorWindow>("受击击退测试");
+            win.minSize = new Vector2(420, 360);
+            win.Show();
+        }
+
+        private void OnGUI()
+        {
+            EditorGUILayout.Space(4);
+            EditorGUILayout.LabelField("需在运行模式（Play）下使用，且场景已生成玩家。", EditorStyles.wordWrappedLabel);
+
+            if (!EditorApplication.isPlaying)
+            {
+                EditorGUILayout.HelpBox("请先进入 Play 模式，再点击执行。", MessageType.Info);
+            }
+
+            EditorGUILayout.Space(8);
+            _mode = (KnockbackTestRunner.TestMode)EditorGUILayout.EnumPopup("测试模式", _mode);
+
+            EditorGUILayout.Space(4);
+            _dirX = EditorGUILayout.FloatField("dirPos.x（伤害来源）", _dirX);
+            _dirY = EditorGUILayout.FloatField("dirPos.y", _dirY);
+            _breakWidth = EditorGUILayout.FloatField("breakWidth", _breakWidth);
+            _breakHight = EditorGUILayout.FloatField("breakHight", _breakHight);
+            _breakTime = EditorGUILayout.FloatField("breakTime（击退时长）", _breakTime);
+            _bounceFrequency = EditorGUILayout.FloatField("bounceFrequency", _bounceFrequency);
+
+            EditorGUILayout.Space(8);
+            EditorGUILayout.HelpBox(
+                "Normal：需 breakHight>0 才走 KnockBack；Break：击飞不走 KnockBack 曲线；纯击退：仅 KnockBackComponent。",
+                MessageType.Info);
+
+            EditorGUILayout.Space(6);
+            using (new EditorGUI.DisabledScope(!EditorApplication.isPlaying))
+            {
+                if (GUILayout.Button("执行受击/击退", GUILayout.Height(36)))
+                {
+                    _lastMessage = null;
+                    var dir = new Vector2(_dirX, _dirY);
+                    if (KnockbackTestRunner.TryApply(_mode, dir, _breakWidth, _breakHight, _breakTime, _bounceFrequency,
+                            out var err))
+                    {
+                        _lastMessage = "已执行。";
+                    }
+                    else
+                    {
+                        _lastMessage = err;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(_lastMessage))
+            {
+                EditorGUILayout.Space(6);
+                EditorGUILayout.HelpBox(_lastMessage,
+                    _lastMessage.StartsWith("已") ? MessageType.Info : MessageType.Warning);
             }
         }
     }

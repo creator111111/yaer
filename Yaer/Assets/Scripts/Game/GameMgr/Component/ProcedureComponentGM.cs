@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Game.GameMgr.Component.Archive;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
 using Game.GameMgr.Component.Base;
@@ -282,6 +282,7 @@ namespace Game.GameMgr.Component
 
         public void ReturnToMainMenu()
         {
+            Log.Info("ReturnToMainMenu called.");
             // 开启黑幕
             uiComponentGM.OpenUIForm(UIPrefabPath.GetUIPrefabPath("BlackPanel"), EUIGroup.System, new OpenFormArgs()
             {

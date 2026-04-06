@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameRuntime.Entities.Component.Interactive;
 using Game.GameRuntime.GameSceneManager.Base;
 using GameFramework.Entity;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Game.GameRuntime.GameSceneManager.Component
 {
@@ -43,6 +44,11 @@ namespace Game.GameRuntime.GameSceneManager.Component
             if (Input.GetMouseButtonDown(0))
             {
                 if (!mainCamera) return;
+
+                if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                {
+                    return;
+                }
 
                 int count = Physics2D.RaycastNonAlloc(mainCamera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, hit2D, 1000);
 

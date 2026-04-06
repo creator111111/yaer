@@ -1,3 +1,5 @@
+using Game.GameMgr;
+using Game.GameMgr.Component;
 using Game.GameRuntime.Entities.Component;
 using Game.GameRuntime.Entities.Component.Health;
 using Game.GameRuntime.Entities.Player;
@@ -67,7 +69,16 @@ public class PlayerStatsEditorWindow : EditorWindow
 
     private void FindPlayer()
     {
-        playerLogic = GameObject.FindObjectOfType<PlayerLogic>();
+        playerLogic = null;
+        if (Application.isPlaying)
+        {
+            var entityGM = GameManager.GetGMComponent<EntityComponentGM>();
+            if (entityGM != null)
+                playerLogic = entityGM.GetEntityLogic<PlayerLogic>();
+        }
+        if (playerLogic == null)
+            playerLogic = Object.FindObjectOfType<PlayerLogic>(true);
+        if (playerLogic == null) return;
         HPValue = playerLogic.componentSystem.GetComponent<HealthComponent>().hp;
         StaminaValue = playerLogic.componentSystem.GetComponent<StaminaComponent>().Stamina;
     }

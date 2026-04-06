@@ -4,6 +4,7 @@ using Game.GameRuntime.UI.FormLogic.Base;
 using Game.GameRuntime.UI.FormLogic.Menu;
 using Game.GameRuntime.UI.FormLogic.Menu.MainItemPage;
 using Game.Static.Name.Settings;
+using System;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.UI;
@@ -11,6 +12,10 @@ using UnityEngine.UI;
 
 public class ItemShowFormLogic : BaseUIFormLogic
 {
+    /// <summary>ItemShowPanel ??????????????????????????棩??</summary>
+    public static event Action OnPanelOpened;
+    /// <summary>ItemShowPanel ?????????Esc??ClosePanel ?????</summary>
+    public static event Action OnPanelClosed;
     [SerializeField] private MenuFormMainItemPage mainItemPage;
     [SerializeField] private DetailFormLogic detailForm;
     public Button closeBtn;
@@ -47,7 +52,7 @@ public class ItemShowFormLogic : BaseUIFormLogic
         var curResTag = GameManager.GetCurLanguageResTag();
         if (GameManager.Instance.language == LanguageEnumType.Japanese)
         {
-            // 日语用英文的资源
+            // ?????????????
             curResTag = LanguageType.GetLanaguageResTag(LanguageEnumType.English);
         }
         var norResName = "returnNor" + curResTag;
@@ -80,12 +85,13 @@ public class ItemShowFormLogic : BaseUIFormLogic
         base.OnOpen(userData);
         detailForm.gameObject.SetActive(false);
         closeBtn.gameObject.SetActive(false);
+        OnPanelOpened?.Invoke();
     }
 
     protected internal override void OnClose(bool isShutdown, object userData)
     {
         base.OnClose(isShutdown, userData);
-        
+        OnPanelClosed?.Invoke();
     }
 
     public override void CloseFormOnEsc()

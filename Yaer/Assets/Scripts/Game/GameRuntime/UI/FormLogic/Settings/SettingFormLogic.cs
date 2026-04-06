@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Game.GameMgr.Manager.Settings.Helper;
 using Game.GameMgr.Manager.Settings;
 using Game.GameRuntime.UI.Component.BlackFade;
@@ -443,15 +443,14 @@ namespace Game.GameRuntime.UI.FormLogic.Settings
 
         public void UpdateView(SettingsConfigData data)
         {
-            // 是否可调分辨率
+            // 分辨率选项始终可见，允许全屏下也调整。
+            resolutionSelector.UseResolution(true);
             if (data.windowMode == SettingsConfigData.EWindowMode.Windowed)
             {
-                resolutionSelector.UseResolution(true);
                 tgsWindowMode.ActiveOption("Windowed");
             }
             else
             {
-                resolutionSelector.UseResolution(false);
                 tgsWindowMode.ActiveOption("FullScreen");
             }
 
@@ -486,19 +485,19 @@ namespace Game.GameRuntime.UI.FormLogic.Settings
 
         private void SetWindowMode(bool windowed)
         {
+            // 分辨率选项始终可见，允许全屏下也调整。
+            resolutionSelector.UseResolution(true);
             if (windowed)
             {
                 tgsWindowMode.ActiveOption("Windowed");
-                resolutionSelector.UseResolution(true);
             }
             else
             {
                 tgsWindowMode.ActiveOption("FullScreen");
-                resolutionSelector.UseResolution(false);
             }
-            Screen.fullScreen = !windowed;
 
             settingManager.SettingData.windowMode = windowed ? SettingsConfigData.EWindowMode.Windowed : SettingsConfigData.EWindowMode.FullScreen;
+            ApplyDisplaySettings();
             settingManager.SaveSetting(settingManager.SettingData);
         }
 
@@ -506,10 +505,20 @@ namespace Game.GameRuntime.UI.FormLogic.Settings
         {
             Debug.Log($"修改分辨率：{w} * {h}");
             settingManager.SettingData.resolvingPower = SettingsConfigData.GetResolvingEnum(w, h);
-            Screen.SetResolution(w, h, true);
-            Screen.fullScreen = settingManager.SettingData.windowMode == SettingsConfigData.EWindowMode.Windowed ? false : true;
+            ApplyDisplaySettings();
 
             settingManager.SaveSetting(settingManager.SettingData);
+        }
+
+        private void ApplyDisplaySettings()
+        {
+            var data = settingManager.SettingData;
+            var (width, height) = SettingsConfigData.GetResolution(data.resolvingPower);
+            var isWindowed = data.windowMode == SettingsConfigData.EWindowMode.Windowed;
+            var fullScreenMode = isWindowed ? FullScreenMode.Windowed : FullScreenMode.ExclusiveFullScreen;
+
+            Screen.SetResolution(width, height, fullScreenMode);
+            Debug.Log($"应用显示设置: {width}x{height}, mode={Screen.fullScreenMode}, current={Screen.currentResolution.width}x{Screen.currentResolution.height}");
         }
 
         private void OnAllVolumeSldChanged(float value)

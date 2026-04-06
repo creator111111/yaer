@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Game.GameMgr;
@@ -507,19 +507,24 @@ namespace Game.GameRuntime.GameSceneManager.Base
                 if (entity.EntityLogic is BaseSceneEntityLogic entityLogic)
                 {
                     var component = entityLogic.componentSystem.TryGetComponent<InteractiveComponent>();
-                    if (component != null && playerInteractiveComponent.AreCollidersOverlapping(component.InteractiveCollider))
+                    if (component != null)
                     {
-                        // 计算距离
-                        float distance = playerInteractiveComponent.DistanceTo(component);
-                        if (distance < minDistance)
+                        var overlap = playerInteractiveComponent.AreCollidersOverlapping(component.InteractiveCollider);
+                        if (overlap)
                         {
-                            minDistance = distance;
-                            closestComponent = component;
+                            // 计算距离
+                            float distance = playerInteractiveComponent.DistanceTo(component);
+                            if (distance < minDistance)
+                            {
+                                minDistance = distance;
+                                closestComponent = component;
+                            }
                         }
                     }
                 }
             }
 
+            Debug.Log($"[BaseGameSceneManager] GetFirstCanTouchEntiy result={(closestComponent != null ? closestComponent.gameObject.name : "null")}");
             return closestComponent;
         }
 

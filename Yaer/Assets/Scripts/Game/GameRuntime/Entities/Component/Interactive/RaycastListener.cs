@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Game.GameRuntime.Entities.Base;
 using Game.GameRuntime.Entities.Player;
 using SingularityGroup.HotReload;
@@ -57,7 +57,12 @@ namespace Game.GameRuntime.Entities.Component.Interactive
         /// </summary>
         private bool AreCollidersOverlapping(Collider2D other)
         {
-            return listenerCollider.bounds.Intersects(other.bounds);
+            if (listenerCollider == null || other == null) return false;
+            var a = listenerCollider.bounds;
+            var b = other.bounds;
+            // 与 InteractiveComponent 保持一致的容差，避免点击判定比 E 判定更严格导致“明明靠近却不触发”。
+            a.Expand(new Vector3(0.2f, 0.2f, 0));
+            return a.Intersects(b);
         }
     }
 }

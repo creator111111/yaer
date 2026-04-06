@@ -2107,6 +2107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8890267598378700756}
   - component: {fileID: 9096671223339082597}
+  - component: {fileID: 9186671223339082598}
   m_Layer: 0
   m_Name: KnockBackComponent
   m_TagString: Untagged
@@ -2144,6 +2145,21 @@ MonoBehaviour:
   knockBackDuration: 0.5
   bounceHeight: 0.5
   bounceFrequency: 2
+--- !u!114 &9186671223339082598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6688310896756747318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f3c9e214b548d6b2a8019567ef1234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  additionalDownAcceleration: 10
+  clampMaxFallSpeed: 0
+  maxFallSpeedY: -50
 --- !u!1 &6831882156943655811
 GameObject:
   m_ObjectHideFlags: 0

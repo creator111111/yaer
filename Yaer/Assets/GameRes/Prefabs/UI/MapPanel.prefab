@@ -1547,6 +1547,7 @@ GameObject:
   - component: {fileID: 2907359548935592982}
   - component: {fileID: 3237092647908170180}
   - component: {fileID: 2810779362191886826}
+  - component: {fileID: 7000123456789012345}
   m_Layer: 5
   m_Name: Date
   m_TagString: Untagged
@@ -1581,6 +1582,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5620387670534399456}
   m_CullTransparentMesh: 1
+--- !u!114 &7000123456789012345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5620387670534399456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dateText: {fileID: 2810779362191886826}
 --- !u!114 &2810779362191886826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1601,7 +1615,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u9F99\u5386271\u5E747\u67082\u65E5"
+  m_text: "\u5FB7\u52D2\u74E6639\u5E744\u670817\u65E5"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fd25dc7192a5b4c449009ecda7581dd4, type: 2}
   m_sharedMaterial: {fileID: -580576367597154168, guid: fd25dc7192a5b4c449009ecda7581dd4,

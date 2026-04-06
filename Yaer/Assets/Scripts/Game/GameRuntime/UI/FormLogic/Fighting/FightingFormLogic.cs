@@ -1,4 +1,4 @@
-﻿using DG.Tweening;
+using DG.Tweening;
 using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
@@ -42,6 +42,7 @@ namespace Game.GameRuntime.UI.FormLogic
 
         bool hasUpdateIllustration = false; // 是否刷新当前战斗立绘
         bool hasInitUI = false; // 是否初始化某些UI
+        private bool isBattleImageVisible; // 当前战斗立绘是否处于显示状态（逻辑层记录）
         GameObject itemImgBgArea;
         [SerializeField]
         private Sprite[] AvatarSprites;
@@ -292,7 +293,34 @@ namespace Game.GameRuntime.UI.FormLogic
         public void UpdateBattleImageVisiable(bool isShow)
         {
             if (ForestSceneData == null) { return; }
-            illustration.gameObject.SetActive(isShow && ForestSceneData.homeDoorStoryComplete);
+
+            bool targetVisible = isShow && ForestSceneData.homeDoorStoryComplete;
+
+            // 从显示变为隐藏
+            if (isBattleImageVisible && !targetVisible)
+            {
+                illustration.gameObject.SetActive(false);
+                isBattleImageVisible = false;
+                return;
+            }
+
+            // 从隐藏变为显示时，根据当前血量和受伤状态重算一次立绘状态
+            if (!isBattleImageVisible && targetVisible)
+            {
+                illustration.gameObject.SetActive(true);
+
+                float hpPercent = HPSlider.value;
+                UpdateIllustration(hpPercent, playerLogic.ClothesBroken);
+                WoundEffectAnimator.SetBool("Wound", hpPercent < 0.25f);
+                UpdateAvatar(hpPercent);
+
+                isBattleImageVisible = true;
+                return;
+            }
+
+            // 状态未变化时，保持当前显示状态一致
+            illustration.gameObject.SetActive(targetVisible);
+            isBattleImageVisible = targetVisible;
         }
 
         private void UpdateWoundVisiable(bool showWound)

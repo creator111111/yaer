@@ -1,4 +1,4 @@
-﻿using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
+using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Scene;
 using Game.GameRuntime.Entities.Base.BaseSceneObj;
 using Game.GameRuntime.Entities.Component.Interactive;
@@ -40,12 +40,17 @@ namespace Game.GameRuntime.Entities.SceneEntities.HomeScene1
         public void OnHomeScene1GoOutXiaerEnd()
         {
             var homeScene1Data = SceneManager.GetArchiveData<HomeScene1Data>();
+            if (homeScene1Data.xiaerDialogue)
+            {
+                return;
+            }
             homeScene1Data.xiaerDialogue = true;
 
-            SceneManager.GetArchiveData<PlayerBagData>().AddMainItem(EMainItemName.MpBall, 3);
+            var bagData = SceneManager.GetArchiveData<PlayerBagData>();
+            bagData.AddMainItem(EMainItemName.MpBall, 3);
             SceneManager.GetModule<TipsComponentGSM>().OpenTipsForm("GetMpBall");
 
-            SceneManager.GetArchiveData<PlayerBagData>().AddMainItem(EMainItemName.HpBall, 3);
+            bagData.AddMainItem(EMainItemName.HpBall, 3);
             SceneManager.GetModule<TipsComponentGSM>().OpenTipsForm("GetHpBall");
         }
     }

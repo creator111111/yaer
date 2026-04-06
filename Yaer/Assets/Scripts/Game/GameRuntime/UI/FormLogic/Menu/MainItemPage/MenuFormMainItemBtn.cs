@@ -13,12 +13,13 @@ namespace Game.GameRuntime.UI.FormLogic.Menu.MainItemPage
     {
         [SerializeField] private GameObject root;
         [SerializeField] private DetailFormLogic detailForm;
+        /// <summary>用于描述框锚点的道具格外框；为空则使用本按钮的 RectTransform。</summary>
+        [SerializeField] private RectTransform detailAnchorRect;
         [SerializeField] private Image imgIcon;
         [SerializeField] private TextMeshProUGUI num;
         [SerializeField] private GameObject mask;
         [SerializeField] private GridLayoutGroup grid;
 
-        private bool isOpenDetail;
         public MenuFormMainItemInfo item;
         public Canvas uiCanvas;
 
@@ -49,34 +50,39 @@ namespace Game.GameRuntime.UI.FormLogic.Menu.MainItemPage
 
         public void ShowDetail()
         {
-            if (!imgIcon.gameObject.activeSelf) return;
-
-            if (!isOpenDetail)
+            if (!imgIcon.gameObject.activeSelf || item == null || detailForm == null)
             {
-                detailForm.gameObject.SetActive(true);
-                var languageType = GameManager.Instance.language;
-                var itemDesc = "";
-                if (languageType == LanguageEnumType.Chinese)
-                {
-                    itemDesc = item.detail;
-                }
-                else if (languageType == LanguageEnumType.English)
-                {
-                    itemDesc = item.detail_en;
-                }
-                else if (languageType == LanguageEnumType.Japanese)
-                {
-                    itemDesc = item.detail_jp;
-                }
-                detailForm.UpdateInfo(itemDesc);
-                isOpenDetail = true;
+                return;
             }
+
+            // 悬停协程每帧调用：刷新文案与锚点位置（滚动列表时格子会移动）
+            var anchor = detailAnchorRect != null ? detailAnchorRect : GetComponent<RectTransform>();
+            detailForm.gameObject.SetActive(true);
+
+            var languageType = GameManager.Instance.language;
+            var itemDesc = "";
+            if (languageType == LanguageEnumType.Chinese)
+            {
+                itemDesc = item.detail;
+            }
+            else if (languageType == LanguageEnumType.English)
+            {
+                itemDesc = item.detail_en;
+            }
+            else if (languageType == LanguageEnumType.Japanese)
+            {
+                itemDesc = item.detail_jp;
+            }
+
+            detailForm.UpdateInfo(itemDesc, anchor);
         }
 
         public void HideDetail()
         {
-            detailForm.gameObject.SetActive(false);
-            isOpenDetail = false;
+            if (detailForm != null)
+            {
+                detailForm.gameObject.SetActive(false);
+            }
         }
 
         #region 拖拽
@@ -127,21 +133,37 @@ namespace Game.GameRuntime.UI.FormLogic.Menu.MainItemPage
         {
             if (root == null) { return; }
             if (item == null) { return; }
+
+            // 先还原拖拽造成的本地偏移，再改 sibling / 开 Grid；否则 Grid 只排布 Content 子节点时，子物体仍偏移会与邻格视觉堆叠。
+            rt.localPosition = pos;
+
             root.transform.SetSiblingIndex(item.index);
-            grid.enabled = true;
+
             MenuFormMainItemBtn cell = null;
             if (eventData.pointerCurrentRaycast.gameObject != null)
             {
                 cell = eventData.pointerCurrentRaycast.gameObject.GetComponentInParent<MenuFormMainItemBtn>();
             }
-            if (cell != null && cell.item != null)
+
+            // 命中自身或同一数据项时不交换，避免多余 Swap 与布局抖动。
+            if (cell != null && cell.item != null && cell != this && !ReferenceEquals(cell.item, this.item))
             {
                 GameManager.GetGMComponent<ArchiveComponentGM>().GetData<PlayerBagData>().SwapItemsIndex(item, cell.item);
                 cell.root.transform.SetSiblingIndex(cell.item.index);
                 root.transform.SetSiblingIndex(item.index);
             }
 
-            rt.localPosition = pos;
+            // 数据与 sibling 顺序确定后再开启布局，且只开一次，减少中间态重叠。
+            grid.enabled = true;
+            if (grid != null)
+            {
+                var gridRect = grid.transform as RectTransform;
+                if (gridRect != null)
+                {
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(gridRect);
+                }
+            }
+
             mask.SetActive(true);
             GetComponent<Button>().interactable = true;
             GetComponent<Image>().raycastTarget = true;

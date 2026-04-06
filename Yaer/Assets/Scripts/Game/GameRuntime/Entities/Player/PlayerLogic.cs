@@ -1,4 +1,4 @@
-﻿using DG.Tweening;
+using DG.Tweening;
 using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
@@ -385,7 +385,7 @@ namespace Game.GameRuntime.Entities.Player
                 else { moveComponent.TurnLeft(); }
                 
                 // 非特殊状态下只要受伤就强制转换为受伤状态
-                if (!csAnimator.GetSign("IsBreakUp"))
+                if (!csAnimator.GetSign("IsBreakUp") || isDead)
                 {
                     if (csAnimator.GetSign("IsClimb"))
                     {
