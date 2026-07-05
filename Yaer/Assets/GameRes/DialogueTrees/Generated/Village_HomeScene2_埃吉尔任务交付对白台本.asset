@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3f478ef69fbe04fa9ed3664a8a443e, type: 3}
+  m_Name: "Village_HomeScene2_\u57C3\u5409\u5C14\u4EFB\u52A1\u4EA4\u4ED8\u5BF9\u767D\u53F0\u672C"
+  m_EditorClassIdentifier: 
+  _serializedGraph: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"Visible":{},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":200.0,"y":-260.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoOutStoryYaerPainting","_targetVariableID":"d7436528-6689-41dd-8c70-f3eba53896ba"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":200.0,"y":-140.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"1"},{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":200.0,"y":-20.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"2"},{"FaceType":{"_value":3},"statement":{"_text":"\u4eca\u5929\u7684\u6570\u91cf\u8fbe\u6210\u4e86\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"509bf7db-a9b3-416d-878d-d8dbfa501b38","_position":{"x":200.0,"y":100.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"3"},{"FaceType":{"_value":12},"statement":{"_text":"\u597d\u5427\uff0c\u6211\u5c31\u770b\u5728\u4f60\u5e2e\u6211\u7684\u4efd\u4e0a\u5bf9\u4f60\u6539\u89c2\u5427\u3002"},"_actorName":"\u57c3\u5409\u5c14","_actorParameterID":"371f9ce1-5867-4b94-b40e-abfc425263f4","_position":{"x":200.0,"y":220.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"FaceType":{"_value":12},"statement":{"_text":"\u6211\u4e5f\u4e0d\u662f\u5c0f\u6c14\u4e4b\u4eba\uff0c\u8fd9\u4e9b\u94b1\u4f60\u62ff\u7740\u5427\uff0c\u53cd\u6b63\u6211\u4e5f\u7528\u4e0d\u4e0a\uff0c\u90a3\u4e2a\u5e97\u8001\u677f\u574f\u5bb6\u4f19\u6bcf\u6b21\u53bb\u90fd\u8981\u63c9\u6211\uff0c\u8fd8\u8bf4\u6211\u5c0f\uff0c\u6211\u624d\u4e0d\u53bb\u5462\u3002"},"_actorName":"\u57c3\u5409\u5c14","_actorParameterID":"371f9ce1-5867-4b94-b40e-abfc425263f4","_position":{"x":200.0,"y":340.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"FaceType":{"_value":5},"statement":{"_text":"\u554a\u3002\u3002\u3002\u3002\u3002
+    \u542c\u5230\u4e86\u4e9b\u4e0d\u597d\u7684\u4e8b\u5462\u3002\u3002\u3002\u3002\u3002\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"509bf7db-a9b3-416d-878d-d8dbfa501b38","_position":{"x":200.0,"y":460.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"6"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u57c3\u5409\u5c14","_id":"371f9ce1-5867-4b94-b40e-abfc425263f4"},{"_keyName":"\u96c5\u5c14","_id":"509bf7db-a9b3-416d-878d-d8dbfa501b38"}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _objectReferences: []
+  _graphSource:
+    _version: 3.31
+    _category: 
+    _comments: 
+    _translation: {x: 0, y: 0}
+    _zoomFactor: 1
+  _haltSerialization: 0
+  _externalSerializationFile: {fileID: 0}
+  actorParameters:
+  - _keyName: "\u57C3\u5409\u5C14"
+    _id: 371f9ce1-5867-4b94-b40e-abfc425263f4
+    _actorObject: {fileID: 0}
+  - _keyName: "\u96C5\u5C14"
+    _id: 509bf7db-a9b3-416d-878d-d8dbfa501b38
+    _actorObject: {fileID: 0}

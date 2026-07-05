@@ -1,0 +1,2 @@
+有关VillageWalkObstacle的PolygonCollider2D表现的碰撞阻挡范围有时候并不是看到的那样，会超出边界以至于莫名奇妙的阻挡，这并不是我想要的效果
+需要排查是脚本问题还是判定问题

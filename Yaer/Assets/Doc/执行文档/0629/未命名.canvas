@@ -1,0 +1,16 @@
+{
+	"nodes":[
+		{"id":"a91b01878be12899","x":-765,"y":80,"width":250,"height":115,"type":"text","text":"章节数字：\n序章0\n第一章1"},
+		{"id":"4882aaa47d152dda","x":-390,"y":108,"width":250,"height":60,"type":"text","text":"地图名英文：\n"},
+		{"id":"b00b382c7f2b8760","x":-60,"y":108,"width":250,"height":60,"type":"text","text":"对话名："},
+		{"id":"f0b5fbd3a6a731cb","x":-400,"y":-80,"width":250,"height":60,"type":"text","text":"我们的对话文件需要哪些信息？\n"},
+		{"id":"f468a205c08e4ff2","x":-400,"y":280,"width":340,"height":60,"type":"text","text":"0_LongChengJiao_ShiBing1_Yare1"},
+		{"id":"237782a34d0dacfb","x":280,"y":108,"width":250,"height":60,"type":"text","text":"角色名"},
+		{"id":"a96487cd7065cccc","type":"text","text":"0_LongChengJiao_ShiBing1_Yare2","x":-400,"y":380,"width":340,"height":60}
+	],
+	"edges":[
+		{"id":"dafa8ba3a5bcbf8a","fromNode":"a91b01878be12899","fromSide":"right","toNode":"4882aaa47d152dda","toSide":"left"},
+		{"id":"49fdf11ec652880d","fromNode":"4882aaa47d152dda","fromSide":"right","toNode":"b00b382c7f2b8760","toSide":"left"},
+		{"id":"294edcb0786a0ed5","fromNode":"b00b382c7f2b8760","fromSide":"right","toNode":"237782a34d0dacfb","toSide":"left"}
+	]
+}

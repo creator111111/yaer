@@ -1,0 +1,318 @@
+using Game.GameMgr.Component.Archive;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Quest
+{
+    /// <summary>
+    /// 任务运行时管理器（阶段 2～3 最小集）：接取、查询进度、存档。
+    /// API 形态参考 <see cref="Player.AchievementDataMgr"/>，主键为 questId 字符串。
+    /// </summary>
+    [Serializable]
+    public class QuestManager
+    {
+        private static QuestManager instance;
+
+        /// <summary>任务接取成功时触发，供阶段 5 左侧追踪 UI 订阅。</summary>
+        public event Action<string> OnQuestAccepted;
+
+        /// <summary>击杀进度变更时触发（questId, current, target），供阶段 5 左侧追踪 UI 订阅。</summary>
+        public event Action<string, int, int> OnQuestProgressChanged;
+
+        public static QuestManager getInstance()
+        {
+            if (instance == null)
+            {
+                instance = new QuestManager();
+            }
+
+            return instance;
+        }
+
+        /// <summary>获取当前存档中的任务运行时数据；首次访问时由 ArchiveComponentGM 懒加载。</summary>
+        public PlayerQuestData GetPlayerQuestData()
+        {
+            var sceneMgr = GameManager.GetGameSceneManager();
+            if (sceneMgr == null)
+            {
+                // 对话接取等流程通常已有场景管理器；兜底走 GM 存档组件。
+                return GameManager.GetGMComponent<ArchiveComponentGM>().GetData<PlayerQuestData>();
+            }
+
+            return sceneMgr.GetArchiveData<PlayerQuestData>();
+        }
+
+        /// <summary>
+        /// 接取任务：校验配置 → 幂等检查 → 写入 InProgress + 0 进度 → 存档。
+        /// </summary>
+        /// <param name="questId">与 QuestConfig.json 中 questId 完全一致，如 Quest_001。</param>
+        public void AcceptQuest(string questId)
+        {
+            if (string.IsNullOrEmpty(questId))
+            {
+                Debug.LogWarning("[Quest] AcceptQuest 收到空 questId");
+                return;
+            }
+
+            var configRow = QuestConfigMgr.getInstance().GetQuestRow(questId);
+            if (configRow == null)
+            {
+                Debug.LogWarning($"[Quest] Unknown questId: {questId}");
+                return;
+            }
+
+            var questData = GetPlayerQuestData();
+            if (questData.questStates.TryGetValue(questId, out var existingState)
+                && (existingState == QuestState.InProgress || existingState == QuestState.Complete
+                    || existingState == QuestState.TurnedIn))
+            {
+                Debug.Log($"[Quest] Already accepted: {questId}");
+                return;
+            }
+
+            questData.questStates[questId] = QuestState.InProgress;
+            questData.questProgress[questId] = 0;
+
+            SaveQuestProgress();
+
+            Debug.Log($"[Quest] Accept {questId}");
+            Debug.Log($"[Quest] Progress {questId}: 0/{configRow.targetCount} ({QuestState.InProgress})");
+
+            OnQuestAccepted?.Invoke(questId);
+        }
+
+        /// <summary>返回所有进行中任务的 questId 列表，供阶段 5 UI 使用。</summary>
+        public List<string> GetActiveQuests()
+        {
+            var result = new List<string>();
+            var questData = GetPlayerQuestData();
+
+            foreach (var kvp in questData.questStates)
+            {
+                if (kvp.Value == QuestState.InProgress)
+                {
+                    result.Add(kvp.Key);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>查询任务状态；未接取返回 null。</summary>
+        public QuestState? GetQuestState(string questId)
+        {
+            if (string.IsNullOrEmpty(questId))
+            {
+                return null;
+            }
+
+            var questData = GetPlayerQuestData();
+            return questData.questStates.TryGetValue(questId, out var state) ? state : (QuestState?)null;
+        }
+
+        /// <summary>返回当前进度与目标数量；(0, 0) 表示配置不存在或未接取。</summary>
+        public (int currentCount, int targetCount) GetQuestProgress(string questId)
+        {
+            if (string.IsNullOrEmpty(questId))
+            {
+                return (0, 0);
+            }
+
+            var configRow = QuestConfigMgr.getInstance().GetQuestRow(questId);
+            if (configRow == null)
+            {
+                return (0, 0);
+            }
+
+            var questData = GetPlayerQuestData();
+            var current = questData.questProgress.TryGetValue(questId, out var count) ? count : 0;
+            return (current, configRow.targetCount);
+        }
+
+        /// <summary>
+        /// 怪物死亡统一入口（阶段 4）。仅处理 objectiveType==KillMonster 且 state==InProgress 的任务。
+        /// 未接取或非进行中任务静默跳过，不打 Progress 日志。
+        /// 替代方案：在 WoodWormLogic 等子类单独调用——仅覆盖蠕虫，漏掉其他 KillMonster 目标怪，不推荐。
+        /// </summary>
+        /// <param name="monsterName">MonsterConfig.name，大小写须与 QuestConfig.targetMonster 完全一致。</param>
+        public void OnMonsterKilled(string monsterName)
+        {
+            if (string.IsNullOrEmpty(monsterName))
+            {
+                return;
+            }
+
+            Debug.Log($"[Quest] Kill report: {monsterName}");
+
+            var configMgr = QuestConfigMgr.getInstance();
+            var questData = GetPlayerQuestData();
+            var anyChanged = false;
+
+            foreach (var kvp in questData.questStates)
+            {
+                if (kvp.Value != QuestState.InProgress)
+                {
+                    continue;
+                }
+
+                var questId = kvp.Key;
+                var row = configMgr.GetQuestRow(questId);
+                if (row == null || row.objectiveType != "KillMonster")
+                {
+                    continue;
+                }
+
+                if (row.targetMonster != monsterName)
+                {
+                    continue;
+                }
+
+                var current = questData.questProgress.TryGetValue(questId, out var c) ? c : 0;
+                if (current >= row.targetCount)
+                {
+                    // 已达标不再累加（Complete 前封顶，防止第 11 只继续涨）
+                    continue;
+                }
+
+                current = Mathf.Min(current + 1, row.targetCount);
+                questData.questProgress[questId] = current;
+                anyChanged = true;
+
+                if (current >= row.targetCount)
+                {
+                    questData.questStates[questId] = QuestState.Complete;
+                    Debug.Log($"[Quest] Progress {questId}: {current}/{row.targetCount} (Complete)");
+                }
+                else
+                {
+                    Debug.Log($"[Quest] Progress {questId}: {current}/{row.targetCount} (InProgress)");
+                }
+
+                OnQuestProgressChanged?.Invoke(questId, current, row.targetCount);
+            }
+
+            if (anyChanged)
+            {
+                SaveQuestProgress();
+            }
+        }
+
+        /// <summary>是否可交付：仅 Complete 状态返回 true。</summary>
+        public bool CanTurnInQuest(string questId)
+        {
+            return GetQuestState(questId) == QuestState.Complete;
+        }
+
+        /// <summary>
+        /// 交付任务：仅 Complete → TurnedIn；已 TurnedIn 或非 Complete 时幂等跳过（不重复发奖）。
+        /// </summary>
+        /// <returns>本次是否成功从 Complete 转为 TurnedIn。</returns>
+        public bool TurnInQuest(string questId)
+        {
+            if (string.IsNullOrEmpty(questId))
+            {
+                Debug.LogWarning("[Quest] TurnInQuest 收到空 questId");
+                return false;
+            }
+
+            var questData = GetPlayerQuestData();
+            if (!questData.questStates.TryGetValue(questId, out var state))
+            {
+                Debug.LogWarning($"[Quest] TurnIn 失败，未接取: {questId}");
+                return false;
+            }
+
+            if (state == QuestState.TurnedIn)
+            {
+                Debug.Log($"[Quest] Already turned in: {questId}");
+                return false;
+            }
+
+            if (state != QuestState.Complete)
+            {
+                Debug.LogWarning($"[Quest] TurnIn 失败，状态非 Complete: {questId} ({state})");
+                return false;
+            }
+
+            questData.questStates[questId] = QuestState.TurnedIn;
+            SaveQuestProgress();
+
+            Debug.Log($"[Quest] TurnIn {questId}");
+            return true;
+        }
+
+        /// <summary>
+        /// 发放任务配置表中的奖励（首版仅 Gold）。须在 TurnInQuest 成功后由 QuestTurnInAction 调用。
+        /// 替代方案 B：仅 Debug.Log 不进存档——不符合交付发 60 币验收。
+        /// </summary>
+        public void GrantQuestRewards(string questId)
+        {
+            if (string.IsNullOrEmpty(questId))
+            {
+                return;
+            }
+
+            var configRow = QuestConfigMgr.getInstance().GetQuestRow(questId);
+            if (configRow == null)
+            {
+                Debug.LogWarning($"[Quest] GrantRewards 未知 questId: {questId}");
+                return;
+            }
+
+            if (GetQuestState(questId) != QuestState.TurnedIn)
+            {
+                Debug.LogWarning($"[Quest] GrantRewards 跳过，状态非 TurnedIn: {questId}");
+                return;
+            }
+
+            foreach (var reward in configRow.rewards)
+            {
+                if (reward == null || string.IsNullOrEmpty(reward.type))
+                {
+                    continue;
+                }
+
+                if (reward.type == "Gold")
+                {
+                    var goldData = GetPlayerGoldData();
+                    goldData.AddGold(reward.amount);
+                    SavePlayerGold();
+                    Debug.Log($"[Quest] Grant Gold {reward.amount}");
+                }
+            }
+        }
+
+        /// <summary>获取玩家游戏币存档；懒加载路径与 PlayerQuestData 一致。</summary>
+        public PlayerGoldData GetPlayerGoldData()
+        {
+            var sceneMgr = GameManager.GetGameSceneManager();
+            if (sceneMgr == null)
+            {
+                return GameManager.GetGMComponent<ArchiveComponentGM>().GetData<PlayerGoldData>();
+            }
+
+            return sceneMgr.GetArchiveData<PlayerGoldData>();
+        }
+
+        /// <summary>实时保存任务进度至当前存档，对标 AchievementDataMgr.SaveAchievementProgress。</summary>
+        public void SaveQuestProgress()
+        {
+            var archiveComponentGM = GameManager.GetGMComponent<ArchiveComponentGM>();
+            if (archiveComponentGM != null)
+            {
+                archiveComponentGM.SaveSpcData<PlayerQuestData>();
+            }
+        }
+
+        /// <summary>保存游戏币至当前存档。</summary>
+        public void SavePlayerGold()
+        {
+            var archiveComponentGM = GameManager.GetGMComponent<ArchiveComponentGM>();
+            if (archiveComponentGM != null)
+            {
+                archiveComponentGM.SaveSpcData<PlayerGoldData>();
+            }
+        }
+    }
+}
