@@ -49,7 +49,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\KnockBackComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Network\NetworkComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\HomeScene1\HomeScene1GoOutStoryCollider.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_MinMaxGradient.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.RuntimeMemorySummaryWindow.Record.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\BuiltinVersionListSerializer.PackageVersionListDeserializeCallback.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\CommonEntity\SetAutoMoveTrigger.cs" />
@@ -59,6 +58,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\WoodWormCsRuntimeController.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\IDamageModifier.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Tips\ETipsType.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3NativeArrayType.cs" />
     <Compile Include="Assets\Scripts\Game\DataTable\MonsterConfig\MonsterDataTableRow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormBounceState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\DialogueAvatarLoader.cs" />
@@ -69,23 +69,23 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarTexture.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Effect\IParticleComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\GameSceneResManager.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SkinnedMeshRenderer.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\NormalAttack\NormalAttackPart2End.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\Generic\Package\PlayerAnimaResPackage.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Manager\GameComponentTest.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.PathInformationWindow.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\UI\UIResManager.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_ParticleSystem.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveManagerSettings.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Date\DateData.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Keyframe.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_GameObject.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\PhysicsDetect\GroundCheck\SimpleRaycastGroundChecker.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Text.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Utility\MathUtility.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Config\LoadConfigSuccessEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\PlayerGuideStoryAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialoguePanelTaskAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Anima\TenWanCsRuntimeController.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\BornSubState\SlimeBornSubSM.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_CapsuleCollider.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\Paralysis\BossMogutParalysisFaceBroken2State.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\WoodWormSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\NormalDialogueFormNewLogic.cs" />
@@ -94,45 +94,39 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Base\IGameSceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Stamina\PlayerStaminaComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\EventComponentGSM.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\NET Types\ES3Type_Random.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\SoundComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\Damage2State.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\SelectClothesSceneData.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\Prefabs\IPrefabsResSubManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\BaseWoodWormState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\Damage1State.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3Writer.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\ResComponentGSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Detail\ShowDetailPanelArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseEntityLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\GetArchiveFloatActionTask.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\PlaySoundFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.ScrollableDebuggerWindowBase.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3StackType.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Config\SlimeValueConfig.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\OpenUIFormUpdateEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\BaseNpc.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\FileSystem\DefaultFileSystemHelper.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Web\ES3Cloud.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\UIComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.InputAccelerationInformationWindow.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ForceOverLifetimeModule.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Component\ComponentSystemMono.cs" />
     <Compile Include="Assets\Scripts\SrcConfig\KeyCodeStrConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\Climb\ClimbUpState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\Dust\DashAttackDust2Effect.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\SoundHelperBase.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3JSONWriter.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\IArchiveManager.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ExternalForcesModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\TipsComponentGSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\PureMVC\Base\BaseProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Settings\LanguageSelectLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameMode\BaseGameMode.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\EntityComponent.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\Components\Anima\State\BaseWoodWormRootState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\KnockbackTestPanel\KnockbackTestFormLogic.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\Components\Anima\State\BaseWoodWormRootState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\ScenePlayBgmAciton.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_GradientAlphaKey.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.SettingsWindow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\DamageFly\Fly\DamageFlyClimbUpState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WormEgg\Components\Anima\WormEggSM.cs" />
@@ -140,17 +134,13 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\BossMogutLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\SceneEntityComponentGSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Fighting\FightingCanUsed.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Settings\ES3Defaults.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Goods\Sword\SwordFall2State.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasExtend\DialogueTMPUGUI.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\NET Types\ES3Type_BigInteger.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Setting\ISettingHelper.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Setting\DefaultSettingHelper.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Texture2D.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\PureMVC\GameFacade.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\DeadPanel\DeadPanelProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\BaseDataClass\IArchiveData.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ShapeModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Other\SceneResourcesConfig.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\WWWFormInfo.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Utility\Physics2DUtility.cs" />
@@ -160,9 +150,11 @@
     <Compile Include="Assets\Resources\Input\InputActions.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Map\Map.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Goods\Sword\SwordFall1State.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3HashSetType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\Base\IMonoObject.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\PlayerLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MainItemPage\MenuFormMainItemDragger.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_char.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Settings\ISettingManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\IGamePreloadHandler.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\HomeDoorStoryTriggerLogic.cs" />
@@ -173,20 +165,17 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\Clothes\SelectClothesComponentGSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\HomeScene1ResConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\AnimatorController\IAnimatorControllerResManager.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Guid.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Input\InputComponent.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\NormalAttack\NormalAttackPart1.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_InheritVelocityModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\BaseDataClass\Struct\Pos.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\StoryComponentGSM.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\NormalAttack\NormalAttackPart1.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\SceneMonsterData\SceneMonsterData.cs" />
     <Compile Include="Assets\Easy Save 3\Types\ES3UserType_MasterGameData.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Resource\PreloadAssetInfoHandle.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Base\GameFrameworkComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\SaveGameHandleComponent.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Sprite.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedType.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\DataTable\DefaultDataTableHelper.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector2Int.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\SetArchiveIntActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Effect\EffectPlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Settings\SettingFormLogic.cs" />
@@ -197,7 +186,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\PathHelper\PlayerControllerResPathHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\WestRappRoadData.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\CommonEntity\SceneChangeDoor.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Flare.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_ES3Ref.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Slime\SlimeWeakBuffEffect.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Ground\CombatIdleState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\WebRequestSuccessEventArgs.cs" />
@@ -210,56 +199,45 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Achievement\AchievementDataMgr.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\IGameResourcesSubManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MainItemPage\MenuFormMainItemPage.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Image.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Anima\AnimationEventComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Anima\State\TenWanDeadState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Buff\BuffEffect.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3CollectionType.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\OpenUIFormDependencyAssetEventArgs.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\BuiltinVersionListSerializer.UpdatableVersionListTryGetValueCallback.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\OpenUIFormFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\PlayerCombatCsRuntimeController.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_BoneWeight.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\ForestSceneKingLogic.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarUInt32.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.FpsCounter.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\HomeScene1Data.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3PlayerPrefsStream.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Color.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Auto Save\ES3AutoSaveMgr.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MenuFormMainItemInfo.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Story\IStory.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Config\DefaultConfigHelper.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Light.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Audio\SoundToggleComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\PlayerStateSign.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BossMogutAttack2State.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Interactive\CldInteractiveListener.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_RotationOverLifetimeModule.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.SystemInformationWindow.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Referencing\ES3GlobalReferences.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\Base\ISceneObject.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\NET Types\ES3Type_Type.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Debugging\ES3Debug.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\ShowEntityUpdateEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\StoryTrigger\FirstMeetSlimeStory.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ProcedureComponentGM.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\DefaultSoundAgentHelper.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\Clothes\BoneName.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_MainModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ResComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\DamageData.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Network\NetworkErrorEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\SubManager\Buff\BaseBuff.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Fighting\PlayerStateValue.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3XMLWriter.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\DamageFly\Fly\DamageFlyClsClimbUpState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Network\NetworkMissHeartBeatEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\SubManager\Buff\BuffManager.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_CollisionModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Generic\Map\LimitJumpArea.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\GoOut\GoOutMapStoryLogic.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\ResourceVerifyStartEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SelectHard\SelectHardButtonGroup.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3CacheWriter.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Setting\SettingComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Pool\IPoolContainer.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Args\ILoadSceneArgs.cs" />
@@ -271,11 +249,14 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Procedure\ProcedureGame.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\DefaultEntityHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\SquatStayState.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Readers\ES3JSONReader.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_ulong.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\PlayerFlyHitClsWaveEffect.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\UIFormLogic.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_byte.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\FileSystem\FileSystemComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\CloseUIFormCompleteEventArgs.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_bool.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedComponentType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\BornSubState\SlimeBornFallState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\GameObject\ChangeGameObjRotation.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.RuntimeMemorySummaryWindow.cs" />
@@ -300,10 +281,8 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Setting\DefaultSetting.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Resource\UnityResources\ResourcesSystem.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\CommonEntity\SetActiveTrigger.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Bounds.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\SquatDamageState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarDouble.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\UnityObjectType.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\PlayerDataComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Anima\BaseStateMachine.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\SceneAsset.cs" />
@@ -312,13 +291,13 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Story\WestRappRoadBossBattleMgr.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.InputGyroscopeInformationWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Resource\AB\IABSystem.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedObjectType.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\GameManager.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3Type.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\History\StoryFormHistoryPage.cs" />
-    <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\UnityWebRequestDownloadAgentHelper.DownloadHandler.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\SubManager\IDepthManager.cs" />
+    <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\UnityWebRequestDownloadAgentHelper.DownloadHandler.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_double.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Control\BlackMask.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3Spreadsheet.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\MetaDialogue.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SystemTips\SystemTipsFormLogic.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarObject.cs" />
@@ -342,10 +321,11 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BossMogutStorySubSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\GetChildComponentActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\PhysicsDetect\GroundCheck\BaseGroundChecker.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3QueueType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Base\BaseUIFormLogic.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Color32.cs" />
-    <Compile Include="Assets\Scripts\Game\Static\Path\SceneAssetPath.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES32DArrayType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\SetArchiveStringActionTask.cs" />
+    <Compile Include="Assets\Scripts\Game\Static\Path\SceneAssetPath.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\SetArchiveFieldActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\Base\IDepthObject.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\BuiltinVersionListSerializer.cs" />
@@ -356,17 +336,15 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Archive\SaveGamePanel\SaveGameFormProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\SlimeCsRuntimeController.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\IPhysics2DComponent.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3Crypto.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\NormalAttack\NormalAttackPart3.cs" />
     <Compile Include="Assets\Scripts\Debug\Components\AddItemComponentGT.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\NormalAttack\NormalAttackPart3.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Settings\interf\ISettingDataHelper.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Auto Save\ES3AutoSave.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Burst.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SelectClothes\SelectClothesFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Manager\GameComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\EditorResourceComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\NormalAttack\NormalAttackSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Anima\State\TenWanSleepState.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Rigidbody.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Dead\Dead1State.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\HomeScene2ResConfig.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Localization\LoadDictionaryDependencyAssetEventArgs.cs" />
@@ -375,16 +353,18 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Home\HomeWalkState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\WormRootBattleAction.cs" />
     <Compile Include="Assets\DebugScene\MoveTest.cs" />
-    <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Effect\EffectManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Stamina\StaminaComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Base\BaseFormProxy.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Effect\EffectManager.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Scene\LoadSceneFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\InputComponentGSM.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarByteArray.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_sbyte.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\DownloadFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\SquatSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Story\BaseSceneStoryMgr.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\HomeScene2\HomeScene2Door.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_decimal.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormTurnState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BaseBossMogutBattleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\BasePlayerDamageState.cs" />
@@ -402,7 +382,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\LoadSceneComponentGSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\SlimeAnimationEvent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Fighting\StatChangeBuffer.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3GameObject.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Black\ShowBlackFormArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\JumpAtkSubState\SlimeJumpAtkDownState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\DataTable\DataTableComponent.cs" />
@@ -421,13 +400,10 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\EntityGroupHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Achievement\AchievementDataProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Base\Story\BaseUpdateStoryInfoArgs.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_RenderTexture.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Map\MapDoor.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\PhysicsDetect\GroundCheck\CapsuleGroundChecker.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_TriggerModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Settings\PlayerPrefsSettingSerializerHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Base\IComponentGM.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3BinaryWriter.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Setting\SettingSerializerHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormDeadState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Base\ShutdownType.cs" />
@@ -439,24 +415,21 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Settings\Helper\SettingManagerVisionHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Anima\interf\IRuntimeController.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\JumpAtkSubState\SlimeJumpAtkUpBefore.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Mesh.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\RaycastComponentGSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WormEgg\Components\Anima\State\WormEggBreakState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Dead\FlyDead\FlyDeadFallState.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Camera\CameraAllMoveTaskAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\UIPanel\FightingPanelVisibleActionTask.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Camera\CameraAllMoveTaskAction.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\UnityWebRequestAgentHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Audio\SoundSwitchAreaComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\Components\Anima\State\WoodWormRootDeadState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Scene\LoadSceneUpdateEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\IComponentGSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\CameraGSM\CameraComponent.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3Stream.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Config\LoadConfigFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\AA_TestPanel\AA_TestPanel.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MenuFormLogic.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\PlaySoundSuccessEventArgs.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SizeOverLifetimeModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\HomeScene1\HomeScene1Xiaer.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\Battle\NormalAttack\NormalAttack3Logic.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.ProfilerInformationWindow.cs" />
@@ -468,8 +441,6 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\ReferencePool\ReferenceStrictCheckType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\BaseGFComponentEntity.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Detail\DetailPanelProxy.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Shader.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_MinMaxCurve.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\ShowEntityFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Dead\FlyDead\FlyDeadEndState.cs" />
     <Compile Include="Assets\Scripts\Game\Entry\GameRuntimeEntry.Custom.cs" />
@@ -478,13 +449,17 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\Physics2DComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\BagPack\ItemMpBall.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\SmashAttack\SmashAttack1State.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_uint.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\BagPack\ItemMap.cs" />
+    <Compile Include="Assets\Easy Save 3\PlayMaker\ES3PlayMaker.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_byteArray.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\BaseDoor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarString.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Logger\LoggerSystem.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Story\BaseStory.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\IGameResourcesManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Component\UIState.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Transform.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.InputTouchInformationWindow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\AttackLogic\BaseBossMogutAttackLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\AchievementTipsPanel\AchieveTipsFormLogic.cs" />
@@ -500,13 +475,12 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Camera\CameraMoveTaskAction.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\PlaySoundUpdateEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\ForestEastSceneData.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3ScriptableObjectType.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Enum\EResLoadType.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\ForestSceneData.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Gradient.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\Components\Anima\WoodWormRootCsAnimator.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\KeyTipsNodeSrc.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Path\SoundPath.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedUnityObjectType.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarUnityObject.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\SubManager\Buff\IBuffHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\LoadSceneTaskAction.cs" />
@@ -517,11 +491,14 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Base\BaseGameSceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\SkillInfos\SkillInfo.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Input\InputGFEComponent.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_BoxCollider2D.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\DamageContext.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\ForestSceneLaiLogic.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\HideEntityCompleteEventArgs.cs" />
     <Compile Include="Assets\Easy Save 3\Types\ES3UserType_ArchiveInfo.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_UIntPtr.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Path\IPathfindingComponent.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_MeshFilter.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\DownloadAgentHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Procedure\ProcedureBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Health\HealthComponent.cs" />
@@ -533,11 +510,11 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\PlayerEffectComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Story\DialoguePreBossSaveTipSettings.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Anima\TenWanCsAnimator.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_short.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\Components\Anima\WoodWormRootCsRuntimeController.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\Climb\ClimbMoveState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialogueUIAlphaAnimationTaskAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Start\StartSceneManager.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector2.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\SceneEntity.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\SlimeEatSheepStoryAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Base\IManagerVisionHelper.cs" />
@@ -545,7 +522,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasExtend\StatementNodeEx.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\Entity.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\Base\IPathfindingTarget.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Texture.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Jump\State\FallDownIdleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\BossMogutCsAnimator.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\Generic\Package\AtlasResPackage.cs" />
@@ -560,31 +536,28 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Pool\IPoolObject.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameMode\NormalGameModeMode.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3IO.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\SoundAgentHelperBase.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Localization\LoadDictionarySuccessEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Base\BasePlayerSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\TriggerStoryActionTask.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3Reflection.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\CommonEntity\StoryEndSpawnOnPrefabName.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Base\BasePlayerState.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormMoveState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Loading\LoadingPanelProxy.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormMoveState.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedScriptableObjectType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\BaseItem.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Procedure\ProcedureLaunch.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Readers\ES3Reader.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarChar.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\PlayerMoveComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Config\IConfigManager.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Goods\Sword\SwordCsAnimator.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SystemTips\SystemTipsFormProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\Base\IBaseInteractive.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WormEgg\Components\Anima\WormEggHealthComponentMono.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Goods\Sword\SwordCsAnimator.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\LoadSceneOldArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\Prefabs\PrefabsResSubManager.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormIdleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\IPlayerComponent.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_LightsModule.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormIdleState.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Utility\JsonReader\ValueConfigJsonReader.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WormEgg\Components\Anima\WormEggCsAnimator.cs" />
     <Compile Include="Assets\Scripts\Utils\UIUtils.cs" />
@@ -607,17 +580,16 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\SlimeSleepState.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Cursor\CursorComponentGM.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Localization\LoadDictionaryFailureEventArgs.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_BoxCollider.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\BuiltinVersionListSerializer.PackageVersionListSerializeCallback.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\UIStringKey.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\ResourceUpdateChangedEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\GamePreloadHandler.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\ResourceApplySuccessEventArgs.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Rect.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Logger\ILoggerSystem.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\PlayerCommonData.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Slime\SlimeAngryBuffEffect.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\PlayerAnimaCameraTrackComponent.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3Property.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarBoolean.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\BuffComponentGSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\BaseCombatState.cs" />
@@ -630,10 +602,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\PhysicsDetect\FindTarget\FindTargetComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Home\Idle\HomeIdleSubSM.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarDecimal.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_GradientColorKey.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_AnimationCurve.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\OpenUIFormSuccessEventArgs.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_PhysicMaterial.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarSingle.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Utility\DefaultLogHelper.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.NetworkInformationWindow.cs" />
@@ -655,24 +624,22 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Jump\State\FallDownRunState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\BuiltinVersionListSerializer.ResourcePackVersionListDeserializeCallback.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\DownloadSuccessEventArgs.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Font.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Config\ConfigHelperBase.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_PhysicsMaterial2D.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3FileStream.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Buff\Monster\Angry\SlimeAngryBuff.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3Binary.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\BossHpBarPanel\BossHpBarFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Enum\Role\RoleName.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.InputLocationInformationWindow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\HomeScene2\HomeScene2Xiaer.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Base\AsyncActionCounter.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_EmissionModule.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\DataTable\DataRowBase.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarTransform.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Base\BaseComponent.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_SphereCollider.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Config\ConfigComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\IArchiveComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Component\MenuCalendarDayNumDisplay.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_enum.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_RawImage.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Localization\DefaultLocalizationHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\StoryTrigger\SlimeEatSheepStroy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Sit\SitDownState.cs" />
@@ -692,7 +659,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Cartoon\NewGameCartoonFormProxy.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.RuntimeMemoryInformationWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\DefaultUIGroupHelper.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ColorOverLifetimeModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_MeshRenderer.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\LoadResourceAgentHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\PlayerHandler\ShowPlayerEntityArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialogueCloseTaskAction.cs" />
@@ -701,6 +668,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarColor.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Enum\Role\DialogueFaceType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Ground\CombatRunState.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_int.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\Base\IBuffObject.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\Modifier\ElementResistanceConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormAttackState.cs" />
@@ -712,16 +680,14 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MainItemPage\MenuFormMainItemBtn.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Buff\Monster\Weak\SlimeWeakBuff.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Settings\interf\ISettingManagerVisionHelper.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_LimitVelocityOverLifetimeModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BossMogutSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Loading\LoadingFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\Modifier\WeakDamageModifierConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\UI\OpenFormArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\Generic\Package\FightingResPackage.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_ushort.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Config\LoadConfigDependencyAssetEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Attack\SimpleDamageAttackData.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3ReferenceMgrBase.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_TextureSheetAnimationModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Monster\MonsterDataMgr.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Story\ForestEastTreeBridgeStoryMgr.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Dead\FlyDead\FlyDeadUpState.cs" />
@@ -732,9 +698,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.WebPlayerInformationWindow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BossMogutTrampleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\DamageFly\Fly\DamageFlyUpState.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Material.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Move\MoveComponent.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3InspectorInfo.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\NormalAttack\NormalAttackPart2.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\Dust\DashAttackDust1Effect.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.TimeInformationWindow.cs" />
@@ -744,7 +708,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Component\BlackFade\BlackFadeComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\ResourceHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\Climb\ClimbDownState.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SpriteRenderer.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\PlayerBagData.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.RuntimeMemoryInformationWindow.Sample.cs" />
     <Compile Include="Assets\Scripts\Utils\DialogueConfigJsonParser.cs" />
@@ -752,6 +715,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\ResourceComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Map\HideMapPanelArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Base\ISceneManagerModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3ListType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Anima\BaseCsAnimator.cs" />
     <Compile Include="Assets\DebugScene\TestArchiveUpdate.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\PlayerBodyCollider.cs" />
@@ -763,7 +727,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Jump\State\JumpFallState.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\BaseDataClass\MasterGameData.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\DefaultSoundHelper.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Settings\ES3Settings.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialogueSetOptionGroupWorldPosTaskAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Settings\SettingManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Cartoon\CartoonPlayer.cs" />
@@ -782,8 +745,8 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\DashAttackState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestEastScene\TreeBridgeLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\WestRappRoadBossBattleAction.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_float.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\BeHurt\PlayerBeHurtEffect.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SubEmittersModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\CanvasGroupAlphaActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\SaveSceneInfo.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\JumpAtkSubState\SlimeJumpAtkSubSM.cs" />
@@ -812,9 +775,7 @@
     <Compile Include="Assets\Scripts\Game\Static\Enum\ControlInputType.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Effect\IEffectManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Fighting\FightingPanelProxy.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_NoiseModule.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\BuiltinVersionListSerializer.LocalVersionListDeserializeCallback.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_RotationBySpeedModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEffects\CharacterEnvironmentShadow.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\BaseDataClass\BaseArchiveData.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MenuFormButton.cs" />
@@ -824,7 +785,6 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\EntityHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\BaseSoundEntity.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Forest\ForestEastSceneManager.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3ObjectType.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\State\PlayerPlaceStateName.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Config\GameSceneManagerConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\Modifier\ElementResistanceModifier.cs" />
@@ -835,7 +795,6 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\BuiltinVersionListSerializer.UpdatableVersionListDeserializeCallback.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Base\UIFormLogicUserData.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\PhysicsDetect\ColliderResponder.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3SerializableDictionary.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\PlaySoundInfo.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Utility\Log.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Archive\LoadGamePanel\LoadGameFormLogic.cs" />
@@ -844,7 +803,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialogueRaycastMaskTaskAction.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Resource\AB\ABSystem.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\FileSystem\FileSystemHelperBase.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Settings\ES3DefaultSettings.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SystemTips\Args\UpdatedSystemTipsArgs.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\ReadWritePathType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\CldController\CldControllerComponent.cs" />
@@ -853,6 +811,8 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\DownloadStartEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\WRRoadBossBattleSaveMonsterAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\BornSubState\SlimeBornDownState.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Camera.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3DictionaryType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\ItemShowPanel\ItemShowFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\ChangeSceneInfo.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Attack\AttackType.cs" />
@@ -865,6 +825,7 @@
     <Compile Include="Assets\Scripts\Game\Entry\GameRuntimeEntry.Builtin.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Settings\SettingFormItem.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Component\BaseGFUIComponent.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_MeshCollider.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\PlayerClothesData.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.InputSummaryInformationWindow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Component\UIStateMachine.cs" />
@@ -873,7 +834,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\DamageLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\UI\OpenFormInfo.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\VerdantCorridor\VerdantCorridorSceneMgr.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Attributes\ES3Attributes.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Component\CalendarDateDisplay.cs" />
     <Compile Include="Assets\Scripts\Debug\Components\BaseGTComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\DefaultUIFormHelper.cs" />
@@ -881,6 +841,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Effect\EffectManagerSettings.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Detail\ItemDetailForm.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Path\StoryPrefabPath.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_VelocityOverLifetimeModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\PointerHoldPanel\PointerHoldFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\IObjectDepthComponent.cs" />
     <Compile Include="Assets\Scripts\Debug\Components\ChangeClothesComponentGT.cs" />
@@ -892,7 +853,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\TenWanLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Map\ShowMapPanelArgs.cs" />
     <Compile Include="Assets\Scripts\Debug\Components\SpritePivotAlignToolComponent.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector3.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\HomeScene2\HomeScene2Box.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\SlimeStateMachine.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\ReferencePool\ReferencePoolComponent.cs" />
@@ -900,6 +860,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Procedure\ProcedurePreload.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\Climb\ClimbSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\PhysicsDetect\HitPoint\HitPointComponent.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_PolygonCollider2D.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\AtkCollsion\BaseAtkCollsion.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\SoundComponent.SoundGroup.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Story\SlimeEatSheepStoryMgr2.cs" />
@@ -926,25 +887,24 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Start\StartFormProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Fighting\FightingBroken.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Attack\AttackData.cs" />
-    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Cursor\CursorChangeArgs.cs" />
+    <Compile Include="Assets\Easy Save 3\Types\ES3UserType_Transform.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\WoodWormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\PlayerMapData.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Cursor\CursorChangeArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Sit\SitIdleStartState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Path\EMoveToPosType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\History\HistoryDialogueBox.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Sit\SitUpState.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector3Int.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\IPlayer.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_long.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveManagerOld.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\WebRequestFailureEventArgs.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Quaternion.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Audio\VolumeChangedListener.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\NewGameSceneResConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\PureMVC\MVCComponentGM.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_AudioClip.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\Paralysis\BossMogutParalysisDownState.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Home\PlayerHomeSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\HardComponentGM.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Home\PlayerHomeSM.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\Paralysis\BossMogutParalysisDownState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\Modifier\WeakDamageModifier.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\PureMVC\RegisterProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Buff\Monster\Tired\SlimeTiredBuff.cs" />
@@ -975,6 +935,7 @@
     <Compile Include="Assets\Scripts\Game\Static\Enum\Map\PlaceName.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormBornState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialogueBlackMaskTaskAction.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_DateTime.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\EntityComponent.EntityGroup.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SystemTips\ESystemTipsType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\Battle\NormalAttack\NormalAttack1Logic.cs" />
@@ -990,7 +951,6 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\EntityGM\LoadingEntityInfo.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.EnvironmentInformationWindow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\WestRappRoad\WestRappRoadHpMpBox.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3File.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\PhysicsDetect\HitPoint\HitPointInfo.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.GraphicsInformationWindow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasExtend\DialogueActorEx.cs" />
@@ -1012,18 +972,14 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\FirstMeetSlimeGuideStoryAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ClockComponentGM.cs" />
     <Compile Include="Assets\DebugScene\DebugMoveComponent.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Enum\EGameHard.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Anima\State\TenWanAttackState.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3ReferenceMgr.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector4.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\Paralysis\BossMogutParalysisSubSM.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Web\ES3WebClass.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Settings\SoundAndGraphic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\VerdantCorridor\GushaNacklaceStoryTrigger.cs" />
-    <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\ObjectPool\ObjectPoolComponent.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3TypeMgr.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES33DArrayType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\BaseSlimeStateMachine.cs" />
+    <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\ObjectPool\ObjectPoolComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\BaseSlimeState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarInt16.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\SelectClothesSceneResConfig.cs" />
@@ -1033,7 +989,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Init\InitFormProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Sit\SitIdleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\IPlayerCsAnimator.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Matrix4x4.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\ShowEntityInfo.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormEscapeState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Anima\interf\IState.cs" />
@@ -1043,11 +998,9 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\History\HistoryDialogueInfo.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\Dust\JumpDownDustEffect.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Story\FirstMeetSlimeGuideStoryMgr.cs" />
-    <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\ForestSceneResConfig.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_TrailModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Component\UIPointerHoldArea.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\ForestSceneResConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\SlimeMoveState.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SizeBySpeedModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Args\ILoopDialoguePanelArgs.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Scene\UnloadSceneFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\Components\Anima\State\WoodWormRootSleepState.cs" />
@@ -1056,12 +1009,10 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Utility\Helper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\ForestSceneLinEnStory.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\DamageFly\Fly\DamageFlyFallState.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Readers\ES3XMLReader.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\AchievementRecordAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BossMogutAttack1State.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ColorBySpeedModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_string.cs" />
     <Compile Include="Assets\DebugScene\TestJump.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3ResourcesStream.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\Battle\PlayerBattleComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Home\Idle\HomeIdleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Move\MoveCurveDataPath.cs" />
@@ -1070,20 +1021,19 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\GetArchiveIntActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\Atk\PlayerNormalAttackEffect.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SelectHard\SelectHardFormLogic.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3ComponentType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Stamina\PlayerStaminaConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\CameraTool\CameraImpluseTrigger.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\SlimeResHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\SquatAtkState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Sit\SitSubSM.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarMaterial.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_EventSystem.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\Paralysis\BossMogutParalysisUpState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Jump\State\JunpUpState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MenuCenterHideWhenItemShowPanel.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Path\MoveToCorner.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3UnityObjectType.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\HomeScene2Data.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_LayerMask.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_intptr.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\AnimationEventRegisterTaskAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Init\InitFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Path\IPathManager.cs" />
@@ -1092,16 +1042,16 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Procedure\ELoadSceneType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\Clothes\ClothesNameConfigHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\SlimeWoundState.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\AttackBossMogutState.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\BaseSceneResConfig.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\AttackBossMogutState.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Event\EventComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\PlayerSceneData.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\DefaultEntityGroupHelper.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_RectTransform.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\SquatDownState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\DownloadUpdateEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Effect\ShadowComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\VerdantCorridorData.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3ConcurrentDictionaryType.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.InputCompassInformationWindow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\PlayerFallGroundWaveEffect.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\StoryTrigger\WormRootBattleStory.cs" />
@@ -1127,81 +1077,131 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Black\BlackFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Home\PlayerHomeCsRuntimeController.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\Battle\NormalAttack\NormalAttack2Logic.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedValueType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\PlayerProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\PlayerAnimationEvent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Network\NetworkConnectedEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\SelectClothes\SelectClothesSceneManager.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\ES3Prefab.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Jump\State\RunToJumpState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\UnityWebRequestDownloadAgentHelper.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Utility\BinaryExtension.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\ForestSceneLaiFlyStory.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Jump\State\RunToJumpState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\SelectClothesScene\ChangeClothesSceneEnterEndActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Story\HistoryDialogueData.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BossMogutMoveState.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3TupleType.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Utility\DefaultJsonHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\Components\Anima\State\WoodWormRootIdleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Manager\ComponentManager.cs" />
-    <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3ArrayType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_SphereCollider.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3StackType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES32DArrayType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_decimal.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_intptr.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_double.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_enum.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_RawImage.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_VelocityOverLifetimeModule.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Text.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_int.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_short.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES33DArrayType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedScriptableObjectType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_BoxCollider.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_string.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_CapsuleCollider.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_float.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Camera.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3DictionaryType.cs" />
-    <Compile Include="Assets\Easy Save 3\Types\ES3UserType_Transform.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3HashSetType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3ListType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_ES3Ref.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3NativeArrayType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedUnityObjectType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_ushort.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_char.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_uint.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedValueType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Rigidbody.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3ConcurrentDictionaryType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_long.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_PolygonCollider2D.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_MeshCollider.cs" />
-    <Compile Include="Assets\Easy Save 3\PlayMaker\ES3PlayMaker.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_byteArray.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_DateTime.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_MeshRenderer.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Image.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_ulong.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_BoxCollider2D.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_byte.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_UIntPtr.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_EventSystem.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3QueueType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_sbyte.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_ParticleSystem.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_bool.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Transform.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3TupleType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedObjectType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3CollectionType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedComponentType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3ArrayType.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_MeshFilter.cs" />
+    <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3UnityObjectType.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Material.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3Type.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Sprite.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_TrailModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Keyframe.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Color32.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_PhysicMaterial.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_AnimationCurve.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Settings\ES3Defaults.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SizeOverLifetimeModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Settings\ES3DefaultSettings.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_BoneWeight.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3ReferenceMgr.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3InspectorInfo.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector4.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3XMLWriter.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SizeBySpeedModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_GameObject.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\NET Types\ES3Type_BigInteger.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Web\ES3WebClass.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3Spreadsheet.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3IO.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_LayerMask.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Texture2D.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_CollisionModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector2Int.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3Reflection.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3TypeMgr.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_MinMaxGradient.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3PlayerPrefsStream.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_RenderTexture.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Web\ES3Cloud.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3ScriptableObjectType.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3File.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3Crypto.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Color.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SpriteRenderer.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Readers\ES3XMLReader.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Auto Save\ES3AutoSaveMgr.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector2.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_NoiseModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ForceOverLifetimeModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Auto Save\ES3AutoSave.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_RotationBySpeedModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Burst.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_TriggerModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3BinaryWriter.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ShapeModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ColorBySpeedModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Readers\ES3Reader.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Gradient.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_LimitVelocityOverLifetimeModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Shader.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_MinMaxCurve.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector3.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3JSONWriter.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3CacheWriter.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SubEmittersModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_RectTransform.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Light.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ExternalForcesModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Rect.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3ResourcesStream.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Flare.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Font.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Mesh.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_RotationOverLifetimeModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_TextureSheetAnimationModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3ReferenceMgrBase.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\NET Types\ES3Type_Random.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3GameObject.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3ObjectType.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector3Int.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3Property.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Referencing\ES3GlobalReferences.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_PhysicsMaterial2D.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3ComponentType.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_LightsModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SkinnedMeshRenderer.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Settings\ES3Settings.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Matrix4x4.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Bounds.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3FileStream.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\NET Types\ES3Type_Type.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Texture.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_GradientAlphaKey.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\UnityObjectType.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Quaternion.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3Binary.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3Writer.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Guid.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Debugging\ES3Debug.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ColorOverLifetimeModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3Prefab.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_InheritVelocityModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Readers\ES3JSONReader.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_AudioClip.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3SerializableDictionary.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_EmissionModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3Stream.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Attributes\ES3Attributes.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_MainModule.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_GradientColorKey.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\ES3.cs" />
     <None Include="Assets\GameRes\Config\MonsterConfig\MonsterConfig.json" />
     <None Include="Assets\GameRes\Config\AchievementConfig\AchievementConfig.json" />
     <None Include="Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.xml" />
@@ -1254,694 +1254,694 @@
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne.json" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
     <Reference Include="UnityEngine">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AIModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ARModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ARModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ARModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AccessibilityModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AccessibilityModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AccessibilityModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AndroidJNIModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AndroidJNIModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AndroidJNIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClothModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClothModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClothModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterInputModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterInputModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterInputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ClusterRendererModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterRendererModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ClusterRendererModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CrashReportingModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.CrashReportingModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.CrashReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DSPGraphModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.DSPGraphModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.DSPGraphModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DirectorModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.DirectorModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.DirectorModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GIModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.GIModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.GIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GameCenterModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.GameCenterModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.GameCenterModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.GridModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.GridModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.GridModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HotReloadModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.HotReloadModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.HotReloadModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.InputModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.InputModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.JSONSerializeModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.JSONSerializeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.LocalizationModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.LocalizationModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.LocalizationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PerformanceReportingModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.PerformanceReportingModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.PerformanceReportingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Physics2DModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.Physics2DModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.Physics2DModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ProfilerModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ProfilerModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ProfilerModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.ScreenCaptureModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.ScreenCaptureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SharedInternalsModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.SharedInternalsModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.SharedInternalsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteMaskModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.SpriteMaskModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.SpriteMaskModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SpriteShapeModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.SpriteShapeModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.SpriteShapeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.StreamingModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.StreamingModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.StreamingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SubstanceModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.SubstanceModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.SubstanceModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.SubsystemsModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.SubsystemsModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.SubsystemsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TLSModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TLSModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TLSModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TerrainModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TerrainModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TerrainPhysicsModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TerrainPhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextCoreModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TextCoreModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TextCoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TilemapModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TilemapModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.TilemapModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UIElementsModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UIElementsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIElementsNativeModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UIElementsNativeModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UIElementsNativeModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UNETModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UNETModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UNETModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UmbraModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UmbraModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UmbraModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityAnalyticsModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityAnalyticsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityAnalyticsCommonModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityConnectModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityConnectModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityCurlModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityCurlModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityCurlModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityTestProtocolModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityTestProtocolModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestAudioModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VFXModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.VFXModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.VFXModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VRModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.VRModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.VRModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VehiclesModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.VehiclesModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.VehiclesModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VideoModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.VideoModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.VideoModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VirtualTexturingModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.VirtualTexturingModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.VirtualTexturingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.WindModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.WindModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.WindModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.XRModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.XRModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEngine.XRModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.CoreModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.CoreModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.GraphViewModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.GraphViewModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.GraphViewModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.PackageManagerUIModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.PackageManagerUIModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.PackageManagerUIModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SceneTemplateModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.SceneTemplateModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.SceneTemplateModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UIElementsModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.UIElementsModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.UIElementsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UIElementsSamplesModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.UIElementsSamplesModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.UIElementsSamplesModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UIServiceModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.UIServiceModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.UIServiceModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UnityConnectModule">
-      <HintPath>D:\2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>E:\YARE\yaer\Yaer\Assets\Packages\SharpZipLib.1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\SharpZipLib.1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System.Buffers">
-      <HintPath>E:\YARE\yaer\Yaer\Assets\Packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="ExcelDataReader">
-      <HintPath>E:\YARE\yaer\Yaer\Assets\Packages\ExcelDataReader.3.7.0\lib\netstandard2.0\ExcelDataReader.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\ExcelDataReader.3.7.0\lib\netstandard2.0\ExcelDataReader.dll</HintPath>
     </Reference>
     <Reference Include="DOTween">
-      <HintPath>E:\YARE\yaer\Yaer\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
-      <HintPath>E:\YARE\yaer\Yaer\Assets\Packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>E:\YARE\yaer\Yaer\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.2.0\Runtime\Newtonsoft.Json.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.2.0\Runtime\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="DOTweenPro">
-      <HintPath>E:\YARE\yaer\Yaer\Assets\Plugins\Demigiant\DOTweenPro\DOTweenPro.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DOTweenPro\DOTweenPro.dll</HintPath>
     </Reference>
     <Reference Include="DemiLib">
-      <HintPath>E:\YARE\yaer\Yaer\Assets\Plugins\Demigiant\DemiLib\Core\DemiLib.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DemiLib\Core\DemiLib.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions">
-      <HintPath>E:\YARE\yaer\Yaer\Assets\Packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="ExcelDataReader.DataSet">
-      <HintPath>E:\YARE\yaer\Yaer\Assets\Packages\ExcelDataReader.DataSet.3.7.0\lib\netstandard2.0\ExcelDataReader.DataSet.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\ExcelDataReader.DataSet.3.7.0\lib\netstandard2.0\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory">
-      <HintPath>E:\YARE\yaer\Yaer\Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\Microsoft.Win32.Primitives.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.AppContext">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.AppContext.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.AppContext.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Concurrent">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Collections.Concurrent.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Collections.Concurrent.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Collections.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Collections.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.NonGeneric">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Collections.NonGeneric.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Collections.NonGeneric.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Specialized">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Collections.Specialized.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Collections.Specialized.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ComponentModel.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ComponentModel.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.EventBasedAsync">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ComponentModel.EventBasedAsync.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ComponentModel.EventBasedAsync.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Primitives">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ComponentModel.Primitives.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ComponentModel.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.TypeConverter">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ComponentModel.TypeConverter.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ComponentModel.TypeConverter.dll</HintPath>
     </Reference>
     <Reference Include="System.Console">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Console.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Console.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Common">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Data.Common.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Contracts">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.Contracts.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Debug">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.Debug.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.Debug.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.FileVersionInfo">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.FileVersionInfo.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.FileVersionInfo.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Process">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.Process.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.Process.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.StackTrace">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.StackTrace.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.StackTrace.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.TextWriterTraceListener">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.TextWriterTraceListener.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.TextWriterTraceListener.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Tools">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.Tools.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.Tools.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.TraceSource">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.TraceSource.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.TraceSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Diagnostics.Tracing">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.Tracing.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Diagnostics.Tracing.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Primitives">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Drawing.Primitives.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Drawing.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Dynamic.Runtime">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Dynamic.Runtime.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Dynamic.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization.Calendars">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Globalization.Calendars.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Globalization.Calendars.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Globalization.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Globalization.dll</HintPath>
     </Reference>
     <Reference Include="System.Globalization.Extensions">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Globalization.Extensions.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Globalization.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.Compression.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.Compression.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression.ZipFile">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.Compression.ZipFile.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.Compression.ZipFile.dll</HintPath>
     </Reference>
     <Reference Include="System.IO">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.FileSystem.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.FileSystem.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem.DriveInfo">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.FileSystem.DriveInfo.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.FileSystem.DriveInfo.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem.Primitives">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.FileSystem.Primitives.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.FileSystem.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.FileSystem.Watcher">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.FileSystem.Watcher.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.FileSystem.Watcher.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.IsolatedStorage">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.IsolatedStorage.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.IsolatedStorage.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.MemoryMappedFiles">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.MemoryMappedFiles.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.MemoryMappedFiles.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Pipes">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.Pipes.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.Pipes.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.UnmanagedMemoryStream">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.UnmanagedMemoryStream.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.IO.UnmanagedMemoryStream.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Linq.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq.Expressions">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Linq.Expressions.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Linq.Expressions.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq.Parallel">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Linq.Parallel.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Linq.Parallel.dll</HintPath>
     </Reference>
     <Reference Include="System.Linq.Queryable">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Linq.Queryable.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Linq.Queryable.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Http.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.NameResolution">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.NameResolution.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.NameResolution.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.NetworkInformation">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.NetworkInformation.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.NetworkInformation.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Ping">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Ping.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Ping.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Primitives">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Primitives.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Requests">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Requests.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Requests.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Security">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Security.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Security.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Sockets">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Sockets.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.Sockets.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.WebHeaderCollection">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.WebHeaderCollection.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.WebHeaderCollection.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.WebSockets.Client">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.WebSockets.Client.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.WebSockets.Client.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.WebSockets">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.WebSockets.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Net.WebSockets.dll</HintPath>
     </Reference>
     <Reference Include="System.ObjectModel">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ObjectModel.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ObjectModel.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Reflection.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Extensions">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Reflection.Extensions.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Reflection.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Reflection.Primitives">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Reflection.Primitives.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Reflection.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Resources.Reader">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Resources.Reader.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Resources.Reader.dll</HintPath>
     </Reference>
     <Reference Include="System.Resources.ResourceManager">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Resources.ResourceManager.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Resources.ResourceManager.dll</HintPath>
     </Reference>
     <Reference Include="System.Resources.Writer">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Resources.Writer.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Resources.Writer.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.VisualC">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.CompilerServices.VisualC.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.CompilerServices.VisualC.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Extensions">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Extensions.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Handles">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Handles.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Handles.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.InteropServices.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.InteropServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Numerics">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Numerics.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Formatters">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Serialization.Formatters.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Serialization.Formatters.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Json">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Serialization.Json.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Serialization.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Primitives">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Serialization.Primitives.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Serialization.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization.Xml">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Serialization.Xml.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Runtime.Serialization.Xml.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Claims">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Claims.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Claims.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Algorithms">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Cryptography.Algorithms.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Csp">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Cryptography.Csp.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Cryptography.Csp.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Encoding">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Cryptography.Encoding.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Cryptography.Encoding.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.Primitives">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Cryptography.Primitives.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Cryptography.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Cryptography.X509Certificates">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Cryptography.X509Certificates.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.Principal">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Principal.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.Principal.dll</HintPath>
     </Reference>
     <Reference Include="System.Security.SecureString">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.SecureString.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Security.SecureString.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Encoding">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Text.Encoding.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Text.Encoding.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Encoding.Extensions">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Text.Encoding.Extensions.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Text.Encoding.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.RegularExpressions">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Text.RegularExpressions.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Text.RegularExpressions.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Overlapped">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.Overlapped.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.Overlapped.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.Tasks.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.Tasks.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Parallel">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.Tasks.Parallel.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.Tasks.Parallel.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Thread">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.Thread.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.Thread.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.ThreadPool">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.ThreadPool.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.ThreadPool.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Timer">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.Timer.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Threading.Timer.dll</HintPath>
     </Reference>
     <Reference Include="System.ValueTuple">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ValueTuple.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.ReaderWriter">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.ReaderWriter.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.ReaderWriter.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XDocument">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.XDocument.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XmlDocument">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.XmlDocument.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.XmlDocument.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XmlSerializer">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.XmlSerializer.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.XmlSerializer.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XPath">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.XPath.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.XPath.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.XPath.XDocument">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.XPath.XDocument.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netstandard\System.Xml.XPath.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics.Vectors">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\Extensions\2.0.0\System.Numerics.Vectors.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\Extensions\2.0.0\System.Numerics.Vectors.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices.WindowsRuntime">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\Extensions\2.0.0\System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\Extensions\2.0.0\System.Runtime.InteropServices.WindowsRuntime.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\mscorlib.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\mscorlib.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.ComponentModel.Composition.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.ComponentModel.Composition.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Core.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Data">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Data.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Data.dll</HintPath>
     </Reference>
     <Reference Include="System">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Drawing.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Drawing.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression.FileSystem">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.IO.Compression.FileSystem.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.IO.Compression.FileSystem.dll</HintPath>
     </Reference>
     <Reference Include="System.Net">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Net.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Net.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Numerics.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Runtime.Serialization.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Runtime.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Web">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.ServiceModel.Web.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.ServiceModel.Web.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Transactions.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Transactions.dll</HintPath>
     </Reference>
     <Reference Include="System.Web">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Web.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Web.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Windows.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Windows.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Xml.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Xml.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Xml.Linq.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Xml.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Serialization">
-      <HintPath>D:\2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
+      <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\NetStandard\compat\2.0.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEngineBridge.001">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.InternalAPIEngineBridge.001.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.InternalAPIEngineBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="PsdPlugin">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\PsdPlugin.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\PsdPlugin.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>
     <Reference Include="NuGetForUnity">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\NuGetForUnity.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\NuGetForUnity.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.IK.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.IK.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.IK.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Psdimporter.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Psdimporter.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Psdimporter.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEditorBridge.001">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.001.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InputSystem">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PlasticSCM.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.IK.Runtime">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.IK.Runtime.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.IK.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Cinemachine">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Cinemachine.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Cinemachine.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.cinemachine.editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Triangle.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Triangle.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Triangle.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Runtime">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Runtime.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Common.Runtime">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Common.Runtime.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Common.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Common.Editor">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Common.Editor.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Common.Editor.dll</HintPath>
     </Reference>
     <Reference Include="SingularityGroup.HotReload.Runtime.Public">
-      <HintPath>E:\YARE\yaer\Yaer\Library\ScriptAssemblies\SingularityGroup.HotReload.Runtime.Public.dll</HintPath>
+      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\SingularityGroup.HotReload.Runtime.Public.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
