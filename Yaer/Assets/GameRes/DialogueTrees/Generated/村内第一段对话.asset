@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3f478ef69fbe04fa9ed3664a8a443e, type: 3}
+  m_Name: "\u6751\u5185\u7B2C\u4E00\u6BB5\u5BF9\u8BDD"
+  m_EditorClassIdentifier: 
+  _serializedGraph: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"Visible":{},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":200.0,"y":-260.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoOutStoryYaerPainting"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"},{"canvasGroup":{"_name":"GushaPainting"},"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":200.0,"y":-140.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"1"},{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":200.0,"y":-20.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"2"},{"FaceType":{"_value":12},"statement":{"_text":"\u597d\u6f02\u4eae\u7684\u6751\u5b50\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"18b59523-3bd9-4d2f-a5e2-42fa7820735b","_position":{"x":200.0,"y":100.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"3"},{"FaceType":{"_value":12},"statement":{"_text":"\u96c5\u513f\u4e00\u5b9a\u662f\u7b2c\u4e00\u6b21\u6765\u5427\uff0c\u4e00\u4f1a\u5e26\u4f60\u901b\u4e00\u901b\u6751\u5b50\u3002"},"_actorName":"\u53e4\u838e","_actorParameterID":"76d8fc3d-f49b-4f31-aa2c-38b22f57f270","_position":{"x":200.0,"y":220.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"FaceType":{"_value":12},"statement":{"_text":"\u6211\u633a\u597d\u5947\u7684\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"18b59523-3bd9-4d2f-a5e2-42fa7820735b","_position":{"x":200.0,"y":340.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"_action":{"Visible":{"_value":true},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":200.0,"y":580.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"6"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u53e4\u838e","_id":"76d8fc3d-f49b-4f31-aa2c-38b22f57f270"},{"_keyName":"\u96c5\u5c14","_id":"18b59523-3bd9-4d2f-a5e2-42fa7820735b"}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _objectReferences: []
+  _graphSource:
+    _version: 3.31
+    _category: 
+    _comments: 
+    _translation: {x: 0, y: 0}
+    _zoomFactor: 1
+  _haltSerialization: 0
+  _externalSerializationFile: {fileID: 0}
+  actorParameters:
+  - _keyName: "\u53E4\u838E"
+    _id: 76d8fc3d-f49b-4f31-aa2c-38b22f57f270
+    _actorObject: {fileID: 0}
+  - _keyName: "\u96C5\u5C14"
+    _id: 18b59523-3bd9-4d2f-a5e2-42fa7820735b
+    _actorObject: {fileID: 0}

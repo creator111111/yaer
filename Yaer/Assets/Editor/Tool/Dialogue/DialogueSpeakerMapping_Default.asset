@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28810008ab1158848b82d6f052683399, type: 3}
+  m_Name: DialogueSpeakerMapping_Default
+  m_EditorClassIdentifier: 
+  entries:
+  - csvSpeaker: "\u96C5"
+    actorParameterName: "\u96C5\u5C14"
+  - csvSpeaker: "\u53E4"
+    actorParameterName: "\u53E4\u838E"
+  - csvSpeaker: "\u827E\u7C73"
+    actorParameterName: "\u827E\u7C73"
+  - csvSpeaker: "\u827E\u8389"
+    actorParameterName: "\u827E\u8389"
+  - csvSpeaker: "\u6751"
+    actorParameterName: "\u6751\u957F"
+  - csvSpeaker: "\u57C3\u5409\u5C14"
+    actorParameterName: "\u57C3\u5409\u5C14"
+  - csvSpeaker: "\u2014"
+    actorParameterName: "\u65C1\u767D"

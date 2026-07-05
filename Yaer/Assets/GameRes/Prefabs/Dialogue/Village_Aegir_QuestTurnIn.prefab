@@ -1,0 +1,335 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1047626024150200597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 37704741067304273}
+  - component: {fileID: 456483720435322333}
+  m_Layer: 5
+  m_Name: Yaer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &37704741067304273
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5755262025651472319}
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &456483720435322333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047626024150200597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u96C5\u5C14"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 1
+--- !u!1 &2883600314957397101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8965843069174312997}
+  - component: {fileID: 8277147156603116227}
+  - component: {fileID: 7396501391561145538}
+  m_Layer: 5
+  m_Name: Village_Aegir_QuestTurnIn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8965843069174312997
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 37704741067304273}
+  - {fileID: 3308496599104099963}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8277147156603116227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32e4b851ebd8fa4ea0645b99be1cf97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serializedExposedParameters: []
+  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"Visible":{},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":200,"y":-260},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"_action":{"actions":[{"canvasGroup":{"_name":"GoOutStoryYaerPainting","_targetVariableID":"d7436528-6689-41dd-8c70-f3eba53896ba"},"StartAlpha":{},"EndAlpha":{"_value":1},"Duration":{"_value":0.7},"EndActionOnAnimationEnd":{},"$type":"CanvasGroupAlphaActionTask"}],"$type":"NodeCanvas.Framework.ActionList"},"_position":{"x":200,"y":-140},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"1"},{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":200,"y":-20},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"2"},{"FaceType":{"_value":3},"statement":{"_text":"今天的数量达成了。"},"_actorName":"雅尔","_actorParameterID":"509bf7db-a9b3-416d-878d-d8dbfa501b38","_position":{"x":200,"y":100},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"3"},{"FaceType":{"_value":12},"statement":{"_text":"好吧，我就看在你帮我的份上对你改观吧。"},"_actorName":"埃吉尔","_actorParameterID":"371f9ce1-5867-4b94-b40e-abfc425263f4","_position":{"x":200,"y":220},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"FaceType":{"_value":12},"statement":{"_text":"我也不是小气之人，这些钱你拿着吧，反正我也用不上，那个店老板坏家伙每次去都要揉我，还说我小，我才不去呢。"},"_actorName":"埃吉尔","_actorParameterID":"371f9ce1-5867-4b94-b40e-abfc425263f4","_position":{"x":200,"y":340},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"FaceType":{"_value":5},"statement":{"_text":"啊。。。。。听到了些不好的事呢。。。。。。"},"_actorName":"雅尔","_actorParameterID":"509bf7db-a9b3-416d-878d-d8dbfa501b38","_position":{"x":200,"y":580},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"7"},{"_action":{"questId":{"_value":"Quest_001"},"$type":"Game.GameRuntime.Story.Node.QuestTurnInAction"},"_position":{"x":200,"y":700},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"8"},{"_action":{"Visible":{"_value":true},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":200,"y":820},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"9"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"埃吉尔","_id":"371f9ce1-5867-4b94-b40e-abfc425263f4","_actorObject":1},{"_keyName":"雅尔","_id":"509bf7db-a9b3-416d-878d-d8dbfa501b38","_actorObject":2}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _boundGraphObjectReferences:
+  - {fileID: 0}
+  - {fileID: 7619253340888308386}
+  - {fileID: 456483720435322333}
+  _boundGraphSource:
+    _version: 3.31
+    _category: 
+    _comments: 
+    _translation: {x: 0, y: 0}
+    _zoomFactor: 1
+  _firstActivation: 0
+  _enableAction: 1
+  _disableAction: 2
+  _lockBoundGraphPrefabOverrides: 1
+  _preInitializeSubGraphs: 0
+  _updateMode: 0
+  _graph: {fileID: 0}
+  _blackboard: {fileID: 7396501391561145538}
+--- !u!114 &7396501391561145538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883600314957397101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b98a6db0b653f764eac834f85857a9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parentBlackboard: {fileID: 0}
+  _serializedBlackboard: '{"_variables":{"GoOutStoryYaerPainting":{"_value":1,"_name":"GoOutStoryYaerPainting","_id":"d7436528-6689-41dd-8c70-f3eba53896ba","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+    UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  _objectReferences:
+  - {fileID: 0}
+  - {fileID: 8129792323373277873}
+  _serializedVariables:
+  - _json: '{"_value":1,"_name":"GoOutStoryYaerPainting","_id":"d7436528-6689-41dd-8c70-f3eba53896ba","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+      UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
+    _references:
+    - {fileID: 0}
+    - {fileID: 8129792323373277873}
+--- !u!1 &8418881810847900565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3308496599104099963}
+  - component: {fileID: 7619253340888308386}
+  m_Layer: 5
+  m_Name: Argir
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3308496599104099963
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8418881810847900565}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8965843069174312997}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7619253340888308386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8418881810847900565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a0335bc9bbd00c4a9557f025c60444f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: "\u57C3\u5409\u5C14"
+  _portrait: {fileID: 0}
+  _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+  _dialogueOffset: {x: 0, y: 0, z: 0}
+  _roleName: 0
+--- !u!1001 &7950158712227046876
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 37704741067304273}
+    m_Modifications:
+    - target: {fileID: 829091939895077973, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Name
+      value: GoOutStoryYaerPainting
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 853.9938
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 949.0917
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -559
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4c0e9909764ce6e4eb37971a6fe20fd3, type: 3}
+--- !u!224 &5755262025651472319 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 7950158712227046876}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &8129792323373277873 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 2199568825687050093, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 7950158712227046876}
+  m_PrefabAsset: {fileID: 0}
