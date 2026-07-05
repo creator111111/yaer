@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Game.GameMgr.Component.Archive.ArchiveDataClass
 {
     /// <summary>
-    /// ¼ÇÂ¼¶Ô»°´¥·¢´ÎÊı
+    /// è®°å½•å¯¹è¯è§¦å‘æ¬¡æ•°
     /// </summary>
     public class StoryTriggerCountData : BaseArchiveData
     {
@@ -25,7 +25,7 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass
             masterData.SetValue("StoryTriggerCountData_StoryTriggerCount", dataStr);
         }
         /// <summary>
-        /// ¶Ô»°´¥·¢´ÎÊıÔö¼Ó
+        /// å¯¹è¯è§¦å‘æ¬¡æ•°å¢åŠ 
         /// </summary>
         /// <param name="storyName"></param>
         public void OnStoryTriggered(string storyName)
@@ -41,7 +41,7 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass
             }
         }
         /// <summary>
-        /// »ñÈ¡¶Ô»°´¥·¢´ÎÊı
+        /// è·å–å¯¹è¯è§¦å‘æ¬¡æ•°
         /// </summary>
         /// <param name="storyName"></param>
         /// <returns></returns>
@@ -54,7 +54,7 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass
             return 0;
         }
         /// <summary>
-        /// ·µ»Ø¶Ô»°ÊÇ·ñ´¥·¢¹ı
+        /// è¿”å›å¯¹è¯æ˜¯å¦è§¦å‘è¿‡
         /// </summary>
         /// <param name="storyName"></param>
         /// <returns></returns>
