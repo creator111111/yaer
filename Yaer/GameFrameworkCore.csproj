@@ -126,8 +126,8 @@
     <Compile Include="Assets\Scripts\GameFramework\Core\DataTable\DataTableManager.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\ApplyResourcesCompleteCallback.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Network\NetworkClosedEventArgs.cs" />
-    <Compile Include="Assets\Scripts\GameFramework\Core\Localization\ILocalizationManager.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\UpdatableVersionList.Resource.cs" />
+    <Compile Include="Assets\Scripts\GameFramework\Core\Localization\ILocalizationManager.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\UpdateVersionListCallbacks.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Fsm\FsmManager.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Network\NetworkMissHeartBeatEventArgs.cs" />
@@ -250,8 +250,8 @@
     <Compile Include="Assets\Scripts\GameFramework\Core\Base\TaskPool\TaskStatus.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\ResourceApplyFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\ResourceUpdateStartEventArgs.cs" />
-    <Compile Include="Assets\Scripts\GameFramework\Core\Resource\ResourceVerifySuccessEventArgs.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\LoadSceneDependencyAssetCallback.cs" />
+    <Compile Include="Assets\Scripts\GameFramework\Core\Resource\ResourceVerifySuccessEventArgs.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\UI\UIManager.UIGroup.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\IResourceHelper.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\LoadResourceAgentHelperReadFileCompleteEventArgs.cs" />
@@ -345,8 +345,8 @@
     <Compile Include="Assets\Scripts\GameFramework\Core\Utility\Utility.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\ResourceManager.VersionListProcessor.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Scene\LoadSceneUpdateEventArgs.cs" />
-    <Compile Include="Assets\Scripts\GameFramework\Core\DataNode\IDataNode.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\WebRequest\WebRequestAgentHelperCompleteEventArgs.cs" />
+    <Compile Include="Assets\Scripts\GameFramework\Core\DataNode\IDataNode.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\ObjectPool\IObjectPool.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Base\GameFrameworkAction.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Network\INetworkChannelHelper.cs" />
