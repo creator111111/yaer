@@ -4292,6 +4292,7 @@ MonoBehaviour:
   soundSfxCpn_2: {fileID: 1865812300}
   timeDistance_1: 15
   timeDistance_2: 11
+  enableBugAmbientSfx: 0
 --- !u!1001 &409557415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7756,6 +7757,7 @@ MonoBehaviour:
   storyWoodWormLogicList:
   - {fileID: 1980107865}
   - {fileID: 675063672}
+  waterSoundVolumeScale: 0.45
 --- !u!114 &604494299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7978,12 +7980,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d5ce0b43f1ee9f3478f20de409838e7e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7d5aa516b382059438b320aaabc22b68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 73.045334, y: 14.98}
+  m_Size: {x: 80.09505, y: 15.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -20325,9 +20327,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -691675099
-  m_SortingLayer: 1
-  m_SortingOrder: -1
+  m_SortingLayerID: -1083784733
+  m_SortingLayer: 9
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: cbd9006b4edfef1478c6cec245487e47, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -23476,12 +23478,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8a2de78722c24564a9ad212f3a1ac1a7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e77a54bbaa7194e4b8e3cc7e9f7a7658, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 77.16, y: 14.994961}
+  m_Size: {x: 80.09505, y: 15.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -27884,7 +27886,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3928203715563150806}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.047114372, y: 0, z: -10}
+  m_LocalPosition: {x: 0.044445038, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 314505635062684555}
@@ -28349,6 +28351,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cinemachineBrain: {fileID: 3928203715563150809}
   virtualCamera: {fileID: 3928203713923881918}
+  smoothTime: 0.3
+  followSnapOffset: {x: 0, y: 0, z: 0}
+  useUnscaledTimeForHandSnap: 1
+  maxHandSnapRealSeconds: 2.5
 --- !u!4 &8690798897930713379
 Transform:
   m_ObjectHideFlags: 0

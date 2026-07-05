@@ -89,6 +89,7 @@
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Font.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Config\LoadConfigSuccessEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\PlayerGuideStoryAction.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Story\DialogDebugStoryTester.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialoguePanelTaskAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Anima\TenWanCsRuntimeController.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\BornSubState\SlimeBornSubSM.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\PlaySoundFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.ScrollableDebuggerWindowBase.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3PlayerPrefsStream.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\VillageWalkObstacleTurnImmediateBlock.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3StackType.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Config\SlimeValueConfig.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\OpenUIFormUpdateEventArgs.cs" />
@@ -138,9 +140,11 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameMode\BaseGameMode.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\EntityComponent.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Texture2D.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\KnockbackTestPanel\KnockbackTestFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\Components\Anima\State\BaseWoodWormRootState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\ScenePlayBgmAciton.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.SettingsWindow.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\VillagePlayerDepthZoneListener.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\DamageFly\Fly\DamageFlyClimbUpState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WormEgg\Components\Anima\WormEggSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEffects\RandomStartBlink.cs" />
@@ -242,6 +246,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Interactive\CldInteractiveListener.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3ComponentType.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.SystemInformationWindow.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Quest\QuestConfigMgr.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\Base\ISceneObject.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ColorBySpeedModule.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\ShowEntityUpdateEventArgs.cs" />
@@ -323,8 +328,9 @@
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedObjectType.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\GameManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\History\StoryFormHistoryPage.cs" />
-    <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\UnityWebRequestDownloadAgentHelper.DownloadHandler.cs" />
+    <Compile Include="Assets\Scripts\Game\DataTable\QuestConfig\QuestDataTableRow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\SubManager\IDepthManager.cs" />
+    <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\UnityWebRequestDownloadAgentHelper.DownloadHandler.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_double.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\Control\BlackMask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\MetaDialogue.cs" />
@@ -346,6 +352,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\IGameSceneResManager.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Material.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Resource\PreloadAssetInfo.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\VillageTreehouseDepthGateTriggerForward.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\WoodWormRootLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\Paralysis\BossMogutParalysisIdleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BossMogutStorySubSM.cs" />
@@ -361,6 +368,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\Base\IDepthObject.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\BuiltinVersionListSerializer.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\WebRequestAgentHelperBase.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\CommonEntity\ActivateChildOnPlayerFootTrigger.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Other\ResInfo.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\DefaultResourceHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\SetArchiveFloatActionTask.cs" />
@@ -372,6 +380,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Settings\interf\ISettingDataHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SelectClothes\SelectClothesFormLogic.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Attributes\ES3Attributes.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\CameraTool\PlayerOffsetCameraFollow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Manager\GameComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\EditorResourceComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\NormalAttack\NormalAttackSM.cs" />
@@ -450,6 +459,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Base\ShutdownType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\DamageModifierConfig.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3ResourcesStream.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Diagnostic\DiagnosticTool.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\SlimeDeadState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\SubManager\Buff\BaseBuffHelper.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Vector2Int.cs" />
@@ -494,6 +504,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Dead\FlyDead\FlyDeadEndState.cs" />
     <Compile Include="Assets\Scripts\Game\Entry\GameRuntimeEntry.Custom.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\Dust\JumpUpDustEffect.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\PlayerKBFallDown.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\Physics2DComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\BagPack\ItemMpBall.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\SmashAttack\SmashAttack1State.cs" />
@@ -586,6 +597,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\WestRappRoadSceneResConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Interactive\RaycastListener.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Anima\State\TenWanIdleState.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\SoldierTurnOnEnterTrigger.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.ScreenInformationWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Pool\IPoolObject.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveComponentGM.cs" />
@@ -600,6 +612,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormMoveState.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedScriptableObjectType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\BaseItem.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Story\DialogDebugDialogueUISetup.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Procedure\ProcedureLaunch.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarChar.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\PlayerMoveComponent.cs" />
@@ -627,6 +640,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\SoundComponentGM.cs" />
     <Compile Include="Assets\DebugScene\MoveTest2.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WormEgg\Components\Anima\WormEggRuntimeController.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\UIPanel\OpenSystemTipsPanel2WaitSureActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\SlimeAttackState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Utility\StringExtension.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Settings\ES3Defaults.cs" />
@@ -647,6 +661,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Logger\ILoggerSystem.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\PlayerCommonData.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Slime\SlimeAngryBuffEffect.cs" />
+    <Compile Include="Assets\Scripts\Game\Static\Name\Settings\SortingLayerName.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\PlayerAnimaCameraTrackComponent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarBoolean.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\BuffComponentGSM.cs" />
@@ -687,6 +702,7 @@
     <Compile Include="Assets\Easy Save 3\Scripts\Readers\ES3Reader.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\BossHpBarPanel\BossHpBarFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Enum\Role\RoleName.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Quest\PlayerQuestData.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\ES3File.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.InputLocationInformationWindow.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\HomeScene2\HomeScene2Xiaer.cs" />
@@ -709,6 +725,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Anima\State\TenWanDamageState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Manager\GameCpnTest3.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\DamageFly\DamageFlySM.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_House\Village_House4SceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\SubManager\DepthManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\ForestEastTreeBridgeStoryAction.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Scene\ActiveSceneChangedEventArgs.cs" />
@@ -722,6 +739,7 @@
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_MeshRenderer.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\LoadResourceAgentHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\PlayerHandler\ShowPlayerEntityArgs.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\QuestTurnInAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialogueCloseTaskAction.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Scene\LoadSceneSuccessEventArgs.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.SceneInformationWindow.cs" />
@@ -761,6 +779,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BossMogutTrampleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\DamageFly\Fly\DamageFlyUpState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Move\MoveComponent.cs" />
+    <Compile Include="Assets\Scripts\Game\Static\Enum\PlayerLocomotionMode.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\NormalAttack\NormalAttackPart2.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\Dust\DashAttackDust1Effect.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.TimeInformationWindow.cs" />
@@ -828,6 +847,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarSByte.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\DamageHandler.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Web\ES3Cloud.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\DialogDebug\DialogDebugSceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEffects\FogMove.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_RenderTexture.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\WWWDownloadAgentHelper.cs" />
@@ -837,6 +857,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\SceneObjData\SceneObjectData.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Effect\ParticleComponent.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Referencing\ES3GlobalReferences.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Story\DialogDebugPlayground.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Story\StoryComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\WestRappRoad\ElfTownFirstDoorEntity.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Path\DialogueFilePath.cs" />
@@ -845,6 +866,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Camera\CameraImpluseActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\SelectDialogueFormSelectItem.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\GameObject\SetGameObjNewPosByOtherObj.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\VillagePlayerDepthZone.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_GradientColorKey.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Base\BaseMonoSingleton.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Enum\ControlInputType.cs" />
@@ -876,22 +898,26 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\PlaySoundDependencyAssetEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\BagPack\ItemBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialogueRaycastMaskTaskAction.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\QuestAcceptAction.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Resource\AB\ABSystem.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\FileSystem\FileSystemHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SystemTips\Args\UpdatedSystemTipsArgs.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\ReadWritePathType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\CldController\CldControllerComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\BossMogutRuntimeController.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopDebugLogger.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\StoryTrigger\WestRappRoadBattleStory.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\DownloadStartEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\WRRoadBossBattleSaveMonsterAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\BornSubState\SlimeBornDownState.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_PhysicsMaterial2D.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopBuyRowQuantityInput.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_Camera.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3DictionaryType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\ItemShowPanel\ItemShowFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\ChangeSceneInfo.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Shader.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopQuantityInputHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Attack\AttackType.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\DefaultSoundGroupHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Interactive\InteractiveComponent.cs" />
@@ -970,9 +996,9 @@
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_TextureSheetAnimationModule.cs" />
     <Compile Include="Assets\Easy Save 3\Types\ES3UserType_Transform.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\WoodWormLogic.cs" />
-    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Cursor\CursorChangeArgs.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ForceOverLifetimeModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Player\PlayerMapData.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Cursor\CursorChangeArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Sit\SitIdleStartState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Path\EMoveToPosType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\History\HistoryDialogueBox.cs" />
@@ -984,6 +1010,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveManagerOld.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\WebRequestFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Audio\VolumeChangedListener.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_House\AegirQuestStoryTrigger.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\NewGameSceneResConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\PureMVC\MVCComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\HardComponentGM.cs" />
@@ -996,6 +1023,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.ConsoleWindow.cs" />
     <Compile Include="Assets\DebugScene\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\RandomGrassWave.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\VillageSceneObjectDepthSort.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\GoOut\GoOutMapStoryMapFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\SmashAttack\SmashAttackSubSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\CldController\CldControllerNode.cs" />
@@ -1022,6 +1050,7 @@
     <Compile Include="Assets\Scripts\Game\Static\Enum\Map\PlaceName.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormBornState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialogueBlackMaskTaskAction.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopFormLogic.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_DateTime.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\EntityComponent.EntityGroup.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SystemTips\ESystemTipsType.cs" />
@@ -1030,6 +1059,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Battle\TenWanAttackLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\SquatStay2State.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\LoadSceneArgs.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Quest\QuestManager.cs" />
     <Compile Include="Assets\Scripts\Debug\Components\AddDateComponentGT.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3JSONWriter.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\StoryTrigger\SlimeEatSheepStroy2.cs" />
@@ -1059,6 +1089,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\InputComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Story\FirstMeetSlimeGuideStoryAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ClockComponentGM.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\VillageWalkObstacleCollisionBootstrap.cs" />
     <Compile Include="Assets\DebugScene\DebugMoveComponent.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Color32.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Enum\EGameHard.cs" />
@@ -1075,6 +1106,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\SelectClothesSceneResConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Item\ItemEffectDataMgr.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Goods\Sword\SwordSM.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Story\DialogDebugRuntimeBootstrap.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\DeadPanel\DeadFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Init\InitFormProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Sit\SitIdleState.cs" />
@@ -1117,6 +1149,8 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\SelectHard\SelectHardFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Stamina\PlayerStaminaConfig.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\ES3Spreadsheet.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Quest\PlayerGoldData.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_KenMuNi\Village_KenMuNiSceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\CameraTool\CameraImpluseTrigger.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\SlimeResHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\SquatAtkState.cs" />
@@ -1125,10 +1159,14 @@
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_EventSystem.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\Paralysis\BossMogutParalysisUpState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Jump\State\JunpUpState.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MenuCenterHideWhenItemShowPanel.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_House\Village_HomeScene2SceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Path\MoveToCorner.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\TownPlayerLocomotion.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\HomeScene2Data.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_intptr.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_MinMaxCurve.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\VillageTreehouseDepthZoneGate.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\AnimationEventRegisterTaskAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Init\InitFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Path\IPathManager.cs" />
@@ -1165,6 +1203,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarUInt64.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Anima\TenWanSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWanSceneObj\TenWanSceneObjLogic.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Quest\QuestState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Camera\CameraFollowPlayerActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\TenWan\Components\Anima\State\TenWanAwakeState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Sit\SitUpBlinkState.cs" />
@@ -1186,6 +1225,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\UnityWebRequestDownloadAgentHelper.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Utility\BinaryExtension.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\ForestSceneLaiFlyStory.cs" />
+    <Compile Include="Assets\Scripts\Debug\VillageMovementInputDebug.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\SelectClothesScene\ChangeClothesSceneEnterEndActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Story\HistoryDialogueData.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3ObjectType.cs" />
@@ -1194,14 +1234,18 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Utility\DefaultJsonHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\Components\Anima\State\WoodWormRootIdleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Manager\ComponentManager.cs" />
-    <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3ArrayType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\UIPanel\OpenSystemTipsPanel2WaitSureActionTask.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\KnockbackTestPanel\KnockbackTestFormLogic.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\PlayerKBFallDown.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MenuCenterHideWhenItemShowPanel.cs" />
+    <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopMainItemIconResolver.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopBarRowView.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopMainItemDisplayCache.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopCatalogConfig.cs" />
+    <Compile Include="Assets\Scripts\Game\DataTable\MainItem\MainItemDef.cs" />
+    <Compile Include="Assets\Scripts\Game\DataTable\MainItem\MainItemDefEntry.cs" />
+    <Compile Include="Assets\Scripts\Game\DataTable\MainItem\MainItemDatabase.cs" />
+    <Compile Include="Assets\Scripts\Game\DataTable\MainItem\MainItemDefProvider.cs" />
     <None Include="Assets\GameRes\Config\MonsterConfig\MonsterConfig.json" />
     <None Include="Assets\GameRes\Config\AchievementConfig\AchievementConfig.json" />
     <None Include="Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.xml" />
@@ -1232,6 +1276,7 @@
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Packages\System.Buffers.4.4.0\useSharedDesignerContext.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
+    <None Include="Assets\GameRes\Config\QuestConfig\QuestConfig.json" />
     <None Include="Assets\Packages\System.Runtime.CompilerServices.Unsafe.5.0.0\version.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\ArtRes\Front\Char20000.txt" />

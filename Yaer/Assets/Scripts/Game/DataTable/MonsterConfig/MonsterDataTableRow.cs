@@ -7,6 +7,8 @@ namespace Game.DataTable.MainItem
     public class MonsterDataTableRow: DataRowBase
     {
         public int id; // 怪物ID
+        /// <summary>怪物逻辑名，与 QuestConfig.targetMonster 绑定，大小写须一致。</summary>
+        public string name;
         public string cnName;// 怪物中文名称
         public string detail;
         public int hp_1; // 难度1血量
@@ -32,6 +34,7 @@ namespace Game.DataTable.MainItem
                 try
                 {
                     id = int.Parse(jsonData["id"]);
+                    name = jsonData.ContainsKey("name") ? jsonData["name"] : "";
                     cnName = jsonData["cnName"];
                     detail = jsonData["detail"];
                     hp_1 = int.Parse(jsonData["hp_1"]);

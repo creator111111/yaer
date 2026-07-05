@@ -13,7 +13,10 @@ public class PlayerStatsEditorWindow : EditorWindow
     private float HPValue;
     private float StaminaValue;
 
-    [MenuItem("Tools/ÈËÎï×´Ì¬µ÷ÊÔ¹¤¾ß")]
+    /// <summary>ï¿½ï¿½ <see cref="PlayerLogic.EditorInvincible"/> Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Find ï¿½ï¿½Òºï¿½Ö¸ï¿½ï¿½ï¿½Ñ¡×´Ì¬ï¿½ï¿½</summary>
+    private bool editorInvincibleToggle;
+
+    [MenuItem("Tools/ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½Ô¹ï¿½ï¿½ï¿½")]
     public static void Open()
     {
         PlayerStatsEditorWindow window = GetWindow<PlayerStatsEditorWindow>("Player Stats Tool");
@@ -24,7 +27,7 @@ public class PlayerStatsEditorWindow : EditorWindow
     {
         if (playerLogic == null)
         {
-            GUILayout.Label("Î´ÕÒµ½PlayerLogic");
+            GUILayout.Label("Î´ï¿½Òµï¿½PlayerLogic");
         }
         if (GUILayout.Button("Find PlayerLogic"))
         {
@@ -34,11 +37,16 @@ public class PlayerStatsEditorWindow : EditorWindow
         {
             var healthCpnt = playerLogic.componentSystem.GetComponent<HealthComponent>();
             var staminaCpnt = playerLogic.componentSystem.GetComponent<StaminaComponent>();
-            if (GUILayout.Button("ÐÞ¸´·þ×°"))
+
+            // ï¿½ï¿½Ñ¡ï¿½ï¿½Ð´ï¿½ï¿½ PlayerLogic.EditorInvincibleï¿½ï¿½Ñªï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+            editorInvincibleToggle = EditorGUILayout.ToggleLeft("ï¿½ï¿½ï¿½ï¿½ÞµÐ¿ï¿½ï¿½ï¿½", editorInvincibleToggle);
+            playerLogic.EditorInvincible = editorInvincibleToggle;
+
+            if (GUILayout.Button("ï¿½Þ¸ï¿½ï¿½ï¿½×°"))
             {
                 playerLogic.FixClothes();
             }
-            if (GUILayout.Button("ÊÜµ½10µãÉËº¦"))
+            if (GUILayout.Button("ï¿½Üµï¿½10ï¿½ï¿½ï¿½Ëºï¿½"))
             {
                 playerLogic.TakeDamage(10);
                 HPValue = healthCpnt.hp;
@@ -49,13 +57,13 @@ public class PlayerStatsEditorWindow : EditorWindow
                 float MaxStamina = staminaCpnt.MaxStamina;
 
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("ÑªÁ¿£º");
+                GUILayout.Label("Ñªï¿½ï¿½ï¿½ï¿½");
                 HPValue = GUILayout.HorizontalSlider(HPValue, 0, MaxHP, GUILayout.Width(200));
                 GUILayout.Label($"{HPValue:N2}");
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("ÌåÁ¦£º");
+                GUILayout.Label("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
                 StaminaValue = GUILayout.HorizontalSlider(StaminaValue, 0, MaxStamina, GUILayout.Width(200));
                 GUILayout.Label($"{StaminaValue:N2}");
                 GUILayout.EndHorizontal();
@@ -63,7 +71,6 @@ public class PlayerStatsEditorWindow : EditorWindow
                 healthCpnt.SetData(HPValue, MaxHP);
                 staminaCpnt.SetData(StaminaValue, MaxStamina);
             }
-                
         }
     }
 
@@ -81,5 +88,6 @@ public class PlayerStatsEditorWindow : EditorWindow
         if (playerLogic == null) return;
         HPValue = playerLogic.componentSystem.GetComponent<HealthComponent>().hp;
         StaminaValue = playerLogic.componentSystem.GetComponent<StaminaComponent>().Stamina;
+        editorInvincibleToggle = playerLogic.EditorInvincible;
     }
 }

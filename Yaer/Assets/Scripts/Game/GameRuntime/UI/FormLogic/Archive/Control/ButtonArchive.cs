@@ -50,8 +50,17 @@ namespace Game.GameRuntime.UI.FormLogic.Archive.Control
         Dictionary<LanguageEnumType, string> textConfig_1 = new Dictionary<LanguageEnumType, string>() {
             { LanguageEnumType.Chinese, "存档" }, { LanguageEnumType.English, "Archive"}, { LanguageEnumType.Japanese, "セーブデータ"},
         };
+        /// <summary>存档标题章节前缀：除肯姆尼外一律使用「序章」。</summary>
         Dictionary<LanguageEnumType, string> textConfig_2 = new Dictionary<LanguageEnumType, string>() {
             { LanguageEnumType.Chinese, "序章" }, { LanguageEnumType.English, "Prologue"}, { LanguageEnumType.Japanese, "序章"},
+        };
+
+        /// <summary>
+        /// 仅当存档地点内部键为 <see cref="PlaceName.KenMuNi"/>（肯姆尼）时使用此前缀，与序章表 <see cref="textConfig_2"/> 互斥。
+        /// 若未来还有其它「第一章」地点，可改为按表驱动（地点键 → 前缀字典）。
+        /// </summary>
+        Dictionary<LanguageEnumType, string> textConfig_2_Chapter1OnlyKenMuNi = new Dictionary<LanguageEnumType, string>() {
+            { LanguageEnumType.Chinese, "第一章" }, { LanguageEnumType.English, "Chapter 1"}, { LanguageEnumType.Japanese, "第1章"},
         };
         Dictionary<LanguageEnumType, string> textConfig_3 = new Dictionary<LanguageEnumType, string>() {
             { LanguageEnumType.Chinese, "保存日期:" }, { LanguageEnumType.English, "Save Data:"}, { LanguageEnumType.Japanese, "ほぞんび"},
@@ -148,9 +157,12 @@ namespace Game.GameRuntime.UI.FormLogic.Archive.Control
             {
                 this.guid = guid;
 
-                // 显示地名和日期
+                // 显示地名和日期（章节前缀：仅肯姆尼用「第一章」，其余用「序章」）
                 txTitle.gameObject.SetActive(true);
-                var baseText_2 = textConfig_1.ContainsKey(curLanagueType) ? textConfig_2[curLanagueType] : textConfig_2[LanguageEnumType.English];
+                var chapterPrefixTable = sceneName == PlaceName.KenMuNi ? textConfig_2_Chapter1OnlyKenMuNi : textConfig_2;
+                var baseText_2 = chapterPrefixTable.ContainsKey(curLanagueType)
+                    ? chapterPrefixTable[curLanagueType]
+                    : chapterPrefixTable[LanguageEnumType.English];
                 txTitle.text = $"{baseText_2}：{PlaceName.GetPlaceChsName(sceneName)}";
                 txCreateDate.text = createDate.ToString("yyyy-M-d");
                 TimeSpan playTimeSpan = new TimeSpan(0, 0, (int)gameDuration);

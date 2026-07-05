@@ -10,6 +10,7 @@ using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.GameSceneManager.Component;
 using Game.GameRuntime.Entities.Component.Move;
 using Game.GameRuntime.Entities.Component.Interactive;
+using Game.GameRuntime.Entities.Player.Components;
 
 namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Base
 {
@@ -25,8 +26,8 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Base
         protected PlayerStaminaComponent staminaComponent;
 
         bool hasOpenDeadPanel = false;
-        protected int monsterCenterLayer = 17; // ¹ÖÎïÍ¼²ã
-        protected int playerLayer = 11; // Íæ¼ÒÍ¼²ã
+        protected int monsterCenterLayer = 17; // ???????
+        protected int playerLayer = 11; // ??????
 
         int curAnimatorSpeed = 1;
         public override void Init(IStateMachine stateMachine, string argsName, string stateName)
@@ -47,6 +48,15 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Base
             CheckAnimationPauseAndPlay();
         }
 
+        /// <summary>
+        /// ï¿½ï¿½×¯ 2.5Dï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½î£¨W/Sï¿½ï¿½Ê±ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Âµï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ß¡ï¿½ï¿½ï¿½ï¿½ï¿½ Home Idle/Bink/Walk ï¿½ï¿½ <see cref="PlayerInputComponent.HasMoveInput"/> ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½Ú¶ï¿½ï¿½×¶ï¿½ L-01ï¿½ï¿½ï¿½ï¿½
+        /// </summary>
+        protected bool HasVillageExploreDepthMoveIntent()
+        {
+            TownPlayerLocomotion town = playerLogic.componentSystem.TryGetComponent<TownPlayerLocomotion>();
+            return town != null && town.HasVillageDepthMoveForHomeStateMachine();
+        }
+
         protected virtual void CheckAnimationPauseAndPlay()
         {
             var animator = playerLogic.GetComponent<Animator>();
@@ -61,7 +71,7 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Base
                     {
                         playerLogic.componentSystem.GetComponent<MoveComponent>().StopMove();
                     }
-                    animator.speed = curAnimatorSpeed;// ÔÝÍ£¶¯»­
+                    animator.speed = curAnimatorSpeed;// ???????
                 }
             }
             else
@@ -69,7 +79,7 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Base
                 if (curAnimatorSpeed != 1)
                 {
                     curAnimatorSpeed = 1;
-                    animator.speed = curAnimatorSpeed;// »Ö¸´¶¯»­
+                    animator.speed = curAnimatorSpeed;// ???????
                 }
             }
         }
@@ -87,11 +97,11 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Base
         protected override void ChangeState<T>()
         {
             base.ChangeState<T>();
-            // ×ª»»×´Ì¬Ê±ÐèÒªÇå³ýµ±Ç°×´Ì¬µÄ¹¥»÷Åö×²Ìå
+            // ???????????????????????????
             RemoveAtkCollsion("defalutName");
         }
 
-        // ´´½¨¹¥»÷Åö×²Ìå
+        // ?????????????
         protected virtual void CreateAtkCollsion(string atkTypeName)
         {
             if (playerLogic.atkCollAreaNodeDict.ContainsKey(atkTypeName))
@@ -122,7 +132,7 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Base
             });
         }
 
-        // ÒÆ³ý¹¥»÷Åö×²Ìå
+        // ????????????
         protected void RemoveAtkCollsion(string atkTypeName)
         {
             foreach (var atkCollAreaNode in playerLogic.atkCollAreaNodeDict.Values)
@@ -141,14 +151,14 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Base
             {
                 hasOpenDeadPanel = true;
                 var sceneManager = playerLogic.sceneManager as BaseGameSceneManager;
-                sceneManager.SetSceneObjIsPause(true);// ÈËÎïËÀÍöºóÔÝÍ£ÓÎÏ·
-                // ´ò¿ªËÀÍö½çÃæ
+                sceneManager.SetSceneObjIsPause(true);// ????????????????
+                // ??????????
                 var delayTimeAct = GameActionMgr.runDelayTimeAction(1f, () =>
                 {
                     var UIMgr = GameManager.GetGMComponent<UIComponentGM>();
                     UIMgr.OpenUIForm(UIPrefabPath.GetUIPrefabPath("DeadPanel"), EUIGroup.Top, new OpenFormArgs());
                 });
-                // ËÀÍö½çÃæ³öÏÖÊ±²»ÔÊÐí´ò¿ª²Ëµ¥
+                // ??????????????????????
                 GameManager.GetGameSceneManager().GetModule<InputComponentGSM>().SetAllowOpenMenu(false);
             }
         }
@@ -158,25 +168,25 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Base
             moveComponent.StopMove();
         }
 
-        // ÔÚ¶¯»­Ä³Ò»Ö¡²¥·ÅÒ»¸öÒôÐ§
+        // ?????????????????ï¿½ï¿½
         public virtual void PlayAudioSfx(string resPathName)
         {
             playerLogic.commonSfxCpn.ChangeSoundRes(resPathName);
             playerLogic.PlayAudio(playerLogic.commonSfxCpn, true);
         }
-        // ÔÚ¶¯»­Ä³Ò»Ö¡²¥·Å×ßÂ·ÒôÐ§
+        // ??????????????ï¿½ï¿½??ï¿½ï¿½
         public virtual void PlayMoveSfx(string args)
         {
             playerLogic.PlayRunAudio();
         }
 
-        // ÔÚ¶¯»­Ä³Ò»Ö¡²¥·Å¹¥»÷ÒôÐ§
+        // ?????????????????ï¿½ï¿½
         public virtual void PlayNorAtkAudioInAniFunc(string args)
         {
             playerLogic.PlayNorAtkAudio();
         }
 
-        // ½»»¥
+        // ????
         protected virtual void InteractAciton()
         {
             var sceneMgr = playerLogic.sceneManager as BaseGameSceneManager;
@@ -186,7 +196,7 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Base
             }
             var playerInteractiveComponent = playerLogic.componentSystem.GetComponent<InteractiveComponent>();
             var closestComponent = sceneMgr.GetFirstCanTouchEntiy(playerInteractiveComponent);
-            // ½»»¥×î½üµÄ¶ÔÏó
+            // ????????????
             if (closestComponent != null)
             {
                 closestComponent.OnInteractive();

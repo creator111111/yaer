@@ -16,43 +16,43 @@ using Game.Static.Enum;
 
 public enum AtkCollsionType
 {
-    None, // Î´ÖªÀàĞÍ
-    Player, // Íæ¼Ò
-    Enemy, // µĞÈË
-    Neutral, // ÖĞÁ¢ÉúÎï£¬Í¬Ê±¹¥»÷Íæ¼ÒºÍµĞÈË
+    None, // æœªçŸ¥ç±»å‹
+    Player, // ç©å®¶
+    Enemy, // æ•Œäºº
+    Neutral, // ä¸­ç«‹ç”Ÿç‰©ï¼ŒåŒæ—¶æ”»å‡»ç©å®¶å’Œæ•Œäºº
 }
 
 public enum AtkDirCheckType
 {
-    Entity, // °´Ëù¸½¼ÓµÄÊµÌåµÄÎ»ÖÃÅĞ¶Ï
-    Collider, // °´ÕÕÅö×²Ìå±¾Éí
+    Entity, // æŒ‰æ‰€é™„åŠ çš„å®ä½“çš„ä½ç½®åˆ¤æ–­
+    Collider, // æŒ‰ç…§ç¢°æ’ä½“æœ¬èº«
 }
 
-// ¿ØÖÆ¹¥»÷Åö×²ÇøÓòÂß¼­µÄ½Å±¾
+// æ§åˆ¶æ”»å‡»ç¢°æ’åŒºåŸŸé€»è¾‘çš„è„šæœ¬
 public class BaseAtkCollsion : MonoBehaviour
 {
-    public EntityLogic entityLogic; // µ±Ç°Åö×²ÌåËùÊôµÄÊµÌå½Úµã,Íæ¼Ò»òÕß¹ÖÎïLogicµÈ
-    public new Collider2D collider2D; // Åö×²Ìå×é¼ş
+    public EntityLogic entityLogic; // å½“å‰ç¢°æ’ä½“æ‰€å±çš„å®ä½“èŠ‚ç‚¹,ç©å®¶æˆ–è€…æ€ªç‰©Logicç­‰
+    public new Collider2D collider2D; // ç¢°æ’ä½“ç»„ä»¶
 
-    public AtkCollsionType atkCollsionType; // Åö×²ÌåµÄÀàĞÍ
-    public int damage = 0; // ±¾´ÎÉËº¦ÊıÖµ
+    public AtkCollsionType atkCollsionType; // ç¢°æ’ä½“çš„ç±»å‹
+    public int damage = 0; // æœ¬æ¬¡ä¼¤å®³æ•°å€¼
     public int damage_2 = 0;
     public int damage_3 = 0;
     public int damage_4 = 0;
-    public bool damageIsRight; // ÊÇ·ñÊÇÀ´×ÔÓÒ±ßµÄÉËº¦
-    public AttackType atkType = AttackType.NormalType; // ¹¥»÷ÀàĞÍ
-    bool isPlayerDashAtk = false; // ÊÇ·ñÊÇÍæ¼ÒµÄ³å´Ì¹¥»÷
-    string atkSkillName; // ±¾´Î¹¥»÷µÄ¼¼ÄÜÃû³Æ
-    // ================startÏÂÃæÁ½¸ö±äÁ¿ÊÇÅäºÏKnockBackComponent×é¼şÊ¹ÓÃµÄ
-    public float breakWidth = 0; // »÷·ÉÄ¿±êµÄ¾àÀë
-    public float breakHight = 0; // »÷·ÉÄ¿±êµÄ¸ß¶È
-    public float breakTime = 0; // »÷·ÉÄ¿±êµÄ³ÖĞøÊ±¼ä
+    public bool damageIsRight; // æ˜¯å¦æ˜¯æ¥è‡ªå³è¾¹çš„ä¼¤å®³
+    public AttackType atkType = AttackType.NormalType; // æ”»å‡»ç±»å‹
+    bool isPlayerDashAtk = false; // æ˜¯å¦æ˜¯ç©å®¶çš„å†²åˆºæ”»å‡»
+    string atkSkillName; // æœ¬æ¬¡æ”»å‡»çš„æŠ€èƒ½åç§°
+    // ================startä¸‹é¢ä¸¤ä¸ªå˜é‡æ˜¯é…åˆKnockBackComponentç»„ä»¶ä½¿ç”¨çš„
+    public float breakWidth = 0; // å‡»é£ç›®æ ‡çš„è·ç¦»
+    public float breakHight = 0; // å‡»é£ç›®æ ‡çš„é«˜åº¦
+    public float breakTime = 0; // å‡»é£ç›®æ ‡çš„æŒç»­æ—¶é—´
     // ======================end
 
-    DamageData damageData;// ÉËº¦ÏêÏ¸Êı¾İ
+    DamageData damageData;// ä¼¤å®³è¯¦ç»†æ•°æ®
 
-    public List<EntityLogic> allHurtEntityLogic; // µ±Ç°Åö×²ÌåÒÑ¾­Åö×²¹ıµÄÊµÌå
-    public AtkDirCheckType dirCheckType = AtkDirCheckType.Entity; // ¹¥»÷·½ÏòÅĞ¶ÏÀàĞÍ,Ä¬ÈÏ¸ù¾İÊµÌåÎ»ÖÃÀ´ÅĞ¶Ï
+    public List<EntityLogic> allHurtEntityLogic; // å½“å‰ç¢°æ’ä½“å·²ç»ç¢°æ’è¿‡çš„å®ä½“
+    public AtkDirCheckType dirCheckType = AtkDirCheckType.Entity; // æ”»å‡»æ–¹å‘åˆ¤æ–­ç±»å‹,é»˜è®¤æ ¹æ®å®ä½“ä½ç½®æ¥åˆ¤æ–­
     // Start is called before the first frame update
     void Start()
     {
@@ -67,7 +67,7 @@ public class BaseAtkCollsion : MonoBehaviour
             atkSkillName = atkSkillName,
             breakHight = breakHight,
             breakTime = breakTime,
-            breakWidth = breakWidth > 0 ? breakWidth : 1,// Ã»ÓĞÉèÖÃÊıÖµÔòÈ¡Ä¬ÈÏÖµ
+            breakWidth = breakWidth > 0 ? breakWidth : 1,// æ²¡æœ‰è®¾ç½®æ•°å€¼åˆ™å–é»˜è®¤å€¼
         };
     }
 
@@ -79,8 +79,8 @@ public class BaseAtkCollsion : MonoBehaviour
 
     private void OnEnable()
     {
-        // ÒòÎª¾²Ö¹µÄÅö×²Ìå²»»á½øĞĞÅö×²¼ì²â£¬ËùÒÔÃ¿´Î¼¤»îÅö×²Ìå¶¼ÊÖ¶¯¼ì²âÒ»´Î
-        // ÑÓ³ÙÒ»Ö¡È·±£ÎïÀíÏµÍ³ÒÑ¸üĞÂ
+        // å› ä¸ºé™æ­¢çš„ç¢°æ’ä½“ä¸ä¼šè¿›è¡Œç¢°æ’æ£€æµ‹ï¼Œæ‰€ä»¥æ¯æ¬¡æ¿€æ´»ç¢°æ’ä½“éƒ½æ‰‹åŠ¨æ£€æµ‹ä¸€æ¬¡
+        // å»¶è¿Ÿä¸€å¸§ç¡®ä¿ç‰©ç†ç³»ç»Ÿå·²æ›´æ–°
         StartCoroutine(ManualTriggerCheck());
         
     }
@@ -97,7 +97,7 @@ public class BaseAtkCollsion : MonoBehaviour
             filter,
             overlappingColliders
         );
-        // ´¦Àí¼ì²âµ½µÄÅö×²Ìå
+        // å¤„ç†æ£€æµ‹åˆ°çš„ç¢°æ’ä½“
         for (int i = 0; i < count; i++)
         {
             Collider2D other = overlappingColliders[i];
@@ -105,7 +105,7 @@ public class BaseAtkCollsion : MonoBehaviour
             {
                 continue;
             }
-            // ´¥·¢×Ô¶¨ÒåÊÂ¼ş£¨Ä£ÄâOnTriggerEnter2D£©
+            // è§¦å‘è‡ªå®šä¹‰äº‹ä»¶ï¼ˆæ¨¡æ‹ŸOnTriggerEnter2Dï¼‰
             OnTriggerEnter2D(other);
         }
     }
@@ -116,32 +116,37 @@ public class BaseAtkCollsion : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // ¸ù¾İ×ÔÉíÀàĞÍÅĞ¶ÏÊÇ·ñÄÜ¹»ÉËº¦Åö×²Ä¿±ê
+        // æ ¹æ®è‡ªèº«ç±»å‹åˆ¤æ–­æ˜¯å¦èƒ½å¤Ÿä¼¤å®³ç¢°æ’ç›®æ ‡
         var enetityLogic = collision.GetComponent<ColliderResponder>()?.GetEntityLogic() as BaseEntityLogic;
         if (!enetityLogic) return;
         if (enetityLogic.isProtect) { return; }
+        // ç¼–è¾‘å™¨ã€Œç©å®¶æ— æ•Œã€ï¼šä¸ isProtect åˆ†ç¦»ï¼Œé¿å…ä¸å‰§æƒ…/å—å‡»çŠ¶æ€æœºæŠ¢å†™æ— æ•Œæ ‡è®°
+        if (enetityLogic is PlayerLogic hurtPlayer && hurtPlayer.EditorInvincible)
+        {
+            return;
+        }
 
         if ((atkCollsionType == AtkCollsionType.Player && enetityLogic is BaseMonster)
             || (atkCollsionType == AtkCollsionType.Enemy && enetityLogic is PlayerLogic)
             || (atkCollsionType == AtkCollsionType.Neutral && (enetityLogic is PlayerLogic || enetityLogic is BaseMonster)))
         {
-            if (entityLogic == enetityLogic) {  return; } // ²»ÄÜ´ò×Ô¼º
+            if (entityLogic == enetityLogic) {  return; } // ä¸èƒ½æ‰“è‡ªå·±
             if (entityLogic == null) { return; }
-            // Ä¬ÈÏÖ»ÄÜ¶ÔÍ¬Ò»¸öÄ¿±êÔì³ÉÒ»´ÎÉËº¦
+            // é»˜è®¤åªèƒ½å¯¹åŒä¸€ä¸ªç›®æ ‡é€ æˆä¸€æ¬¡ä¼¤å®³
             if (allHurtEntityLogic.Contains(enetityLogic))
             {
                 return;
             }
-            // ÉèÖÃ±¾´ÎÉËº¦µÄ·½Ïò
+            // è®¾ç½®æœ¬æ¬¡ä¼¤å®³çš„æ–¹å‘
 
             if (dirCheckType == AtkDirCheckType.Entity)
             {
-                // Ê¹ÓÃÊµÌå±¾ÉíµÄ×ø±êÀ´ÅĞ¶Ï
+                // ä½¿ç”¨å®ä½“æœ¬èº«çš„åæ ‡æ¥åˆ¤æ–­
                 damageIsRight = entityLogic.transform.position.x >= collision.gameObject.transform.position.x;
             }
             else
             {
-                // Ê¹ÓÃÅö×²Ìå±¾ÉíÎ»ÖÃÀ´ÅĞ¶Ï
+                // ä½¿ç”¨ç¢°æ’ä½“æœ¬èº«ä½ç½®æ¥åˆ¤æ–­
                 damageIsRight = collider2D.bounds.center.x >= collision.bounds.center.x;
             }
             var dirVector = damageIsRight ? new Vector2(1, 0) : new Vector2(-1, 0);
@@ -150,7 +155,7 @@ public class BaseAtkCollsion : MonoBehaviour
             damageData.atkCollsionType = atkCollsionType;
             enetityLogic.HasHurt(damageData);
             allHurtEntityLogic.Add(enetityLogic);
-            // Ìí¼ÓÉËº¦ÌØĞ§
+            // æ·»åŠ ä¼¤å®³ç‰¹æ•ˆ
             Vector2 pointOnB = collision.ClosestPoint(collider2D.bounds.center);
             Vector2 pointOnA = collider2D.ClosestPoint(collision.bounds.center);
             Vector2 contactPoint = (pointOnA + pointOnB) * 0.5f;
@@ -161,10 +166,10 @@ public class BaseAtkCollsion : MonoBehaviour
             }
             else
             {
-                // ÖĞÁ¢ÉúÎï¹¥»÷Ôì³ÉµÄÌØĞ§²»Í¬
+                // ä¸­ç«‹ç”Ÿç‰©æ”»å‡»é€ æˆçš„ç‰¹æ•ˆä¸åŒ
                 var baseEntityLogic = (BaseEntityLogic)entityLogic;
                 var effectType = baseEntityLogic.curAtkCollsionType == AtkCollsionType.Neutral ? AniEffectType.PlayerNorAtk : AniEffectType.PlayerBeHurt;
-                if (enetityLogic is PlayerLogic) { effectType = AniEffectType.PlayerBeHurt; }// Íæ¼ÒµÄÊÜÉËĞ§¹û²»»á±ä
+                if (enetityLogic is PlayerLogic) { effectType = AniEffectType.PlayerBeHurt; }// ç©å®¶çš„å—ä¼¤æ•ˆæœä¸ä¼šå˜
                 UIUtils.addBehurtAnimationEffect(effectType, enetityLogic, contactPoint);
             }
         }
@@ -172,12 +177,12 @@ public class BaseAtkCollsion : MonoBehaviour
 
     public void initAtkDataByName(EntityLogic entityLogic, AtkCollsionType atkType, string atkTypeName)
     {
-        if (this.entityLogic != null) { return; } // ²»ÄÜÖØ¸´³õÊ¼»¯
+        if (this.entityLogic != null) { return; } // ä¸èƒ½é‡å¤åˆå§‹åŒ–
         this.entityLogic = entityLogic;
         atkCollsionType = atkType;
-        // ÉèÖÃ±¾´Î¹¥»÷ÉËº¦Ïà¹ØµÄÊı¾İ
+        // è®¾ç½®æœ¬æ¬¡æ”»å‡»ä¼¤å®³ç›¸å…³çš„æ•°æ®
         damage = getRealDamage();
-        atkSkillName = atkTypeName;// ¼ÇÂ¼±¾´Î¹¥»÷µÄÃû³Æ
+        atkSkillName = atkTypeName;// è®°å½•æœ¬æ¬¡æ”»å‡»çš„åç§°
         if (entityLogic is PlayerLogic && atkTypeName == "DashAtk")
         {
             isPlayerDashAtk = true;

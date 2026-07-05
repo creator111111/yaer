@@ -123,7 +123,17 @@ namespace Game.GameRuntime.GameSceneManager.Component.Story
 
         private void OnStoryPrefabLoad(GameObject go)
         {
+            if (go == null)
+            {
+                // ResComponentGM 的 Load 失败时走失败回调、通常不会进成功分支；此日志用于确认回调偶发传空
+                Log.Error("OnStoryPrefabLoad: 已加载的预制体为 null。CurrentName={0}", CurrentRunningStoryName);
+                return;
+            }
             string uiPrefabPath = UIPrefabPath.GetUIPrefabPath("NormalDialogueNewPanel");
+            // 重要修改说明：
+            // 对话开始前统一关闭战斗立绘，避免“对话UI + 战斗立绘”同屏造成视觉混叠。
+            // 这里不隐藏整个 FightingPanel，只处理战斗立绘，确保战斗HUD其它元素行为不受影响。
+            SetFightingBattleIllustrationVisible(false);
             
             var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(uiPrefabPath);
             var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
@@ -162,20 +172,37 @@ namespace Game.GameRuntime.GameSceneManager.Component.Story
             var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
             if (sceneMgr != null) { sceneMgr.curStoryPrefab = null; }
 
-            // 剧情结束后，根据当前设置重新同步一次战斗立绘的显示状态（兜底）
+            // 剧情结束后，根据当前设置重新同步一次战斗立绘的显示状态（兜底）。
+            // 与“对话开始时强制关闭”配对，确保不会把用户设置永久覆盖。
+            // —— 注意：下面对「显示」的调用传 isStoryEndRestore: true。FightingFormLogic 内会【延迟约 0.3~0.5s】再真正打开战斗立绘，
+            // 用于错开本帧 OnStoryEnd 与「紧接着的下一道教学/自言自语对话」的加载时机，避免战斗立绘与对话 UI 同一瞬间抢显示导致闪屏。
+            // 【维护警告】若改为单参或 false 取消延迟，易复现“国王演出结束接战斗教学时立绘闪一下”的回归，非需求勿改。
             var settingManager = GameManager.GetManager<SettingManager>();
             if (settingManager != null)
             {
                 var configData = settingManager.LoadSetting<SettingsConfigData>();
                 if (configData != null)
                 {
-                    string fightingPanelPath = UIPrefabPath.GetUIPrefabPath("FightingPanel");
-                    var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(fightingPanelPath);
-                    if (uiForm != null && uiForm.Logic is FightingFormLogic fightingFormLogic)
-                    {
-                        fightingFormLogic.UpdateBattleImageVisiable(configData.showBattleImage);
-                    }
+                    SetFightingBattleIllustrationVisible(configData.showBattleImage, isStoryEndRestore: true);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 统一控制战斗立绘显隐，避免在多个流程重复获取 FightingPanel 逻辑并提升可维护性。
+        /// </summary>
+        /// <param name="isVisible">true 为显示，false 为隐藏。</param>
+        /// <param name="isStoryEndRestore">
+        /// 仅 <c>true</c> 时，由 <see cref="FightingFormLogic"/> 在「应显示」路径上走协程延迟再显，避免 <c>OnStoryEnd</c> 与紧接教学对话的显示冲突与立绘闪烁；对话开始时传 <c>false</c> 以立刻关战斗立绘并取消未完成的延迟显式。
+        /// <para>【维护警告】从 <see cref="OnStoryEnd"/> 恢复立显时必须为 <c>true</c>，勿为省事改为默认单参，否则会失去与 FightingFormLogic 的延迟配合。</para>
+        /// </param>
+        private void SetFightingBattleIllustrationVisible(bool isVisible, bool isStoryEndRestore = false)
+        {
+            string fightingPanelPath = UIPrefabPath.GetUIPrefabPath("FightingPanel");
+            var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(fightingPanelPath);
+            if (uiForm != null && uiForm.Logic is FightingFormLogic fightingFormLogic)
+            {
+                fightingFormLogic.UpdateBattleImageVisiable(isVisible, isStoryEndRestore);
             }
         }
     }

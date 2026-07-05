@@ -1,6 +1,7 @@
 using System;
 using Game.GameMgr.Component.Archive;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
+using Game.GameMgr.Component.Archive.ArchiveDataClass.Quest;
 using Game.GameMgr.Component.Base;
 using Game.GameMgr.Component.ChangeScene;
 using Game.GameMgr.Component.PureMVC;
@@ -92,8 +93,9 @@ namespace Game.GameMgr.Component
 
         public void OpenMainMenu()
         {
-            // 加载部分配置
+            // 加载部分配置（成就、任务静态表与 Achievement / Monster 并列）
             AchievementDataMgr.getInstance().Init();
+            QuestConfigMgr.getInstance().Init();
             // 进入主菜单
             uiComponentGM.OpenUIForm(UIPrefabPath.StartPanel, EUIGroup.Bottom, new OpenFormArgs()
             {
@@ -113,6 +115,71 @@ namespace Game.GameMgr.Component
                         };
                     }
                 }
+            });
+        }
+
+        /// <summary>
+        /// 局内（如 MapPanel ButtonHome）重开新游戏：清档 → 初始化 → 加载 NewGameScene → 漫画开场。
+        /// 难度沿用当前 <see cref="HardComponentGM.Hard"/>，不再弹 SelectHardPanel。
+        /// 与主菜单 <see cref="NewGame"/> 的差异：局内会先 <see cref="ExitGame"/>、卸载 GSM、<see cref="ArchiveComponentGM.ClearNowArchive"/>，
+        /// 再 <see cref="ArchiveComponentGM.CreateTempGameArchive"/>，并在黑幕内调用 <see cref="GameManager.OnEnterComponents"/>（对齐 LoadGame / ReturnToMainMenu）。
+        /// 替代方案：先 ReturnToMainMenu 再自动选难度开新局 — 会闪主菜单，体验差，故不采用。
+        /// </summary>
+        public void RestartNewGameFromProgress()
+        {
+            onStartLoadingSceneEvent?.Invoke();
+
+            GameManager.GetGMComponent<SoundComponentGM>().StopBGM();
+
+            uiComponentGM.OpenUIForm(UIPrefabPath.GetUIPrefabPath("BlackPanel"), EUIGroup.System, new OpenFormArgs()
+            {
+                userData = new ShowBlackFormArgs()
+                {
+                    showType = BlackFadeType.FadeShow,
+                    onShowEnd = blackFormLogic =>
+                    {
+                        // 已在局中：先结束当前局，避免旧 GSM / 实体 / 存档引用残留（主菜单 NewGame 时 start==false，此处与 LoadGame 一致）
+                        if (start)
+                        {
+                            ExitGame();
+                        }
+
+                        var sceneMgr = GameManager.GetGameSceneManager();
+                        if (sceneMgr != null)
+                        {
+                            sceneMgr.OnExitScene();
+                            sceneMgr.OnShutDown();
+                        }
+
+                        uiComponentGM.CloseAllUIForm(blackFormLogic.UIForm);
+
+                        // 局内必有活跃档；清档后再建全新临时档（主菜单 NewGame 无活跃档，故不调 ClearNowArchive）
+                        archiveComponentGM.ClearNowArchive();
+                        archiveComponentGM.CreateTempGameArchive();
+
+                        // 难度沿用当前 HardComponentGM.Hard，不重新弹出 SelectHardPanel
+                        GameManager.GetGMComponent<PlayerDataComponentGM>().InitNewGameData();
+
+                        QuestConfigMgr.getInstance().Init();
+                        MonsterDataMgr.getInstance().Init();
+
+                        GameManager.Instance.onGameSceneManagerReady += (manager) =>
+                        {
+                            blackFormLogic.CloseFormFade(() =>
+                            {
+                                StartGame();
+                                onCompleteLoadingSceneEvent?.Invoke();
+                            });
+                        };
+
+                        GameManager.GetGMComponent<ChangeSceneComponentGM>().LoadScene(new LoadSceneArgs()
+                        {
+                            sceneName = SceneName.NewGameScene
+                        });
+
+                        GameManager.OnEnterComponents();
+                    }
+                },
             });
         }
 
@@ -142,7 +209,8 @@ namespace Game.GameMgr.Component
                     {
                         // 关闭所有ui
                         uiComponentGM.CloseAllUIForm(blackFormLogic.UIForm);
-                        // 初始化怪物数据配置
+                        // 初始化怪物、任务静态配置
+                        QuestConfigMgr.getInstance().Init();
                         MonsterDataMgr.getInstance().Init();
 
                         // 监听场景Manger初始化完成事件
@@ -201,7 +269,8 @@ namespace Game.GameMgr.Component
                         uiComponentGM.CloseAllUIForm(blackFormLogic.UIForm);
                         // 加载存档
                         archiveComponentGM.LoadArchive(guid);
-                        // 初始化怪物数据配置
+                        // 初始化怪物、任务静态配置
+                        QuestConfigMgr.getInstance().Init();
                         MonsterDataMgr.getInstance().Init();
 
                         // 监听场景Manger初始化完成事件

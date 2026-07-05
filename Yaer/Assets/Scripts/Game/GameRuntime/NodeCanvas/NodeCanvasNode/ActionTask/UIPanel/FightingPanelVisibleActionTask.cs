@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("UI")]
-    [Name("FightingPanelÏÔÊ¾¿ª¹Ø")]
+    [Name("FightingPanelï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½")]
     public class FightingPanelVisibleActionTask : ActionTask
     {
         public BBParameter<bool> Visible;
@@ -18,11 +18,18 @@ namespace Game.GameRuntime.Story.Node
 
         protected override string OnInit()
         {
+            // DialogDebug É³ï¿½Ðµï¿½Î´ï¿½ï¿½Ê¼ï¿½ï¿½ UIComponentGM Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ OnInit NRE
+            var uiGm = GameManager.GetGMComponent<UIComponentGM>();
+            if (uiGm == null)
+            {
+                return base.OnInit();
+            }
+
             string panelPath = UIPrefabPath.GetUIPrefabPath("FightingPanel");
-            var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(panelPath);
+            var uiForm = uiGm.GetUIForm(panelPath);
             if (uiForm == null)
             {
-                Debug.LogError($"FightingPanelÎ´´ò¿ª");
+                Debug.LogError($"FightingPanelÎ´ï¿½ï¿½");
             }
             else
             {

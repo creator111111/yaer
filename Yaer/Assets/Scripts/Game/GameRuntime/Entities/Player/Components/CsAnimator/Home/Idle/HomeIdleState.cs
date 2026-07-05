@@ -22,7 +22,8 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Home.IdleSubSta
         {
             base.Update();
 
-            if (inputComponent.HasMoveInput())
+            // 横移：原 HasMoveInput；村庄纵深：TownPlayerLocomotion 门控（执行说明 §5.2，避免纯 W/S 不进 Walk）
+            if (inputComponent.HasMoveInput() || HasVillageExploreDepthMoveIntent())
             {
                 // 调用 父状态机的状态
                 ExitCurrentStateMachine().ChangeState<HomeWalkState>();

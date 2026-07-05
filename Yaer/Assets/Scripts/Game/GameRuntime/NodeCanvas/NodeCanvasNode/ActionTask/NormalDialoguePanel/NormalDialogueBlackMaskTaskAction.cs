@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("NormalDialoguePanelControll")]
-    [Name("¶Ô»°¿òUIºÚÄ»¶¯»­")]
+    [Name("???UI????")]
     public class NormalDialogueBlackMaskTaskAction : NormalDialoguePanelTaskAction
     {
         public BBParameter<float> StartAlpha;
@@ -16,13 +16,20 @@ namespace Game.GameRuntime.Story.Node
         public BBParameter<bool> EndActonOnAnimationEnd;
 
         private UnityEngine.CanvasGroup blackFade;
+
         protected override void OnGetUILogic(NormalDialogueFormNewLogic uiFormLogic)
         {
-            blackFade = uiFormLogic.BlackFadeCanvasGroup;
+            blackFade = FindBlackFadeCanvasGroup();
         }
 
         protected override void OnExecute()
         {
+            if (blackFade == null)
+            {
+                EndAction();
+                return;
+            }
+
             blackFade.DOKill();
             blackFade.alpha = StartAlpha.value;
             blackFade.DOFade(EndAlpha.value, Duration.value).OnComplete(() =>
@@ -42,7 +49,7 @@ namespace Game.GameRuntime.Story.Node
         {
             get
             {
-                return string.Format("<i>' ºÚÄ»¶¯»­: {0} -> {1}, {2}s '</i>", StartAlpha, EndAlpha, Duration);
+                return string.Format("<i>' ????: {0} -> {1}, {2}s '</i>", StartAlpha, EndAlpha, Duration);
             }
         }
     }

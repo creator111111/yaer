@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("NormalDialoguePanelControll")]
-    [Name("¶Ô»°¿òUIÍ¸Ã÷¶È¶¯»­")]
+    [Name("ï¿½Ô»ï¿½ï¿½ï¿½UIÍ¸ï¿½ï¿½ï¿½È¶ï¿½ï¿½ï¿½")]
     public class NormalDialogueUIAlphaAnimationTaskAction : NormalDialoguePanelTaskAction
     {
         public BBParameter<float> StartAlpha;
@@ -21,11 +21,17 @@ namespace Game.GameRuntime.Story.Node
 
         protected override void OnGetUILogic(NormalDialogueFormNewLogic uiFormLogic)
         {
-            canvasGroup = uiFormLogic.dialogueUICanvasGroup;
+            canvasGroup = GetDialogueUICanvasGroup();
         }
 
         protected override void OnExecute()
         {
+            if (canvasGroup == null)
+            {
+                EndAction();
+                return;
+            }
+
             if (seq != null)
             {
                 seq.Kill();
@@ -54,7 +60,7 @@ namespace Game.GameRuntime.Story.Node
         {
             get
             {
-                return string.Format("<i>' ¶Ô»°¿òUIÍ¸Ã÷¶È¶¯»­: wait {3}s, {0} -> {1}, {2}s '</i>", StartAlpha, EndAlpha, Duration, Delay);
+                return string.Format("<i>' ï¿½Ô»ï¿½ï¿½ï¿½UIÍ¸ï¿½ï¿½ï¿½È¶ï¿½ï¿½ï¿½: wait {3}s, {0} -> {1}, {2}s '</i>", StartAlpha, EndAlpha, Duration, Delay);
             }
         }
     }

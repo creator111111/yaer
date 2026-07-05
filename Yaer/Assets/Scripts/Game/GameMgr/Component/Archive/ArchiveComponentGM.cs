@@ -433,26 +433,39 @@ namespace Game.GameMgr.Component.Archive
 
         public ArchiveInfo GetNowArchiveInfo() => archiveInfo;
 
+        /// <summary>
+        /// 从磁盘重新枚举全部存档槽摘要，供读档/存档界面刷新列表。
+        /// </summary>
+        /// <remarks>
+        /// 历史上仅在列表为空时扫描一次并长期缓存；本局内 <see cref="SaveOldArchive"/> 等会更新磁盘上的
+        /// <see cref="ArchiveInfo.currentSceneName"/>（例如由「龙城郊」改为「肯尼姆」），但内存中的
+        /// <c>archiveDirectoryInfoList</c> 仍是首次打开菜单时的旧 <see cref="ArchiveInfo"/> 引用，
+        /// 导致界面地名不刷新。因此每次调用都清空后重新加载目录。
+        /// </remarks>
         public List<ArchiveDirectoryInfo> LoadAllArchiveInfo()
         {
-            if (archiveDirectoryInfoList.Count == 0)
+            archiveDirectoryInfoList.Clear();
+
+            var path = Path.Combine(Application.persistentDataPath, "Save");
+            if (!Directory.Exists(path))
             {
-                var path = Path.Combine(Application.persistentDataPath, "Save");
-                var directories = Directory.GetDirectories(path);
-                foreach (var directory in directories)
+                return archiveDirectoryInfoList;
+            }
+
+            var directories = Directory.GetDirectories(path);
+            foreach (var directory in directories)
+            {
+                var files = Directory.GetFiles(directory);
+                foreach (var file in files)
                 {
-                    var files = Directory.GetFiles(directory);
-                    foreach (var file in files)
+                    if (file.EndsWith("ArchiveInfo.dat"))
                     {
-                        if (file.EndsWith("ArchiveInfo.dat"))
+                        var info = LoadArchiveInfo(file);
+                        archiveDirectoryInfoList.Add(new ArchiveDirectoryInfo()
                         {
-                            var info = LoadArchiveInfo(file);
-                            archiveDirectoryInfoList.Add(new ArchiveDirectoryInfo()
-                            {
-                                path = directory,
-                                info = info
-                            });
-                        }
+                            path = directory,
+                            info = info
+                        });
                     }
                 }
             }

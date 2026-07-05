@@ -23,6 +23,21 @@ namespace Game.GameRuntime.Entities.SceneEntities.HomeScene2
         float curVolume; // 当前音量大小
         SoundComponentGM soundComponentGM;
         string sfxResName;
+
+        /// <summary>
+        /// 在 <see cref="Start"/> 完成基础音量计算之后调用：将基础音量与当前音量乘以倍率（用于场景脚本单独调小瀑布等）。
+        /// </summary>
+        public void ApplyVolumeMultiplier(float multiplier)
+        {
+            if (multiplier < 0f)
+            {
+                multiplier = 0f;
+            }
+
+            baseVolume *= multiplier;
+            curVolume *= multiplier;
+        }
+
         private void Start()
         {
             playerLogic = GameManager.GetGMComponent<EntityComponentGM>().GetEntityLogic<PlayerLogic>();

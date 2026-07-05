@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace Game.DataTable.MainItem
 {
+    /// <summary>
+    /// 旧 JSON DataTable 行结构；运行时由 <see cref="MainItemDef"/> 替代。
+    /// 保留此类供 Editor Import 与 <see cref="MainItemDef.ToDataTableRow"/> 兼容层使用。
+    /// </summary>
     public class MainItemDataTableRow: DataRowBase
     {
         public int id;
