@@ -52,8 +52,22 @@ namespace Game.GameRuntime.UI.FormLogic.Base
         /// </summary>
         protected virtual void Awake()
         {
+            if (canvas == null)
+            {
+                return;
+            }
+
+            var uiGm = GameManager.GetGMComponent<UIComponentGM>();
+            if (uiGm == null || uiGm.UICamera == null)
+            {
+                // DialogDebug 等未走 GF UI 初始化的场景：Overlay 模式避免 NRE
+                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                canvas.worldCamera = null;
+                return;
+            }
+
             canvas.renderMode = RenderMode.ScreenSpaceCamera;
-            canvas.worldCamera = GameManager.GetGMComponent<UIComponentGM>().UICamera;
+            canvas.worldCamera = uiGm.UICamera;
         }
 
         protected internal override void OnInit(object userData)

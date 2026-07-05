@@ -1,17 +1,18 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.EventSystems;
 using System.Text;
-using TMPro;
-using NodeCanvas.DialogueTrees;
-using DG.Tweening;
 using Cysharp.Threading.Tasks;
-using Game.Static.Enum.Dialogue;
+using DG.Tweening;
 using Game.GameMgr;
 using Game.GameRuntime.Story;
+using Game.Static.Enum.Dialogue;
+using NodeCanvas.DialogueTrees;
+using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Game.GameRuntime.Story.NodeCanvasExtend
 {
@@ -139,7 +140,6 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
         void OnDialogueStarted(DialogueTree dlg) {
             subtitlesCanvasGroup.DOKill();
             DialogueOptionsGroup.gameObject.SetActive(false);
-            DialoguePreBossSaveTipGate.ResetSubtitleLineCounter();
         }
 
         void OnDialoguePaused(DialogueTree dlg) {
@@ -185,9 +185,15 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             Internal_OnSubtitlesRequestInfo(info).Forget();
         }
 
+        /// <summary>
+        /// 与 NodeCanvas 官方 DialogueUGUI 一致：本协程/UniTask 只负责本句的展示与等待输入/自动，结束时调用
+        /// <see cref="SubtitlesRequestInfo.Continue"/> 把“下一句/下一节点”交还给 <see cref="DialogueTree"/>，不在此脚本内插入额外分支关窗、跳转或强制取消。
+        /// </summary>
         private async UniTask Internal_OnSubtitlesRequestInfo(SubtitlesRequestInfo _info) 
         {
             var info = _info as SubtitlesRequestInfoEx;
+            if (info == null) { return; }
+
             string text = "";
             // 处理文本翻译问题
             var languageType = GameManager.Instance.language;
@@ -202,16 +208,22 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             subtitlesGroup.anchoredPosition = originalSubsPosition;
             actorSpeech.text = "";
 
-/*            actorName.text = actor.name;
-            actorSpeech.color = actor.dialogueColor;*/
-            
-            actor.RefreshAvatar(info.FaceType, (sprite) => OnGetAvatar(sprite, text));
-
-            OnGetNewStatement?.Invoke(actor.RoleName, info.FaceType, text);
+            // 旁白「—」等未绑定 DialogueActorEx 的 dummy Actor：仅字幕、不刷立绘，避免 RefreshAvatar 空引用卡死
+            if (actor != null)
+            {
+                actor.RefreshAvatar(info.FaceType, (sprite) => OnGetAvatar(sprite, text));
+                OnGetNewStatement?.Invoke(actor.RoleName, info.FaceType, text);
+            }
+            else
+            {
+                actorPortrait.gameObject.SetActive(false);
+            }
 
             if ( audio != null ) 
             {
-                var actorSource = actor.transform != null ? actor.transform.GetComponent<AudioSource>() : null;
+                var actorSource = actor != null && actor.transform != null
+                    ? actor.transform.GetComponent<AudioSource>()
+                    : null;
                 playSource = actorSource != null ? actorSource : localSource;
                 playSource.clip = audio;
                 playSource.Play();
@@ -226,26 +238,25 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
                 await TextAnimation(text);
             }
 
-            // Boss 战前保存提示：在指定句展示完毕后、未调用 Continue 前阻塞，点击 SystemTipsPanel2 确认后再允许玩家推进
-            var waitedBossTip = await DialoguePreBossSaveTipGate.WaitIfNeededBeforeContinueAsync(text);
-            if (!waitedBossTip)
-            {
-                await WaitForInputToMoveNext();
-            }
-            else
-            {
-                await UniTask.Yield();
-            }
+            await WaitForInputToMoveNext();
 
             subtitlesGroup.gameObject.SetActive(false);
-            info.Continue();
+            if (info.Continue != null)
+            {
+                try
+                {
+                    info.Continue();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning("[DialogueTMPUGUI] Continue 时异常（可能对话树已停）：" + e.Message, this);
+                }
+            }
         }
 
         /// <summary>
         /// 播放文本的动画
         /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
         private async UniTask TextAnimation(string text)
         {
             var stringBuilder = new StringBuilder();
@@ -293,9 +304,8 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             }
         }
         /// <summary>
-        /// 等待输入后进入下一个对话树节点
+        /// 等待输入后进入下一个对话树节点（与 NodeCanvas 预期一致，由 <see cref="AutoNext"/> / 键入推进）
         /// </summary>
-        /// <returns></returns>
         private async UniTask WaitForInputToMoveNext()
         {
             if (!AutoNext)
@@ -317,9 +327,9 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
 
         void PlayTypeSound() {
             if ( typingSounds.Count > 0 ) {
-                var sound = typingSounds[Random.Range(0, typingSounds.Count)];
+                var sound = typingSounds[UnityEngine.Random.Range(0, typingSounds.Count)];
                 if ( sound != null ) {
-                    localSource.PlayOneShot(sound, Random.Range(0.6f, 1f));
+                    localSource.PlayOneShot(sound, UnityEngine.Random.Range(0.6f, 1f));
                 }
             }
         }
@@ -359,12 +369,6 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
                 i++;
             }
 
-/*            if ( info.showLastStatement ) {
-                subtitlesGroup.gameObject.SetActive(true);
-                var newY = OptionContainerRtf.position.y + OptionContainerRtf.sizeDelta.y + 1;
-                subtitlesGroup.position = new Vector3(subtitlesGroup.position.x, newY, subtitlesGroup.position.z);
-            }*/
-
             if ( info.availableTime > 0 ) {
                 CountDown(info).ToUniTask().Forget();
             }
@@ -372,8 +376,6 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
         /// <summary>
         /// 选项限时，超时自动选择
         /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
         IEnumerator CountDown(MultipleChoiceRequestInfo info) {
             isWaitingChoice = true;
             var timer = 0f;
@@ -393,8 +395,6 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
         /// <summary>
         /// 选择选项
         /// </summary>
-        /// <param name="info"></param>
-        /// <param name="index"></param>
         void Finalize(MultipleChoiceRequestInfo info, int index) {
             isWaitingChoice = false;
             SetMassAlpha(OptionContainerRtf, 1f);

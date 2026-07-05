@@ -1,5 +1,6 @@
 using Game.DataTable.MainItem;
 using Game.GameRuntime.Entities.Monster;
+using Game.GameMgr.Component.Archive.ArchiveDataClass.Quest;
 using Game.Static.Enum;
 using GameFramework.DataTable;
 using System;
@@ -29,10 +30,50 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
 
         public void Init()
         {
-            GameManager.GetGMComponent<ResComponentGM>().LoadConfig<MonsterDataTableRow>("Assets/GameRes/Config/MonsterConfig/MonsterConfig.json", rows => table = rows);
+            GameManager.GetGMComponent<ResComponentGM>().LoadConfig<MonsterDataTableRow>("Assets/GameRes/Config/MonsterConfig/MonsterConfig.json", rows =>
+            {
+                table = rows;
+                // 怪物表就绪后补校验任务 targetMonster（任务表可能先于或后于怪物表加载）
+                QuestConfigMgr.getInstance().ValidateTargetMonsters();
+            });
         }
 
+        /// <summary>怪物配置表是否已加载，供任务校验等只读查询使用。</summary>
+        public bool IsTableLoaded => table != null;
+
         #endregion
+
+        /// <summary>按怪物 id 取 MonsterConfig.name；未找到返回空字符串。</summary>
+        public string GetMonsterName(int id)
+        {
+            if (table == null || !table.HasDataRow(row => row.id == id))
+            {
+                return "";
+            }
+
+            return table.GetDataRow(condition: row => row.id == id).name;
+        }
+
+        /// <summary>
+        /// 按 MonsterConfig.name 反查怪物 id（阶段 4 击杀上报用）。
+        /// name 大小写须与配置一致。
+        /// </summary>
+        public bool TryGetMonsterIdByName(string monsterName, out int monsterId)
+        {
+            monsterId = 0;
+            if (table == null || string.IsNullOrEmpty(monsterName))
+            {
+                return false;
+            }
+
+            if (!table.HasDataRow(row => row.name == monsterName))
+            {
+                return false;
+            }
+
+            monsterId = table.GetDataRow(condition: row => row.name == monsterName).id;
+            return true;
+        }
         // 获取某个怪物的最大HP
         public int getMonsterHp(int id)
         {

@@ -1,4 +1,5 @@
 using Game.GameRuntime.Story.Node;
+using Game.Static.Enum;
 
 namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Ground
 {
@@ -23,7 +24,14 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Gr
         {
             base.Update();
 
-            if (inputComponent.HasMoveInput() && GetSign("IsJumping") == false && GetSign("IsNormalAttacking") == false)
+            // 村庄：横向须与 CombatRunState 一致用扩展意图（整队 + Raw Horizontal），否则队首非 Left/Right 时纯 A/D 进不了 Run
+            bool hasHorizontal = inputComponent.LocomotionMode == PlayerLocomotionMode.Village2_5D
+                ? inputComponent.HasVillageExploreHorizontalMoveIntent()
+                : inputComponent.HasMoveInput();
+            // 纵深 W/S 仍依赖 Town 门控，与 HomeWalkState 对齐
+            if ((hasHorizontal || HasVillageExploreDepthMoveIntent())
+                && GetSign("IsJumping") == false
+                && GetSign("IsNormalAttacking") == false)
             {
                 ChangeState<CombatRunState>();
             }

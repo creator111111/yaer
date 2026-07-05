@@ -58,13 +58,16 @@ namespace Game.GameRuntime.GameSceneManager.Component
         
         public T GetSceneEntityLogic<T>() where T : BaseSceneEntityLogic
         {
-            var logic = sceneObjs.Find(o => o.EntityLogic.GetType() == typeof(T)).EntityLogic;
-            if (logic is null)
+            // Find 未命中时不能对 null 取 EntityLogic，否则会直接 NullReferenceException 中断 SceneManager.Awake。
+            var entity = sceneObjs.Find(o =>
+                o != null && o.EntityLogic != null && o.EntityLogic.GetType() == typeof(T));
+            if (entity == null || entity.EntityLogic == null)
             {
                 Log.Error("未找到该场景实体逻辑" + typeof(T).Name);
                 return null;
             }
-            return logic as T;
+
+            return entity.EntityLogic as T;
         }
     }
 }

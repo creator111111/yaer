@@ -26,8 +26,11 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Home
         {
             base.Update();
 
-            // 没有操作进行待机动作
-            if (inputComponent.HasMoveInput() == false) EnterSubStateMachine<HomeIdleSubSM>().ChangeState<HomeBinkState>();
+            // 无横移且无村庄纵深意图时才回 Idle/Bink，避免按住 W/S 时被误判为静止
+            if (!inputComponent.HasMoveInput() && !HasVillageExploreDepthMoveIntent())
+            {
+                EnterSubStateMachine<HomeIdleSubSM>().ChangeState<HomeBinkState>();
+            }
 
             timeCount += Time.deltaTime;
             if (timeCount >= walkAudioPlayDistance)

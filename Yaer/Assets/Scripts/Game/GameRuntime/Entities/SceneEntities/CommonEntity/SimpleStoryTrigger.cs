@@ -148,17 +148,29 @@ namespace Game.GameRuntime.Entities.SceneEntities
         /// 若 <see cref="StoryComponentGSM.TriggerStory"/> 返回 true，则订阅 <see cref="StoryComponentGSM.onStoryEnd"/>，
         /// 结束时在 <see cref="OnStoryFinished"/> 中取消订阅。
         /// </summary>
+        /// <summary>
+        /// 解析本次应播放的对话 prefab 名；子类可覆写以实现按存档/任务状态切对话（如埃吉尔交付线）。
+        /// </summary>
+        protected virtual string ResolveStoryPrefabName() => StoryPrefabName;
+
         /// <remarks>若已有剧情在运行，可能返回 false，此时不会订阅 onStoryEnd。</remarks>
         protected virtual void TriggerStory()
         {
+            var storyPrefab = ResolveStoryPrefabName();
+            if (string.IsNullOrEmpty(storyPrefab))
+            {
+                return;
+            }
+
             if (SingleUseInArchive)
             {
-                if (storyTriggerCountData.CheckStoryUsed(StoryPrefabName))
+                if (storyTriggerCountData.CheckStoryUsed(storyPrefab))
                 {
                     return;
                 }
             }
-            if (storyComponentGSM.TriggerStory(StoryPrefabName))
+
+            if (storyComponentGSM.TriggerStory(storyPrefab))
             {
                 storyComponentGSM.onStoryEnd += OnStoryFinished;
             }

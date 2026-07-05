@@ -22,6 +22,33 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         public PlayerLogic PlayerLogic { get; set; }
 
+        /// <summary>
+        /// 当前移动/输入语义（村庄 2.5D 时丢弃部分战斗指令，见策划文档 AC-04）。
+        /// </summary>
+        public PlayerLocomotionMode LocomotionMode { get; private set; } = PlayerLocomotionMode.Default;
+
+        /// <summary>
+        /// 由 <see cref="PlayerLogic.SetVillageExplorationMode"/> 切换；会清理已入队的被禁指令，避免残留一帧触发。
+        /// </summary>
+        /// <param name="mode">新模式</param>
+        public void SetLocomotionMode(PlayerLocomotionMode mode)
+        {
+            LocomotionMode = mode;
+            if (mode == PlayerLocomotionMode.Village2_5D)
+            {
+                curPlayerAllCmds.RemoveAll(IsBlockedInVillageExploration);
+            }
+        }
+
+        /// <summary>村庄探索下不允许入队、不应触发回调的指令（与策划裁剪表一致）。</summary>
+        private static bool IsBlockedInVillageExploration(ControlInputType cmd)
+        {
+            return cmd == ControlInputType.Squat
+                   || cmd == ControlInputType.NormalAttack
+                   || cmd == ControlInputType.SmashAttack
+                   || cmd == ControlInputType.DashAttack;
+        }
+
         private InputActions inputActions;
 
         private float axisX;
@@ -33,6 +60,12 @@ namespace Game.GameRuntime.Entities.Player.Components
         private bool cantRight;
 
         private float lastRealTime = 0;
+        /// <summary>最近一次按下普攻键的 Time.time，用于落地缓冲；与指令队列独立——队列在跳跃中可能被 Parse 清掉，时间戳仍保留。</summary>
+        private float lastNormalAttackInputTime = -999f;
+        /// <summary>同 <see cref="lastNormalAttackInputTime"/>，用于重击（K/鼠标右键等映射）。</summary>
+        private float lastSmashAttackInputTime = -999f;
+        /// <summary>同 <see cref="lastNormalAttackInputTime"/>，用于冲击/冲刺攻击（L/Shift 等映射）。</summary>
+        private float lastDashAttackInputTime = -999f;
         public bool canInputContorll { get; set; } = true;// 是否接受控制输入
         //public Action<bool> onRightInput;
         //public Action<bool> onLeftInput;
@@ -109,6 +142,65 @@ namespace Game.GameRuntime.Entities.Player.Components
             var curCmd = GetPlayerCurInputCmd();
             return moveCmd.Contains(curCmd);
         }
+
+        /// <summary>
+        /// 扫描 <see cref="curPlayerAllCmds"/> 是否任意位置含左/右。
+        /// 说明：队首常被 Jump、Interact 等单次指令占位，此时玩家仍按住 A/D 但 <see cref="HasMoveInput"/> 为假；
+        /// 村庄 CombatRun 若仅依赖队首会与纵深 Raw 轴组合误判，导致每帧 <c>StopMoveInX</c>（见执行文档 0513）。
+        /// </summary>
+        /// <returns>队列中存在 Left 或 Right 则 true。</returns>
+        public bool HasHorizontalMoveCommandInQueue()
+        {
+            for (int i = 0; i < curPlayerAllCmds.Count; i++)
+            {
+                ControlInputType c = curPlayerAllCmds[i];
+                if (c == ControlInputType.Left || c == ControlInputType.Right)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 村庄 2.5D 下「横向位移意图」：与 <see cref="TownPlayerLocomotion.HasVillageDepthMoveForHomeStateMachine"/> 使用 Raw Vertical 对称，
+        /// 综合队首、整队左/右、以及 <c>Input.GetAxisRaw("Horizontal")</c>，避免仅凭 <see cref="HasMoveInput"/> 队首语义误伤横移。
+        /// 非村庄模式时退化为 <see cref="HasMoveInput"/>，供状态机分支外调用不致行为分叉。
+        /// </summary>
+        /// <returns>判定为仍有横向探索意图则 true。</returns>
+        public bool HasVillageExploreHorizontalMoveIntent()
+        {
+            if (LocomotionMode != PlayerLocomotionMode.Village2_5D)
+            {
+                return HasMoveInput();
+            }
+
+            if (HasMoveInput())
+            {
+                return true;
+            }
+
+            if (HasHorizontalMoveCommandInQueue())
+            {
+                return true;
+            }
+
+            // 与纵深意图一致走 Raw 轴，覆盖键位表与队列短暂不一致的帧
+            const float horizontalDeadZone = 0.01f;
+            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > horizontalDeadZone)
+            {
+                return true;
+            }
+
+            // 兜底：部分工程里 Horizontal 轴未绑或双机位下 Raw 恒为 0，但物理键仍有效；避免 CombatRun 误判为「无横向」而每帧 StopMoveInX（0513/0514 现场：能上下不能左右）
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)
+                                        || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
+            {
+                return true;
+            }
+
+            return false;
+        }
         /// <summary>
         /// 同时XY输入
         /// </summary>
@@ -163,6 +255,23 @@ namespace Game.GameRuntime.Entities.Player.Components
                     if (GetKeyDown(keyCode))
                     {
                         var cmd = keyCodeToCmdDict[keyCode];
+                        // 村庄模式：键位表若把蹲绑在 S，仍通过 Vertical 走纵深 Y；此处不入队战斗/蹲指令（AC-04）
+                        if (LocomotionMode == PlayerLocomotionMode.Village2_5D && IsBlockedInVillageExploration(cmd))
+                        {
+                            continue;
+                        }
+                        if (cmd == ControlInputType.NormalAttack)
+                        {
+                            lastNormalAttackInputTime = Time.time;
+                        }
+                        else if (cmd == ControlInputType.SmashAttack)
+                        {
+                            lastSmashAttackInputTime = Time.time;
+                        }
+                        else if (cmd == ControlInputType.DashAttack)
+                        {
+                            lastDashAttackInputTime = Time.time;
+                        }
                         if (curPlayerAllCmds.Contains(cmd)) continue;
                         curPlayerAllCmds.Insert(0, cmd);// 新的指令要放在最前面
                     }
@@ -182,10 +291,6 @@ namespace Game.GameRuntime.Entities.Player.Components
                             }
                         }
                     }
-                }
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    Debug.Log("============curPlayerAllCmds" + curPlayerAllCmds);
                 }
             }
 
@@ -288,6 +393,10 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         private void ParseOtherCmd(ControlInputType curPlayerCmd)
         {
+            if (LocomotionMode == PlayerLocomotionMode.Village2_5D && IsBlockedInVillageExploration(curPlayerCmd))
+            {
+                return;
+            }
             // 获取不同指令对应的输入方法并执行
             if (controlInputFuncDict.TryGetValue(curPlayerCmd, out Action curInputAction))
             {
@@ -298,11 +407,19 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         void ParseMoveCmd(ControlInputType curPlayerCmd)
         {
-            if (PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>().IsMoveUp ||
-                PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>().IsMoveDown)
+            var playerMove = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
+            // IsMoveUp/Down 实为 Velocity.y 正负，并非仅「跳跃状态机」；贴地微弹跳、重力与 FixedUpdate 相位都可能使 y≠0，
+            // 此处整段 return 会跳过本帧 Left/Right 的 MoveLeft/MoveRight 刷新，与 CombatRun 清 X 叠加后加重「横移迟滞」（执行文档 0513 修订 §1 次要因素）。
+            // 替代方案：改为读 Animator 跳跃子态再短路，耦合面大；村庄 2.5D 下仅对横移指令放行，纵深仍由 TownPlayerLocomotion 写权威 Y。
+            bool blockByVerticalVelocity = playerMove.IsMoveUp || playerMove.IsMoveDown;
+            bool villageHorizontalRefresh =
+                LocomotionMode == PlayerLocomotionMode.Village2_5D
+                && (curPlayerCmd == ControlInputType.Left || curPlayerCmd == ControlInputType.Right);
+            if (blockByVerticalVelocity && !villageHorizontalRefresh)
             {
-                return;// 跳跃过程中不允许移动
+                return;
             }
+
             // 
             if (cantLeft && axisX < 0) axisX = 0;
             if (cantRight && axisX > 0) axisX = 0;
@@ -312,12 +429,12 @@ namespace Game.GameRuntime.Entities.Player.Components
             // 获取不同指令对应的输入方法并执行
             if (moveInputFuncDict.TryGetValue(curPlayerCmd, out Action<bool> curInputAction))
             {
-                PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>().moveDirs.Clear();
+                playerMove.moveDirs.Clear();
                 curInputAction?.Invoke(true);
                 // 添加人物的移动方向
                 if (moveCmdDirData.TryGetValue(curPlayerCmd, out EDirectionType moveDir))
                 {
-                    PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>().moveDirs.Add(moveDir);
+                    playerMove.moveDirs.Add(moveDir);
                 }
                 var lastCmd = GetPlayerCurInputCmd(1); // 获取当前指令的上一个指令进行指令组合操作
                 if (lastCmd != ControlInputType.None && moveCmdLinkData.TryGetValue(curPlayerCmd, out List<ControlInputType> extraEmdList))
@@ -328,7 +445,7 @@ namespace Game.GameRuntime.Entities.Player.Components
                         // 添加人物的移动方向
                         if (moveCmdDirData.TryGetValue(lastCmd, out EDirectionType moveDir2))
                         {
-                            PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>().moveDirs.Add(moveDir2);
+                            playerMove.moveDirs.Add(moveDir2);
                         }
                         lastInputAction?.Invoke(true);
                     }
@@ -346,6 +463,42 @@ namespace Game.GameRuntime.Entities.Player.Components
         {
             // 是否有任何指令输入
             return curPlayerAllCmds.Count > 0;
+        }
+
+        public bool HasRecentNormalAttackInput(float bufferWindow)
+        {
+            if (bufferWindow <= 0f) { return false; }
+            return Time.time - lastNormalAttackInputTime <= bufferWindow;
+        }
+
+        public void ConsumeNormalAttackInput()
+        {
+            lastNormalAttackInputTime = -999f;
+            curPlayerAllCmds.Remove(ControlInputType.NormalAttack);
+        }
+
+        public bool HasRecentSmashAttackInput(float bufferWindow)
+        {
+            if (bufferWindow <= 0f) { return false; }
+            return Time.time - lastSmashAttackInputTime <= bufferWindow;
+        }
+
+        public void ConsumeSmashAttackInput()
+        {
+            lastSmashAttackInputTime = -999f;
+            curPlayerAllCmds.Remove(ControlInputType.SmashAttack);
+        }
+
+        public bool HasRecentDashAttackInput(float bufferWindow)
+        {
+            if (bufferWindow <= 0f) { return false; }
+            return Time.time - lastDashAttackInputTime <= bufferWindow;
+        }
+
+        public void ConsumeDashAttackInput()
+        {
+            lastDashAttackInputTime = -999f;
+            curPlayerAllCmds.Remove(ControlInputType.DashAttack);
         }
 
         void OnApplicationFocus(bool hasFocus)

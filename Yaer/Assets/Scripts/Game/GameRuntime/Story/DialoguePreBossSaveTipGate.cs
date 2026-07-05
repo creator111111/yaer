@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Game.GameMgr;
 using Game.GameMgr.Component.UI;
@@ -10,8 +11,9 @@ using UnityEngine;
 namespace Game.GameRuntime.Story
 {
     /// <summary>
-    /// 在指定剧情的指定句弹出 SystemTipsPanel2，阻塞对话树 <c>Continue</c>，
-    /// 直到玩家在提示面板上点击确认或取消（通过 <see cref="SystemTipsFormProxy"/> 事件解除阻塞）。
+    /// 备用的 Boss 战前保存提示门控：若要在剧情中间弹出 SystemTips 并阻塞，请改为用 NodeCanvas
+    /// 图或 ActionTask 驱动（本类不再从 <c>DialogueTMPUGUI</c> 自动插入，以免破坏「仅由节点图推进」的节奏）。
+    /// 需要时可从自定义任务中调用 <see cref="WaitIfNeededBeforeContinueAsync"/>，并在完成提示后由图继续连线。
     /// </summary>
     public static class DialoguePreBossSaveTipGate
     {
@@ -24,7 +26,17 @@ namespace Game.GameRuntime.Story
         }
 
         /// <summary>
-        /// 一句字幕展示完毕（含打字/配音）后、等待玩家推进前调用；若触发提示则返回 true，且内部已处理后续一次推进等待。
+        /// 对话强制结束时调用：若仍有未完成的 s_waitSure 等待，可解除阻塞（例如切场景、停对话）。
+        /// </summary>
+        public static void CancelPendingAndUnblock()
+        {
+            if (s_waitSure == null) { return; }
+            s_waitSure.TrySetResult();
+            s_waitSure = null;
+        }
+
+        /// <summary>
+        /// 在指定剧情的指定句需弹出提示时，由**剧情侧任务**在合适节点调用，而非字幕 UI 自动插入。
         /// </summary>
         public static async UniTask<bool> WaitIfNeededBeforeContinueAsync(string lineText)
         {
@@ -63,8 +75,6 @@ namespace Game.GameRuntime.Story
 
             s_waitSure = new UniTaskCompletionSource();
             var path = UIPrefabPath.GetUIPrefabPath(settings.tipsPanelPrefabName);
-            // SystemTipsFormLogic.OnOpen 需要 ESystemTipsType；Save 与「请注意保存」类文案一致。
-            // 在 UI 打开回调里订阅 proxy.onSureEvent，保证先于 CloseForm 触发 Continue（与 btnSure 点击顺序一致）。
             GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(path, EUIGroup.Top, new OpenFormArgs
             {
                 userData = ESystemTipsType.Save,
@@ -73,7 +83,6 @@ namespace Game.GameRuntime.Story
                     if (logic is SystemTipsFormLogic form)
                     {
                         form.proxy.onSureEvent += UnblockAfterTipsPanel;
-                        // 避免点「再想想」关闭面板后对话永远卡在 await
                         form.proxy.onCancelEvent += UnblockAfterTipsPanel;
                     }
                 }

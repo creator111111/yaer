@@ -49,9 +49,9 @@
     <Compile Include="Assets\Scripts\GameFramework\Core\ObjectPool\ObjectPoolManager.Object.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\WebRequest\WebRequestManager.WebRequestTask.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Utility\Utility.Json.cs" />
-    <Compile Include="Assets\Scripts\GameFramework\Core\Procedure\IProcedureManager.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\FileSystem\CommonFileSystemStream.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\LoadSceneFailureCallback.cs" />
+    <Compile Include="Assets\Scripts\GameFramework\Core\Procedure\IProcedureManager.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Base\GameFrameworkFunc.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Fsm\IFsm.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\FileSystem\FileSystem.cs" />
@@ -187,8 +187,8 @@
     <Compile Include="Assets\Scripts\GameFramework\Core\Sound\ISoundHelper.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\Constant.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Entity\IEntityGroupHelper.cs" />
-    <Compile Include="Assets\Scripts\GameFramework\Core\Base\DataProvider\IDataProvider.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Entity\IEntity.cs" />
+    <Compile Include="Assets\Scripts\GameFramework\Core\Base\DataProvider\IDataProvider.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Base\DataProvider\DataProvider.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\Resource\ResourceManager.ResourceLoader.LoadAssetTask.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Core\DataNode\DataNodeManager.cs" />

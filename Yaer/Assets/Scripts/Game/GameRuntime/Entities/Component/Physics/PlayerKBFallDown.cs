@@ -7,17 +7,18 @@ using UnityEngine;
 namespace Game.GameRuntime.Entities.Component.Physics
 {
     /// <summary>
-    /// Break 击飞（DamageFly，IsBreakUp）阶段，在竖直速度向下时追加额外向下加速度。
+    /// 在受击后的下落阶段追加额外向下加速度，与 <see cref="KnockBackComponent"/> 击退表现配合。
+    /// 生效范围：<b>Break 击飞</b>（<c>IsBreakUp</c>，DamageFly）与 <b>普通受击</b>（<c>IsDamaging</c>，如 Damage1/Damage2）；
+    /// 普通受击且击退把角色抬离地面时，即使竖直速度尚未转为向下也会尝试叠加（击退使用 MovePosition 时速度与位置可能不同步）。
     /// 必须写在 <see cref="MoveComponent.OnFixedUpdate"/> 之后（通过 DefaultExecutionOrder），
-    /// 并同步修改 <see cref="MoveComponent.Velocity"/> 与 <see cref="Rigidbody2D.velocity"/>，
-    /// 避免单独 AddForce 被下一帧 MoveComponent 覆盖。
-    /// 挂在与 <see cref="KnockBackComponent"/> 同一物体上，便于与击退相关参数并列配置。
+    /// 并同步修改 <see cref="MoveComponent.Velocity"/> 与 <see cref="Rigidbody2D.velocity"/>。
+    /// 挂在与 <see cref="KnockBackComponent"/> 同一物体上。
     /// </summary>
     [DefaultExecutionOrder(50)]
     [RequireComponent(typeof(KnockBackComponent))]
     public class PlayerKBFallDown : MonoBehaviour
     {
-        [Header("Break 击飞下落额外加速度")]
+        [Header("受击后下落额外加速度（Break 击飞 / 普通受击）")]
         [Tooltip("正值：在原有重力之外，每秒额外增加的下落加速度大小（与 MoveComponent.Gravity 量级相近）。")]
         [SerializeField]
         private float additionalDownAcceleration = 5f;
@@ -34,6 +35,7 @@ namespace Game.GameRuntime.Entities.Component.Physics
         private PlayerLogic _playerLogic;
         private PlayerMoveComponent _move;
         private Rigidbody2D _rb;
+        private KnockBackComponent _knockBack;
         private BaseGameSceneManager _sceneMgr;
 
         private void Awake()
@@ -41,6 +43,7 @@ namespace Game.GameRuntime.Entities.Component.Physics
             _playerLogic = GetComponentInParent<PlayerLogic>();
             _move = GetComponentInParent<PlayerMoveComponent>();
             _rb = GetComponentInParent<Rigidbody2D>();
+            _knockBack = GetComponent<KnockBackComponent>();
         }
 
         private void FixedUpdate()
@@ -61,17 +64,32 @@ namespace Game.GameRuntime.Entities.Component.Physics
                 return;
             }
 
-            // 仅 Break 击飞（DamageFlyUpState 置位），避免普通跳跃下落也吃到额外加速度
             var cs = _playerLogic.componentSystem != null
                 ? _playerLogic.componentSystem.GetComponent<BaseCsAnimator>()
                 : null;
-            if (cs == null || !cs.GetSign("IsBreakUp"))
+            if (cs == null)
             {
                 return;
             }
 
-            // 仅空中且竖直速度已向下时生效（与 DamageFlyUpState → Fall 的切换条件一致）
-            if (_move.IsGrounded || _move.moveSpeedY >= 0f)
+            // Break 击飞（DamageFly）或普通受击（Damage1/Damage2 等 BasePlayerDamageState）；避免跳跃等非受击下落误触发
+            bool isBreakFly = cs.GetSign("IsBreakUp");
+            bool isNormalDamage = cs.GetSign("IsDamaging");
+            if (!isBreakFly && !isNormalDamage)
+            {
+                return;
+            }
+
+            if (_move.IsGrounded)
+            {
+                return;
+            }
+
+            // Break 击飞下落：与原先一致，需竖直速度已向下
+            // 普通受击 + 击退：击退用 MovePosition 时速度可能未反映下落，允许在击退进行中放宽「已向下」判定
+            bool falling = _move.moveSpeedY < 0f;
+            bool normalKnockbackAir = isNormalDamage && !isBreakFly && _knockBack != null && _knockBack.IsKnockbackInProgress;
+            if (!falling && !normalKnockbackAir)
             {
                 return;
             }

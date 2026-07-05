@@ -17,6 +17,9 @@ namespace Game.GameRuntime.Entities.Component.Physics
         private bool isKinematic;
         private bool isKnockedBack;
 
+        /// <summary>当前是否处于 ApplyKnockBack 驱动的击退位移中（供 PlayerKBFallDown 等判断）。</summary>
+        public bool IsKnockbackInProgress => isKnockedBack;
+
         private Vector2 knockBackDirection; // 受击方向
         private float knockBackDistance; // 后退的距离
 

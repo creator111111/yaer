@@ -27,7 +27,7 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
             cameraComponent.Init();
         }
 
-        public void SetFollow(Transform target, Action onComplete = null)
+        public void SetFollow(Transform target, Action onComplete = null, bool forceSnapToTarget = true)
         {
             if (target is null)
             {
@@ -41,7 +41,7 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
                 return;
             }
 
-            cameraComponent.SetFollow(target, onComplete);
+            cameraComponent.SetFollow(target, onComplete, forceSnapToTarget);
         }
 
         public void CancelFollow()

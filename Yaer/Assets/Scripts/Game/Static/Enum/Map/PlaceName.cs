@@ -24,12 +24,17 @@ namespace Game.Static.Enum.Map
         public const string ManHuangPlace = "ManHuangPlace";
         public const string HomeToJingLingVillage = "HomeToJingLingVillage";
         public const string HomeToJingLingVillage2 = "HomeToJingLingVillage2";
+        /// <summary>
+        /// 肯姆尼村（<c>Village_KenMuNi1</c>）存档地点内部键；与 <see cref="SceneName.Village_KenMuNi1"/> 场景名字符串职责分离。
+        /// </summary>
+        public const string KenMuNi = "KenMuNi";
 
         private static Dictionary<string, string> PlaceChsName = new Dictionary<string, string>()
         {
             { Home, "新诺塞尔城" },
             { PlaceName.HomeToJingLingVillage, "龙城郊" },
             { PlaceName.HomeToJingLingVillage2, "龙城东郊" },
+            { PlaceName.KenMuNi, "肯姆尼" },
             { SceneName.VerdantCorridor, "苍翠走廊"},
             { SceneName.WestRappRoad, "拉普路西" }
         };
@@ -38,6 +43,8 @@ namespace Game.Static.Enum.Map
             { Home, "New Nosel City" },
             { PlaceName.HomeToJingLingVillage, "Outskirts of Dragon City" },
             { PlaceName.HomeToJingLingVillage2, "Eastern Outskirts of Dragon City" },
+            // 英文文案占位，策划可替换为定稿译名。
+            { PlaceName.KenMuNi, "Kenmuni" },
             { SceneName.VerdantCorridor, "Verdant Corridor"},
             { SceneName.WestRappRoad, "Laplucie" }
         };
@@ -46,6 +53,8 @@ namespace Game.Static.Enum.Map
             { Home, "新ノーセル城" },
             { PlaceName.HomeToJingLingVillage, "ドラゴンシテ郊外" },
             { PlaceName.HomeToJingLingVillage2, "ドラゴンシテイ東の外れ" },
+            // 日文占位（音译「肯姆尼」），策划可替换为定稿表记。
+            { PlaceName.KenMuNi, "ケンニム" },
             { SceneName.VerdantCorridor, "翠緑の回廊"},
             { SceneName.WestRappRoad, "ラプルシ" }
         };

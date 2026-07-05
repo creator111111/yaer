@@ -31,11 +31,13 @@ using Game.GameRuntime.GameSceneManager.Component.CameraGSM;
 using Game.GameRuntime.GameSceneManager.Component.Story;
 using Game.GameRuntime.UI.FormLogic;
 using Game.Static.Enum;
+using Game.Static.Name.Res;
 using Game.Static.Path;
 using GameFramework.UnityRuntimeExtend.Component;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.GameRuntime.Entities.Player
 {
@@ -65,6 +67,12 @@ namespace Game.GameRuntime.Entities.Player
         public bool ClothesBroken => playerCommonData.ClothesBroken;
 
         public bool hasInStoryEventState = false; // 是否处于故事对话事件状态中
+
+        /// <summary>
+        /// 由编辑器「人物状态调试工具」维护：为 true 时免疫来自战斗与攻击碰撞的伤害（不拦截滑条等对血量的直接改写）。
+        /// 与 <see cref="isProtect"/>（剧情无敌等）独立，避免与故事流程互相覆盖。
+        /// </summary>
+        public bool EditorInvincible { get; set; }
 
         public GameObject keyTipsNode = null; // 按键提示节点
         public GameObject actionKeyTipsNode = null; // 玩家动作按键提示节点，用于指引玩家执行某个动作
@@ -158,6 +166,9 @@ namespace Game.GameRuntime.Entities.Player
             settingManager.OnShowWoundChange += SetAnimatorShowWound;
 
             componentSystem.GetComponent<PlayerMoveComponent>().onTurnAction += OnTurnAction;
+
+            // 村庄 KenMuNi1：纵深移动与输入门控（与 DisablePlayerMove 解耦，避免停左右走）
+            RefreshVillageExplorationFromActiveScene();
 
             // 设置身体碰撞组件
             var bodyObj = UIUtils.findChild(gameObject, "Body");
@@ -374,7 +385,8 @@ namespace Game.GameRuntime.Entities.Player
         {
             var csAnimator = componentSystem.GetComponent<PlayerCsAnimator>();
             if (componentSystem.GetComponent<HealthComponent>().IsDead == false &&
-                !isProtect)
+                !isProtect &&
+                !EditorInvincible)
             {
                 TakeDamage(data.baseDamage);
                 if (!isDead && isNoBreakState) { return; } // 霸体状态不会被打断动作
@@ -519,7 +531,8 @@ namespace Game.GameRuntime.Entities.Player
             ResumeGameHandle();
             //sceneManager.SetSceneObjIsPause(false);// 设置游戏对象可以活动
             GameManager.GetGameSceneManager().GetModule<InputComponentGSM>().SetAllowOpenMenu(true);
-
+            // 换场后根据目标场景重绑村庄 2.5D 模式（AC-01 / AC-08）
+            RefreshVillageExplorationFromActiveScene();
         }
 
         private void StoryTriggeredHandle()
@@ -556,10 +569,116 @@ namespace Game.GameRuntime.Entities.Player
             }
         }
 
+        /// <summary>
+        /// 仅更新 X/Y，保留当前世界 Z，避免村庄纵深被隐式清零（迁移方案 §10 风险表）。
+        /// </summary>
         public void SetPos(Vector2 pos)
         {
-            transform.position = pos;
-            //GetComponent<Rigidbody2D>().MovePosition(pos);
+            Vector3 p = transform.position;
+            transform.position = new Vector3(pos.x, pos.y, p.z);
+        }
+
+        /// <summary>
+        /// 在已激活的 <see cref="SceneName.Village_KenMuNi1"/> 内按对象名查找纵深标尺，将世界 Y 写入 <see cref="TownPlayerLocomotion"/>（须在 <see cref="TownPlayerLocomotion.ApplyVillageMode"/> 之后调用，以便用场景边界二次 Clamp）。
+        /// <para>策划在场景中放置名为 <c>VillageDepthY_Min</c>、<c>VillageDepthY_Max</c> 的空物体即可调可走带；缺失任一物体则保留 Prefab 上序列化默认值（L-02）。</para>
+        /// </summary>
+        private static void TryInjectVillageDepthYBoundsFromSceneMarkers(TownPlayerLocomotion town)
+        {
+            if (town == null)
+            {
+                return;
+            }
+
+            Scene active = SceneManager.GetActiveScene();
+            if (!active.IsValid() || active.name != SceneName.Village_KenMuNi1)
+            {
+                return;
+            }
+
+            Transform minTr = FindNamedTransformInScene(active, "VillageDepthY_Min");
+            Transform maxTr = FindNamedTransformInScene(active, "VillageDepthY_Max");
+            if (minTr == null || maxTr == null)
+            {
+                return;
+            }
+
+            float minY = minTr.position.y;
+            float maxY = maxTr.position.y;
+            town.SetDepthYBounds(minY, maxY);
+        }
+
+        /// <summary>仅在指定 <paramref name="scene"/> 的根层级内递归匹配物体名，避免 <c>GameObject.Find</c> 跨场景误命中。</summary>
+        private static Transform FindNamedTransformInScene(Scene scene, string objectName)
+        {
+            if (!scene.IsValid() || string.IsNullOrEmpty(objectName))
+            {
+                return null;
+            }
+
+            foreach (GameObject root in scene.GetRootGameObjects())
+            {
+                Transform found = FindNamedTransformRecursive(root.transform, objectName);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
+        }
+
+        private static Transform FindNamedTransformRecursive(Transform tr, string objectName)
+        {
+            if (tr.name == objectName)
+            {
+                return tr;
+            }
+
+            for (int i = 0; i < tr.childCount; i++)
+            {
+                Transform child = FindNamedTransformRecursive(tr.GetChild(i), objectName);
+                if (child != null)
+                {
+                    return child;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 村庄探索模式：不关左右走，只关部分战斗向能力与纵深组件；勿用 <see cref="DisablePlayerMove"/> 代替（策划 4.4）。
+        /// </summary>
+        /// <param name="enable">true 表示当前应处于 Village_KenMuNi1 探索规则</param>
+        public void SetVillageExplorationMode(bool enable)
+        {
+            var input = componentSystem.GetComponent<PlayerInputComponent>();
+            if (input != null)
+            {
+                input.SetLocomotionMode(enable
+                    ? PlayerLocomotionMode.Village2_5D
+                    : PlayerLocomotionMode.Default);
+            }
+
+            var town = componentSystem.TryGetComponent<TownPlayerLocomotion>();
+            town?.ApplyVillageMode(enable);
+            // 进村后再注入场景标尺 Y，使 ApplyVillageMode 首帧 Clamp 与策划可走带一致（执行说明 §5.1）
+            if (enable)
+            {
+                TryInjectVillageDepthYBoundsFromSceneMarkers(town);
+                // SetDepthYBounds 只改权威标量，须立刻写回刚体并套 WalkArea，避免首帧与标尺/多边形脱节（第三阶段执行说明 §5.1、P-06）。
+                town?.FlushAuthoritativeVillageTransformAfterSceneDepthInject();
+            }
+
+            // 与战斗状态机中的普攻门闸对齐，防止异常切到 Combat 时仍出手
+            isEnableNorAtk = !enable;
+        }
+
+        /// <summary>根据当前激活场景名同步村庄模式（单一事实来源：场景名）。</summary>
+        public void RefreshVillageExplorationFromActiveScene()
+        {
+            bool village = SceneManager.GetActiveScene().name == SceneName.Village_KenMuNi1;
+            SetVillageExplorationMode(village);
         }
 
         /// <summary>
@@ -590,6 +709,12 @@ namespace Game.GameRuntime.Entities.Player
 
         public void TakeDamage(float damage)
         {
+            // 编辑器无敌：不走受伤音效与 UI，避免与「未掉血」不一致
+            if (EditorInvincible)
+            {
+                return;
+            }
+
             PlayBeHurtAudio();
             componentSystem.GetComponent<HealthComponent>().TakeDamage(damage);
             OnTakeDamage?.Invoke(damage);

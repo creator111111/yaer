@@ -1,39 +1,22 @@
-using Game.GameMgr;
-using Game.GameRuntime.GameSceneManager.Component.CameraGSM;
-using Game.GameRuntime.UI.FormLogic.Story.Dialogue;
-using NodeCanvas.DialogueTrees;
 using NodeCanvas.Framework;
 using ParadoxNotion.Design;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.GameRuntime.Story.Node
 {
     [Category("NormalDialoguePanelControll")]
-    [Name("¶Ô»°¿òUIÉèÖÃÑ¡Ïî¿òÎ»ÖÃ¶ÔÆëÊÀ½çÎïÌå")]
+    [Name("ï¿½Ô»ï¿½ï¿½ï¿½UIï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½Î»ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public class NormalDialogueSetOptionGroupWorldPosTaskAction : NormalDialoguePanelTaskAction
     {
         public BBParameter<Transform> targetTransform;
 
-        private NormalDialogueFormNewLogic uiFormLogic;
-
-        protected override void OnGetUILogic(NormalDialogueFormNewLogic uiFormLogic)
-        {
-            this.uiFormLogic = uiFormLogic;
-        }
-
         protected override void OnExecute()
         {
-            base.OnExecute();
-            if (uiFormLogic != null)
+            if (targetTransform.value != null)
             {
-                uiFormLogic.SetDialogueOptionsGroupPosition(targetTransform.value.position);
+                SetDialogueOptionsGroupWorldPosition(targetTransform.value.position);
             }
-            else
-            {
-                Debug.LogError("uiFormLogic is null");
-            }
+
             EndAction();
         }
     }

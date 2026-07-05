@@ -5,29 +5,42 @@ using Game.GameRuntime.Entities.Base.BaseSceneObj;
 using Game.GameRuntime.Entities.Component.Anima;
 using Game.GameRuntime.GameSceneManager.Component.Story;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Playables;
 
 namespace Game.GameRuntime.Story.ForestSceneFirstEnter
 {
+    /// <summary>
+    /// 林恩/莱飞行前「国王与士兵」相关演出。
+    /// <b>士兵回头</b>仅由场景内 <see cref="PlayableDirector"/> 绑定的 Timeline（Animation/Signal 轨）控制，不在 C# 中 SetTrigger("Turn")。
+    /// 仍保留 <see cref="OnSoldierTurnEnd"/> 供 Signal/动画事件衔接国王等。
+    /// </summary>
     public class ForestSceneLaiFlyStory : BaseSceneEntityLogic
     {
         [SerializeField] private GameObject king;
         [SerializeField] private GameObject lai;
-
         [SerializeField] private GameObject NormalLai;
-        [SerializeField] private Animator soldierTurnAnimator;
+
         public SoundToggleComponent soundSfxCpn;
         public SoundToggleComponent kingSoundSfxCpn;
-
         public AnimationEventComponent kingShowAniEventCpn;
         public AnimationEventComponent LaiFlyAniEventCpn;
         int audioIndex;
 
-        [Tooltip("士兵先开始回头，再过此秒数再激活国王/莱伊。默认 1.5 = 原 0.5 基础上再提前约 1 秒间隔；国王行走仍由 OnSoldierTurnEnd→PlayKingShowAnim")]
-        [SerializeField] private float soldierTurnLeadBeforeKingSeconds = 1.5f;
+        [Tooltip("未使用 Timeline 回退为协程时，等待该秒数后再显隐国王/莱（不驱动士兵，士兵仅由 TimeLine 控制）。")]
+        [SerializeField] private float delayBeforeShowKingLaiWhenNoTimeline = 1.5f;
 
-        private bool soldierTurnTriggered;
+        [Header("国王演出：Timeline 接入")]
+        [Tooltip("为 true：PreparePlay 只播放 TimeLine。关闭则只走回退协程（延迟+显隐国王/莱，不播士兵）。")]
+        [SerializeField] private bool useKingPerformanceTimeline = true;
+
+        [Tooltip("带 Playable Director，Playable 已绑定 .playable。若开 Timeline 但留空，将回退协程并打警告。")]
+        [SerializeField] private PlayableDirector kingPerformanceDirector;
+
+        [Tooltip("整段 TimeLine 自然播放结束时触发。")]
+        [SerializeField] private UnityEvent onKingPerformanceTimelineComplete;
+
         protected internal override void OnInit(object userData)
         {
             base.OnInit(userData);
@@ -40,49 +53,67 @@ namespace Game.GameRuntime.Story.ForestSceneFirstEnter
             LaiFlyAniEventCpn.RegisterEvent("ShowLaiFlyAudio", ShowLaiFlyAudio);
         }
 
+        private void OnDestroy()
+        {
+            if (kingPerformanceDirector != null)
+            {
+                kingPerformanceDirector.stopped -= OnKingPerformanceTimelineStopped;
+            }
+        }
+
+        /// <summary>对话图入口：优先播 TimeLine；否则仅延迟后显国王/莱（不控制士兵动作）。</summary>
         public void PreparePlay()
         {
-            StartCoroutine(CoPreparePlayAfterSoldierLead());
-        }
-
-        /// <summary>
-        /// 对话图里若仍绑定旧节点可保留空实现；士兵回头已并入 <see cref="PreparePlay"/>。
-        /// </summary>
-        public void ShowKing()
-        {
-        }
-
-        /// <summary>
-        /// 与 <see cref="StartSoldierTurn"/> 相同。若要在「PreparePlay 调用时刻」不变的前提下让士兵再早约 1 秒，
-        /// 请在对话图中于 PreparePlay 之前约 1 秒单独调用本方法（或 StartSoldierTurn），PreparePlay 内将只负责国王/莱伊激活与延迟。
-        /// </summary>
-        public void BeginSoldierTurnEarly()
-        {
-            StartSoldierTurn();
-        }
-
-        private IEnumerator CoPreparePlayAfterSoldierLead()
-        {
-            if (soldierTurnAnimator == null)
+            if (useKingPerformanceTimeline)
             {
-                king.SetActive(true);
-                lai.SetActive(true);
-                NormalLai.SetActive(false);
-                PlayKingShowAnim();
-                yield break;
+                if (kingPerformanceDirector != null)
+                {
+                    PlayKingPerformanceTimeline();
+                    return;
+                }
+
+                Debug.LogWarning(
+                    "[ForestSceneLaiFlyStory] 已开启 useKingPerformanceTimeline 但未指定 kingPerformanceDirector，将回退为协程。请绑定 TimeLine 的 Playable Director。",
+                    this);
             }
 
-            // 若对话已提前调用了 BeginSoldierTurnEarly/StartSoldierTurn，此处不再重复触发
-            if (!soldierTurnTriggered)
+            StartCoroutine(CoFallbackShowAfterDelayNoSoldierCode());
+        }
+
+        private void PlayKingPerformanceTimeline()
+        {
+            var d = kingPerformanceDirector;
+            if (d == null) { return; }
+
+            d.stopped -= OnKingPerformanceTimelineStopped;
+            if (d.state == PlayState.Playing) { d.Stop(); }
+
+            d.stopped += OnKingPerformanceTimelineStopped;
+            d.time = 0d;
+            d.Play();
+        }
+
+        private void OnKingPerformanceTimelineStopped(PlayableDirector _)
+        {
+            if (kingPerformanceDirector != null)
             {
-                StartSoldierTurn();
+                kingPerformanceDirector.stopped -= OnKingPerformanceTimelineStopped;
             }
+            onKingPerformanceTimelineComplete?.Invoke();
+        }
 
-            yield return new WaitForSeconds(soldierTurnLeadBeforeKingSeconds);
+        public void ShowKing() { }
 
-            king.SetActive(true);
-            lai.SetActive(true);
-            NormalLai.SetActive(false);
+        /// <summary>旧对话节点可留空。士兵仅由 TimeLine 控制，此处不做事。</summary>
+        public void BeginSoldierTurnEarly() { }
+
+        /// <summary>无 TimeLine/未绑 Director 回退：不播士兵，仅延迟后显国王/莱。</summary>
+        private IEnumerator CoFallbackShowAfterDelayNoSoldierCode()
+        {
+            yield return new WaitForSeconds(delayBeforeShowKingLaiWhenNoTimeline);
+            if (king != null) { king.SetActive(true); }
+            if (lai != null) { lai.SetActive(true); }
+            if (NormalLai != null) { NormalLai.SetActive(false); }
         }
 
         public void LaiFly()
@@ -90,23 +121,10 @@ namespace Game.GameRuntime.Story.ForestSceneFirstEnter
             lai.GetComponent<Animator>().Play("LaiFly");
         }
 
-        public void StartSoldierTurn()
-        {
-            if (soldierTurnTriggered)
-            {
-                return;
-            }
+        /// <summary>旧节点可留空。士兵仅由 TimeLine 控制，此处不做事。</summary>
+        public void StartSoldierTurn() { }
 
-            if (soldierTurnAnimator == null)
-            {
-                PlayKingShowAnim();
-                return;
-            }
-
-            soldierTurnTriggered = true;
-            soldierTurnAnimator.SetTrigger("Turn");
-        }
-
+        /// <summary>TimeLine 的 Signal/动画事件：衔接国王显示。</summary>
         public void OnSoldierTurnEnd()
         {
             PlayKingShowAnim();
@@ -119,7 +137,6 @@ namespace Game.GameRuntime.Story.ForestSceneFirstEnter
 
         void ShowWalkAudio(string arg)
         {
-            // 根据当前场景播放不同类型的音效
             string baseFilePath = "主角跑步走路音效/{0}";
             var baseName = "土地跑{0}.mp3";
             var audioNum = 10;
@@ -128,7 +145,7 @@ namespace Game.GameRuntime.Story.ForestSceneFirstEnter
             var resName = string.Format(baseName, audioIndex);
             var realResPath = string.Format(baseFilePath, resName);
             kingSoundSfxCpn.ChangeSoundRes(realResPath);
-            PlayAudio(kingSoundSfxCpn, true); // 播放一次走路音效
+            PlayAudio(kingSoundSfxCpn, true);
         }
 
         void PlayKingShowAnim()
@@ -138,7 +155,6 @@ namespace Game.GameRuntime.Story.ForestSceneFirstEnter
                 king.SetActive(true);
             }
 
-            // king移动
             king.GetComponent<Animator>().Play("ShowKing");
         }
     }

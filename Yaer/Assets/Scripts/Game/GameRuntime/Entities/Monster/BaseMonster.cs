@@ -3,6 +3,7 @@ using DG.Tweening;
 using Game.GameMgr.Component;
 using Game.GameMgr;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
+using Game.GameMgr.Component.Archive.ArchiveDataClass.Quest;
 using Game.GameRuntime.Entities.Base.BaseSceneObj;
 using Game.GameRuntime.Entities.Base.BaseSceneObj.Base;
 using Game.GameRuntime.Entities.Component.Battle;
@@ -411,6 +412,16 @@ namespace Game.GameRuntime.Entities.Monster
             {
                 // 记录自己的死亡
                 GetSceneManager().recordMonsterHasDead(this);
+            }
+
+            // 统一击杀任务上报：由 QuestManager 按 MonsterConfig.name 过滤，子类勿重复调用。
+            if (monsterId > 0)
+            {
+                var monsterName = MonsterDataMgr.getInstance().GetMonsterName(monsterId);
+                if (!string.IsNullOrEmpty(monsterName))
+                {
+                    QuestManager.getInstance().OnMonsterKilled(monsterName);
+                }
             }
         }
 

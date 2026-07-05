@@ -26,7 +26,13 @@ namespace Game.GameRuntime.Entities.Component.Anima
         }
 
         public void RegisterEvent(string eventName, Action<string> action) => eventDic[eventName] = action;
-        
+
+        /// <summary>
+        /// 调试用：NodeCanvas 的「等待 Animation 事件」在 OnExecute 时 Register，便于对比「发事件时是否已有人监听」。
+        /// </summary>
+        public bool IsEventRegistered(string eventName) =>
+            !string.IsNullOrEmpty(eventName) && eventDic != null && eventDic.ContainsKey(eventName);
+
         // 去除某个注册的动画事件
         public void UnRegisterEvent(string eventName)
         {

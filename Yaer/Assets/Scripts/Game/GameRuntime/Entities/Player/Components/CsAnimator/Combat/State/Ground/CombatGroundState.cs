@@ -89,12 +89,12 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Gr
         // 普通攻击
         protected virtual void NormalAtkAction()
         {
+            // 先校验体力与开关，再消费输入：避免先 Consume 导致未出招却清空指令（落地后狂按 J 无效）。
             var needStamina = staminaComponent.GetCostStamina("NorAtkState_1");
             if (!staminaComponent.ChekcHasEnoughStamina(needStamina)) { return; }
-            if (playerLogic.isEnableNorAtk)
-            {
-                EnterSubStateMachine<NormalAttackSM>().ChangeState<NormalAttackPart1>();
-            }
+            if (!playerLogic.isEnableNorAtk) { return; }
+            inputComponent.ConsumeNormalAttackInput();
+            EnterSubStateMachine<NormalAttackSM>().ChangeState<NormalAttackPart1>();
             if (PlayerGuideMgr.getInstance().inShowNorAtkTips)
             {
                 // 第一次指引攻击后让按键提示消失
@@ -113,6 +113,7 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Gr
         {
             var needStamina = staminaComponent.GetCostStamina("SmashAtkState_1");
             if (!staminaComponent.ChekcHasEnoughStamina(needStamina)) { return; }
+            inputComponent.ConsumeSmashAttackInput();
             EnterSubStateMachine<SmashAttackSubSM>().ChangeState<SmashAttack1State>();
             if (PlayerGuideMgr.getInstance().inShowSmashAtkTips)
             {
@@ -133,6 +134,7 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Gr
         {
             var needStamina = staminaComponent.GetCostStamina("DashAtkState");
             if (!staminaComponent.ChekcHasEnoughStamina(needStamina)) { return; }
+            inputComponent.ConsumeDashAttackInput();
             ChangeState<DashAttackState>();
             if (PlayerGuideMgr.getInstance().inShowDashAtkTips)
             {

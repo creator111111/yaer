@@ -5,11 +5,8 @@ using Game.GameMgr.Component.Archive.ArchiveDataClass.BaseDataClass;
 using Game.GameRuntime.BagPack;
 using Game.GameRuntime.UI.FormLogic.Menu;
 using Game.Static.Enum.Goods;
-using Game.Static.Path;
-using GameFramework.DataTable;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.U2D;
 
 // 背包中道具的类型
 public enum BagItemType
@@ -31,8 +28,6 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
 
         public static event Action<PlayerBagData> OnDataChange;
 
-        private static SpriteAtlas iconAtlas;
-        private static IDataTable<MainItemDataTableRow> table;
         private static bool hasInitRequested;
         private int lastIndex;
 
@@ -47,8 +42,8 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
         {
             if (hasInitRequested) return;
             hasInitRequested = true;
-            GameManager.GetGMComponent<ResComponentGM>().LoadAsset<SpriteAtlas>(SpriteAtlasPath.GetPath("MainItem_Icon"), spriteAtlas => iconAtlas = spriteAtlas);
-            GameManager.GetGMComponent<ResComponentGM>().LoadConfig<MainItemDataTableRow>("Assets/GameRes/Config/MainItemConfig/MainItemConfig.json", rows => table = rows);
+            // v2：MainItemDatabase.asset 为唯一数据源；不再 LoadConfig MainItemConfig.json
+            MainItemDefProvider.EnsureLoaded();
         }
 
         #endregion
@@ -75,18 +70,18 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
             }
             else
             {
-                var row = GetItemRow(itemName);
+                var def = MainItemDefProvider.GetDef(itemName);
                 var addNum = Math.Min(count, MaxStackPerItem);
                 mainItemDic.Add(itemName, new MenuFormMainItemInfo
                 {
                     index = lastIndex++,
                     name = itemName,
-                    icon = iconAtlas != null ? iconAtlas.GetSprite(itemName) : null,
-                    detail = row?.detail ?? string.Empty,
-                    detail_en = row?.detail_en ?? string.Empty,
-                    detail_jp = row?.detail_jp ?? string.Empty,
-                    id = row?.id ?? 0,
-                    itemType = row != null ? (BagItemType)row.itemType : GuessItemType(itemName),
+                    icon = def?.Icon,
+                    detail = def?.Detail ?? string.Empty,
+                    detail_en = def?.DetailEn ?? string.Empty,
+                    detail_jp = def?.DetailJp ?? string.Empty,
+                    id = def?.LegacyNumericId ?? 0,
+                    itemType = def?.ItemType ?? GuessItemType(itemName),
                     num = addNum
                 });
             }
@@ -97,11 +92,13 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
         // 因为道具数据可以回随着时间修改，而部分道具数据存入存档之后还是旧数据，就需要同步数据
         public void RefreshMainItemDataInTest()
         {
-            if (table == null)
+            MainItemDefProvider.EnsureLoaded();
+            if (MainItemDefProvider.GetDef(EMainItemName.HpBall) == null)
             {
                 Init();
                 return;
             }
+
             var itemNames = new List<string>(mainItemDic.Keys);
             lastIndex = 0;
             var costItem = 0;
@@ -109,16 +106,17 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
             foreach (var itemName in itemNames)
             {
                 var count = Math.Min(mainItemDic[itemName].num, MaxStackPerItem);
-                var itemType = (BagItemType)table.GetDataRow(condition: row => row.name == itemName).itemType;
+                var def = MainItemDefProvider.GetDef(itemName);
+                var itemType = def?.ItemType ?? GuessItemType(itemName);
                 var newItemData = new MenuFormMainItemInfo
                 {
                     index = lastIndex++,
                     name = itemName,
-                    icon = iconAtlas.GetSprite(itemName),
-                    detail = table.GetDataRow(condition: row => row.name == itemName).detail,
-                    detail_en = table.GetDataRow(condition: row => row.name == itemName).detail_en,
-                    detail_jp = table.GetDataRow(condition: row => row.name == itemName).detail_jp,
-                    id = table.GetDataRow(condition: row => row.name == itemName).id,
+                    icon = def?.Icon,
+                    detail = def?.Detail ?? string.Empty,
+                    detail_en = def?.DetailEn ?? string.Empty,
+                    detail_jp = def?.DetailJp ?? string.Empty,
+                    id = def?.LegacyNumericId ?? 0,
                     itemType = itemType,
                     num = count
                 };
@@ -127,8 +125,8 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
                     quickItem[costItem] = itemName;
                     costItem++;
                 }
-                
-                mainItemDic[itemName] = newItemData;// 同步为配置表现在的道具数据
+
+                mainItemDic[itemName] = newItemData;
                 DataChanged(itemName);
             }
         }
@@ -300,10 +298,10 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
             {
                 return item.itemType == BagItemType.CostItem;
             }
-            var row = GetItemRow(name);
-            if (row != null)
+            var def = MainItemDefProvider.GetDef(name);
+            if (def != null)
             {
-                return (BagItemType)row.itemType == BagItemType.CostItem;
+                return def.ItemType == BagItemType.CostItem;
             }
             return GuessItemType(name) == BagItemType.CostItem;
         }
@@ -517,8 +515,7 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
 
         private MainItemDataTableRow GetItemRow(string itemName)
         {
-            if (table == null) { return null; }
-            return table.GetDataRow(condition: row => row.name == itemName);
+            return MainItemDefProvider.ToDataTableRow(itemName);
         }
 
         private BagItemType GuessItemType(string itemName)
@@ -533,19 +530,20 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
         private void RefreshMainItemRuntimeData()
         {
             if (mainItemDic == null) { return; }
+            MainItemDefProvider.EnsureLoaded();
             foreach (var pair in mainItemDic)
             {
                 var item = pair.Value;
                 if (item == null) { continue; }
-                item.icon = iconAtlas != null ? iconAtlas.GetSprite(item.name) : null;
-                var row = GetItemRow(item.name);
-                if (row != null)
+                var def = MainItemDefProvider.GetDef(item.name);
+                item.icon = def?.Icon;
+                if (def != null)
                 {
-                    item.detail = row.detail;
-                    item.detail_en = row.detail_en;
-                    item.detail_jp = row.detail_jp;
-                    item.id = row.id;
-                    item.itemType = (BagItemType)row.itemType;
+                    item.detail = def.Detail;
+                    item.detail_en = def.DetailEn;
+                    item.detail_jp = def.DetailJp;
+                    item.id = def.LegacyNumericId;
+                    item.itemType = def.ItemType;
                 }
                 else
                 {

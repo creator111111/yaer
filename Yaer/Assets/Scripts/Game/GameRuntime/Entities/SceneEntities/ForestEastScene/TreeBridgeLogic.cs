@@ -7,6 +7,7 @@ using Game.GameRuntime.Entities.Component.Interactive;
 using Game.GameRuntime.Entities.Monster.WoodWorm;
 using Game.GameRuntime.Entities.Monster.WormEgg;
 using Game.GameRuntime.Entities.SceneEntities.HomeScene2;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestEastScene
         private Animator animator;
         [SerializeField]
         private List<GameObject> AttachedGameObject;
-        public List<GameObject> hideObjsInEnterTreeBridge; // ½øÈëÊ÷¶´ºóÐèÒªÒþ²ØµÄ¶ÔÏó
+        public List<GameObject> hideObjsInEnterTreeBridge; // ?????????????????????
 
         public GameObject enterNodeLeft;
         public GameObject enterNodeRight;
@@ -41,17 +42,26 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestEastScene
         public GameObject storyTriggerOutNodeLeft;
         public GameObject storyTriggerOutNodeRight;
 
-        public GameObject spcWormEgg; // ÌØÊâµÄÈä³æµ°
-        public GameObject eggStoryTrigger; // Èä³æµ°¹ÊÊÂ´¥·¢Æ÷
+        public GameObject spcWormEgg; // ?????????
+        public GameObject eggStoryTrigger; // ?????????????
 
-        public GameObject removeAfterCollider; // µ¹Ê÷ÒÆ³ýºóµÄÅö×²Ìå
-        public GameObject passTreeBridgeSecretTrigger; // Í¨¹ýÊ÷¶´Ö®ºóµÄ²Êµ°´¥·¢ÇøÓò
+        public GameObject removeAfterCollider; // ???????????????
+        public GameObject passTreeBridgeSecretTrigger; // ?????????????????????
         public SoundToggleComponent soundSfxCpn;
         public AnimationEventComponent aniEventCpn;
 
-        public BaseSoundEntity waterSoundEntity; // ³¡¾°ÖÐµÄÆÙ²¼Éù
+        public BaseSoundEntity waterSoundEntity; // ?????????????
 
-        public List<WoodWormLogic> storyWoodWormLogicList = new List<WoodWormLogic>(); // Ò»¿ªÊ¼³¯ÈËÎïÒÆ¶¯µÄ³æ×Ó
+        public List<WoodWormLogic> storyWoodWormLogicList = new List<WoodWormLogic>(); // ??????????????????
+
+        [Header("???????")]
+        [SerializeField]
+        [Range(0f, 1f)]
+        [Tooltip("???????? BaseSoundEntity ?????????????????????1 ??????0.5 ?????")]
+        private float waterSoundVolumeScale = 0.45f;
+
+        /// <summary>?ï¿½ï¿½????????????????????????ï¿½ï¿½?????????</summary>
+        private bool m_skipWaterVolumeTweak;
 
         protected internal override void OnInit(object userData)
         {
@@ -65,6 +75,24 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestEastScene
                 componentSystem.GetComponent<InteractiveComponent>().onExitInteractiveEvent += (x) => OuterSpriteFade(1);
                 aniEventCpn.RegisterEvent("AfterFallDown", AfterFallDown);
             }
+            else
+            {
+                m_skipWaterVolumeTweak = true;
+            }
+        }
+
+        /// <summary>
+        /// ?? <see cref="BaseSoundEntity"/> ?? Start ????? baseVolume ??????????ï¿½ï¿½?????
+        /// </summary>
+        private IEnumerator Start()
+        {
+            if (m_skipWaterVolumeTweak || waterSoundEntity == null)
+            {
+                yield break;
+            }
+
+            yield return null;
+            waterSoundEntity.ApplyVolumeMultiplier(waterSoundVolumeScale);
         }
 
         private void Update()
@@ -72,7 +100,7 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestEastScene
             if (spcWormEgg != null && spcWormEgg.GetComponent<WormEggLogic>().IsDead
                 && !eggStoryTrigger.activeSelf)
             {
-                // ÌØÊâ³æµ°ËÀÍöºó£¬³öÏÖ¾çÇé
+                // ??????????????????
                 eggStoryTrigger.SetActive(true);
             }
         }
@@ -112,15 +140,15 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestEastScene
 
         public void PlayTreeBridgeMoveSfx()
         {
-            var moveSfxName = "Ä¾Í·¸ÂÖ¨¸ÂÖ¨Éù .mp3";
+            var moveSfxName = "Ä¾Í·ï¿½ï¿½Ö¨ï¿½ï¿½Ö¨ï¿½ï¿½ .mp3";
             soundSfxCpn.ChangeSoundRes(moveSfxName);
             soundSfxCpn.PlaySound();
         }
 
         void AfterFallDown(string arg)
         {
-            // ²¥·ÅÊ÷µô½øË®ÖÐµÄÒôÐ§
-            var moveSfxName = "Ê÷µô½øË®ÀïµÄÉùÒô.mp3";
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë®ï¿½Ðµï¿½ï¿½ï¿½Ð§
+            var moveSfxName = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.mp3";
             soundSfxCpn.ChangeSoundRes(moveSfxName);
             GameActionMgr.runDelayTimeAction(3f, () =>
             {
