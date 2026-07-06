@@ -30,50 +30,26 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
         [MenuItem(MenuPath)]
         private static void SetupFromMenu()
         {
-            if (!EnsureVillageShopSceneOpen())
-            {
-                return;
-            }
-
-            RunSetup(showDialog: true);
-        }
-
-        public static void ExecuteBatchSetup()
-        {
-            var scene = EditorSceneManager.OpenScene(VillageShopScenePath, OpenSceneMode.Single);
-            if (!scene.IsValid())
-            {
-                Debug.LogError("[ShopDatabaseSetup] 无法打开场景: " + VillageShopScenePath);
-                EditorApplication.Exit(1);
-                return;
-            }
-
-            RunSetup(showDialog: false);
-            EditorApplication.Exit(0);
-        }
-
-        private static bool EnsureVillageShopSceneOpen()
-        {
-            var active = SceneManager.GetActiveScene();
-            if (active.path == VillageShopScenePath)
-            {
-                return true;
-            }
-
             if (!EditorUtility.DisplayDialog(
-                    "Shop Database 驱动列表",
-                    "将打开 Village_Shop 场景并修改 Bar 区（双 Scroll + 清空 Content），是否继续？",
-                    "继续",
+                    "菜单已合并",
+                    "「Setup Database Driven Lists」已合并到「Bake Shop Lists From MainItemDatabase」。\n是否立即执行 Bake？",
+                    "执行 Bake",
                     "取消"))
             {
-                return false;
+                return;
             }
 
-            EditorSceneManager.OpenScene(VillageShopScenePath);
-            return true;
+            ShopListBakeEditor.BakeFromMenu();
         }
 
-        private static void RunSetup(bool showDialog)
+        /// <summary>已废弃：请使用 ShopListBakeEditor.ExecuteBatchBake。</summary>
+        [System.Obsolete("Use ShopListBakeEditor.ExecuteBatchBake instead.")]
+        public static void ExecuteBatchSetup()
+        {
+            ShopListBakeEditor.ExecuteBatchBake();
+        }
+
+        private static void RunSetup_Obsolete(bool showDialog)
         {
             var uiShop = GameObject.Find("UI_Shop");
             if (uiShop == null)
@@ -110,7 +86,6 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             }
 
             var serialized = new SerializedObject(formLogic);
-            serialized.FindProperty("shopBarPrefab").objectReferenceValue = shopBarPrefab;
             serialized.FindProperty("buyContent").objectReferenceValue = FindScrollContent(buyScroll);
             serialized.FindProperty("sellContent").objectReferenceValue = FindScrollContent(sellScroll);
             serialized.FindProperty("barListScrollBuy").objectReferenceValue = buyScroll.gameObject;

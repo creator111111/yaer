@@ -54,52 +54,26 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
         [MenuItem(MenuPath)]
         private static void SetupFromMenu()
         {
-            if (!EnsureVillageShopSceneOpen())
-            {
-                return;
-            }
-
-            RunSetup(showDialog: true);
-        }
-
-        /// <summary>供 Unity -batchmode -executeMethod 调用；无对话框。</summary>
-        public static void ExecuteBatchSetup()
-        {
-            // OpenScene 返回 Scene 结构体，不能当 bool 用；以 IsValid() 判断是否打开成功。
-            var scene = EditorSceneManager.OpenScene(VillageShopScenePath, OpenSceneMode.Single);
-            if (!scene.IsValid())
-            {
-                Debug.LogError("[ShopBarListScroll] 无法打开场景: " + VillageShopScenePath);
-                EditorApplication.Exit(1);
-                return;
-            }
-
-            RunSetup(showDialog: false);
-            EditorApplication.Exit(0);
-        }
-
-        private static bool EnsureVillageShopSceneOpen()
-        {
-            var active = SceneManager.GetActiveScene();
-            if (active.path == VillageShopScenePath)
-            {
-                return true;
-            }
-
             if (!EditorUtility.DisplayDialog(
-                    "Shop Bar 列表滚动",
-                    "将打开 Village_Shop 场景并修改 Bar 区 Hierarchy，是否继续？",
-                    "继续",
+                    "菜单已合并",
+                    "「Setup Bar List Scroll」已合并到「Bake Shop Lists From MainItemDatabase」。\n是否立即执行 Bake？",
+                    "执行 Bake",
                     "取消"))
             {
-                return false;
+                return;
             }
 
-            EditorSceneManager.OpenScene(VillageShopScenePath);
-            return true;
+            ShopListBakeEditor.BakeFromMenu();
         }
 
-        private static void RunSetup(bool showDialog)
+        /// <summary>已废弃：请使用 ShopListBakeEditor.ExecuteBatchBake。</summary>
+        [System.Obsolete("Use ShopListBakeEditor.ExecuteBatchBake instead.")]
+        public static void ExecuteBatchSetup()
+        {
+            ShopListBakeEditor.ExecuteBatchBake();
+        }
+
+        private static void RunSetup_Obsolete(bool showDialog)
         {
             var bar = FindBarTransform();
             if (bar == null)
