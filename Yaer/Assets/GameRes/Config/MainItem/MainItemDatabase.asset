@@ -67,7 +67,7 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 300bf398430dafd448c984a9d3112e30, type: 3}
     displayName: "\u4F53\u529B\u4E4B\u73E0"
     itemType: 1
-    buyPrice: -1
+    buyPrice: 200
     sellPrice: -1
     legacyNumericId: 4
     detail: "    \u4F53\u529B\u4E4B\u73E0\uFF0C\u5FB7\u52D2\u74E6\u5927\u9646\u4E0A\n\u4E9A\u4EBA\u52B3\u52A8\u540E\u7528\u6765\u6062\u590D\u4F53\u529B\u7684\n\u67F1\u5B50\uFF0C\u91CC\u9762\u662F\u8584\u8377\u8111\u3001\u51B0\u5757\n\u3001\u84DD\u8393\u3001\u7EE3\u7403\u82B1\u3001\u98CE\u94C3\u8349\u7B49\n\u63D0\u7EAF\u51FA\u6765\u7684\u7CBE\u534E\uFF0C\u653E\u5728\u8EAB\u4E0A\n\u51B0\u51B0\u51C9\u51C9\uFF0C\u5403\u4E0B\u53BB\u9178\u9178\u751C\u751C\n\u8FD8\u6709\u8336\u82B1\u9999\u5473\uFF0C\u96C5\u5C14\u5F88\u559C\n\u6B22\u5403\u8FD9\u4E2A\u3002"
@@ -140,7 +140,7 @@ MonoBehaviour:
       a mass of goo was controlled by this thing.
     detailJp: "\u30B9\u30E9\u30A4\u30E0\u3092\u5012\u3057\u305F\u5F8C\u306B\u73FE\u308C\u305F\u30B3\u30A2\uFF0C\u3053\u306E\u7C98\u7740\u8CEA\u306E\u584A\u304C\u3053\u3093\u306A\u6838\u3067\u52D5\u3044\u3066\u3044\u305F\u3068\u306F\u60F3\u50CF\u3057\u304C\u305F\u3044\u3002"
   - itemId: 9
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: d046efa316bcfd44dadddb5f9cd3da3c, type: 3}
     displayName: "\u5C0F\u751F\u547D\u836F"
     itemType: 1
     buyPrice: 20
@@ -150,7 +150,7 @@ MonoBehaviour:
     detailEn: "\uFF08\u5F85\u8865\uFF09"
     detailJp: "\uFF08\u5F85\u8865\uFF09"
   - itemId: 10
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: 1f29b56024a12c04fa359ea762dcb7e2, type: 3}
     displayName: "\u5C0F\u4F53\u529B\u836F"
     itemType: 1
     buyPrice: 20
@@ -160,7 +160,7 @@ MonoBehaviour:
     detailEn: "\uFF08\u5F85\u8865\uFF09"
     detailJp: "\uFF08\u5F85\u8865\uFF09"
   - itemId: 11
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: a35890435325249429d76f1a3ef6edea, type: 3}
     displayName: "\u5927\u751F\u547D\u836F"
     itemType: 1
     buyPrice: 50
@@ -170,7 +170,7 @@ MonoBehaviour:
     detailEn: "\uFF08\u5F85\u8865\uFF09"
     detailJp: "\uFF08\u5F85\u8865\uFF09"
   - itemId: 12
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: dc071f0245de15d4aaf6a83ac6abe763, type: 3}
     displayName: "\u5927\u4F53\u529B\u836F"
     itemType: 1
     buyPrice: 50
@@ -180,7 +180,7 @@ MonoBehaviour:
     detailEn: "\uFF08\u5F85\u8865\uFF09"
     detailJp: "\uFF08\u5F85\u8865\uFF09"
   - itemId: 13
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: b91c3f10a45aee84f9ca6840f34e3116, type: 3}
     displayName: "\u7897\u88C5\u6DB2\u4F53"
     itemType: 1
     buyPrice: 500
@@ -190,7 +190,17 @@ MonoBehaviour:
     detailEn: "\uFF08\u5F85\u8865\uFF09"
     detailJp: "\uFF08\u5F85\u8865\uFF09"
   - itemId: 14
-    icon: {fileID: 0}
+    icon: {fileID: 21300000, guid: 05c80ab98e7691a4e91cf59e56650a7d, type: 3}
+    displayName: "\u9C7C"
+    itemType: 1
+    buyPrice: 500
+    sellPrice: -1
+    legacyNumericId: 15
+    detail: "    \uFF08\u5F85\u7B56\u5212\u8865\u5168\u6587\u6848\uFF09"
+    detailEn: "\uFF08\u5F85\u8865\uFF09"
+    detailJp: "\uFF08\u5F85\u8865\uFF09"
+  - itemId: 14
+    icon: {fileID: 21300000, guid: 05c80ab98e7691a4e91cf59e56650a7d, type: 3}
     displayName: "\u9C7C"
     itemType: 1
     buyPrice: 500

@@ -1,13 +1,18 @@
 using Game.DataTable.MainItem;
+using Game.GameRuntime.UI.Component;
 using Game.Static.Enum.Goods;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Game.GameRuntime.UI.FormLogic.Shop
 {
     /// <summary>
-    /// Shop_Bar 单行视图：按 MainItemDef 刷新 Icon / Name / Price。
+    /// Shop_Bar 单行视图：Editor Bake 写入 Icon / Name / Price 与 baked 序列化字段；
+    /// 运行时 Awake 只读 baked 字段，不再调 Provider / Bind。
     /// 挂在 Shop_Bar.prefab 根节点；ItemId / Price 供合计与阶段四交易读取。
     /// </summary>
     [DisallowMultipleComponent]
@@ -16,8 +21,6 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         private const string IconNodeName = "Icon";
         private const string NameNodeName = "Name";
         private const string PriceNodeName = "Price";
-        private const string NumberNodeName = "Number";
-        private const string TxtStockNodeName = "TxtStock";
 
         [Header("可选：Inspector 预绑，留空则 Awake 时 Find")]
         [SerializeField] private Image iconImage;
@@ -25,6 +28,13 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         [SerializeField] private TextMeshProUGUI nameTextTmp;
         [SerializeField] private Text priceText;
         [SerializeField] private TextMeshProUGUI priceTextTmp;
+
+        private UiSpriteNumberDisplay _priceDigitDisplay;
+
+        [Header("Editor Bake 写入（运行时只读）")]
+        [SerializeField] private EMainItemName bakedItemId;
+        [SerializeField] private int bakedPrice;
+        [SerializeField] private bool bakedIsBuyRow;
 
         /// <summary>本行道具 ID，供 GetBuyQuantity / 交易逻辑匹配。</summary>
         public EMainItemName ItemId { get; private set; }
@@ -35,11 +45,28 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         private void Awake()
         {
             CacheUiReferences();
+            // EB-2：从场景烘焙的序列化字段恢复，不依赖 MainItemDefProvider / 图集异步加载。
+            ItemId = bakedItemId;
+            Price = bakedPrice;
+            ApplyPrice(Price);
         }
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Editor Bake 工具写入行身份与单价；替代方案为仅改 Text/Sprite 而不序列化 itemId，运行时无法匹配数量输入。
+        /// </summary>
+        public void EditorSetBakedData(EMainItemName itemId, int price, bool isBuyRow)
+        {
+            bakedItemId = itemId;
+            bakedPrice = price;
+            bakedIsBuyRow = isBuyRow;
+            EditorUtility.SetDirty(this);
+        }
+#endif
 
         /// <summary>
         /// 按 MainItemDatabase 条目写 UI；价格来自 def.BuyPrice / def.SellPrice。
-        /// 购买行 Number 列由 ShopBuyRowQuantityInput 接管；出售行显示占位 "1"。
+        /// EB 商店以 Bake 为准；Bind 仅供动态商店等非 Bake 路径。
         /// </summary>
         public void Bind(MainItemDef def, bool isBuyRow)
         {
@@ -68,11 +95,6 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
             ApplyName(def.DisplayName);
             ApplyPrice(Price);
-
-            if (!isBuyRow)
-            {
-                ApplySellQuantityPlaceholder();
-            }
         }
 
         private void CacheUiReferences()
@@ -99,7 +121,12 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 {
                     priceText = priceNode.GetComponent<Text>();
                     priceTextTmp = priceNode.GetComponent<TextMeshProUGUI>();
+                    _priceDigitDisplay = UiSpriteNumberDisplay.FindUnder(priceNode);
                 }
+            }
+            else if (_priceDigitDisplay == null)
+            {
+                _priceDigitDisplay = UiSpriteNumberDisplay.FindUnder(transform.Find(PriceNodeName));
             }
         }
 
@@ -119,31 +146,25 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             SetLabelText(nameText, nameTextTmp, displayName ?? string.Empty);
         }
 
+        /// <summary>优先 UiSpriteNumberDisplay 图片价；无 Display 时回退 Legacy Text（兼容旧场景）。</summary>
         private void ApplyPrice(int price)
         {
-            SetLabelText(priceText, priceTextTmp, price.ToString());
-        }
-
-        /// <summary>出售页本阶段：Number 列显示持有数占位 "1"（阶段六接背包）。</summary>
-        private void ApplySellQuantityPlaceholder()
-        {
-            var numberNode = transform.Find(NumberNodeName) ?? transform.Find(TxtStockNodeName);
-            if (numberNode == null)
+            if (_priceDigitDisplay == null)
             {
+                var priceNode = transform.Find(PriceNodeName);
+                if (priceNode != null)
+                {
+                    _priceDigitDisplay = UiSpriteNumberDisplay.FindUnder(priceNode);
+                }
+            }
+
+            if (_priceDigitDisplay != null)
+            {
+                _priceDigitDisplay.SetNumber(price);
                 return;
             }
 
-            var legacyText = numberNode.GetComponent<Text>();
-            if (legacyText != null)
-            {
-                legacyText.text = "1";
-            }
-
-            var tmpText = numberNode.GetComponent<TextMeshProUGUI>();
-            if (tmpText != null)
-            {
-                tmpText.text = "1";
-            }
+            SetLabelText(priceText, priceTextTmp, price.ToString());
         }
 
         private static void SetLabelText(Text legacy, TextMeshProUGUI tmp, string value)

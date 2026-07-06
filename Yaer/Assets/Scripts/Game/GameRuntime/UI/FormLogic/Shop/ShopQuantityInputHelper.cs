@@ -1,3 +1,4 @@
+using Game.GameRuntime.UI.Component;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,8 +14,8 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         /// <summary>与背包单格堆叠上限一致，限制输入位数。</summary>
         public const int MaxQuantityDigits = 2;
 
-        /// <summary>打开商店 / 切购买 Tab 时的默认购买数量。</summary>
-        public const int DefaultQuantity = 1;
+        /// <summary>打开商店 / 切 Tab 时 Number 列默认数量（ST：合计初始为 0）。</summary>
+        public const int DefaultQuantity = 0;
 
         private const string TextAreaName = "Text Area";
         private const string PlaceholderName = "Placeholder";
@@ -42,7 +43,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             if (inputField == null)
             {
                 inputField = host.AddComponent<TMP_InputField>();
-                BuildInputFieldHierarchy(host.transform, inputField);
+                BuildInputFieldHierarchy(host.transform, inputField, defaultQuantity);
             }
             else
             {
@@ -50,7 +51,74 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             }
 
             ApplyIntegerInputSettings(inputField, defaultQuantity);
+            ApplyInvisibleInputTextStyle(inputField);
+            EnsureNumberDigitStrip(txtStockTransform, defaultQuantity);
             return inputField;
+        }
+
+        /// <summary>
+        /// Number 列：透明 TMP 仅承载输入逻辑，可见数字由 DigitStrip 图片显示（IMG 方案）。
+        /// </summary>
+        private static void ApplyInvisibleInputTextStyle(TMP_InputField inputField)
+        {
+            if (inputField == null)
+            {
+                return;
+            }
+
+            if (inputField.textComponent != null)
+            {
+                var color = inputField.textComponent.color;
+                inputField.textComponent.color = new Color(color.r, color.g, color.b, 0f);
+            }
+
+            if (inputField.placeholder != null)
+            {
+                var placeholderColor = inputField.placeholder.color;
+                inputField.placeholder.color = new Color(
+                    placeholderColor.r,
+                    placeholderColor.g,
+                    placeholderColor.b,
+                    0f);
+            }
+
+            inputField.customCaretColor = true;
+            inputField.caretColor = new Color(1f, 1f, 1f, 0f);
+        }
+
+        /// <summary>确保 Number 下 DigitStrip 存在并刷默认数量图。</summary>
+        private static void EnsureNumberDigitStrip(Transform numberNode, int defaultQuantity)
+        {
+            if (numberNode == null)
+            {
+                return;
+            }
+
+            var display = UiSpriteNumberDisplay.EnsureOn(
+                numberNode,
+                TextAnchor.MiddleRight,
+                stripSpacing: UiSpriteNumberDisplay.ShopNumberSpacing,
+                capacity: MaxQuantityDigits);
+            display.TryLoadDefaultSpritesIfEmpty();
+            display.SetSpacing(UiSpriteNumberDisplay.ShopNumberSpacing);
+            display.SetNumber(defaultQuantity);
+        }
+
+        /// <summary>同步 Number 列图片数字（供 ShopBuyRowQuantityInput 在 onValueChanged 调用）。</summary>
+        public static void SyncNumberDigitDisplay(Transform numberNode, string rawText)
+        {
+            if (numberNode == null)
+            {
+                return;
+            }
+
+            var display = UiSpriteNumberDisplay.FindUnder(numberNode);
+            if (display == null)
+            {
+                return;
+            }
+
+            display.SetDigitString(rawText ?? string.Empty);
         }
 
         /// <summary>
@@ -139,7 +207,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             image.raycastTarget = true;
         }
 
-        private static void BuildInputFieldHierarchy(Transform root, TMP_InputField inputField)
+        private static void BuildInputFieldHierarchy(Transform root, TMP_InputField inputField, int defaultQuantity)
         {
             var textAreaGo = CreateUiChild(root, TextAreaName, typeof(RectTransform), typeof(RectMask2D));
             StretchFull(textAreaGo.GetComponent<RectTransform>());
@@ -150,7 +218,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
             var textGo = CreateUiChild(textAreaGo.transform, TextChildName, typeof(RectTransform), typeof(TextMeshProUGUI));
             StretchFull(textGo.GetComponent<RectTransform>());
-            ConfigureTmpLabel(textGo.GetComponent<TextMeshProUGUI>(), new Color(0.196f, 0.196f, 0.196f, 1f), DefaultQuantity.ToString());
+            ConfigureTmpLabel(textGo.GetComponent<TextMeshProUGUI>(), new Color(0.196f, 0.196f, 0.196f, 1f), defaultQuantity.ToString());
 
             inputField.textViewport = textAreaGo.GetComponent<RectTransform>();
             inputField.textComponent = textGo.GetComponent<TextMeshProUGUI>();

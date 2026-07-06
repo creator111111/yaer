@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceCollection\ResourceCollectionConfigPathAttribute.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Misc\LogScriptingDefineSymbols.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\Editor\ShopListBakeEditor.cs" />
     <Compile Include="Assets\Editor\Tool\Dialogue\DialogDebugSceneSetupMenu.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceEditor\ResourceEditor.ResourceFolder.cs" />
     <Compile Include="Assets\PSDLayoutTool2\Editor\PsdFile\Layers\BlendingRanges.cs" />
@@ -467,64 +468,64 @@
       <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\PlaybackEngines\WindowsStandaloneSupport\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\SharpZipLib.1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Packages\SharpZipLib.1.4.2\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="DemiEditor">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DemiLib\Core\Editor\DemiEditor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DemiLib\Core\Editor\DemiEditor.dll</HintPath>
     </Reference>
     <Reference Include="log4netPlastic">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.collab-proxy@2.0.4\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.collab-proxy@2.0.4\Lib\Editor\PlasticSCM\log4netPlastic.dll</HintPath>
     </Reference>
     <Reference Include="System.Buffers">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="ExcelDataReader">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\ExcelDataReader.3.7.0\lib\netstandard2.0\ExcelDataReader.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Packages\ExcelDataReader.3.7.0\lib\netstandard2.0\ExcelDataReader.dll</HintPath>
     </Reference>
     <Reference Include="DOTween">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DOTween\DOTween.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.2.0\Runtime\Newtonsoft.Json.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.nuget.newtonsoft-json@3.2.0\Runtime\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="DOTweenPro">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DOTweenPro\DOTweenPro.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DOTweenPro\DOTweenPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Plastic.Newtonsoft.Json">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.collab-proxy@2.0.4\Lib\Editor\PlasticSCM\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.collab-proxy@2.0.4\Lib\Editor\PlasticSCM\Unity.Plastic.Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NuGetForUnity.PluginAPI">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\PackageCache\com.github-glitchenzo.nugetforunity@36d3260fdc\Editor\PluginAPI\NuGetForUnity.PluginAPI.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\PackageCache\com.github-glitchenzo.nugetforunity@36d3260fdc\Editor\PluginAPI\NuGetForUnity.PluginAPI.dll</HintPath>
     </Reference>
     <Reference Include="DemiLib">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DemiLib\Core\DemiLib.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DemiLib\Core\DemiLib.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Plastic.Antlr3.Runtime">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.collab-proxy@2.0.4\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.collab-proxy@2.0.4\Lib\Editor\PlasticSCM\Unity.Plastic.Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="DOTweenProEditor">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DOTweenPro\Editor\DOTweenProEditor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DOTweenPro\Editor\DOTweenProEditor.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="DOTweenEditor">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.dll</HintPath>
     </Reference>
     <Reference Include="ExcelDataReader.DataSet">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\ExcelDataReader.DataSet.3.7.0\lib\netstandard2.0\ExcelDataReader.DataSet.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Packages\ExcelDataReader.DataSet.3.7.0\lib\netstandard2.0\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
     <Reference Include="unityplastic">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.collab-proxy@2.0.4\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.collab-proxy@2.0.4\Lib\Editor\PlasticSCM\unityplastic.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory">
-      <HintPath>F:\Yaer\yaer\Yaer\Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\PackageCache\com.unity.ext.nunit@1.0.6\net35\unity-custom\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\mscorlib.dll</HintPath>
@@ -875,97 +876,97 @@
       <HintPath>E:\Unity\Unity 2020.3.48f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\Facades\System.Xml.XPath.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TestRunner">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\UnityEngine.TestRunner.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\UnityEngine.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.TestRunner">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\UnityEditor.TestRunner.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEngineBridge.001">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.InternalAPIEngineBridge.001.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.InternalAPIEngineBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="PsdPlugin">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\PsdPlugin.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\PsdPlugin.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>
     <Reference Include="NuGetForUnity">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\NuGetForUnity.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\NuGetForUnity.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.IK.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.IK.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.IK.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Psdimporter.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Psdimporter.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Psdimporter.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InternalAPIEditorBridge.001">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.001.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.001.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InputSystem">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PlasticSCM.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.IK.Runtime">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.IK.Runtime.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.IK.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Cinemachine">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Cinemachine.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Cinemachine.dll</HintPath>
     </Reference>
     <Reference Include="com.unity.cinemachine.editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Triangle.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Triangle.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Triangle.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Runtime">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Runtime.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Animation.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Common.Runtime">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Common.Runtime.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Common.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Common.Editor">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Common.Editor.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\Unity.2D.Common.Editor.dll</HintPath>
     </Reference>
     <Reference Include="SingularityGroup.HotReload.Runtime.Public">
-      <HintPath>F:\Yaer\yaer\Yaer\Library\ScriptAssemblies\SingularityGroup.HotReload.Runtime.Public.dll</HintPath>
+      <HintPath>E:\Yaer\yaer\Yaer\Library\ScriptAssemblies\SingularityGroup.HotReload.Runtime.Public.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
