@@ -250,7 +250,10 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             scrollRect.sizeDelta = barBg.sizeDelta;
         }
 
-        /// <summary>Viewport：RectMask2D 裁剪；Fix-S1 去掉冗余 Image（raycast 改由 Scroll 根承担）。</summary>
+        /// <summary>
+        /// Viewport：RectMask2D 裁剪；Fix-S1 去掉冗余 Image（raycast 改由 Scroll 根承担）。
+        /// Softness 虚化由紧随其后的 ShopScrollShellHelper.ApplyInteractionFixes 统一写入，禁止在此写魔法数。
+        /// </summary>
         private static void ConfigureViewport(Transform scrollRoot)
         {
             var viewport = scrollRoot.Find(ViewportName) as RectTransform;

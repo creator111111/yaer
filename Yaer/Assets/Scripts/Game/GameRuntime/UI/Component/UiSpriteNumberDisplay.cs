@@ -19,11 +19,18 @@ namespace Game.GameRuntime.UI.Component
         public const string DigitStripNodeName = "DigitStrip";
         public const string DigitSpriteFolderPath = "Assets/ArtRes/UI/Text/";
 
-        /// <summary>v3：Price 行字间距（定稿 0px）。</summary>
-        public const float ShopPriceSpacing = 0f;
+        /// <summary>
+        /// Price 行字间距（2026-07-13 定稿 -12px）。
+        /// Bake / Ensure 一律读此常量，避免只改 Prefab 后被 Tools 刷回旧值。
+        /// 替代方案：在 Bake 里写死魔法数——多处调用易漂移，故用单点常量。
+        /// </summary>
+        public const float ShopPriceSpacing = -12f;
 
-        /// <summary>v3：Number 行字间距（定稿 -1px；HLG 允许负值叠紧透明留白）。</summary>
-        public const float ShopNumberSpacing = -1f;
+        /// <summary>
+        /// Number 行字间距（2026-07-13 定稿 -12px，与 Price 对齐）。
+        /// 数字 Sprite 两侧有透明留白，负 spacing 叠紧后更接近手写价签观感。
+        /// </summary>
+        public const float ShopNumberSpacing = -12f;
 
         /// <summary>v3+：Total2 合计字间距 Bake 推荐初值（策划可在 Inspector 手调，运行时不会覆盖）。</summary>
         public const float ShopTotalSpacing = -12f;

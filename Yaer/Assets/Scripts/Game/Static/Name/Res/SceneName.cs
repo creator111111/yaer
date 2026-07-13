@@ -48,6 +48,12 @@ namespace Game.Static.Name.Res
         public const string Village_OutSide = "Village_OutSide";
 
         /// <summary>
+        /// 肯姆尼村商店（纯 UI 场景，<c>Assets/GameRes/Scenes/Village_Shop.unity</c>）；
+        /// 由村里 Door_Shop 进入；不生成玩家。
+        /// </summary>
+        public const string Village_Shop = "Village_Shop";
+
+        /// <summary>
         /// 对话预制体 Debug 场景（<c>Assets/GameRes/Scenes/DialogDebug.unity</c>，方案 A 扁平路径）。
         /// </summary>
         public const string DialogDebug = "DialogDebug";

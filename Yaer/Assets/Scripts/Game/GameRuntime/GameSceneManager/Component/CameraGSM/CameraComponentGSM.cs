@@ -46,6 +46,13 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
 
         public void CancelFollow()
         {
+            // 商店等未绑 CameraComponent 的场景：避免进场空引用直接炸
+            if (cameraComponent == null)
+            {
+                Log.Error("CameraComponentGSM未挂载CameraComponent组件，CancelFollow跳过");
+                return;
+            }
+
             cameraComponent.CancelFollow();
         }
 

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Game.DataTable.MainItem;
+using Game.GameMgr;
+using Game.GameMgr.Component.Archive;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.BaseDataClass;
 using Game.GameRuntime.BagPack;
 using Game.GameRuntime.UI.FormLogic.Menu;
@@ -44,6 +46,36 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
             hasInitRequested = true;
             // v2：MainItemDatabase.asset 为唯一数据源；不再 LoadConfig MainItemConfig.json
             MainItemDefProvider.EnsureLoaded();
+            // 订阅 Database/图集异步就绪：入包时若 def 为空，就绪后重刷 Icon/detail/itemType，避免贵重物品整格空白。
+            // 先 -= 再 +=，防止 Init 被多处调用时重复订阅（Provider 事件为静态，无自动清理）。
+            MainItemDefProvider.DefinitionsRebuilt -= OnMainItemDefinitionsRebuilt;
+            MainItemDefProvider.DefinitionsRebuilt += OnMainItemDefinitionsRebuilt;
+        }
+
+        /// <summary>
+        /// MainItemDefProvider 缓存重建后：用 Database 覆盖运行时展示字段并通知 UI（快捷栏/背包页）。
+        /// </summary>
+        private static void OnMainItemDefinitionsRebuilt()
+        {
+            if (GameManager.Instance == null)
+            {
+                return;
+            }
+
+            var archive = GameManager.GetGMComponent<ArchiveComponentGM>();
+            if (archive == null)
+            {
+                return;
+            }
+
+            var bagData = archive.GetData<PlayerBagData>();
+            if (bagData == null)
+            {
+                return;
+            }
+
+            bagData.RefreshMainItemRuntimeData();
+            OnDataChange?.Invoke(bagData);
         }
 
         #endregion
@@ -527,6 +559,10 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
             return BagItemType.TaskItem;
         }
 
+        /// <summary>
+        /// 用 MainItemDefProvider 覆盖存档中的 icon/detail/itemType（这些字段不进 ES3）。
+        /// Icon 优先取 Def；若仍空则再 ResolveIcon 一次，修正异步窗口期内入包的空图。
+        /// </summary>
         private void RefreshMainItemRuntimeData()
         {
             if (mainItemDic == null) { return; }
@@ -537,6 +573,12 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
                 if (item == null) { continue; }
                 var def = MainItemDefProvider.GetDef(item.name);
                 item.icon = def?.Icon;
+                // Def.Icon 仍空时（图集晚到等）再解析一次，配合 DefinitionsRebuilt 闭环
+                if (item.icon == null && !string.IsNullOrEmpty(item.name)
+                    && Enum.TryParse(item.name, out EMainItemName itemId))
+                {
+                    item.icon = MainItemDefProvider.ResolveIcon(itemId);
+                }
                 if (def != null)
                 {
                     item.detail = def.Detail;

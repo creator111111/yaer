@@ -35,8 +35,10 @@ namespace Game.GameRuntime.GameSceneManager.Component
             SceneManager.GetModule<LoadSceneComponentGSM>().onStartLoadingSceneEvent += CantResponse;
             SceneManager.GetModule<LoadSceneComponentGSM>().onEndLoadingSceneEvent += AllowResponse;
             
-            // 默认不能交互
+            // 默认不能交互（等加载结束 AllowResponse / SetAllowOpenMenu 再开）
             CantResponse();
+
+            Debug.Log("[InputComponentGSM] OnInit subscribed ESC");
         }
 
         private void MenuActiveHandle(bool value)
@@ -79,14 +81,19 @@ namespace Game.GameRuntime.GameSceneManager.Component
 
         private void OnEscPressed()
         {
-            // 打开菜单
-            if (!isOpenMenu && !cantOpenMenu)
+            // 诊断：纯 UI 场景若 InitModules 中途异常，本回调根本不会挂上；能打到这里说明订阅成功。
+            if (isOpenMenu || cantOpenMenu)
             {
-                GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(UIPrefabPath.GetUIPrefabPath("MenuPanel"), EUIGroup.Top, new OpenFormArgs()
-                {
-                    callBack = logic => menuFormLogic = logic as MenuFormLogic
-                });
+                Debug.Log(
+                    $"[InputComponentGSM] ESC ignored. isOpenMenu={isOpenMenu} cantOpenMenu={cantOpenMenu}");
+                return;
             }
+
+            Debug.Log("[InputComponentGSM] ESC → OpenUIForm MenuPanel");
+            GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(UIPrefabPath.GetUIPrefabPath("MenuPanel"), EUIGroup.Top, new OpenFormArgs()
+            {
+                callBack = logic => menuFormLogic = logic as MenuFormLogic
+            });
         }
 
         public override void OnShutdown()
