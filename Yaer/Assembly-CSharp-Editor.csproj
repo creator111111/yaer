@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceCollection\ResourceCollectionConfigPathAttribute.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\Misc\LogScriptingDefineSymbols.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\Editor\ShopListBakeEditor.cs" />
     <Compile Include="Assets\Editor\Tool\Dialogue\DialogDebugSceneSetupMenu.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceEditor\ResourceEditor.ResourceFolder.cs" />
     <Compile Include="Assets\PSDLayoutTool2\Editor\PsdFile\Layers\BlendingRanges.cs" />
@@ -225,7 +226,6 @@
     <Compile Include="Assets\Editor\Tool\Dialogue\DialogueFaceTypeCsvDefaults.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\Editor\BaseSceneResConfigInspector.cs" />
     <Compile Include="Assets\Scripts\GameFramework\Editor\GF\ResourceEditor\AssetSorterType.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\Editor\ShopListBakeEditor.cs" />
     <None Include="Assets\Easy Save 3\Editor\ES3ValueTypeTemplate.txt" />
     <None Include="Assets\Easy Save 3\Editor\ES3ComponentTypeTemplate.txt" />
     <None Include="Assets\Editor\GFAssetBundleSettings\xml\ResourceCollection.xml" />
