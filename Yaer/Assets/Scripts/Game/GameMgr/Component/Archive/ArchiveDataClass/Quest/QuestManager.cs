@@ -314,5 +314,22 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Quest
                 archiveComponentGM.SaveSpcData<PlayerGoldData>();
             }
         }
+
+        /// <summary>
+        /// 商店等消费侧门面：Get → TrySpendGold → Save。
+        /// 失败不改写、不落盘；成功才扣款并 SavePlayerGold。
+        /// 替代方案：UI 自行调 GetPlayerGoldData + TrySpendGold + Save——效果等价，门面与任务发奖同路更不易漏存。
+        /// </summary>
+        public bool TrySpendPlayerGold(int amount)
+        {
+            var goldData = GetPlayerGoldData();
+            if (goldData == null || !goldData.TrySpendGold(amount))
+            {
+                return false;
+            }
+
+            SavePlayerGold();
+            return true;
+        }
     }
 }

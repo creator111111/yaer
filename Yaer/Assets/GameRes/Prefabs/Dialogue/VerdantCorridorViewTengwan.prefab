@@ -105,9 +105,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _serializedExposedParameters: []
   _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":398.0,"y":157.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"FaceType":{"_value":1},"statement":{"_text":"\u85e4\u8513\u6321\u4f4f\u4e86\u8def\uff0c\u4e5f\u8bb8\u6211\u80fd\u780d\u65ad\u5b83\u3002","_text_en":"Vines
-    are blocking the way, maybe I can cut them off.","_text_jp":" \u30c4\u30bf\u304c\u9053\u3092\u3075\u3055\u3044\u3067\u308b\u3001\u3082\u3057\u304b\u3057\u3066\u5207\u308c\u308b\u304b\u3082\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":374.0,"y":268.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"1"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":1}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+    are blocking the way, maybe I can cut them off.","_text_jp":" \u30c4\u30bf\u304c\u9053\u3092\u3075\u3055\u3044\u3067\u308b\u3001\u3082\u3057\u304b\u3057\u3066\u5207\u308c\u308b\u304b\u3082\u3002","_audio":1},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":374.0,"y":268.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"1"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":2}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
+  - {fileID: 8300000, guid: 4100a4439f56c7c4a9835257d2702582, type: 3}
   - {fileID: 456483720435322333}
   _boundGraphSource:
     _version: 3.31

@@ -24,6 +24,29 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             base.OnInit();
 
             PlayerBagData.Init();
+            // Database/图集异步晚于入包时：数据层已由 PlayerBagData 重刷；此处刷新打开中的贵重物品页 Icon
+            MainItemDefProvider.DefinitionsRebuilt -= OnMainItemDefinitionsRebuilt;
+            MainItemDefProvider.DefinitionsRebuilt += OnMainItemDefinitionsRebuilt;
+        }
+
+        /// <summary>
+        /// Provider 缓存重建后，若贵重物品页已订阅 onUpdateMainItem，则立即重刷格子。
+        /// Archive 尚未就绪时跳过，避免启动早期空引用。
+        /// </summary>
+        private void OnMainItemDefinitionsRebuilt()
+        {
+            if (GameManager.Instance == null || onUpdateMainItem == null)
+            {
+                return;
+            }
+
+            var archive = GameManager.GetGMComponent<ArchiveComponentGM>();
+            if (archive == null || archive.GetData<PlayerBagData>() == null)
+            {
+                return;
+            }
+
+            UpdateItemPage();
         }
 
         public void UpdateItemPage()

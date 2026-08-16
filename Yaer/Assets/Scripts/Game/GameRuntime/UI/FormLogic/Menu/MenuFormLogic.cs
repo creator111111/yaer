@@ -236,6 +236,12 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
                         sceneMgr.SetSceneObjIsPause(false);
                     }
                 }
+                else
+                {
+                    // 纯 UI 场景（如 Village_Shop）无玩家：关菜单后必须解暂停，否则交互会一直锁死。
+                    // 见 0713/Village_Shop_ESC呼出菜单… §3.4 / 无玩家验收。
+                    sceneMgr.SetSceneObjIsPause(false);
+                }
             }
         }
 

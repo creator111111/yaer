@@ -105,9 +105,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _serializedExposedParameters: []
   _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":413.0,"y":127.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"FaceType":{"_value":6},"statement":{"_text":"\u4e0d\u80fd\u8fd9\u6837\u7a7f\u51fa\u53bb\u7684\u5566~","_text_en":"I
-    can''t go out dressed like this~","_text_jp":"\u3053\u3093\u306a\u683c\u597d\u3067\u51fa\u304b\u3051\u3089\u308c\u306a\u3044\u3088~"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":494.0,"y":222.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"1"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":1}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+    can''t go out dressed like this~","_text_jp":"\u3053\u3093\u306a\u683c\u597d\u3067\u51fa\u304b\u3051\u3089\u308c\u306a\u3044\u3088~","_audio":1},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":494.0,"y":222.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"1"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":2}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
+  - {fileID: 8300000, guid: cc9bcb6f60e585c4db1b0e20861bb8af, type: 3}
   - {fileID: 456483720435322333}
   _boundGraphSource:
     _version: 3.31

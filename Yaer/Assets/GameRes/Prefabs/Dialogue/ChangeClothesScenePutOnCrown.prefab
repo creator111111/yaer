@@ -105,9 +105,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _serializedExposedParameters: []
   _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":0.7},"Delay":{},"EndActonOnAnimationEnd":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":198.9604,"y":83.25468},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"FaceType":{"_value":4},"statement":{"_text":"\u8fd8\u662f\u5e26\u4e0a\u5427\u3002","_text_en":"I\u2019d 
-    keep it with me.","_text_jp":"\u3084\u3063\u3071\u308a\u6301\u3063\u3066\u3044\u3053\u3046\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":267.1915,"y":208.5518},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"1"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":1}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+    keep it with me.","_text_jp":"\u3084\u3063\u3071\u308a\u6301\u3063\u3066\u3044\u3053\u3046\u3002","_audio":1},"_actorName":"\u96c5\u5c14","_actorParameterID":"3abe8617-3237-414c-bdb8-549c0134f2d0","_position":{"x":267.1915,"y":208.5518},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"1"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"3abe8617-3237-414c-bdb8-549c0134f2d0","_actorObject":2}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
+  - {fileID: 8300000, guid: 0d204cb9057ddec49ac2b0fd95bfa952, type: 3}
   - {fileID: 456483720435322333}
   _boundGraphSource:
     _version: 3.31

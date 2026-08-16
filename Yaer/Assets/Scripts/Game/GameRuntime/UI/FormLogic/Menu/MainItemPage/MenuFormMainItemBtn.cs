@@ -1,7 +1,10 @@
-﻿using Game.GameMgr;
+﻿using System;
+using Game.DataTable.MainItem;
+using Game.GameMgr;
 using Game.GameMgr.Component.Archive;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
 using Game.GameRuntime.BagPack;
+using Game.Static.Enum.Goods;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -28,19 +31,40 @@ namespace Game.GameRuntime.UI.FormLogic.Menu.MainItemPage
             imgIcon.gameObject.SetActive(false);
         }
 
+        /// <summary>
+        /// 刷新单格展示。无 Icon 时仍绑定 item 与数量，避免「账本有货、格子空白」；
+        /// 末尾再调 ResolveIcon 一次，覆盖 Database/图集晚于入包的窗口期。
+        /// 替代方案：坚持无 icon 不显示，则必须保证入包前 EnsureLoaded 同步成功——更脆，不推荐。
+        /// </summary>
         public void UpdateInfo(MenuFormMainItemInfo item, MenuFormLogic menuFormLogic)
         {
-            if (!item.icon)
+            // 无论 Icon 是否就绪，都先绑定数据，保证数量与点击/悬停有对象
+            this.item = item;
+
+            // Icon 为空时再向 Provider 要一次（异步晚到后 DefinitionsRebuilt 也会重刷；此处兜底打开瞬间）
+            if (item.icon == null && !string.IsNullOrEmpty(item.name)
+                && Enum.TryParse(item.name, out EMainItemName itemId))
             {
-                imgIcon.gameObject.SetActive(false);
-                return;
+                var resolved = MainItemDefProvider.ResolveIcon(itemId);
+                if (resolved != null)
+                {
+                    item.icon = resolved;
+                }
             }
 
-            this.item = item;
-            imgIcon.gameObject.SetActive(true);
-            imgIcon.sprite = item.icon;
+            if (item.icon != null)
+            {
+                imgIcon.gameObject.SetActive(true);
+                imgIcon.sprite = item.icon;
+                imgIcon.SetNativeSize();
+            }
+            else
+            {
+                // 图标槽隐藏，但数量仍显示，玩家能确认「包里有货」
+                imgIcon.gameObject.SetActive(false);
+            }
+
             num.text = $"{item.num}";
-            imgIcon.SetNativeSize();
             GetComponent<Button>().onClick.AddListener(() =>
             {
                 UIUtils.PlayBtnAudio(menuFormLogic);
@@ -50,7 +74,8 @@ namespace Game.GameRuntime.UI.FormLogic.Menu.MainItemPage
 
         public void ShowDetail()
         {
-            if (!imgIcon.gameObject.activeSelf || item == null || detailForm == null)
+            // 不依赖 imgIcon 显隐：无 Icon 时仍要能悬停读 Database 详情（BAG-V4）
+            if (item == null || detailForm == null)
             {
                 return;
             }
