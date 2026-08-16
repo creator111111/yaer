@@ -3239,11 +3239,12 @@ MonoBehaviour:
   Root: {fileID: 8107640329777098023}
   GroundLayerMask:
     serializedVersion: 2
-    m_Bits: 1064961
+    m_Bits: 1064960
   GroundCheckOffset: {x: -0.29, y: -0.06, z: 0}
   CapsuleHeight: 2
   CapsuleRadius: 0.3
   CapsuleDirection: 1
+  groundProbeDownDistance: 0
 --- !u!1 &9017843873186118834
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,8 +25,10 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.No
         {
             base.Update();
 
-            // jump
-            if (stateMachine.GetSign("AllowJump") && Input.GetKeyDown(KeyCode.Space))
+            // jump（村内 isEnableJump=false；直接读 Space 的旁路也必须守门，避免绕过输入队列）
+            if (playerLogic.isEnableJump
+                && stateMachine.GetSign("AllowJump")
+                && Input.GetKeyDown(KeyCode.Space))
                 ExitCurrentStateMachine().EnterSubStateMachine<CombatJumpSM>().ChangeState<JumpUpState>();
         }
 

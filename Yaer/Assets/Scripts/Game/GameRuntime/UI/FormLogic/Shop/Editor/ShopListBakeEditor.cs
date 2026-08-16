@@ -15,8 +15,9 @@ using UnityEngine.UI;
 namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
 {
     /// <summary>
-    /// EB-0～EB-5：一键从 MainItemDatabase 烘焙 Buy/Sell 双 Scroll 列表到 Village_Shop 场景。
-    /// 合并原「Setup Bar List Scroll」与「Setup Database Driven Lists」；跑完后不 Play 即可验收 Icon/Name/Price。
+    /// EB-0～EB-5：一键从 MainItemDatabase 烘焙 Buy/Sell 双 Scroll 列表。
+    /// 0713 后进店真源是场景 UI_Shop（OpenUIForm ShopPanel 已弃用）；
+    /// Bake 必烤场景，可选再镜像同步 ShopPanel.prefab，避免只写 Prefab 导致场景 Name 仍 None。
     ///
     /// 菜单：Tools / Shop / Bake Shop Lists From MainItemDatabase
     /// Batchmode：ShopListBakeEditor.ExecuteBatchBake()
@@ -30,6 +31,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
         private const string ShopBarPrefabPath = "Assets/GameRes/Prefabs/UI/Shop/Shop_Bar.prefab";
         private const string MainItemDatabasePath = MainItemDefProvider.MainItemDatabaseAssetPath;
         private const string IconFolderPath = "Assets/ArtRes/UI/Item/Icon/";
+        private const string ShopNameFolderPath = "Assets/ArtRes/UI/Item/ShopName/";
         private const string IconAtlasPath = "Assets/GameRes/Atlas/MainItem_Icon.spriteatlas";
 
         private const string BarNodeName = "Bar";
@@ -45,7 +47,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
         private const string Total2DigitsNodeName = "Total2_Digits";
         private const string PriceNodeName = "Price";
         private const string NumberNodeName = "Number";
-        /// <summary>道具名节点；本任务已定为 TextMeshProUGUI。</summary>
+        /// <summary>道具名节点；本任务已定为 Image（商店名图）。</summary>
         private const string NameNodeName = "Name";
 
         /// <summary>Shop_Bar.prefab 行高（SizeDelta.y）。</summary>
@@ -97,7 +99,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
 
             if (!EditorUtility.DisplayDialog(
                     "Bake Shop Lists",
-                    "将打开 Village_Shop 场景，创建/校正双 Scroll 并从 MainItemDatabase 烘焙列表行，是否继续？",
+                    "将打开 Village_Shop，必烤场景 UI_Shop（进店主路径），并可选同步 ShopPanel.prefab 镜像。是否继续？",
                     "继续",
                     "取消"))
             {
@@ -108,47 +110,80 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             return true;
         }
 
-        /// <summary>EB-All 单方法流水线：壳 → 过滤 → Bake → 绑定 → 保存。</summary>
+        /// <summary>
+        /// 场景 UI_Shop 必烤（进店真源）；若存在 ShopPanel.prefab 再镜像同步一份。
+        /// 替代方案（不采用）：只烤 ShopPanel —— 0713 已弃用 OpenUIForm，会导致场景 Name 仍 None。
+        /// </summary>
         private static void RunBake(bool showDialog)
         {
-            // 0713 后优先烤 ShopPanel.prefab；否则回退场景 UI_Shop（含已禁用实例）。
-            GameObject uiShop = null;
-            var bakingPrefabAsset = false;
-            var shopPanelPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ShopPanelPrefabPath);
-            if (shopPanelPrefab != null)
+            // 1) 必烤场景 UI_Shop（含已禁用实例）
+            var uiShopScene = GameObject.Find("UI_Shop") ?? FindSceneObjectIncludingInactive("UI_Shop");
+            if (uiShopScene == null)
             {
-                uiShop = PrefabUtility.LoadPrefabContents(ShopPanelPrefabPath);
-                bakingPrefabAsset = true;
-                Debug.Log("[ShopListBake] 目标：ShopPanel.prefab（OpenUIForm 正式面板）");
-            }
-            else
-            {
-                uiShop = GameObject.Find("UI_Shop") ?? FindSceneObjectIncludingInactive("UI_Shop");
-            }
-
-            if (uiShop == null)
-            {
-                Report(showDialog, "未找到 ShopPanel.prefab / UI_Shop。请先跑 Tools/Shop/Build ShopPanel Prefab From UI_Shop。");
+                Report(
+                    showDialog,
+                    "未找到场景 UI_Shop。请打开 Village_Shop 并确认场景内存在 UI_Shop（进店主路径）。");
                 return;
             }
 
-            try
+            Debug.Log("[ShopListBake] 目标：场景 UI_Shop（进店主路径）");
+            var sceneResult = RunBakeOnRoot(uiShopScene, skipSceneSave: false);
+            if (!sceneResult.Ok)
             {
-                RunBakeOnRoot(uiShop, showDialog, skipSceneSave: bakingPrefabAsset);
+                Report(showDialog, "场景 UI_Shop 烘焙失败：\n" + sceneResult.Message);
+                return;
             }
-            finally
+
+            var sb = new StringBuilder();
+            sb.AppendLine("场景 UI_Shop 已烤（进店主路径）。");
+            sb.AppendLine(sceneResult.Message);
+
+            // 2) 可选镜像 ShopPanel.prefab（非进店主路径，防日后误用时双份漂移）
+            var shopPanelPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ShopPanelPrefabPath);
+            if (shopPanelPrefab != null)
             {
-                if (bakingPrefabAsset && uiShop != null)
+                var contents = PrefabUtility.LoadPrefabContents(ShopPanelPrefabPath);
+                try
                 {
-                    PrefabUtility.SaveAsPrefabAsset(uiShop, ShopPanelPrefabPath);
-                    PrefabUtility.UnloadPrefabContents(uiShop);
-                    Debug.Log("[ShopListBake] 已写回 " + ShopPanelPrefabPath);
+                    Debug.Log("[ShopListBake] 镜像同步：ShopPanel.prefab（非进店主路径）");
+                    var prefabResult = RunBakeOnRoot(contents, skipSceneSave: true);
+                    if (prefabResult.Ok)
+                    {
+                        PrefabUtility.SaveAsPrefabAsset(contents, ShopPanelPrefabPath);
+                        sb.AppendLine();
+                        sb.AppendLine("ShopPanel.prefab 已同步镜像。");
+                        sb.AppendLine(prefabResult.Message);
+                        Debug.Log("[ShopListBake] 已写回 " + ShopPanelPrefabPath);
+                    }
+                    else
+                    {
+                        sb.AppendLine();
+                        sb.AppendLine("ShopPanel.prefab 同步失败：" + prefabResult.Message);
+                    }
+                }
+                finally
+                {
+                    PrefabUtility.UnloadPrefabContents(contents);
                 }
             }
+            else
+            {
+                sb.AppendLine();
+                sb.AppendLine("未找到 ShopPanel.prefab，跳过镜像同步。");
+            }
+
+            Report(showDialog, sb.ToString().TrimEnd());
+        }
+
+        /// <summary>单次烤根结果：成功与否 + 汇总/错误文案（由 RunBake 统一弹窗）。</summary>
+        private struct BakeRootResult
+        {
+            public bool Ok;
+            public string Message;
         }
 
         /// <summary>在指定根（场景 UI_Shop 或 ShopPanel 内容实例）上执行 Bake 主体。</summary>
-        private static void RunBakeOnRoot(GameObject uiShop, bool showDialog, bool skipSceneSave)
+        private static BakeRootResult RunBakeOnRoot(GameObject uiShop, bool skipSceneSave)
         {
             // IMG：校正 Shop_Bar 预制体 Price/Number DigitStrip
             EnsureShopBarPrefabDigitStructure();
@@ -163,15 +198,13 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             var bar = uiShop.transform.Find(BarNodeName);
             if (bar == null)
             {
-                Report(showDialog, "未找到 Bar 节点（ShopPanel / UI_Shop 下）。");
-                return;
+                return Fail("未找到 Bar 节点（ShopPanel / UI_Shop 下）。");
             }
 
             var barBg = EnsureBarBackground(bar);
             if (barBg == null)
             {
-                Report(showDialog, "Bar 下缺少 BG/Bar_BG。");
-                return;
+                return Fail("Bar 下缺少 BG/Bar_BG。");
             }
 
             // 1～3：Ensure 双 Scroll 壳
@@ -179,8 +212,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             var sellScroll = EnsureScrollShell(bar, barBg, BarListScrollSellName, duplicateFrom: buyScroll);
             if (buyScroll == null || sellScroll == null)
             {
-                Report(showDialog, "Buy/Sell Scroll 壳创建失败。");
-                return;
+                return Fail("Buy/Sell Scroll 壳创建失败。");
             }
 
             // 4：滚轮 / Viewport 修正
@@ -191,32 +223,30 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             var database = AssetDatabase.LoadAssetAtPath<MainItemDatabase>(MainItemDatabasePath);
             if (database == null || database.entries == null)
             {
-                Report(showDialog, "未找到 MainItemDatabase: " + MainItemDatabasePath);
-                return;
+                return Fail("未找到 MainItemDatabase: " + MainItemDatabasePath);
             }
 
             var shopBarPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ShopBarPrefabPath);
             if (shopBarPrefab == null)
             {
-                Report(showDialog, "未找到 Shop_Bar.prefab: " + ShopBarPrefabPath);
-                return;
+                return Fail("未找到 Shop_Bar.prefab: " + ShopBarPrefabPath);
             }
 
             var buyContent = FindScrollContent(buyScroll);
             var sellContent = FindScrollContent(sellScroll);
             if (buyContent == null || sellContent == null)
             {
-                Report(showDialog, "Scroll 下缺少 Viewport/Content。");
-                return;
+                return Fail("Scroll 下缺少 Viewport/Content。");
             }
 
             var missingIcons = new List<string>();
+            var missingShopNames = new List<string>();
 
             // 6～7：Bake 两侧 Content
             var buyEntries = FilterEntries(database.entries, isBuyRow: true);
             var sellEntries = FilterEntries(database.entries, isBuyRow: false);
-            var buyCount = BakeContent(buyContent, buyEntries, shopBarPrefab, isBuyRow: true, missingIcons, digitSprites);
-            var sellCount = BakeContent(sellContent, sellEntries, shopBarPrefab, isBuyRow: false, missingIcons, digitSprites);
+            var buyCount = BakeContent(buyContent, buyEntries, shopBarPrefab, isBuyRow: true, missingIcons, missingShopNames, digitSprites);
+            var sellCount = BakeContent(sellContent, sellEntries, shopBarPrefab, isBuyRow: false, missingIcons, missingShopNames, digitSprites);
 
             // 8：绑定 ShopFormLogic
             BindShopFormLogic(uiShop, buyContent, sellContent, buyScroll, sellScroll);
@@ -229,16 +259,21 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             LayoutRebuilder.ForceRebuildLayoutImmediate(buyContent as RectTransform);
             LayoutRebuilder.ForceRebuildLayoutImmediate(sellContent as RectTransform);
 
-            // 11：仅烤场景 UI_Shop 时写场景；烤 Prefab 由 RunBake.finally 写回。
+            // 11：仅烤场景 UI_Shop 时写场景；烤 Prefab 由 RunBake 外层 SaveAsPrefabAsset。
             if (!skipSceneSave)
             {
                 EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                 EditorSceneManager.SaveOpenScenes();
             }
 
-            // 12：汇总
-            var summary = BuildSummary(buyCount, sellCount, missingIcons);
-            Report(showDialog, summary);
+            // 12：汇总（不弹窗；由 RunBake 统一 Report）
+            var summary = BuildSummary(buyCount, sellCount, missingIcons, missingShopNames, savedScene: !skipSceneSave);
+            return new BakeRootResult { Ok = true, Message = summary };
+        }
+
+        private static BakeRootResult Fail(string message)
+        {
+            return new BakeRootResult { Ok = false, Message = message };
         }
 
         /// <summary>含已禁用物体；排除 Prefab 资产本身。</summary>
@@ -442,7 +477,8 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
         }
 
         /// <summary>
-        /// 清空 Content → InstantiatePrefab → 写 Icon/Name/Price → 序列化 ShopBarRowView baked 字段。
+        /// 清空 Content → InstantiatePrefab → 写 Icon/Name(名图)/Price → 序列化 ShopBarRowView baked 字段。
+        /// Bake 名图固定中文槽预览；Play 再按当前语言 Resolve。
         /// </summary>
         private static int BakeContent(
             Transform content,
@@ -450,6 +486,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             GameObject shopBarPrefab,
             bool isBuyRow,
             List<string> missingIcons,
+            List<string> missingShopNames,
             Sprite[] digitSprites)
         {
             ClearChildren(content);
@@ -469,7 +506,11 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
                 // ① 直接写 UI（Scene 里立刻可见，不依赖 Play）
                 var icon = ResolveIconEditor(entry, missingIcons);
                 SetImageSprite(row.transform, "Icon", icon);
-                SetText(row.transform, "Name", entry.displayName);
+
+                // SN-6：Name 贴中文店招图；禁止再 SetText(displayName)。
+                var shopName = ResolveShopNameSpriteEditor(entry, missingShopNames);
+                SetImageSprite(row.transform, NameNodeName, shopName, requireImage: true);
+
                 SetSpriteNumber(row.transform, PriceNodeName, price, digitSprites, TextAnchor.MiddleCenter);
 
                 // ② 组件序列化（运行时只读 baked 字段）
@@ -526,6 +567,35 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             return null;
         }
 
+        /// <summary>
+        /// Bake 预览固定中文：entry.shopNameSprite → ShopName/{itemId}.png → null（记 summary）。
+        /// </summary>
+        private static Sprite ResolveShopNameSpriteEditor(MainItemDefEntry entry, List<string> missingShopNames)
+        {
+            if (entry == null)
+            {
+                return null;
+            }
+
+            if (entry.shopNameSprite != null)
+            {
+                return entry.shopNameSprite;
+            }
+
+            var pngPath = ShopNameFolderPath + entry.itemId + ".png";
+            var pngSprite = AssetDatabase.LoadAssetAtPath<Sprite>(pngPath);
+            if (pngSprite != null)
+            {
+                return pngSprite;
+            }
+
+            missingShopNames.Add(entry.itemId.ToString());
+            Debug.LogWarning(
+                $"[ShopNameSprite] Bake 缺中文名图：{entry.itemId}；请拖 shopNameSprite 或补 {pngPath}",
+                entry.shopNameSprite);
+            return null;
+        }
+
         private static SpriteAtlas GetIconAtlas()
         {
             if (_cachedIconAtlas == null)
@@ -566,7 +636,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             EditorUtility.SetDirty(formLogic);
         }
 
-        /// <summary>IMG-1：Shop_Bar.prefab 的 Price/Number 下补 DigitStrip，禁用 Legacy Text。</summary>
+        /// <summary>IMG-1：Shop_Bar.prefab 的 Price/Number 下补 DigitStrip；SN-5：Name 改为 Image。</summary>
         private static void EnsureShopBarPrefabDigitStructure()
         {
             var prefabRoot = PrefabUtility.LoadPrefabContents(ShopBarPrefabPath);
@@ -580,12 +650,50 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             {
                 var sprites = GetDigitSprites();
                 EnsureRowPriceAndNumberDigitStrips(prefabRoot.transform, sprites);
+                EnsureNameNodeIsImage(prefabRoot.transform);
                 PrefabUtility.SaveAsPrefabAsset(prefabRoot, ShopBarPrefabPath);
             }
             finally
             {
                 PrefabUtility.UnloadPrefabContents(prefabRoot);
             }
+        }
+
+        /// <summary>
+        /// SN-5：Name 节点移除 TMP / Legacy Text，确保挂 Image（Preserve Aspect On，Raycast 关）。
+        /// Bake 时顺带校正，避免源 Prefab 漏改导致行实例仍带 TMP。
+        /// </summary>
+        private static void EnsureNameNodeIsImage(Transform rowRoot)
+        {
+            var nameNode = rowRoot.Find(NameNodeName);
+            if (nameNode == null)
+            {
+                Debug.LogError("[ShopNameSprite] Shop_Bar 缺少 Name 节点，无法换成 Image。");
+                return;
+            }
+
+            var tmp = nameNode.GetComponent<TextMeshProUGUI>();
+            if (tmp != null)
+            {
+                Object.DestroyImmediate(tmp);
+            }
+
+            var legacy = nameNode.GetComponent<Text>();
+            if (legacy != null)
+            {
+                Object.DestroyImmediate(legacy);
+            }
+
+            var image = nameNode.GetComponent<Image>();
+            if (image == null)
+            {
+                image = nameNode.gameObject.AddComponent<Image>();
+            }
+
+            image.color = Color.white;
+            image.raycastTarget = false;
+            image.preserveAspect = true;
+            EditorUtility.SetDirty(nameNode.gameObject);
         }
 
         private static void EnsureRowPriceAndNumberDigitStrips(Transform rowRoot, Sprite[] digitSprites)
@@ -760,17 +868,31 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             display.EditorBakeSetNumber(ShopQuantityInputHelper.DefaultQuantity);
         }
 
-        private static void SetImageSprite(Transform row, string childName, Sprite sprite)
+        private static void SetImageSprite(Transform row, string childName, Sprite sprite, bool requireImage = false)
         {
             var node = row.Find(childName);
             if (node == null)
             {
+                if (requireImage)
+                {
+                    Debug.LogError(
+                        $"[ShopNameSprite] 缺少子节点 {childName}（row={row.name}）。",
+                        row);
+                }
+
                 return;
             }
 
             var image = node.GetComponent<Image>();
             if (image == null)
             {
+                if (requireImage || childName == NameNodeName)
+                {
+                    Debug.LogError(
+                        $"[ShopNameSprite] {childName} 节点缺少 Image（row={row.name}）。请将 Shop_Bar.Name 换成 Image 后再 Bake。",
+                        node);
+                }
+
                 return;
             }
 
@@ -779,9 +901,8 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
         }
 
         /// <summary>
-        /// 写子节点文案：优先 TMP，再写 Legacy。
-        /// Name 已定为 TextMeshProUGUI（描边/投影材质）；缺 TMP 时 Error 并跳过，避免静默写到已删除的 Legacy。
-        /// 替代方案：继续兼容双组件静默写入，但会掩盖 Prefab 漏改，验收时难发现。
+        /// 写子节点文案：优先 TMP，再写 Legacy（合计等非 Name 节点仍可能用到）。
+        /// Name 已改为 Image，请走 <see cref="SetImageSprite"/>，禁止再对本节点写 displayName。
         /// </summary>
         private static void SetText(Transform row, string childName, string value)
         {
@@ -791,11 +912,10 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
                 return;
             }
 
-            // NM-4：Name 必须是 TMP；其它节点仍走双组件兼容
-            if (childName == NameNodeName && node.GetComponent<TextMeshProUGUI>() == null)
+            if (childName == NameNodeName)
             {
                 Debug.LogError(
-                    $"[ShopListBake] Name 节点缺少 TextMeshProUGUI（row={row.name}）。请将 Shop_Bar.Name 换成 TMP 后再 Bake。",
+                    $"[ShopNameSprite] 禁止对 Name 写文字（row={row.name}）；请用 SetImageSprite + shopNameSprite。",
                     node);
                 return;
             }
@@ -964,18 +1084,37 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
             }
         }
 
-        private static string BuildSummary(int buyCount, int sellCount, List<string> missingIcons)
+        private static string BuildSummary(
+            int buyCount,
+            int sellCount,
+            List<string> missingIcons,
+            List<string> missingShopNames,
+            bool savedScene)
         {
             var sb = new StringBuilder();
             sb.AppendLine("Bake 完成。");
             sb.AppendLine($"- Buy 行数：{buyCount}");
             sb.AppendLine($"- Sell 行数：{sellCount}");
             sb.AppendLine("- Sell Scroll 默认隐藏，Buy 显示");
-            sb.AppendLine("- 场景已 MarkDirty + Save");
+            if (savedScene)
+            {
+                sb.AppendLine("- 场景已 MarkDirty + Save");
+            }
+            else
+            {
+                sb.AppendLine("- Prefab 内容已烤（由外层 SaveAsPrefabAsset）");
+            }
+
+            sb.AppendLine("- Name：中文店招名图预览（Play 按当前语言 Resolve）");
 
             if (missingIcons.Count > 0)
             {
                 sb.AppendLine($"- 未解析 Icon 的 itemId：{string.Join(", ", missingIcons)}");
+            }
+
+            if (missingShopNames.Count > 0)
+            {
+                sb.AppendLine($"- 缺中文店招名图 itemId：{string.Join(", ", missingShopNames)}");
             }
 
             return sb.ToString().TrimEnd();

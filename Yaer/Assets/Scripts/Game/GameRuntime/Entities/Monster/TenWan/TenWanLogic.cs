@@ -16,6 +16,18 @@ namespace Game.GameRuntime.Entities.Monster.TenWan
         protected internal override void OnInit(object userData)
         {
             base.OnInit(userData);
+
+            // GroundCld：Prefab 实心 + OnlyMapObj + 整株细高盒，尖顶也能托住 PlayerFoot；
+            // 又不进 GroundLayerMask → JumpFall/DamageFlyFall 死等 IsGrounded（与史莱姆同族残留）。
+            // 怪落地靠 GroundChecker + GravityScale=0，GroundCld 本意「只和地图碰」；改 Trigger 后不再当玩家踏板。
+            // 替代方案：改 Physics2D 矩阵 / GroundLayerMask（OPEN_QUESTIONS Q1/Q2，本期不采用）；
+            // 或恢复 PlayerBodyCollider 挤出（Q5，本期不恢复）。
+            // 禁止：对场景障碍 TenWanSceneObjLogic 套同款（砍断前实心挡路是设计）。
+            if (groundCld != null)
+            {
+                groundCld.isTrigger = true;
+            }
+
             componentSystem.GetComponent<HealthComponent>().onHpIsZero += OnDead;
 
             if (defaultAwake)

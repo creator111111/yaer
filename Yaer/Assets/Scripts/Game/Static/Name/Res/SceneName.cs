@@ -43,6 +43,19 @@ namespace Game.Static.Name.Res
         public const string Village_HomeScene2 = "Village_HomeScene2";
 
         /// <summary>
+        /// 肯姆尼第一户民居室内（<c>Assets/GameRes/Scenes/Village_HomeScene1.unity</c>）；由村里 House_Npc1 进入。
+        /// 勿与龙宫 <see cref="HomeScene1"/> / <c>HomeScene1Manager</c> 混淆。
+        /// </summary>
+        public const string Village_HomeScene1 = "Village_HomeScene1";
+
+        /// <summary>
+        /// 肯姆尼民居室内（<c>Assets/GameRes/Scenes/Village_HomeScene23.unity</c>）；由村里 House_Npc4 进入。
+        /// 曾用名 Village_HomeScene4（2026-08-04 改名）。勿与 <see cref="Village_House4"/>、
+        /// <see cref="Village_HomeScene2"/> 或磁盘上的 Village_HomeScene3 混淆。
+        /// </summary>
+        public const string Village_HomeScene23 = "Village_HomeScene23";
+
+        /// <summary>
         /// 肯姆尼村外（<c>Assets/GameRes/Scenes/Village_OutSide.unity</c>）；由村里 MapRight/RightDoor 进入。
         /// </summary>
         public const string Village_OutSide = "Village_OutSide";

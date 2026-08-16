@@ -6,7 +6,7 @@ using ParadoxNotion.Design;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("NormalDialoguePanelControll")]
-    [Name("???UI??")]
+    [Name("关闭对话UI")]
     public class NormalDialogueCloseTaskAction : NormalDialoguePanelTaskAction
     {
         public BBParameter<bool> ClearCurrentDialogueScene;

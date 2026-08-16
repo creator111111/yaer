@@ -11,7 +11,7 @@ using ParadoxNotion.Design;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("UI")]
-    [Name("ս��������ʾ����")]
+    [Name("战斗立绘显示控制")]
     public class FightingPanelSetIllustrationVisibleActionTask : ActionTask
     {
         public BBParameter<bool> visible;
@@ -25,7 +25,7 @@ namespace Game.GameRuntime.Story.Node
             var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(panelPath);
             if (uiForm == null)
             {
-                Debug.LogError($"FightingPanelδ��");
+                Debug.LogError($"FightingPanel未打开");
             }
             else
             {
@@ -39,8 +39,8 @@ namespace Game.GameRuntime.Story.Node
         {
             if (formLogic != null)
             {
-                // �� visible Ϊ true ʱ�������������������ʾս�������ǰ���³�����ʾ
-                // �� visible Ϊ false ʱ��ʼ������������ʱ�ر�����
+                // 当 visible 为 true 时：按设置里「是否显示战斗立绘」再决定最终是否显示
+                // 当 visible 为 false 时：强制关闭立绘
                 bool finalVisible = false;
 
                 if (visible.value)

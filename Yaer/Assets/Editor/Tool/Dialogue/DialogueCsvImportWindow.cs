@@ -43,7 +43,8 @@ namespace EditorC.Tool.Dialogue
             EditorGUILayout.HelpBox(
                 "阶段 1：从 CSV 生成 DialogueTree .asset（StatementNodeEx + 选项分支 + 连线）。\n" +
                 "产物需先在 NodeCanvas 编辑器中校对；合并进 Prefab 为阶段 2。\n" +
-                "CSV 支持 7 列：…, Extra, FaceType。FaceType 填枚举英文名（如 Smile）；仅对白行有效。" +
+                "CSV 支持列：…, Extra, FaceType。FaceType 填枚举英文名（如 Smile）；Dialogue/Anim 行有效。" +
+                "Type=Anim 时 Extra 填动画键（如 Anim_Gusha），导入器生成 Play UI Animator → Statement。" +
                 "旧 6 列仍可用（雅尔默认 Smile，古莎默认 Normal）。" +
                 "策划表含 English / Voice 等额外列时，Next 与 FaceType 按表头列名自动识别。",
                 MessageType.Info);

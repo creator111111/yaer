@@ -89,7 +89,14 @@ namespace Game.DataTable.MainItem.Editor
                     detail = row.TryGetValue("detail", out var detail) ? detail : string.Empty,
                     detailEn = row.TryGetValue("detail_en", out var detailEn) ? detailEn : string.Empty,
                     detailJp = row.TryGetValue("detail_jp", out var detailJp) ? detailJp : string.Empty,
-                    icon = AssetDatabase.LoadAssetAtPath<Sprite>(IconFolderPath + name + ".png")
+                    icon = AssetDatabase.LoadAssetAtPath<Sprite>(IconFolderPath + name + ".png"),
+                    // SN：导入时顺带挂上三语店招名图（目录有则拖进槽；无则留空由策划补）。
+                    shopNameSprite = AssetDatabase.LoadAssetAtPath<Sprite>(
+                        "Assets/ArtRes/UI/Item/ShopName/" + name + ".png"),
+                    shopNameSpriteEn = AssetDatabase.LoadAssetAtPath<Sprite>(
+                        "Assets/ArtRes/UI/Item/ShopName/" + name + "_en.png"),
+                    shopNameSpriteJp = AssetDatabase.LoadAssetAtPath<Sprite>(
+                        "Assets/ArtRes/UI/Item/ShopName/" + name + "_jp.png")
                 };
 
                 database.entries.Add(entry);

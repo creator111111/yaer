@@ -394,6 +394,13 @@ namespace Game.GameRuntime.Entities.Monster
             isDead = true;
             bodyCld.isTrigger = true;
             footCld.isTrigger = true;
+            // GroundCld 不在 CldController.nodes 里，SetActiveAll 关不到。
+            // 死后必须显式关掉，否则 OnlyMapObj 实心盒会继续挡 PlayerFoot（树洞虫卵打碎后仍卡住）。
+            // 替代方案：把 GroundCld 挂进 CldController；或改 Physics2D 矩阵 Ignore PlayerFoot↔OnlyMapObj（会影响天琬等挡板，本期不做）。
+            if (groundCld != null)
+            {
+                groundCld.enabled = false;
+            }
             foreach(var key in atkCollAreaNodeDict.Keys)
             {
                 atkCollAreaNodeDict[key].SetActive(false);

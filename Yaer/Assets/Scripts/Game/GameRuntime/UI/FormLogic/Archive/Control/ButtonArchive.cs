@@ -102,8 +102,77 @@ namespace Game.GameRuntime.UI.FormLogic.Archive.Control
             imgUsing.gameObject.SetActive(false);
             imgBg.gameObject.SetActive(true);
 
+            // 动态 TTF（如 Alibaba）的 Font Material 常带非 UI Shader → 背景裁得住、字漏出遮罩
+            EnsureAllTextsUseMaskableFontMaterial();
+
             btnDelete.onClick.AddListener(() => onClickDelete?.Invoke(guid));
             btnDelete.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// 将本行所有 <see cref="Text"/> 的字体材质切到 <c>UI/Default Font</c>，使其响应 Mask / RectMask2D。
+        /// <para>
+        /// 重要原因：Inspector 里 Material 显示为 Font Material、Maskable 已勾时仍漏字，是因为 Shader 不写 Stencil/不接 RectClip。
+        /// 替代方案：整页改 TMP（改动面大）；或手搓独立 .mat——动态字体贴图会变，运行时改 Shader 更稳。
+        /// </para>
+        /// </summary>
+        void EnsureAllTextsUseMaskableFontMaterial()
+        {
+            var texts = GetComponentsInChildren<Text>(true);
+            for (int i = 0; i < texts.Length; i++)
+            {
+                EnsureMaskableFontMaterial(texts[i]);
+            }
+        }
+
+        /// <summary>按 Font 缓存一份可遮罩材质，避免每行 new Material 泄漏。</summary>
+        static readonly Dictionary<int, Material> s_maskableFontMaterials = new Dictionary<int, Material>();
+
+        static void EnsureMaskableFontMaterial(Text text)
+        {
+            if (text == null)
+            {
+                return;
+            }
+
+            text.maskable = true;
+
+            var font = text.font;
+            if (font == null || font.material == null)
+            {
+                return;
+            }
+
+            var uiFontShader = Shader.Find("UI/Default Font");
+            if (uiFontShader == null)
+            {
+                Debug.LogWarning("[ButtonArchive] 找不到 Shader「UI/Default Font」，列表文字可能仍逃出遮罩");
+                return;
+            }
+
+            // 已是可遮罩材质则只清掉错误覆写，走字体默认即可
+            var assigned = text.material;
+            if (assigned != null && assigned.shader == uiFontShader)
+            {
+                return;
+            }
+
+            if (assigned == null && font.material.shader == uiFontShader)
+            {
+                return;
+            }
+
+            int key = font.GetInstanceID();
+            if (!s_maskableFontMaterials.TryGetValue(key, out var mat) || mat == null)
+            {
+                // 从字体材质拷贝贴图/属性，再强制 UI 遮罩 Shader
+                mat = new Material(font.material);
+                mat.shader = uiFontShader;
+                mat.name = font.name + " (UI Maskable)";
+                s_maskableFontMaterials[key] = mat;
+            }
+
+            text.material = mat;
         }
 
 

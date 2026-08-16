@@ -129,6 +129,8 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             SwitchToBuyTab();
             // 显式放行：避免其它 UI 关过后菜单仍锁死；场景侧 Village_ShopSceneManager 也会 SetAllowOpenMenu(true)。
             AllowOpenMenu(true);
+            // SN-8：每次开店再刷一次名图（池化复开 / 进店前已改语言）。
+            RefreshAllShopNamesForLanguage();
             Debug.Log("[VillageShopDebug] ShopPanel OnOpen AllowOpenMenu(true) 店内可 ESC 开菜单");
         }
 
@@ -167,6 +169,51 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 $"[ShopFormLogic] runtime bound buyRows={_buyRowViews.Count} sellRows={_sellRowViews.Count} " +
                 $"wiredInputs={_wiredQuantityInputs.Count} sellBtn={sellBtnState}",
                 this);
+
+            // SN-8：进店按当前语言贴三语名图（Bake 仅为中文预览）。
+            RefreshAllShopNamesForLanguage();
+        }
+
+        /// <summary>
+        /// 多语言 UI 刷新钩子：设置改语言后若 Form 触发 UpdateUI，重刷货架名图。
+        /// 替代方案：仅重进店才刷 —— 底线可用，但店内切语会错；故尽量挂此钩子。
+        /// </summary>
+        public override void UpdateUI()
+        {
+            base.UpdateUI();
+            RefreshAllShopNamesForLanguage();
+        }
+
+        /// <summary>
+        /// 设置面板盖住商店再露出时重刷名图（尽量不关店即换语）。
+        /// </summary>
+        protected internal override void OnReveal()
+        {
+            base.OnReveal();
+            if (_shopRuntimeBound)
+            {
+                RefreshAllShopNamesForLanguage();
+            }
+        }
+
+        /// <summary>遍历买/卖可见行，按当前语言幂等重贴 Name 名图。</summary>
+        public void RefreshAllShopNamesForLanguage()
+        {
+            RefreshRowListShopNames(_buyRowViews);
+            RefreshRowListShopNames(_sellRowViews);
+        }
+
+        private static void RefreshRowListShopNames(IReadOnlyList<ShopBarRowView> rows)
+        {
+            if (rows == null)
+            {
+                return;
+            }
+
+            for (var i = 0; i < rows.Count; i++)
+            {
+                rows[i]?.RefreshShopNameForLanguage();
+            }
         }
 
         /// <summary>

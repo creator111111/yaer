@@ -238,7 +238,7 @@ namespace Game.GameRuntime.UI.FormLogic.Map
             switch (placeName)
             {
                 case JingLingVillageButtonName:
-                    // 策划 §7：点击即换场至 Village_KenMuNi1（不经地图自建黑幕后再 TriggerStory）
+                    // 正常流程：地图选关后进村（章末已 UnlockPlace）
                     OnSelectJingLingVillage();
                     break;
                 default:
@@ -294,9 +294,11 @@ namespace Game.GameRuntime.UI.FormLogic.Map
         }
 
         /// <summary>
-        /// 精灵城入口：走 <see cref="LoadSceneComponentGSM.LoadScene"/> → <see cref="Game.GameMgr.Component.ChangeScene.ChangeSceneComponentGM"/>，
-        /// 与《场景切换与对话触发跳转_架构溯源报告》§1～2、§7 一致；终点场景为 <see cref="SceneName.Village_KenMuNi1"/>。
-        /// 替代方案：若策划改回「先对话再进村」，可恢复 TriggerStory(&quot;Village_KenMuNiStart&quot;) 或在 Village 场景 Procedure 中接对话。
+        /// 地图选关后进村（正常流程）：走 <see cref="LoadSceneComponentGSM.LoadScene"/> →
+        /// <see cref="Game.GameMgr.Component.ChangeScene.ChangeSceneComponentGM"/>，
+        /// 终点 <see cref="SceneName.Village_KenMuNi1"/>。
+        /// 章末须先 UnlockPlace(JingLingVillage) 才能点亮本钮；点了即换场，无二次确认弹窗。
+        /// 替代方案（本期不做）：黑幕后再 TriggerStory(&quot;Village_KenMuNiStart&quot;) —— 与定稿「点关卡进新地图」不符。
         /// </summary>
         private void OnSelectJingLingVillage()
         {
@@ -314,6 +316,7 @@ namespace Game.GameRuntime.UI.FormLogic.Map
             }
 
             jingLingVillageBlackTransitionInProgress = true;
+            Debug.Log("[MapSelect] 点击 ButtonJingLingVillage → LoadScene(Village_KenMuNi1)");
             // blackFade=true：黑幕由换场组件统一打开。
             // stayAction 在黑幕全显之后、OnExitScene/卸载当前场景之前执行：此时换场已确认进入管线，关闭 MapPanel，
             // 避免地图仍叠在 UI 栈上直至场景卸载（与「确认开始加载/转场」语义一致；若需严格等新场景 Ready 再关，可再订阅 onGameSceneManagerReady）。

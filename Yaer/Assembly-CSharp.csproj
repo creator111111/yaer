@@ -269,6 +269,7 @@
     <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3XMLWriter.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\DamageFly\Fly\DamageFlyClsClimbUpState.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Network\NetworkMissHeartBeatEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\DialogueMaskAvatarPresenter.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\SubManager\Buff\BuffManager.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_CollisionModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Generic\Map\LimitJumpArea.cs" />
@@ -283,6 +284,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\UIIntKey.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\UIPanel\OpenAnyPanelAcitonTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Attack\AttackLogic.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_KenMuNi\VillageStartLayerRevealGate.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\WebRequestStartEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Procedure\ProcedureGame.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\DefaultEntityHelper.cs" />
@@ -423,6 +425,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarUInt16.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\BaseComponentGSM.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\UI\UIGroupHelperBase.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_House\Village_HomeScene1SceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\SubManager\ISubSceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\Paralysis\BossMogutBrokenLegParalysisDownState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MainItemPage\MenuFormMainItemBtnMask.cs" />
@@ -619,6 +622,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseSceneObj\BaseItem.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Story\DialogDebugDialogueUISetup.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Procedure\ProcedureLaunch.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\PlayUiAnimatorActionTask.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Readers\ES3Reader.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarChar.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\PlayerMoveComponent.cs" />
@@ -754,6 +758,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Common\QuestTurnInAction.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\NormalDialoguePanel\NormalDialogueCloseTaskAction.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Scene\LoadSceneSuccessEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_House\Village_HomeScene23SceneManager.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.SceneInformationWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarColor.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Enum\Role\DialogueFaceType.cs" />
@@ -916,6 +921,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\ReadWritePathType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\CldController\CldControllerComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\BossMogutRuntimeController.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_Shop\Village_ShopSceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopDebugLogger.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\StoryTrigger\WestRappRoadBattleStory.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\DownloadStartEventArgs.cs" />
@@ -1222,9 +1228,10 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\DataTable\LoadDataTableSuccessEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\Clothes\ClothesName.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Black\BlackFormLogic.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Home\PlayerHomeCsRuntimeController.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Village_KenMuNi\WaitVillageStartBgRevealActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\Battle\NormalAttack\NormalAttack2Logic.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedValueType.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Home\PlayerHomeCsRuntimeController.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\PlayerProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\PlayerAnimationEvent.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Network\NetworkConnectedEventArgs.cs" />
@@ -1247,7 +1254,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_Shop\Village_ShopSceneManager.cs" />
     <None Include="Assets\GameRes\Config\MonsterConfig\MonsterConfig.json" />
     <None Include="Assets\GameRes\Config\AchievementConfig\AchievementConfig.json" />
     <None Include="Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.xml" />

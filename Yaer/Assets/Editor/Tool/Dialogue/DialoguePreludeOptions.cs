@@ -29,8 +29,8 @@ namespace EditorC.Tool.Dialogue
         /// </summary>
         public GameObject PortraitReferencePrefab { get; set; }
 
-        /// <summary>淡入时长（秒），与 Village_KenMuNiStart 等成品 Prefab 默认 0.7 一致。</summary>
-        public float PreludeFadeDuration { get; set; } = 0.7f;
+        /// <summary>淡入时长（秒），与 Village_KenMuNiStart 分层显现默认 1.0 一致。</summary>
+        public float PreludeFadeDuration { get; set; } = 1.0f;
 
         /// <summary>
         /// 是否未启用任何前奏/收尾选项。为 true 时 <see cref="DialogueCsvGraphBuilder"/> 不得进入前奏分支。

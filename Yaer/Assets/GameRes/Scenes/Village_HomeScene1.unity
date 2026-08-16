@@ -133,10 +133,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 942268460886901370}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9843b6b62f10aa745916f25edc3fc914, type: 3}
+  m_Script: {fileID: 11500000, guid: c1d2e3f4a5b6478091a2b3c4d5e6f701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  config: {fileID: 11400000, guid: d77b8a3360e9a4742b2949e878b95464, type: 2}
+  config: {fileID: 11400000, guid: d2e3f4a5b6c7480192a3b4c5d6e7f812, type: 2}
   curStoryPrefab: {fileID: 0}
   deadMonsterSpriteSort: 0
   canShowSaveGame: 1
@@ -144,11 +144,11 @@ MonoBehaviour:
   canShowItemBag: 1
   isCanTouchWithOther: 1
   EnterPosConfig:
-  - lastScene: ForestScene
+  - lastScene: Village_KenMuNi1
     pos: {fileID: 3588313296241062192}
     DatePass: {x: 0, y: 0, z: 0}
-  - lastScene: HomeScene2
-    pos: {fileID: 0}
+  - lastScene: ForestScene
+    pos: {fileID: 3588313296241062192}
     DatePass: {x: 0, y: 0, z: 0}
 --- !u!1001 &255673758
 PrefabInstance:
@@ -281,10 +281,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 28.8, y: 5.4}
+    - - {x: -2.21593, y: 5.4410048}
       - {x: -28.8, y: 5.4}
       - {x: -28.8, y: -5.4}
-      - {x: 28.8, y: -5.4}
+      - {x: -2.1921196, y: -5.348646}
 --- !u!1 &442106407
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,16 +362,6 @@ MonoBehaviour:
   objRoot: {fileID: 442106408}
   sceneObjs:
   - {fileID: 1099577288}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &678912036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8405436599562262169, guid: f190fa2a069af984ca8ef71cb03be4f9,
@@ -398,7 +388,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1099577283
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1082,10 +1072,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4846682348870892844, guid: 816ec9f5617418c4ab0e9fadff4a1cf7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6912636255376670288, guid: 816ec9f5617418c4ab0e9fadff4a1cf7,
         type: 3}
       propertyPath: m_Name
       value: "\u6751\u6C11\u5BB61\u5408\u5C42"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7650876257571896967, guid: 816ec9f5617418c4ab0e9fadff4a1cf7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7792915089637651946, guid: 816ec9f5617418c4ab0e9fadff4a1cf7,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7792915089637651946, guid: 816ec9f5617418c4ab0e9fadff4a1cf7,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 694918277
+      objectReference: {fileID: 0}
+    - target: {fileID: 8922189729854031869, guid: 816ec9f5617418c4ab0e9fadff4a1cf7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 816ec9f5617418c4ab0e9fadff4a1cf7, type: 3}
@@ -1226,7 +1241,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1785716848092191317}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -19.201376, y: 0, z: -10}
+  m_LocalPosition: {x: -19.200066, y: 0.033335686, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3032810690154912776}
@@ -1563,7 +1578,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3588313294745101347}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -30.67, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2054997936}
@@ -1638,7 +1653,7 @@ MonoBehaviour:
   isNoBreakState: 0
   componentSystem: {fileID: 3588313294745101350}
   bornPos: {fileID: 0}
-  NextSceneName: ForestScene
+  NextSceneName: Village_KenMuNi1
   TriggerWhenMoveIn: 1
   ShowLoadingUI: 0
 --- !u!114 &3588313294745101350
@@ -1983,7 +1998,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3588313296241062193}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.68, y: -3.65, z: 0}
+  m_LocalPosition: {x: -6.91, y: -3.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3588313296189020207}

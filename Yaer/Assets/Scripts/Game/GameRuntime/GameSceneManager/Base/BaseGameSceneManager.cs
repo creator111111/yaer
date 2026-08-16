@@ -222,6 +222,20 @@ namespace Game.GameRuntime.GameSceneManager.Base
             Debug.Log($"进入场景: {sceneName}");
         }
 
+        /// <summary>
+        /// 换场黑幕仍全黑、场景 Manager 已 Ready 时的可选旁路：若返回 true，
+        /// <see cref="LoadSceneComponentGSM"/> 将不会立刻 <c>CloseFormFade</c>，
+        /// 由子类在遮罩盖满后自行调用 <paramref name="closeBlackAndNotify"/>。
+        /// 默认 false，保持全游戏「hold → 淡出 → OnEnterScene」契约。
+        /// 替代方案：给 LoadScene 加通用 defer 参数——影响面大，村开场用本虚方法即可。
+        /// </summary>
+        /// <param name="closeBlackAndNotify">与现网 CloseFormFade + OnBlackFadeEnd 等价的收尾回调</param>
+        /// <returns>true = 本场景接管淡出时机；false = 走默认 hold 淡出</returns>
+        public virtual bool TryDeferBlackFadeForCover(Action closeBlackAndNotify)
+        {
+            return false;
+        }
+
 
         public virtual void OnUpdate()
         {

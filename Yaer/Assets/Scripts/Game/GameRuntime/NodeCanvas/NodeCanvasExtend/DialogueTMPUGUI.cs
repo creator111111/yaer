@@ -46,6 +46,12 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
         public TextMeshProUGUI actorSpeech;
         public TextMeshProUGUI actorName;
         public Image actorPortrait;
+        /// <summary>
+        /// true = 字幕头像以 Mask 立绘为真源（DialogueMaskAvatarPresenter）。
+        /// OnGetAvatar 不再激活旧 actorPortrait，避免与 Mask 双影；Loader 仍跑，供历史列表用图集。
+        /// 默认 false：其它未挂 Mask 的对话面板保持旧 Portrait 行为；NormalDialogueNewPanel Prefab 显式开 true。
+        /// </summary>
+        [SerializeField] private bool useMaskAvatar = false;
         public SubtitleDelays subtitleDelays = new SubtitleDelays();
         public List<AudioClip> typingSounds;
         private AudioSource playSource;
@@ -208,6 +214,12 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             subtitlesGroup.anchoredPosition = originalSubsPosition;
             actorSpeech.text = "";
 
+            // 与官方 DialogueUGUI 一致：每句刷新演员名（渐入阶段会先清空，避免 Prefab 残留「雅尔」）
+            if (actorName != null)
+            {
+                actorName.text = actor != null ? actor.name : string.Empty;
+            }
+
             // 旁白「—」等未绑定 DialogueActorEx 的 dummy Actor：仅字幕、不刷立绘，避免 RefreshAvatar 空引用卡死
             if (actor != null)
             {
@@ -216,7 +228,12 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             }
             else
             {
-                actorPortrait.gameObject.SetActive(false);
+                // 旧框保持关；通知 Mask Presenter 清空（role=None），避免残留上一角色立绘
+                if (actorPortrait != null)
+                {
+                    actorPortrait.gameObject.SetActive(false);
+                }
+                OnGetNewStatement?.Invoke(DialogueRoleName.None, DialogueFaceType.None, text);
             }
 
             if ( audio != null ) 
@@ -321,6 +338,22 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
 
         private void OnGetAvatar(Sprite sprite, string text)
         {
+            if (actorPortrait == null)
+            {
+                return;
+            }
+
+            // Mask 真源：旧 Image 保持关闭；仍可写入 sprite 供调试查看，但不激活
+            if (useMaskAvatar)
+            {
+                actorPortrait.gameObject.SetActive(false);
+                if (sprite != null)
+                {
+                    actorPortrait.sprite = sprite;
+                }
+                return;
+            }
+
             actorPortrait.gameObject.SetActive(sprite != null);
             actorPortrait.sprite = sprite;
         }

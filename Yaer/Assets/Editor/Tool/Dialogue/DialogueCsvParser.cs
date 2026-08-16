@@ -124,22 +124,31 @@ namespace EditorC.Tool.Dialogue
 
                 if (!TryParseNodeType(row.type, out _))
                 {
-                    error = $"ID {row.id} 的 Type 非法（「{row.type}」），仅支持 Dialogue / Choice。";
+                    error = $"ID {row.id} 的 Type 非法（「{row.type}」），仅支持 Dialogue / Choice / Anim。";
                     return false;
                 }
 
-                if (IsDialogueType(row.type) && string.IsNullOrWhiteSpace(row.speaker))
+                if ((IsDialogueType(row.type) || IsAnimType(row.type)) && string.IsNullOrWhiteSpace(row.speaker))
                 {
-                    error = $"ID {row.id} 为 Dialogue 但 Speaker 为空。";
+                    error = $"ID {row.id} 为 {row.type} 但 Speaker 为空。";
                     return false;
                 }
 
-                // 仅对白行校验 FaceType 枚举名；Choice 行忽略该列
-                if (IsDialogueType(row.type) && !string.IsNullOrWhiteSpace(row.faceType))
+                // 仅对白/动作戏行校验 FaceType 枚举名；Choice 行忽略该列
+                if ((IsDialogueType(row.type) || IsAnimType(row.type)) && !string.IsNullOrWhiteSpace(row.faceType))
                 {
                     if (!Enum.TryParse<DialogueFaceType>(row.faceType, ignoreCase: true, out _))
                     {
                         error = $"ID {row.id} 的 FaceType 非法（「{row.faceType}」），须为 DialogueFaceType 枚举名。";
+                        return false;
+                    }
+                }
+
+                if (IsAnimType(row.type))
+                {
+                    if (string.IsNullOrWhiteSpace(row.extra))
+                    {
+                        error = $"ID {row.id} 为 Anim 但 Extra（动画键，如 Anim_Gusha）为空。";
                         return false;
                     }
                 }
@@ -192,6 +201,12 @@ namespace EditorC.Tool.Dialogue
         public static bool IsChoiceType(string type)
         {
             return TryParseNodeType(type, out var parsed) && parsed == DialogueNodeKind.Choice;
+        }
+
+        /// <summary>判断是否为动作戏行（播 UI Animator + 字幕）。</summary>
+        public static bool IsAnimType(string type)
+        {
+            return TryParseNodeType(type, out var parsed) && parsed == DialogueNodeKind.Anim;
         }
 
         /// <summary>
@@ -262,6 +277,8 @@ namespace EditorC.Tool.Dialogue
         {
             Dialogue,
             Choice,
+            /// <summary>动作戏：先播 UI Animator，再出 Statement 字幕（Extra=动画键）。</summary>
+            Anim,
         }
 
         private static bool TryParseNodeType(string type, out DialogueNodeKind kind)
@@ -281,6 +298,13 @@ namespace EditorC.Tool.Dialogue
             if (string.Equals(type.Trim(), "Choice", StringComparison.OrdinalIgnoreCase))
             {
                 kind = DialogueNodeKind.Choice;
+                return true;
+            }
+
+            // 角/翅膀等帧动画行：Type=Anim，Extra=Anim_Gusha / Anim_Yaer
+            if (string.Equals(type.Trim(), "Anim", StringComparison.OrdinalIgnoreCase))
+            {
+                kind = DialogueNodeKind.Anim;
                 return true;
             }
 

@@ -109,11 +109,37 @@ namespace EditorC.Tool.Dialogue
 
             // Step4：第一轮 — 创建节点
             var nodeMap = new Dictionary<int, Node>();
+            // Anim 行：入边接到 Action，出边从 Statement 接出
+            var animStatementMap = new Dictionary<int, Node>();
             for (var index = 0; index < rows.Count; index++)
             {
                 var row = rows[index];
                 var position = new Vector2(BaseX, BaseY + index * RowSpacing);
                 Node node;
+
+                if (DialogueCsvParser.IsAnimType(row.type))
+                {
+                    // Play → Statement：Extra=动画键（BB 名），Text=字幕
+                    var playNode = CreatePlayUiAnimatorNode(tree, row, position);
+                    if (playNode == null)
+                    {
+                        UnityEngine.Object.DestroyImmediate(tree);
+                        return null;
+                    }
+
+                    var statementPos = position + new Vector2(220f, 0f);
+                    var statementNode = CreateStatementNode(tree, row, mapping, statementPos);
+                    if (statementNode == null)
+                    {
+                        UnityEngine.Object.DestroyImmediate(tree);
+                        return null;
+                    }
+
+                    tree.ConnectNodes(playNode, statementNode);
+                    nodeMap[row.id] = playNode;
+                    animStatementMap[row.id] = statementNode;
+                    continue;
+                }
 
                 if (DialogueCsvParser.IsDialogueType(row.type))
                 {
@@ -145,6 +171,12 @@ namespace EditorC.Tool.Dialogue
                 if (!nodeMap.TryGetValue(row.id, out var sourceNode))
                 {
                     continue;
+                }
+
+                // Anim：出边从字幕 Statement 出发，保证先播完动画再点继续
+                if (animStatementMap.TryGetValue(row.id, out var animStatement))
+                {
+                    sourceNode = animStatement;
                 }
 
                 var nextIds = DialogueCsvParser.SplitNextTargets(row.next);
@@ -183,7 +215,7 @@ namespace EditorC.Tool.Dialogue
                     if (nextIds.Count > 1)
                     {
                         Debug.LogWarning(
-                            $"[DialogueCsvGraphBuilder] Dialogue ID {row.id} 的 Next 含多个目标，仅连接第一个：{nextIds[0]}");
+                            $"[DialogueCsvGraphBuilder] ID {row.id} 的 Next 含多个目标，仅连接第一个：{nextIds[0]}");
                     }
 
                     if (nodeMap.TryGetValue(nextIds[0], out var targetNode))
@@ -325,6 +357,30 @@ namespace EditorC.Tool.Dialogue
             node.FaceType.value = resolvedFace;
 
             SetNodeActor(node, tree, actorName);
+            return node;
+        }
+
+        /// <summary>
+        /// Anim 行：生成 PlayUiAnimator Action。BB 变量名 = Extra（如 Anim_Gusha）；不序列化场景引用。
+        /// </summary>
+        private static ActionNode CreatePlayUiAnimatorNode(DialogueTree tree, DialogueRow row, Vector2 position)
+        {
+            var animKey = row.extra?.Trim();
+            if (string.IsNullOrEmpty(animKey))
+            {
+                Debug.LogError($"[DialogueCsvGraphBuilder] Anim ID {row.id} Extra 为空。");
+                return null;
+            }
+
+            var node = tree.AddNode<ActionNode>(position);
+            // 与 PreludeBuilder 一致：用 Task.Create 挂到 Graph，保证序列化/Owner 正确。
+            var playTask = (PlayUiAnimatorActionTask)Task.Create(typeof(PlayUiAnimatorActionTask), tree);
+            playTask.animator = new BBParameter<Animator> { name = animKey };
+            playTask.fallbackObjectName = new BBParameter<string> { value = animKey };
+            playTask.stateName = new BBParameter<string> { value = "Play" };
+            playTask.waitUntilFinish = new BBParameter<bool> { value = true };
+            playTask.hideWhenFinished = new BBParameter<bool> { value = true };
+            node.action = playTask;
             return node;
         }
 

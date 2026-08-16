@@ -40,13 +40,14 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
         }
 
-        /// <summary>村庄探索下不允许入队、不应触发回调的指令（与策划裁剪表一致）。</summary>
+        /// <summary>村庄探索下不允许入队、不应触发回调的指令（与策划裁剪表一致；DNF 式移动禁止跳跃）。</summary>
         private static bool IsBlockedInVillageExploration(ControlInputType cmd)
         {
             return cmd == ControlInputType.Squat
                    || cmd == ControlInputType.NormalAttack
                    || cmd == ControlInputType.SmashAttack
-                   || cmd == ControlInputType.DashAttack;
+                   || cmd == ControlInputType.DashAttack
+                   || cmd == ControlInputType.Jump;
         }
 
         private InputActions inputActions;
@@ -407,6 +408,12 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         void ParseMoveCmd(ControlInputType curPlayerCmd)
         {
+            // 跳跃在 moveInputFuncDict 中走本路径（不走 ParseOtherCmd）；村内必须在此一并拦截，否则 Space 仍会触发 onJumpInput。
+            if (LocomotionMode == PlayerLocomotionMode.Village2_5D && IsBlockedInVillageExploration(curPlayerCmd))
+            {
+                return;
+            }
+
             var playerMove = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
             // IsMoveUp/Down 实为 Velocity.y 正负，并非仅「跳跃状态机」；贴地微弹跳、重力与 FixedUpdate 相位都可能使 y≠0，
             // 此处整段 return 会跳过本帧 Left/Right 的 MoveLeft/MoveRight 刷新，与 CombatRun 清 X 叠加后加重「横移迟滞」（执行文档 0513 修订 §1 次要因素）。

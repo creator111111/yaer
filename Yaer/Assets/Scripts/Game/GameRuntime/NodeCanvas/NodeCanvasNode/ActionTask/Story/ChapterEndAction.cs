@@ -7,11 +7,11 @@ using ParadoxNotion.Design;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("Story")]
-    [Name("ÕÂ½Ú½áÊø")]
-    // ÓÃÓÚ¾çÇé¶Ô»°ÏµÍ³ÖÐµÄÊÂ¼þ´¦Àí
+    [Name("ï¿½Â½Ú½ï¿½ï¿½ï¿½")]
+    // ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½Ô»ï¿½ÏµÍ³ï¿½Ðµï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½
     public class ChapterEndAction : ActionTask
     {
-        public BBParameter<int> chapterId; // ÕÂ½ÚID
+        public BBParameter<int> chapterId; // ï¿½Â½ï¿½ID
 
         protected override string OnInit()
         {
@@ -22,13 +22,17 @@ namespace Game.GameRuntime.Story.Node
         protected override string info { 
             get
             {
-                return chapterId.value == 0 ? "ÐòÕÂ½áÊø" : "ÕÂ½Ú" + chapterId.value + "½áÊø";
+                return chapterId.value == 0 ? "ï¿½ï¿½ï¿½Â½ï¿½ï¿½ï¿½" : "ï¿½Â½ï¿½" + chapterId.value + "ï¿½ï¿½ï¿½ï¿½";
             }
         }
 
         protected override void OnExecute()
         {
-            // ´ò¿ªÕÂ½Ú½áÊø½çÃæ
+            // ï¿½ï¿½ï¿½Â½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ£¨ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Í¼ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ ChapterEndFormLogic ï¿½ï¿½ï¿½Ö£ï¿½
+            // 0722ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½ï¿½ï¿½Ôµï¿½Ð¶Ô»ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Î»ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Þ´ï¿½ï¿½ï¿½â£¬ï¿½ï¿½ï¿½ï¿½ Consoleï¿½ï¿½ChapterEndï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½È±ï¿½ï¿½ï¿½ï¿½Ö¾
+            UnityEngine.Debug.Log(
+                $"[ChapterEnd] ChapterEndAction.OnExecute ï¿½ï¿½ ChapterEndPanelï¿½ï¿½chapterId={chapterId.value}");
+
             string uiPrefabPath = UIPrefabPath.GetUIPrefabPath("ChapterEndPanel");
             GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(uiPrefabPath, EUIGroup.Top, new OpenFormArgs()
             {

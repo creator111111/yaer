@@ -647,7 +647,8 @@ namespace Game.GameRuntime.Entities.Player
         }
 
         /// <summary>
-        /// 村庄探索模式：不关左右走，只关部分战斗向能力与纵深组件；勿用 <see cref="DisablePlayerMove"/> 代替（策划 4.4）。
+        /// 村庄探索模式：不关左右走，只关战斗向能力与纵深组件；勿用 <see cref="DisablePlayerMove"/> 代替（策划 4.4）。
+        /// DNF 式移动下同步关闭跳跃（输入屏蔽 + <see cref="isEnableJump"/>），与《村庄DNF式2.5D移动_迁移方案》§5 一致。
         /// </summary>
         /// <param name="enable">true 表示当前应处于 Village_KenMuNi1 探索规则</param>
         public void SetVillageExplorationMode(bool enable)
@@ -670,8 +671,9 @@ namespace Game.GameRuntime.Entities.Player
                 town?.FlushAuthoritativeVillageTransformAfterSceneDepthInject();
             }
 
-            // 与战斗状态机中的普攻门闸对齐，防止异常切到 Combat 时仍出手
+            // 与战斗状态机门闸对齐：村内 DNF 禁止跳跃与普攻（输入层已挡 Jump；此处防异常切到 Combat 仍起跳）
             isEnableNorAtk = !enable;
+            isEnableJump = !enable;
         }
 
         /// <summary>根据当前激活场景名同步村庄模式（单一事实来源：场景名）。</summary>

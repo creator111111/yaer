@@ -119,6 +119,7 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Gr
 
         protected override void Jump(bool isCheckDir = true)
         {
+            if (!playerLogic.isEnableJump) { return; }
             var needStamina = staminaComponent.GetCostStamina("JumpState");
             if (!staminaComponent.ChekcHasEnoughStamina(needStamina)) { return; }
 

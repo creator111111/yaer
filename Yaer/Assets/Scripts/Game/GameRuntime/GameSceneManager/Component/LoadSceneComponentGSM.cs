@@ -29,6 +29,13 @@ namespace Game.GameRuntime.GameSceneManager.Component
         /// <param name="stayAction">黑幕完全打开时执行</param>
         public void LoadScene(string sceneName, Action stayAction = null, bool blackFade=true)
         {
+            // 0722 章末被跳过溯源：统一换场入口打栈，过滤 Console「SceneLoad」即可看到真正调用方
+            // （正规进村应先有 [MapSelect]；若无 MapSelect 却有本日志 → R7 后门）
+            // 替代方案：只在进 Village_KenMuNi1 时打日志——覆盖面窄，漏掉其它误跳，故入口全量记录。
+            Debug.Log(
+                $"[SceneLoad] scene={sceneName} blackFade={blackFade} from={gameObject.name}\n" +
+                UnityEngine.StackTraceUtility.ExtractStackTrace());
+
             onStartLoadingSceneEvent?.Invoke();
             if (blackFade)
             {
@@ -59,6 +66,14 @@ namespace Game.GameRuntime.GameSceneManager.Component
                                         // 获取下一个场景上的该组件触发
                                         manager.GetModule<LoadSceneComponentGSM>().OnBlackFadeEnd();
                                     });
+                                }
+
+                                // 村开场等旁路：仍全黑时先挂对话遮罩，Ready 后再 CloseFormFade（见 0804 禁止露景漏缝）。
+                                // 未接管则保持默认 hold → 淡出契约，其它换场零回归。
+                                if (manager is BaseGameSceneManager deferGsm
+                                    && deferGsm.TryDeferBlackFadeForCover(CloseBlackAndNotify))
+                                {
+                                    return;
                                 }
 
                                 float hold = loadModule.MapTransitionBlackHoldSeconds;

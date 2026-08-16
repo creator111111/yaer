@@ -39,7 +39,13 @@ namespace Game.GameRuntime.UI.FormLogic.Cartoon
         {
             cartoonPlayer.StopAllCoroutines();
             skipHoldArea.onHoldProgressEnd -= OnClickBtnSkip;
-            componentSystemUI.GetComponent<BlackFadeComponent>().CloseFormShowFade(UIForm, () =>
+
+            // 重要修改说明（0807 方案 D）：
+            // 旧路径 CloseFormShowFade = 全黑后立刻关 Form，黑幕随 Bottom Form 销毁，
+            // 对话壳在 Middle，无法做「System 拍1 只见 BG」。
+            // 现改为只 ShowFade 全黑并回调；关 Form / System BlackPanel 由 NewGameSceneManager 接管。
+            // 替代方案：仍 CloseFormShowFade 再另开 BlackPanel——异步开窗易闪一帧裸景，故不采用。
+            componentSystemUI.GetComponent<BlackFadeComponent>().ShowFade(() =>
             {
                 GameManager.GetGMComponent<SoundComponentGM>().StopBGM();
                 GetProxy<NewGameCartoonFormProxy>().OnFinish();

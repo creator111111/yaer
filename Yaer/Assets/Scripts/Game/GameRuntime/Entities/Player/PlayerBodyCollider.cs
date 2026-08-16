@@ -2,6 +2,7 @@ using Game.GameRuntime.Entities.Component.Anima;
 using Game.GameRuntime.Entities.Component.Interactive;
 using Game.GameRuntime.Entities.Component.PhysicsDetect;
 using Game.GameRuntime.Entities.Monster;
+using Game.GameRuntime.Entities.Monster.WormEgg;
 using Game.GameRuntime.Entities.Player;
 using Game.GameRuntime.Entities.Player.Components;
 using Game.GameRuntime.Entities.Player.Components.CsAnimator;
@@ -12,23 +13,23 @@ public enum ColliderDir {
     None, Left, Right, Top, Bottom
 }
 
-// ´¦ÀíÍæ¼ÒÉíÌåÅö×²ÌåÓëÆäËûÅö×²ÌåÖ®¼ä½»»¥µÄ½Å±¾
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½Ö®ï¿½ä½»ï¿½ï¿½ï¿½Ä½Å±ï¿½
 public class PlayerBodyCollider : MonoBehaviour
 {
-    public Rigidbody2D body; // ¸ÕÌå
-    public new Collider2D collider2D; // Åö×²Ìå
+    public Rigidbody2D body; // ï¿½ï¿½ï¿½ï¿½
+    public new Collider2D collider2D; // ï¿½ï¿½×²ï¿½ï¿½
     public GameObject playerNode;
-    public PlayerLogic playerLogic; // ÈËÎïÊµÌåÂß¼­
+    public PlayerLogic playerLogic; // ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½ï¿½ß¼ï¿½
     public CldInteractiveListener cldInteractiveListener;
 
     private ColliderDir _lastDirection;
 
-    bool hasSqueezeOut = false; // ÊÇ·ñ´¦ÓÚ¼·³öÈËÎï½×¶Î
-    bool hasTouchSpcGround = false; // ÊÇ·ñÅö×²µ½ÌØÊâµØÐÎ
-    float squeezeOutValue = 0; // Ã¿´Î¼·³öÒÆ¶¯µÄµ¥Î»
-    Vector2 startSqueezePos = Vector2.zero; // Ã¿´Î¼·³öÊ±µÄ¿ªÊ¼×ø±ê
+    bool hasSqueezeOut = false; // ï¿½Ç·ï¿½ï¿½Ú¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¶ï¿½
+    bool hasTouchSpcGround = false; // ï¿½Ç·ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    float squeezeOutValue = 0; // Ã¿ï¿½Î¼ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½Äµï¿½Î»
+    Vector2 startSqueezePos = Vector2.zero; // Ã¿ï¿½Î¼ï¿½ï¿½ï¿½Ê±ï¿½Ä¿ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½
 
-    // »ñÈ¡×îºó¼ì²âµ½µÄ·½Ïò
+    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½âµ½ï¿½Ä·ï¿½ï¿½ï¿½
     public ColliderDir GetLastDirection() => _lastDirection;
 
     public float pushoutDistance = 0.2f;
@@ -41,7 +42,7 @@ public class PlayerBodyCollider : MonoBehaviour
             playerLogic = playerNode.GetComponent<PlayerLogic>();
             if (playerLogic == null)
             {
-                Debug.LogError("===================Çë¼ì²éPlayerLogic½Å±¾µ±Ç°ÊÇ·ñ´æÔÚÓÚPlayerÊµÌåÉÏ");
+                Debug.LogError("===================ï¿½ï¿½ï¿½ï¿½PlayerLogicï¿½Å±ï¿½ï¿½ï¿½Ç°ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½PlayerÊµï¿½ï¿½ï¿½ï¿½");
             }
         }
 
@@ -58,16 +59,22 @@ public class PlayerBodyCollider : MonoBehaviour
         var enetityLogic = collider.GetComponent<ColliderResponder>()?.GetEntityLogic() as BaseMonster;
         if (enetityLogic == null) { return; }
         if (enetityLogic.IsDead) { return; }
+
+        // TreeHole: WormEgg Body is Trigger; ClimbMove+StopMove blocks squat-atk approach.
+        // Living egg blocks via GroundCld; BaseMonster.OnDead disables GroundCld. Skip WormEgg here.
+        // Alt: allow atk in ClimbMove (OPEN_QUESTIONS Q3) or HUD tip.
+        if (enetityLogic is WormEggLogic) { return; }
+
         var csAnimator = playerLogic.componentSystem.GetComponent<PlayerCsAnimator>();
         if (!csAnimator.GetSign("IsRunning") && !csAnimator.GetSign("IsNormalAtk")
             && !csAnimator.GetSign("IsClimbMove"))
         {
-            return; // Ö»ÓÐÍæ¼Ò´¦ÓÚÌØ¶¨×´Ì¬Ê±²Å»áÖ´ÐÐÏÂÃæµÄÂß¼­
+            return; // Ö»ï¿½ï¿½ï¿½ï¿½Ò´ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½×´Ì¬Ê±ï¿½Å»ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
         }
         var playerMoveCpn = playerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
         if (enetityLogic.gameObject.transform.position.x >= playerLogic.gameObject.transform.position.x)
         {
-            // ¹ÖÎï´¦ÓÚÈËÎïÓÒ±ßÊ±,ÈËÎïÈç¹û´ËÊ±ÏòÓÒÒÆ¶¯Ôò×èµ²ÈËÎïÒÆ¶¯
+            // ï¿½ï¿½ï¿½ï´¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò±ï¿½Ê±,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½èµ²ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½
             if (playerMoveCpn.IsTurnRight) { 
                 playerMoveCpn.StopMove();
                 playerLogic.canInStateSetPos = false;
@@ -82,11 +89,11 @@ public class PlayerBodyCollider : MonoBehaviour
         }
     }
 
-    // µ±Íæ¼ÒÄ³ÖÖÌØÊâ¶¯×÷ÖÐÉíÌåÅö×²ÌåÅö×²µ½ÆäËûÅö×²Ìå
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½ï¿½â¶¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½
     private void OnCollisionShowEventInSpcAction(Collision2D collision)
     {
         var csAnimator = playerLogic.componentSystem.GetComponent<PlayerCsAnimator>();
-        // ÌØÊâ½×¶ÎÈËÎï²»¿É±»¼·³ö
+        // ï¿½ï¿½ï¿½ï¿½×¶ï¿½ï¿½ï¿½ï¿½ï²»ï¿½É±ï¿½ï¿½ï¿½ï¿½ï¿½
         if (csAnimator.GetSign("IsClimb") || csAnimator.GetSign("IsRunning") ||
             csAnimator.GetSign("IsJumpUp"))
         {
@@ -97,10 +104,10 @@ public class PlayerBodyCollider : MonoBehaviour
         var enetityLogic = collision.collider.GetComponent<ColliderResponder>()?.GetEntityLogic() as BaseEntityLogic;
         if (!(enetityLogic is BaseMonster))
         {
-            // Èç¹ûÅö×²µ½µÄ²»ÊÇ¹ÖÎï»òÕßÌØÊâµØÐÎÔò²»ÐèÒª¼·³öÈËÎï
+            // ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½Ä²ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             if (checkHasCollisonGrounp(collision))
             {
-                // ÒÑ¾­¿ªÊ¼¼·³öÊ±ÔòÔÚÅöµ½ÌØÊâµØÐÎÊ±·´Ïò¼·³ö
+                // ï¿½Ñ¾ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ò¼·³ï¿½
                 if (!hasTouchSpcGround)
                 {
                     squeezeOutValue = hasSqueezeOut ? -squeezeOutValue : squeezeOutValue;
@@ -115,11 +122,11 @@ public class PlayerBodyCollider : MonoBehaviour
                 return;
             }
         }
-        // ¼ÆËãÅö×²·¨Ïß£¨´Óµ±Ç°ÎïÌåÖ¸ÏòÅö×²µã£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ß£ï¿½ï¿½Óµï¿½Ç°ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½×²ï¿½ã£©
         ContactPoint2D contact = collision.GetContact(0);
         Vector2 collisionNormal = contact.normal;
         var collsionSize = collision.collider.bounds.size;
-        // ÓÅÏÈÊ¹ÓÃÅö×²·¨ÏßÅÐ¶Ï·½Ïò
+        // ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï·ï¿½ï¿½ï¿½
         if (Mathf.Abs(collisionNormal.x) > Mathf.Abs(collisionNormal.y))
         {
             _lastDirection = collisionNormal.x > 0 ? ColliderDir.Right : ColliderDir.Left;
@@ -130,7 +137,7 @@ public class PlayerBodyCollider : MonoBehaviour
         }
         if (collision.collider is BoxCollider2D)
         {
-            // Èç¹ûÅö×²µãÔÚ¾ØÐÎ½ÇÂä£¬Ê¹ÓÃÖÐÐÄµãÏòÁ¿×÷Îª±¸Ñ¡
+            // ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½Î½ï¿½ï¿½ä£¬Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Ñ¡
             if (Mathf.Abs(collisionNormal.x) == Mathf.Abs(collisionNormal.y))
             {
                 Vector2 centerDir = collision.transform.position - transform.position;
@@ -146,21 +153,21 @@ public class PlayerBodyCollider : MonoBehaviour
         }
         if (collision.collider is CapsuleCollider2D capsule)
         {
-            // ½ºÄÒÌåÌØÊâ´¦Àí£º¿¼ÂÇ·½Ïò
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â´¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½
             if (capsule.direction == CapsuleDirection2D.Vertical)
             {
-                // ´¹Ö±½ºÄÒÌåÓÅÏÈ¿¼ÂÇyÖá
+                // ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¿ï¿½ï¿½ï¿½yï¿½ï¿½
                 _lastDirection = collisionNormal.y > 0 ? ColliderDir.Right : ColliderDir.Left;
             }
             else
             {
-                // Ë®Æ½½ºÄÒÌåÓÅÏÈ¿¼ÂÇxÖá
+                // Ë®Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¿ï¿½ï¿½ï¿½xï¿½ï¿½
                 _lastDirection = collisionNormal.x > 0 ? ColliderDir.Top : ColliderDir.Bottom;
             }
         }
         
-        // ¼ÆËãÅö×²Éî¶È£¨´©Í¸¾àÀë£©
-        float penetrationDepth = contact.separation; // ·ÖÀëÖµÎª¸º±íÊ¾´©Í¸Éî¶È
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½È£ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ë£©
+        float penetrationDepth = contact.separation; // ï¿½ï¿½ï¿½ï¿½ÖµÎªï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½Í¸ï¿½ï¿½ï¿½
         Vector2 safePosition = body.position - collisionNormal * penetrationDepth;
         Vector2 newPosition = hasSqueezeOut ? startSqueezePos : Vector2.Lerp(body.position, safePosition, 0.8f);
         if (startSqueezePos == Vector2.zero) { startSqueezePos = newPosition; }
@@ -170,7 +177,7 @@ public class PlayerBodyCollider : MonoBehaviour
             isRight = playerLogic.gameObject.transform.position.x >= enetityLogic.gameObject.transform.position.x;
         }
         
-        // ¸ù¾ÝÅö×²·½ÏòµÄÉèÖÃÈËÎïµ±Ç°×ø±êµÄ´¦Àí·½Ê½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ïµ±Ç°ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
         switch (_lastDirection)
         {
             case ColliderDir.Left:
@@ -199,7 +206,7 @@ public class PlayerBodyCollider : MonoBehaviour
 
         startSqueezePos.x += squeezeOutValue;
         playerLogic.canInStateSetPos = false;
-        // ¿ªÊ¼¼·³ö¹ý³Ì
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         var layerName = LayerMask.LayerToName(collision.gameObject.layer);
         if (layerName.StartsWith("Monster"))
         {
@@ -217,13 +224,13 @@ public class PlayerBodyCollider : MonoBehaviour
         var layerName = LayerMask.LayerToName(collision.gameObject.layer);
         if (hasSqueezeOut)
         {
-            // ¼·³öÈËÎï¹ý³ÌÖÐÈç¹ûÅöµ½ÁËÍ»³öµÄµØÐÎ»òÕßÇ½£¬ÔòÐèÒª·´Ïò¼·³öÈËÎï
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½Äµï¿½ï¿½Î»ï¿½ï¿½ï¿½Ç½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ò¼·³ï¿½ï¿½ï¿½ï¿½ï¿½
             if (layerName == "Map")
             {
                 return true;
             }else if (layerName == "GroundCenter")
             {
-                // ¼ì²âÊÇ·ñ²àÃæÅö×²µ½µØÐÎ
+                // ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 ContactPoint2D contact = collision.GetContact(0);
                 Vector2 collisionNormal = contact.normal;
                 Debug.Log("===================collisionNormal.x" + collisionNormal.x);
