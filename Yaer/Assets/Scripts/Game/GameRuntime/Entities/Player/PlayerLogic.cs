@@ -688,11 +688,20 @@ namespace Game.GameRuntime.Entities.Player
         /// </summary>
         private void UpdateRuntimeController(RuntimeAnimatorController controllerAsset)
         {
-            if (controllerAsset == null) Debug.LogError("没有找到RuntimeAnimatorController资源");
+            if (controllerAsset == null)
+            {
+                Debug.LogError("没有找到RuntimeAnimatorController资源");
+                return;
+            }
 
+            // 必须先按磁盘资源名分流 Home/Combat。方案 B 会 Clone 一份 Override，
+            // Clone 默认名字不含 "Home"；若先换片再 Contains("Home") 会误走 Combat，IsName 卡死。
             if (controllerAsset.name.Contains("Home"))
             {
-                componentSystem.GetComponent<BaseCsAnimator>().ChangeRuntimeController<PlayerHomeCsRuntimeController>(controllerAsset);
+                RuntimeAnimatorController homeController =
+                    VillageHomeDayLightAnimApplier.ApplyIfVillageHome(controllerAsset);
+                componentSystem.GetComponent<BaseCsAnimator>()
+                    .ChangeRuntimeController<PlayerHomeCsRuntimeController>(homeController);
             }
             else
             {

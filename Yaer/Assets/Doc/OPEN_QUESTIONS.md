@@ -461,3 +461,270 @@
 | Q4 | 成功后数量是否清零？ | **是**（ResetToDefault + RefreshTotal2） | 待确认 |
 | Q5 | 出售是否同 PR？ | **否**：出售 Tab 点决定仅 Log「出售结算未接入」 | 待确认 |
 | Q6 | 假购买「成功购买生命球」文案 | 改为「购买成功，扣除金币 {total}」 | 待确认 |
+
+---
+
+## 村民家室内 DayLight 动画 · 2026-08-18
+
+详见：`Assets/Doc/执行文档/0818/第一章村民家室内_IdleWalk_DayLight_架构溯源报告.md`  
+**产品已决议（2026-08-18）**：Q1 龙宫不开；Q2 House4 + 磁盘 HomeScene3 算村民家要开；Q3 屋里眨眼仍用现网 `Bink`。侦探不再征求这三项。  
+**推荐施工**：方案 B（进屋运行时只换 Idle/Walk 片子，状态名不动）；方案 E 已否决。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 龙宫 `HomeScene1/2` 是否开 DayLight？ | **否**；共用 Idle/Walk Clip 也不许改 | ✅ 已决议 |
+| Q2 | `Village_House4`、磁盘 `Village_HomeScene3` 是否算村民家？ | **算，要开**；进不去也要把场景名写入白名单 | ✅ 已决议 |
+| Q3 | 屋里眨眼是否做 `Bink_DayLight`？ | **否**；继续现网 `Bink` | ✅ 已决议 |
+| T1 | `Village_HomeScene3` 无 `SceneName` 常量，白名单怎么写？ | **先加** `SceneName.Village_HomeScene3`，白名单用场景文件名（勿用该屋当前错误的 `nowSceneName=HomeScene1`） | ✅ 已施工（2026-08-18 方案 B） |
+| T2 | House4 `.unity` 缺失时名单写谁？ | **`Village_House4`**（与门 Next、已有常量一致）；补场景另案 | ✅ 已施工（白名单已写入） |
+| T3 | 方案 B 的运行时 Clone Override 若换装/裙子验收失败？ | **改走方案 C**（复制 Dress+三套白天控制器）；仍禁止 E | 待验收确认 |
+
+---
+
+## 白天待机走路锚点对齐战斗服 · 2026-08-18
+
+详见：`Assets/Doc/执行文档/0818/白天待机走路_按战斗服锚点对齐_架构溯源报告.md`  
+**侦探结论**：72 帧均可按「同尺寸 COPY / 同宽不同高 YSCALE（距底像素不变）」改白天 `.png.meta`；无宽不同、无脚不在底边。Idle 5/7/15/17 两边都缺，不补。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| T1 | 走路参考的 `spriteBorder` 是否必须拷到白天？ | **否**；角色 Sprite 走 Simple，白天保持 `0,0,0,0` | ✅ 已施工（2026-08-18，未拷 border） |
+| T2 | 换算后 `pivot.y` 略负（参考走路已有）是否 clamp 到 0？ | **否**；保留负值，避免脚被抬起 | ✅ 已施工（负 y 原样写入） |
+| T3 | 裙子 `Dress/*_DayLight` 是否本期对齐？ | **否**；用户未纳入 | ✅ 已决议本期不做 |
+
+---
+
+## 进村点A往右走 · 2026-08-18
+
+详见：`Assets/Doc/执行文档/0818/村庄进村点A往右走_架构溯源报告.md`  
+**侦探结论**：Combat Idle 未订左右、进跑按默认朝右 `SetRunSpeed`；点一下 A 在 KeyUp 帧灌了右速后队列被清，`MoveLeft` 赶不上。推荐方案 B′（仅 `Village2_5D` 进跑时按 A/D 同步转向，禁止默认朝右灌速）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| T1 | 村民家 Home（`HomeWalkState.Enter` 无条件 `SetWalkSpeed`）点 A 是否同 Bug？ | **本期不修村屋**；验收若家里也反，另开任务 | 待确认 |
+| T2 | 长按 A 是否必须「Enter 当帧物理也绝不出现 +X」？ | **是**；B′ 先转向再写速，避免先右后左 | ✅ 已施工（2026-08-18，仅 CombatRunState.Enter 村庄分支） |
+
+---
+
+## 村庄斜向合速度 · 2026-08-18
+
+详见：`Assets/Doc/执行文档/0818/村庄斜向移动速度叠加_架构溯源报告.md`  
+**侦探结论**：村街 Combat 横向 `runSpeed=11.2` 与 Town 纵深 `depthMaxSpeed=5.5` 各自满给、无平面归一；斜向欧氏约 12.48。推荐方案 A（只在 `TownPlayerLocomotion.OnFixedUpdate` 一处按目标走速归一）。禁止改两个 max 冒充修复、禁止斜向清 X、禁止回退 0818 点 A 补丁。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| T1 | 「一样快」是八向同速（纯 D / 纯 W / D+W 欧氏距离接近），还是只要斜向不超过较快轴（纯 W 仍 5.5）？ | **八向同速**；选方案 A。若只想压斜向，可改方案 B | ✅ 已施工（2026-08-18 方案 A） |
+| T2 | 目标走速用 `runSpeed` 11.2、`walkSpeed` 4.2、`depthMaxSpeed` 5.5，还是新字段？ | **新字段** `villagePlanarMoveSpeed`，初值 **11.2**（保现网左右；纯 W/S 会变快）。旧 Prefab 序列化为 0 时回退 11.2 | ✅ 已施工（字段 11.2，≤0 回退） |
+| T3 | 村民家 Home 是否同期做合速度？ | **本期不改**。家里不开 Town，没有纵深，斜向叠加不存在 | ✅ 已按默认：本期不改家里 |
+
+---
+
+## 村庄斜向横向仍满速 · 2026-08-18
+
+详见：`Assets/Doc/执行文档/0818/村庄斜向横向仍满速_归一未生效_架构溯源报告.md`  
+**侦探结论**：`ApplyVillagePlanarMoveSpeedNormalization` 的 `hasH` 只认 `GetAxisRaw("Horizontal")`，村里走路认队列/`GetKey(A/D)`；轴为 0 时进不了 `hasH&&hasV`，横向保持 `SetRunSpeed` 的 11.2，纵深仍满给。推荐方案 A：`hasH` 对齐 `HasVillageExploreHorizontalMoveIntent`，符号用轴否则用键/队列，禁止再用默认朝右当第一数据源。产品「斜向横向必须比纯左右慢（约 0.707）」**已拍板**。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| T1 | 斜向时横向是否必须慢于纯左右？ | **是**；约 0.707×目标走速，合速度仍等于单轴 | ✅ 已决议（开发者 2026-08-18） |
+| T2 | 本机 `GetAxisRaw("Horizontal")` 按住 D 是否恒为 0？ | **不挡施工**；归一口径改为与村里意图对齐。可选开 `acceptanceDebugLog` 核实 | ✅ 已施工（hasH 对齐意图；日志含 branch） |
+
+---
+
+## 村庄斜向走路惯性 · 2026-08-19
+
+详见：`Assets/Doc/执行文档/0819/村庄斜向走路惯性_架构溯源报告.md`（**v1.1**）  
+**侦探结论（根因）**：斜向松双手后 Town 的 `NONE` 不清横向；Combat 因 `|depthVelocity|` 惯性不退 Idle、不走 `StopMove`。vx≈7.92 叠纵深摩擦 → 斜着滑。  
+**已拍板（开发者 2026-08-19）**：**全部不要滑行，松手一律立刻停**（纯横 / 纯纵 / 斜向 / 只松一轴）。v1.0 方案 A（只刹横向、留 0512 摩擦）**作废**。推荐 **方案 A′**：Town 无纵深意图则 `depthVelocity=0`；无横向意图则写 vx=0（`NONE` + `DEPTH_ONLY`）。只改 Combat 退 Idle 刹不住权威 Y。禁止回退 0818 归一、禁止用含惯性的 DepthIntent 每帧清 X、禁止按住 W 时也清纵深。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| T1 | 纯 W/S 松手后的纵深摩擦滑行是否保持？ | **否；立刻停**。覆盖 0512 AC-02 在村街的走路手感 | ✅ 已决议（开发者 2026-08-19） |
+| T2 | 斜着走时只松一轴：松开的轴要摩擦还是立刻停？ | **立刻停**。松 W 仍按 D → 纵深立刻 0；松 D 仍按 W → 横向立刻 0 | ✅ 已决议（开发者 2026-08-19） |
+
+---
+
+## 树屋下边围栏穿模 · 2026-08-19
+
+详见：`Assets/Doc/执行文档/0819/Village_KenMuNi1_树屋下边围栏穿模卡住_架构溯源报告.md`  
+**侦探结论**：斜围栏只被横竖分开拦 + 纵深默认底边射线易漏扫斜墙 → 穿进 Composite；进去后「重叠且 X-Cast 空则锁 vx」加上 `TryDepenetrate` 只搜 Y → 焊死。推荐方案 A（Distance 推出 + last-free 回滚）。禁止恢复物理硬碰、禁止用锁死速度冒充保险、禁止只加厚这一块当唯一修复。0819 惯性 A′ 已合入，不是本案主因。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| T1 | 贴着围栏走：允许切向滑，还是碰到就硬停？ | **允许贴边滑**。方案 A 放宽「重叠且沿 X Cast 空则锁 vx」，避免再焊死 | 待确认 |
+| T2 | last-free 无效（开局就嵌在墙里 / 记录点也重叠）时，是否闪回楼梯中线？ | **本期否**。继续 Distance 法向推 + 日志；写死中线坐标另案 | 待确认 |
+
+---
+
+## CSV Speaker 2/3 映射 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/CSV导入_Speaker2与3映射缺失_架构溯源报告.md`  
+**侦探结论**：Import 中止因映射表缺 `2`/`3`（安全中止，非 CSV 解析 bug）。推荐补 `2→NPC2`、`3→NPC3`（对齐现网 `Village_NpcChairChild` / `HomeScene1Npc3` 与 0601 台本）；内置默认与 Default.asset 两处同步。默认不改 CSV 数字 Speaker。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | Actor 最终叫 `NPC2`/`NPC3` 还是中文「孩子/妈妈」？ | **NPC2 / NPC3**（方案 A） | 待确认（侦探推荐） |
+| Q2 | 立绘图集本期是否占位？ | **否**；空 FaceType → Normal Warning，字幕可播 | 待确认 |
+| Q3 | 是否允许策划继续用数字 Speaker，还是规范成简称？ | **本期允许** `2`/`3`；新台本可另议写 `NPC2`/`NPC3` 恒等映射 | 待确认 |
+
+---
+
+## NPC23 接任务对话选项 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/Village_QuestOffer_NPC23_对话末接任务选项_架构溯源报告.md`  
+**补丁**：结尾拓扑以 `0820/Village_QuestOffer_NPC23_选项后NPC结尾对白_架构溯源报告.md` 为准（雅尔复读作废）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 接受后雅尔是否要说「好呀！」？ | **作废**；改为 NPC3「太感谢了」（见结尾对白补丁） | ✅ 已否决雅尔复读 |
+| Q2 | questId / 采集 objectiveType 何时做？ | 见「藤蔓果任务卡」OPEN；现网图上已有 Accept(Quest_002) | 待确认 |
+| Q3 | 场景哪个 NPC 挂 `Village_QuestOffer_NPC23`？ | **`NpcChair`**（现网已挂本 Prefab） | ✅ 已对拍 |
+
+---
+
+## NPC23 选项后 NPC 结尾对白 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/Village_QuestOffer_NPC23_选项后NPC结尾对白_架构溯源报告.md`  
+**侦探结论**：产品改结尾——拒「我有些忙」后 NPC3「没关系我一会自己去吧」；接「好呀」后 NPC3「太感谢了」。现网拒直接收尾、接仍是雅尔「好呀！」+ Accept。施工：拒插新 Statement；接改 `#14` Actor/文案；Accept 仍在道谢句之后。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 按钮文案要不要句号？ | **保持无句号**（现网「我有些忙 / 好呀」） | 待确认 |
+| Q2 | FaceType？ | **12**（与图内 NPC3 请托句一致） | 待确认 |
+| Q3 | 「太感谢了」要不要感叹号？ | **不要**（按产品表） | 待确认 |
+
+---
+
+## NPC23 藤蔓果任务卡 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/Quest_NPC23_提交藤蔓果任务卡_架构溯源报告.md`  
+**侦探结论**：真正接取 = `QuestConfig` 新行（建议 `Quest_002` / `CollectItem` / 藤蔓果×5 / Gold50）+「好呀！」后挂 `QuestAcceptAction`。现网已有 MC「我有些忙/好呀」且 `NpcChair` 已挂 `Village_QuestOffer_NPC23`，缺配置行与 Accept。交 5 果主推交付时查背包扣 `TenWangFruit`（方案 A）；现网 TurnIn 不扣物品、且须 Complete——交付另批。禁止 KillMonster 假行 / 复用 Quest_001。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | questId 是否 `Quest_002`？ | **是** | 待确认（侦探推荐） |
+| Q2 | 任务中文标题？ | 草案「妈妈的藤蔓果」；英日见报告 | 待确认 |
+| Q3 | 交付时查背包 vs 拾取计数？ | **交付时查背包（方案 A）**；接取批不做扣果 | 待确认 |
+| Q4 | 是否要独立 TurnIn Prefab？ | **建议要**（仿埃吉尔）；接取批不做 | 待确认 |
+| Q5 | 是否新增 `targetItem` 字段？ | **推荐要**；否则 CollectItem + `targetMonster=TenWangFruit` 临时 | 待确认 |
+
+---
+
+## Quest_002 交时查背包逻辑 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/Quest_002_交时查背包逻辑对拍_架构溯源报告.md`  
+**侦探结论**：现网**不符合**「交时查背包」。Accept 后 CollectItem 停在 InProgress（无 Complete 来源）；`TurnInQuest`/`QuestTurnInAction` 只认 Complete、不查包不扣果。主推方案 A：InProgress + 背包≥5 → 扣 `TenWangFruit` → TurnedIn + Grant50。禁止刷果推进度。交付对白属任务②。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | CollectItem 是否保留 Complete 状态？ | **可不保留**（交成功 InProgress→TurnedIn） | 待确认 |
+| Q2 | 扣果失败怎么办？ | **整次失败**：不 TurnIn、不 Grant | 待确认 |
+| Q3 | 扩展旧 TurnInAction 还是新 Action？ | 倾向按 `objectiveType` 分支或新 Action，勿误伤 Quest_001 | 待确认 |
+| Q4 | `CanTurnInQuest` 是否对 CollectItem 改查背包？ | 建议新方法 / 按 type 分支，供任务②触发器用 | 待确认 |
+
+---
+
+## Editor PlayerStatsTool 中文乱码 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/Editor_PlayerStatsTool中文乱码_架构溯源报告.md`  
+**侦探结论**：`Tools` 菜单乱码项与窗口 `δ╬╘PlayerLogic` 均来自 `PlayerStatsEditorWindow.cs` 源码中文编码损坏（含 `U+FFFD` + GBK 碎片）；`AddDateMenuItem`「增加日期」为完好 UTF-8 无 BOM。非 Unity 字体问题。修复：按技术文档恢复中文并以 UTF-8 无 BOM 保存。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | Editor 脚本编码规范？ | **UTF-8 无 BOM**（对齐 AddDateMenuItem） | 待确认 |
+| Q2 | 是否扫其它已损坏 Editor 文件？ | `Tool/` 下仅本文件含 FFFD；全 `Assets/Editor` 卫生扫描可另批 | 待确认 |
+
+---
+
+## Quest_002 接取后仍播 Offer · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/Quest_002_接取后仍播Offer应切循环对白_架构溯源报告.md`  
+**侦探结论**：Accept 已通；仍播 Offer 因 `NpcChair`=`SimpleStoryTrigger` 写死 `Village_QuestOffer_NPC23`。须仿埃吉尔做 Trigger 子类，按 `InProgress`+背包切 Prefab（**不用 Complete**）。现网无 Thanks Prefab，至少新建 `Village_QuestThanks_NPC23`（「感谢你」）。任务②报告未出，命名与其提示词对齐。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | Thanks Prefab 名？ | **`Village_QuestThanks_NPC23`** | 待确认 |
+| Q2 | Success/TurnIn Prefab 名？ | **`Village_QuestTurnIn_NPC23`** | 待确认 |
+| Q3 | TurnedIn 后再按 E？ | 首版可暂 Thanks；或另短句 | 待确认 |
+| Q4 | 与扣果发奖是否同批？ | **可先只切 Thanks** 修本失败；果够+扣果跟①② | 待确认 |
+
+---
+
+## CSV Speaker 1/4/5 映射 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/CSV导入_Speaker1与4与5映射缺失_架构溯源报告.md`  
+**侦探结论**：Import 中止因映射缺 `1`（现场 `Village_NPC1_对话交互.csv` ID1）；开发者要求顺带预留 `4`/`5`。修法同 2/3：两处补 `1→NPC1`、`4→NPC4`、`5→NPC5`。物品交互 CSV 用「雅」已映射。禁止改 CSV 数字为中文当首选。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | FaceType 是否为 NPC1/4/5 加默认？ | **可选**；空列 Warning+Normal 即可 | 待确认 |
+| Q2 | NPC5 立绘本期是否占位？ | **否**；无 Prefab 也可先映射 | 待确认 |
+| Q3 | 是否继续允许数字 Speaker？ | **本期允许**（对齐 2/3） | 待确认 |
+
+---
+
+## 物品远程点击 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/物品交互对话_远程点击触发_架构溯源报告.md`  
+**侦探结论**：「必须走近」= `RaycastListener.OnClick` 强制与玩家 InteractiveCollider overlap。物品远程点击主推 Listener 增加忽略距离开关（NPC 默认仍要靠近）。对话仍走 SimpleStoryTrigger；HomeScene23 尚无物品实体、仅有 CSV 无 Prefab。禁止放大碰撞冒充远程。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 对话中能否再点物品？ | 跟现网 `Procedure.Pause`（Pause 中 Raycast 直接 return） | 待确认 |
+| Q2 | 多物体重叠优先谁？ | 现网可对多个 Listener 各触发；首版可接受或只取第一命中 | 待确认 |
+| Q3 | 是否要鼠标手型？ | **本期可不做** | 待确认 |
+| Q4 | 物品要不要 E 键提示？ | 以远程点击为主；E 仍近距，可不挂 KeyTips | 待确认 |
+
+---
+
+## Village_HomeScene1 Object 全量配置 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/Village_HomeScene1_Object全量配置与GSM绑定_架构溯源报告.md`  
+**侦探结论**：Object 下 7 物（Npc1+六物品）皆为 Sprite 空壳，无 SceneEntity/交互/Story。`objRoot` 已指 Object；`sceneObjs` 仅脏 `None`，重扫亦空。对话 Prefab `Village_Npc1*` 已齐。远程开关已进 `RaycastListener`。施工：仿 NpcChair 补三件套；Npc1 近距 + `Village_Npc1`；物品远程 + 对应 `Village_Npc1_*`。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 物品要不要 E 提示？ | **可不挂** | 待确认 |
+| Q2 | Collider 尺寸？ | 对齐可点精灵区 | 待确认 |
+| Q3 | Object 是否还有未列子物体？ | 现网仅 7 个 | ✅ 已对拍 |
+| Q4 | Npc1 结构是否仿 NpcChair？ | **建议是** | 待确认 |
+
+---
+
+## Village_HomeScene1 进屋黑屏与未注册 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/Village_HomeScene1_进屋黑屏与未注册_架构溯源报告.md`  
+**侦探结论**：半套配置后 `componentsList` 有 6 处 `None`（饼干干净）。`InitComponents` 对 null NRE 打断 SceneManager → 黑屏；「未注册」为连带（Hierarchical 上饼干已 Init 成功）。GSM/`objRoot`/SceneEntity 已通，非主因。Speaker「1」导入无关。最小修：删 None；可选给 Sync/Init 加 null 防护。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | `InitComponents` 是否加 null 防护？ | **建议加**（治标）；现网仍须清 None | 待确认 |
+| Q2 | None 来源与规范？ | 加完 Interactive 后 List 不得留空槽 | 待确认 |
+| Q3 | 黑屏是黑幕还是相机？ | 先按 Init 中断修；再验 Fade/Camera | 待验收 |
+
+---
+
+## Village_HomeScene1 Npc1 无 E（对照 HomeScene23）· 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/Village_HomeScene1_Npc1无E对照HomeScene23_架构溯源报告.md`  
+**侦探结论**：三件套/canTouch/Story 与 HS23 大体一致，None 已清。无 E 主差为 Npc1 根 **Z≈0.77**（样板 Z=0）；`Bounds.Intersects` 含 Z → overlap 永假。最小修：Npc1 Z→0；保持近距。对话 Prefab 次要。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 远程物品高 Z 是否也改 0？ | **仅近距要 E 的改 0** | 待确认 |
+| Q2 | Body 是否强制对齐 NpcChair 尺寸？ | 先 Z=0；不够再加大 | 待确认 |
+| Q3 | overlap 是否忽略 Z（代码加固）？ | 可选；本期优先改资产 | 待确认 |
+
+---
+
+## Village_HomeScene3 → 45 改名与进屋黑屏 · 2026-08-20
+
+详见：`Assets/Doc/执行文档/0820/Village_HomeScene3改名45与进屋黑屏_架构溯源报告.md`  
+**侦探结论**：须三位一体改名为 `Village_HomeScene45` + 新建专用 Manager/Config。进不去：未进 Build + 无门指 3（`House_Npc45`→缺失的 `Village_House4`）。黑屏/不可玩：误挂龙宫 `HomeScene1Manager`（Xiaer NRE 风险）+ 错 Config/右门 Forest。非 Object None 型。建议 `House_Npc45` 改指 45。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 哪扇村门进 45？ | **`House_Npc45`** | 待确认 |
+| Q2 | 旧档 LastScene=3/House4 兼容？ | **不兼容可接受** | 待确认 |
+| Q3 | 文档同轮改名？ | 运行时先；文档可后 | 待确认 |
+| Q4 | 白名单是否留 `Village_House4`？ | 可暂留占位 | 待确认 |

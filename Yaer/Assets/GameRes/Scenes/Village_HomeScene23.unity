@@ -851,6 +851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 1182457250}
+  requirePlayerOverlap: 1
 --- !u!61 &1182457250
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1556,6 +1557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 1936268895}
+  requirePlayerOverlap: 1
 --- !u!61 &1936268895
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1716,7 +1718,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 186269838}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ff85fae42028364eb5974dc48571944, type: 3}
+  m_Script: {fileID: 11500000, guid: c7e2a91f4b8d4c0e9f3a6b5d2e1c8a04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   beHurtEffectNode: {fileID: 0}
@@ -1726,7 +1728,7 @@ MonoBehaviour:
   isDead: 0
   isNoBreakState: 0
   componentSystem: {fileID: 8800000104}
-  StoryPrefabName: Village_NpcChairChild
+  StoryPrefabName: Village_QuestOffer_NPC23
   OptionPos: {fileID: 0}
   SingleUseInArchive: 0
   triggerType: 0
@@ -1948,6 +1950,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 8800000305}
+  requirePlayerOverlap: 1
 --- !u!114 &8800000307
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -62,7 +62,7 @@ namespace EditorC.Tool.Dialogue
             if (speakerMapping == null)
             {
                 EditorGUILayout.HelpBox(
-                    "未指定映射时将使用内置默认：雅→雅尔、古→古莎、艾米→艾米、艾莉→艾莉、村→村长、埃吉尔→埃吉尔、—→旁白。\n" +
+                    "未指定映射时将使用内置默认：雅→雅尔、古→古莎、艾米→艾米、艾莉→艾莉、村→村长、埃吉尔→埃吉尔、—→旁白、1→NPC1、2→NPC2、3→NPC3、4→NPC4、5→NPC5。\n" +
                     "建议在项目中创建 DialogueSpeakerMapping 资产统一管理（可与内置默认内容一致）。",
                     MessageType.None);
             }

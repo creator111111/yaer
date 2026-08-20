@@ -29,6 +29,13 @@ namespace GameFramework.CoreExtend.Component
             {
                 foreach (var component in kvp.Value)
                 {
+                    // 防护：序列化/半套施工可能混入 null；跳过并继续，避免整场景 OnInit 中断黑屏
+                    // 替代方案：直接 throw——能尽早暴露配置问题，但会再次导致进屋黑屏，故默认跳过
+                    if (component == null)
+                    {
+                        continue;
+                    }
+
                     component.Init(this);
                 }
             }

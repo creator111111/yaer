@@ -51,9 +51,16 @@ namespace Game.Static.Name.Res
         /// <summary>
         /// 肯姆尼民居室内（<c>Assets/GameRes/Scenes/Village_HomeScene23.unity</c>）；由村里 House_Npc4 进入。
         /// 曾用名 Village_HomeScene4（2026-08-04 改名）。勿与 <see cref="Village_House4"/>、
-        /// <see cref="Village_HomeScene2"/> 或磁盘上的 Village_HomeScene3 混淆。
+        /// <see cref="Village_HomeScene2"/> 或 <see cref="Village_HomeScene45"/> 混淆。
         /// </summary>
         public const string Village_HomeScene23 = "Village_HomeScene23";
+
+        /// <summary>
+        /// 肯姆尼 45 号民居室内（<c>Assets/GameRes/Scenes/Village_HomeScene45.unity</c>）；由村里 House_Npc45 进入。
+        /// 曾用名 Village_HomeScene3（2026-08-20 改名）。专用 <c>Village_HomeScene45SceneManager</c>，
+        /// 勿挂龙宫 <c>HomeScene1Manager</c>。
+        /// </summary>
+        public const string Village_HomeScene45 = "Village_HomeScene45";
 
         /// <summary>
         /// 肯姆尼村外（<c>Assets/GameRes/Scenes/Village_OutSide.unity</c>）；由村里 MapRight/RightDoor 进入。

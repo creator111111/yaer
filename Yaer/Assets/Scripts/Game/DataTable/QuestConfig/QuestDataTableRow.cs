@@ -31,11 +31,21 @@ namespace Game.DataTable.QuestConfig
         public string title_jp;
         public string objectiveText;
 
-        /// <summary>首版仅 KillMonster；后续可扩展 CollectItem 等。</summary>
+        /// <summary>
+        /// 目标类型：KillMonster（杀怪）/ CollectItem（提交物品）等。
+        /// AcceptQuest 不校验此字段；KillMonster 校验与 OnMonsterKilled 只认 KillMonster。
+        /// </summary>
         public string objectiveType;
 
-        /// <summary>绑定 MonsterConfig.name，大小写须一致。</summary>
+        /// <summary>KillMonster：绑定 MonsterConfig.name，大小写须一致。CollectItem 行可留空。</summary>
         public string targetMonster;
+
+        /// <summary>
+        /// CollectItem：绑定主物品名（如 TenWangFruit / EMainItemName），与 MainItemConfig.name 一致。
+        /// 接取不依赖本字段；交付查背包时再读。替代方案：临时把物品名塞进 targetMonster（不推荐）。
+        /// </summary>
+        public string targetItem;
+
         public int targetCount;
         public List<QuestRewardEntry> rewards = new List<QuestRewardEntry>();
         public List<string> prerequisiteQuestIds = new List<string>();
@@ -66,7 +76,9 @@ namespace Game.DataTable.QuestConfig
                     title_jp = jsonData.ContainsKey("title_jp") ? jsonData["title_jp"] : "";
                     objectiveText = jsonData["objectiveText"];
                     objectiveType = jsonData["objectiveType"];
-                    targetMonster = jsonData["targetMonster"];
+                    targetMonster = jsonData.ContainsKey("targetMonster") ? jsonData["targetMonster"] : "";
+                    // CollectItem 专用；旧表无此键时为空，不影响 KillMonster 行
+                    targetItem = jsonData.ContainsKey("targetItem") ? jsonData["targetItem"] : "";
                     targetCount = int.Parse(jsonData["targetCount"]);
                     sortOrder = jsonData.ContainsKey("sortOrder") ? int.Parse(jsonData["sortOrder"]) : 0;
                 }
@@ -95,7 +107,9 @@ namespace Game.DataTable.QuestConfig
                 title_jp = obj["title_jp"]?.ToString() ?? "",
                 objectiveText = obj["objectiveText"]?.ToString(),
                 objectiveType = obj["objectiveType"]?.ToString(),
-                targetMonster = obj["targetMonster"]?.ToString(),
+                targetMonster = obj["targetMonster"]?.ToString() ?? "",
+                // 无 targetItem 键时为空串，KillMonster 行保持兼容
+                targetItem = obj["targetItem"]?.ToString() ?? "",
                 targetCount = ParseInt(obj["targetCount"]),
                 autoAccept = ParseBool(obj["autoAccept"]),
                 repeatable = ParseBool(obj["repeatable"]),
