@@ -467,17 +467,203 @@
 ## 村民家室内 DayLight 动画 · 2026-08-18
 
 详见：`Assets/Doc/执行文档/0818/第一章村民家室内_IdleWalk_DayLight_架构溯源报告.md`  
-**产品已决议（2026-08-18）**：Q1 龙宫不开；Q2 House4 + 磁盘 HomeScene3 算村民家要开；Q3 屋里眨眼仍用现网 `Bink`。侦探不再征求这三项。  
+**产品已决议（2026-08-18）**：Q1 龙宫不开；Q2 House4 + 磁盘 HomeScene3 算村民家要开。  
+**Q3 已被 2026-08-22 推翻**（见下节「村民家室内 Bink_DayLight」）。  
 **推荐施工**：方案 B（进屋运行时只换 Idle/Walk 片子，状态名不动）；方案 E 已否决。
 
 | ID | 问题 | 决议 / 施工默认 | 状态 |
 |----|------|-----------------|------|
 | Q1 | 龙宫 `HomeScene1/2` 是否开 DayLight？ | **否**；共用 Idle/Walk Clip 也不许改 | ✅ 已决议 |
-| Q2 | `Village_House4`、磁盘 `Village_HomeScene3` 是否算村民家？ | **算，要开**；进不去也要把场景名写入白名单 | ✅ 已决议 |
-| Q3 | 屋里眨眼是否做 `Bink_DayLight`？ | **否**；继续现网 `Bink` | ✅ 已决议 |
-| T1 | `Village_HomeScene3` 无 `SceneName` 常量，白名单怎么写？ | **先加** `SceneName.Village_HomeScene3`，白名单用场景文件名（勿用该屋当前错误的 `nowSceneName=HomeScene1`） | ✅ 已施工（2026-08-18 方案 B） |
+| Q2 | `Village_House4`、磁盘 `Village_HomeScene3` 是否算村民家？ | **算，要开**；`HomeScene3` 已改名为 `Village_HomeScene45` | ✅ 已决议 |
+| Q3 | 屋里眨眼是否做 `Bink_DayLight`？ | ~~否~~ → **2026-08-22 改口：要**；见下节 | ⛔ 被取代 |
+| T1 | `Village_HomeScene3` 无 `SceneName` 常量，白名单怎么写？ | 已改名为 `Village_HomeScene45` 并写入白名单 | ✅ 已施工 |
 | T2 | House4 `.unity` 缺失时名单写谁？ | **`Village_House4`**（与门 Next、已有常量一致）；补场景另案 | ✅ 已施工（白名单已写入） |
 | T3 | 方案 B 的运行时 Clone Override 若换装/裙子验收失败？ | **改走方案 C**（复制 Dress+三套白天控制器）；仍禁止 E | 待验收确认 |
+
+---
+
+## 村民家室内 Bink_DayLight · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/村民家室内_Bink_DayLight_架构溯源报告.md`  
+**产品已决议（2026-08-22）**：推翻 0818 Q3；村民家白名单内眨眼改 `Bink_DayLight`；C# 状态名仍 `Bink`；龙宫/村街道/Combat 零误伤。  
+**推荐施工**：方案 B′（扩 `VillageHomeDayLightAnimApplier` + 补 `Bink_DayLight` 孤岛/Override 行 + 重接 Clip）；方案 E 已否决。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| Q1 | 龙宫 / 村街道是否播 `Bink_DayLight`？ | **否**；仅村民家白名单 | ✅ 已决议 |
+| Q2 | C# `RegisterState` 是否改 `Bink_DayLight`？ | **否**；只 remap `Bink` 槽片子 | ✅ 已决议 |
+| T1 | 裙子 `Dress/Bink_DayLight` 无 `ArtRes/.../Blink/` 帧，怎么办？ | 侦探默认：**沿用旧 Dress 裙眨眼帧** 或产品另补素材后再接；施工前须肉眼确认 | 待确认 |
+| T2 | 四套 `*_Bink_DayLight.anim` 是否必须重接 `Blink/` 九图？ | **是**（现网为旧片复制件，零引用新 GUID） | 待施工 |
+| T3 | 底图 + 三套 Override 是否加 `Bink_DayLight` 行？ | **是**（仿 `Idle_DayLight`，否则 Applier `FindEffectiveClip` 取不到铠甲片） | 待施工 |
+| T4 | 新 Clip `LoopTime` / `StopTime` 对齐策略？ | **StopTime 对齐旧 Bink**（3.08s / 1.54s）；**`LoopTime=0`** 减 Console Warning | 待施工 |
+| T5 | 白名单是否补字面量 `Village_HomeScene3`？ | **可选**；已改名为 45；旧门若仍写 `3` 再补 | 待确认 |
+| T6 | Applier 缺 `Bink_DayLight` 行时 fallback？ | 建议与 Idle/Walk 一致：**缺则整单不换或跳过 Bink 并 Warning** | 待施工 |
+
+---
+
+## 白天 Blink 锚点对齐暗版 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/白天眨眼Blink_锚点对齐暗版_架构溯源报告.md`  
+**侦探结论（2026-08-22）**：9 张 `Blink/` 全为同宽不同高（353 宽，白天比暗版高 5px），统一 YSCALE；无宽不同例外。护头暗版参考有 `spriteBorder z:155`，施工默认不拷。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| T1 | 9 帧是否全部 YSCALE、无 COPY？ | **是**（None/Crown/Armor 三套均 dest 高 +5px） | ✅ 侦探已核实 |
+| T2 | 护头暗版 `spriteBorder z:155` 是否拷到白天 `Armor*.png`？ | **否**（对齐 0818 Idle/Walk 不拷 border） | 待施工 |
+| T3 | 眨完切 `Idle_DayLight` 脚位与 Idle1 pivot 不完全相同？ | **接受**；Blink 对齐前摇、Idle 对齐待机，暗版亦如此；验收只要求眨眼三帧内部不跳 | 待验收 |
+| T4 | 裙子 `Dress/Bink_DayLight` 是否本期一起改锚点？ | **否**；仍用 `Dress/Idle/Bink/01~03` | ✅ 已决议 |
+
+---
+
+## Village_HomeScene45 NPC45 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_HomeScene45_NPC45配置与GSM绑定_架构溯源报告.md`  
+**侦探结论（2026-08-22）**：磁盘场景无 `NPC45`（须先保存）；对话 Prefab 已存在为 **`Village_Npc45`**；`Village_HomeScene45SceneManager.cs` 不必改；施工 Duplicate `Npc1` + `StoryPrefabName=Village_Npc45` + Z=0。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| Q1 | `StoryPrefabName` 写 `Village_NPC45` 还是 `Village_Npc45`？ | **以磁盘为准：`Village_Npc45`**（Import 产出名） | ✅ 侦探已核实 |
+| Q2 | Hierarchy 有 NPC45 但磁盘无，施工前要不要保存？ | **要**；或施工员直接 Duplicate `Npc1` 新建 | 待施工 |
+| Q3 | NPC45 用哪张场景立绘 Sprite？ | 策划/美术指定；施工时替换 `SpriteRenderer`，侦探不裁定 | 待确认 |
+| Q4 | 同屋 `Npc1` 的 `HomeScene1Npc1` 是否本期一并改 `Village_Npc1`？ | **否**；本期只配 NPC45 | ✅ 已决议 |
+| T1 | Prefab 内 `npc4`/`npc5` 的 `DialogueActor._name` 仍为 `NPC2` | 图参数键已是 NPC4/NPC5；**对白能播**；显示名不对再改 Prefab | 待验收 |
+| T2 | `sceneObjs` YAML 漏写是否挡 Play？ | **不挡**（`OnInit` 重扫）；仍建议保存时同步列表 | ✅ 侦探结论 |
+
+---
+
+## Village_HomeScene45 面包饼干 Item 替换 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_HomeScene45_面包饼干Item替换与GSM绑定_架构溯源报告.md`  
+**侦探结论（2026-08-22）**：`Object` 下面包/饼干为空壳；`sceneObjs` 仅 NPC45；施工删空壳 + 实例化 `Item/面包`/`饼干` + `sceneObjs` 增至 3；合层装饰须 Disable Renderer；SceneManager.cs 不改。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| Q1 | 合层 `村民家3合层/面包|饼干` 去重方式？ | **场景实例 Disable SpriteRenderer**；不改源 Prefab | ✅ 侦探已裁定 |
+| Q2 | Item 摆位用空壳坐标还是 HomeScene1 预制体默认坐标？ | **优先 §4.2 空壳坐标**（与 45 合层对齐） | 待施工 |
+| Q3 | 是否改 Item 预制体源？ | **否**；场景侧 PrefabInstance 即可 | ✅ 已决议 |
+| T1 | 叠图验收：合层关 Renderer 后是否仍偏位？ | 偏则只调 Item 实例 XY，勿恢复合层 Renderer | 待验收 |
+
+---
+
+## Village_HomeScene45 RightDoor 回村 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_HomeScene45_RightDoor回村_架构溯源报告.md`  
+**侦探结论（2026-08-22）**：产品主出口 **RightDoor**；现网 LeftDoor 已通（0821 补齐 Interactive）、RightDoor `SceneChangeDoor` 仍 Disable；施工 = 启用右门 + 按 HomeScene23 禁用左门；EnterPos / Manager / Build 已齐。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| Q1 | 主出口 Left 还是 Right？ | **RightDoor**（取代 0821 LeftDoor 决议） | ✅ 产品已拍板 |
+| Q2 | LeftDoor 如何处理防双出口？ | **Disable SceneChangeDoor + 清空 Next + Trigger=0**（对齐 HomeScene23） | 待施工 |
+| Q3 | 删室内 `ForestScene` EnterPos 残留？ | **可选**；不影响右门回村 | 待施工 |
+| T1 | 布局改后 RightDoor Trigger 是否盖住通道？ | Play 踩门；偏了只调 RightDoor Collider | 待验收 |
+
+---
+
+## Village_HomeScene45 隔断墙半透明 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_HomeScene45_隔断墙靠近半透明_架构溯源报告.md`  
+**侦探结论（2026-08-22）**：`Object/隔断墙` 仅 SpriteRenderer；无 Trigger/脚本；推荐新建 `SpriteFadeOnPlayerFootTrigger` + 子物体 `ProximityTrigger`；不挂 `VillageSceneObjectDepthSort`；现网合层实例无隔断墙叠图。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| Q1 | 靠近时目标 alpha？ | **`nearAlpha=0.4`**（可调 0.35～0.5） | 待施工 |
+| Q2 | 是否平滑过渡？ | **是**，`fadeDuration=0.2s` | 待施工 |
+| Q3 | 合层 `隔断墙` 去重？ | **现网无需**；若 Prefab 合并复现则 Disable 合层 Renderer | ✅ 侦探已裁定 |
+| T1 | Trigger 尺寸是否够大？ | 默认 Box **5.5×14**；Play 踩不进再调 Offset/Size | 待验收 |
+
+---
+
+## Village_HomeScene45 回村门口落点 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_HomeScene45_回村门口落点_架构溯源报告.md`  
+**侦探结论（2026-08-22）**：`KenMuNi1` EnterPos `Village_HomeScene45` 误绑 `LeftBorn`（x≈62）；`House_Npc45` 在 (-4.39, 5.67)；施工新建 `ExitFrom_HomeScene45` + 改 EnterPos；室内 `RightBorn` 已齐。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| Q1 | ExitFrom 初始坐标？ | **(-4.30, -2.33, 0)**（按 HomeScene1 门↔Exit 偏移）；Scene 微调 | 待施工 |
+| Q2 | `HomeScene23` 是否也要独立 Exit？ | **本期不动**；23 仍绑 LeftBorn | 另案 |
+| Q3 | 是否改 `House_Npc45` / 室内 EnterPos？ | **否** | ✅ 已决议 |
+| T1 | 落点与门 Trigger 是否重叠卡死？ | Play 往返 3 次；偏则只调 Exit Y | 待验收 |
+
+---
+
+## ExitFrom_HomeScene45 落点纵深 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_HomeScene45_ExitFrom落点Y轴_架构溯源报告.md`  
+**侦探结论**：EnterPos 已绑 ExitFrom；**H2** `VillageWalkArea` 校正覆盖 Y；用户拖 Y 到树屋视觉高度（5～7）在多边形外故无效；现网 ExitFrom **(7.67,-6.47)** x 错。施工 **(-4.30, 2.90)** 贴 Walk 平台条带。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| Q1 | ExitFrom 坐标？ | **(-4.30, 2.90, 0)**（WalkArea 内）；勿 y=5～7 | 待施工 |
+| Q2 | 是否改 TownPlayerLocomotion？ | **本期否**；场景摆点优先 | ✅ 已决议 |
+| Q3 | 是否扩 VillageWalkArea？ | 仅当要坚持站楼梯视觉高度 | 另案 |
+| T1 | 拖 ExitFrom Y 是否跟手？ | Walk 带内 Δy<0.15 | 待验收 |
+
+---
+
+## Village_HomeScene45 进屋闪回村 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_HomeScene45_进屋闪回村_架构溯源报告.md`（v1）  
+**v1 结论**：R1 落点过近 RightDoor。**v1 施工后用户反馈仍闪回** → 见 v2。
+
+---
+
+## Village_HomeScene45 进屋闪回村 · v2 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_HomeScene45_进屋闪回村_架构溯源报告_v2.md`（**已被 v3 取代**）
+
+---
+
+## Village_HomeScene45 进屋闪回村 · v3 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_HomeScene45_进屋闪回村_架构溯源报告_v3.md`  
+**侦探结论（v3 终版）**：**R0 原点踩门** — `MapRight`(18.36)+`RightDoor`(-18.16) 使 Trigger 横跨 x≈0；玩家 `CreatePlayer` 默认 (0,0) 在 `SetPos` 前触发 `RightDoor`；HomeScene1 门在 x≈-1.87 故无事。Play：`[SceneLoad]` 双条；禁用 RightDoor 不闪。施工 **方案 A**：`MapRight.x→28.8`、`RightDoor.x→-30.67` + `EnterFrom_Village`(-24.12) + `leftBornTsf`。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| Q1 | MapRight / RightDoor 对齐？ | **MapRight.x=28.8；RightDoor.x=-30.67**（对齐 HomeScene1） | 待施工 |
+| Q2 | EnterFrom_Village / DefaultBornPos？ | **(-24.12, -3.65)** | 待施工 |
+| Q3 | Map.leftBornTsf？ | **手绑 EnterFrom_Village** | 待施工 |
+| Q4 | 长期禁用 RightDoor？ | **否**（仅诊断用） | ✅ 已决议 |
+| Q5 | LoadSceneComponentGSM 判空？ | 可选顺手修 MissingReference | 待施工 |
+| T1 | 进村仅 1 条 SceneLoad？ | 无 2s 内第二条 KenMuNi1 | 待验收 |
+
+---
+
+## KenMuNi1 第三部分相机纵深跟随 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_KenMuNi1_第三部分相机纵深跟随_架构溯源报告.md`  
+**侦探结论**：**H1** `FramingTransposer.m_DeadZoneHeight=1` 纵深死区满屏 → W/S 不跟 Y；**H2** 放大 `CameraArea` 只扩 Confiner、不开启跟拍。对照 HomeScene1：`DeadZoneHeight=0`、`YDamping=1`。施工 **方案 B+D**：左翼高台（世界 **x≤-93**）Trigger 进出切换 `DeadZoneHeight→0`、`YDamping→0.7`；右街低区恢复现网。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| Q1 | 是否全村统一开 Y 跟？ | **否**；仅第三部分 Trigger 区 | ✅ 已决议 |
+| Q2 | OrthographicSize 是否随区变化？ | **本期否**；只改 Framing 参数 | ✅ 已决议 |
+| Q3 | `CameraArea` 多边形是否再扩？ | **本期不改**（已含高台） | ✅ 已决议 |
+| Q4 | Trigger 初值？ | Center **(-133, 21)**，Size **(80, 58)**；x≤-93 左翼 | 待施工 |
+| Q5 | C# API？ | `SetFramingTransposerDepthFollow` + `VillageCameraDepthFollowZone` | 待施工 |
+| T1 | 第三部分 W/S vcam.y 跟随？ | 明显跟 Y | 待验收 |
+| T2 | 右街低区手感？ | 不劣化 | 待验收 |
+| T3 | Trigger 边界？ | 无跳变/抖动 | 待验收 |
+
+---
+
+## KenMuNi1 两户门换场 · 2026-08-22
+
+详见：`Assets/Doc/执行文档/0822/Village_KenMuNi1_House_NPC2与村长门无法进屋_架构溯源报告.md`  
+**侦探结论**：**House_NPC2** 磁盘七件套 + 室内 GSM/双侧 EnterPos **已齐**（0606/0608 已修）；若仍进不去查 **交互/Collider**（第三部分 y=8.5）。**村长门**：村 YAML **无 `House_Chlef`**（须 Ctrl+S）；室内 **`ForestSceneManager`** + 无 `SceneName` + 无村 EnterPos → **方案 A 全链新建**。
+
+| ID | 问题 | 施工默认建议 | 状态 |
+|----|------|--------------|------|
+| Q1 | `House_Chlef` 是否改名？ | **`House_Chief`**（辨认用） | ✅ 已施工 |
+| Q2 | Chief 室内出门用哪扇门？ | **`LeftDoor` → Village_KenMuNi1**；RightDoor 已禁用 | ✅ 已施工 |
+| Q3 | NPC2 仍进不去是否改 GSM？ | **否**；先 Play 查 E/Collider | ✅ 已决议 |
+| Q4 | Chief 复用 Stairs 预制体？ | **是**（对齐 Npc1/NPC2） | ✅ 已施工 |
+| Q5 | 村场景是否已保存？ | **House_Chief** 已写入磁盘 YAML | ✅ 已施工 |
+| T1 | House_NPC2 按 E 进屋？ | 进 HomeScene2 | 待验收 |
+| T2 | HouseDoor 出屋回村？ | ExitFrom_HomeScene2 | 待验收 |
+| T3 | 村长门按 E 进屋？ | 进 Chief_House（施工后） | 待验收 |
+| T4 | Chief 出门回村？ | ExitFrom_HomeSceneChief 对称 | 待验收 |
 
 ---
 
@@ -728,3 +914,17 @@
 | Q2 | 旧档 LastScene=3/House4 兼容？ | **不兼容可接受** | 待确认 |
 | Q3 | 文档同轮改名？ | 运行时先；文档可后 | 待确认 |
 | Q4 | 白名单是否留 `Village_House4`？ | 可暂留占位 | 待确认 |
+
+---
+
+## Village_HomeScene45 · LeftDoor 无法退出 · 2026-08-21
+
+详见：`Assets/Doc/执行文档/0821/Village_HomeScene45_LeftDoor无法退出_架构溯源报告.md`  
+**侦探结论**：进屋/改名侧已通；现网**两扇门都出不了**。LeftDoor 主因：`componentsList: []` 缺 Interactive → `SceneChangeDoor.OnInit` 跳过，走进不调 `LoadScene`。RightDoor：`SceneChangeDoor` 组件 Disable。  
+**施工决议（2026-08-21）**：主出口 **LeftDoor**（续完现网半成品：已填 Next/启用换场，仅缺 Interactive）；按 HomeScene23 左门样板补齐 Interactive 子物体 + Listener + EntityControl；RightDoor 保持 `SceneChangeDoor` Disable。EnterPos 仍绑 `RightBorn`（未改）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 45 号屋主出口是 LeftDoor 还是 RightDoor？ | ~~LeftDoor~~ → **已由 0822 产品改 RightDoor**（见下节） | ⚠️ 待重施工 |
+| Q2 | 走出后唯一目标是否 `Village_KenMuNi1`？ | **是**；禁止再指 ForestScene | ✅ 已确认 |
+| Q3 | 走进即走还是按 E？ | `TriggerWhenMoveIn:1`（走进即换场） | ✅ 已确认 |

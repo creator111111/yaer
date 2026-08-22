@@ -80,5 +80,39 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         {
             if (cameraComponent != null) { cameraComponent.ChangeCameraBoundingArea(collider); }
         }
+
+        /// <summary>
+        /// 透传 <see cref="CameraComponent.SetFramingTransposerDepthFollow"/>，供村庄分区 Trigger 调用。
+        /// 不受 <see cref="isLock"/> 限制（只改 Framing 参数，不改 Follow 目标）。
+        /// </summary>
+        public void SetFramingTransposerDepthFollow(
+            bool followDepthY,
+            float yDamping = 0.7f,
+            float deadZoneHeightWhenOff = 1f,
+            float deadZoneHeightWhenOn = 0.5f,
+            float screenYWhenOn = 0.25f)
+        {
+            if (cameraComponent == null)
+            {
+                return;
+            }
+
+            cameraComponent.SetFramingTransposerDepthFollow(
+                followDepthY, yDamping, deadZoneHeightWhenOff, deadZoneHeightWhenOn, screenYWhenOn);
+        }
+
+        /// <summary>进入 CameraDepthFollowZone_Part3 时套用 Part3 Profile，离开时恢复右街默认。</summary>
+        public void SetKenMuNiPart3CameraMode(
+            bool part3Active,
+            CinemachineFramingProfile part3Profile,
+            CinemachineFramingProfile streetProfile)
+        {
+            if (cameraComponent == null)
+            {
+                return;
+            }
+
+            cameraComponent.SetKenMuNiPart3CameraMode(part3Active, part3Profile, streetProfile);
+        }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 namespace Game.GameRuntime.Entities.Player.Components
 {
     /// <summary>
-    /// 方案 B：仅在「村民家室内」把 Home 控制器的 Idle/Walk 槽临时换成白天片子，状态名仍是 Idle/Walk/Bink。
+    /// 方案 B′：仅在「村民家室内」把 Home 控制器的 Idle/Walk/Bink 槽临时换成白天片子，Animator 状态名仍是 Idle/Walk/Bink。
     /// </summary>
     /// <remarks>
     /// 为何不用 <c>TerrainType.IndoorType</c> / <c>!isFightingScene</c>：龙宫也是室内 + Home，会误伤。
@@ -18,8 +18,11 @@ namespace Game.GameRuntime.Entities.Player.Components
         /// <summary>底图状态 / Override 原 Clip 名，必须精确相等，禁止用 Contains（Idle 会误伤 Idle_DayLight）。</summary>
         private const string ClipIdle = "Idle";
         private const string ClipWalk = "Walk";
+        private const string ClipBink = "Bink";
         private const string ClipIdleDayLight = "Idle_DayLight";
         private const string ClipWalkDayLight = "Walk_DayLight";
+        /// <summary>底图孤岛 Clip 名；Applier 从 Override 表取生效片后 remap 到 <see cref="ClipBink"/> 原槽。</summary>
+        private const string ClipBinkDayLight = "Bink_DayLight";
 
         private const string LogTag = "[VillageHomeDayLight]";
 
@@ -37,7 +40,7 @@ namespace Game.GameRuntime.Entities.Player.Components
         };
 
         /// <summary>
-        /// 若当前是村民家，返回「只换了 Idle/Walk」的运行时 Override；否则原样返回 <paramref name="loaded"/>。
+        /// 若当前是村民家，返回「换了 Idle/Walk/Bink 白天片」的运行时 Override；否则原样返回 <paramref name="loaded"/>。
         /// 调用方必须先按 <paramref name="loaded"/>.name 判断 Home/Combat，再调本方法（Clone 默认名不含 Home）。
         /// </summary>
         public static RuntimeAnimatorController ApplyIfVillageHome(RuntimeAnimatorController loaded)
@@ -66,28 +69,29 @@ namespace Game.GameRuntime.Entities.Player.Components
 
             AnimationClip idleDay = FindEffectiveClip(pairs, ClipIdleDayLight);
             AnimationClip walkDay = FindEffectiveClip(pairs, ClipWalkDayLight);
-            if (idleDay == null || walkDay == null)
+            AnimationClip binkDay = FindEffectiveClip(pairs, ClipBinkDayLight);
+            if (idleDay == null || walkDay == null || binkDay == null)
             {
-                // 缺白天行时不强行换片，避免 Idle/Walk 变成 Missing 导致 IsName 卡死。
-                Debug.LogWarning(LogTag + " 找不到白天 Clip，保持原 Idle/Walk。scene=" + sceneName
+                // 缺任一白天行时不强行换片，避免部分槽 Missing 导致 IsName 卡死。
+                Debug.LogWarning(LogTag + " 找不到白天 Clip，保持原 Idle/Walk/Bink。scene=" + sceneName
                     + " Idle_DayLight=" + (idleDay != null) + " Walk_DayLight=" + (walkDay != null)
-                    + " asset=" + loaded.name);
+                    + " Bink_DayLight=" + (binkDay != null) + " asset=" + loaded.name);
                 return loaded;
             }
 
             bool idleOk = RemapOriginalSlot(pairs, ClipIdle, idleDay);
             bool walkOk = RemapOriginalSlot(pairs, ClipWalk, walkDay);
-            if (!idleOk || !walkOk)
+            bool binkOk = RemapOriginalSlot(pairs, ClipBink, binkDay);
+            if (!idleOk || !walkOk || !binkOk)
             {
-                Debug.LogWarning(LogTag + " 找不到 Idle/Walk 原槽，保持原控制器。scene=" + sceneName
-                    + " Idle槽=" + idleOk + " Walk槽=" + walkOk);
+                Debug.LogWarning(LogTag + " 找不到 Idle/Walk/Bink 原槽，保持原控制器。scene=" + sceneName
+                    + " Idle槽=" + idleOk + " Walk槽=" + walkOk + " Bink槽=" + binkOk);
                 return loaded;
             }
 
-            // Bink 行故意不改：屋里眨眼继续现网 Bink。
             runtime.ApplyOverrides(pairs);
-            Debug.Log(LogTag + " 已换白天 Idle/Walk。scene=" + sceneName + " asset=" + loaded.name
-                + " idle=" + idleDay.name + " walk=" + walkDay.name);
+            Debug.Log(LogTag + " 已换白天 Idle/Walk/Bink。scene=" + sceneName + " asset=" + loaded.name
+                + " idle=" + idleDay.name + " walk=" + walkDay.name + " bink=" + binkDay.name);
             return runtime;
         }
 
@@ -114,7 +118,7 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
             else
             {
-                // 裙子 Dress 底图 .controller：直接包一层，GetOverrides 原 Clip 名即 Idle/Walk/Idle_DayLight/Walk_DayLight。
+                // 裙子 Dress 底图 .controller：直接包一层，GetOverrides 原 Clip 名即 Idle/Walk/Bink 及 *_DayLight 孤岛。
                 runtime = new AnimatorOverrideController(loaded);
             }
 

@@ -238,6 +238,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.FpsCounter.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\HomeScene1Data.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3PlayerPrefsStream.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_House\Npc23QuestStoryTrigger.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_Color.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Auto Save\ES3AutoSaveMgr.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MenuFormMainItemInfo.cs" />
@@ -463,9 +464,10 @@
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_TriggerModule.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Settings\PlayerPrefsSettingSerializerHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Base\IComponentGM.cs" />
-    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3BinaryWriter.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_House\Village_HomeScene45SceneManager.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Setting\SettingSerializerHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormDeadState.cs" />
+    <Compile Include="Assets\Easy Save 3\Scripts\Writers\ES3BinaryWriter.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Base\ShutdownType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\DamageModifierConfig.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Diagnostic\DiagnosticTool.cs" />
@@ -1255,8 +1257,9 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_House\Npc23QuestStoryTrigger.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_House\Village_HomeScene45SceneManager.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\CommonEntity\SpriteFadeOnPlayerFootTrigger.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_House\Village_Chief_HouseSceneManager.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\CameraGSM\VillageCameraDepthFollowZone.cs" />
     <None Include="Assets\GameRes\Config\MonsterConfig\MonsterConfig.json" />
     <None Include="Assets\GameRes\Config\AchievementConfig\AchievementConfig.json" />
     <None Include="Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.xml" />

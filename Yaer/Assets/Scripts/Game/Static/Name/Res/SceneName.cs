@@ -63,6 +63,11 @@ namespace Game.Static.Name.Res
         public const string Village_HomeScene45 = "Village_HomeScene45";
 
         /// <summary>
+        /// 肯姆尼村长家室内（<c>Assets/GameRes/Scenes/Village_Chief_House.unity</c>）；由村里 House_Chief 进入。
+        /// </summary>
+        public const string Village_Chief_House = "Village_Chief_House";
+
+        /// <summary>
         /// 肯姆尼村外（<c>Assets/GameRes/Scenes/Village_OutSide.unity</c>）；由村里 MapRight/RightDoor 进入。
         /// </summary>
         public const string Village_OutSide = "Village_OutSide";

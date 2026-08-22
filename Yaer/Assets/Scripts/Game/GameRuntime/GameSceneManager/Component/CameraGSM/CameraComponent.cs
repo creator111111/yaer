@@ -4,6 +4,51 @@ using UnityEngine;
 
 namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
 {
+    /// <summary>Cinemachine Framing Transposer 一组参数（进/出 Zone 时整组切换）。</summary>
+    [Serializable]
+    public struct CinemachineFramingProfile
+    {
+        public float screenX;
+        public float screenY;
+        public float deadZoneWidth;
+        public float deadZoneHeight;
+        public float xDamping;
+        public float yDamping;
+        public float softZoneWidth;
+        public float softZoneHeight;
+        public float biasX;
+        public float biasY;
+
+        public static CinemachineFramingProfile KenMuNiStreetDefault => new CinemachineFramingProfile
+        {
+            screenX = 0.5f,
+            screenY = 0.5f,
+            deadZoneWidth = 0f,
+            deadZoneHeight = 1f,
+            xDamping = 0.7f,
+            yDamping = 0f,
+            softZoneWidth = 0.25f,
+            softZoneHeight = 2f,
+            biasX = 0f,
+            biasY = 0f,
+        };
+
+        /// <summary>第三部分高台（你在 Cinemachine 上调好的跟 Y 参数）。</summary>
+        public static CinemachineFramingProfile KenMuNiPart3DepthFollow => new CinemachineFramingProfile
+        {
+            screenX = 0.5f,
+            screenY = 0.5f,
+            deadZoneWidth = 0f,
+            deadZoneHeight = 0f,
+            xDamping = 0.7f,
+            yDamping = 0.7f,
+            softZoneWidth = 0.25f,
+            softZoneHeight = 0.26f,
+            biasX = 0f,
+            biasY = -4.5849f,
+        };
+    }
+
     public class CameraComponent : MonoBehaviour
     {
         [SerializeField] private CinemachineBrain cinemachineBrain;
@@ -183,6 +228,65 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         public void ChangeCameraBoundingArea(Collider2D newColliderArea)
         {
             virtualCamera.GetComponent<CinemachineConfiner>().m_BoundingShape2D = newColliderArea;
+        }
+
+        /// <summary>
+        /// 将 Framing Transposer 整组替换为指定 Profile（进/出 CameraDepthFollowZone 时用）。
+        /// </summary>
+        public void ApplyFramingTransposerProfile(CinemachineFramingProfile profile)
+        {
+            if (virtualCamera == null)
+            {
+                return;
+            }
+
+            var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            if (framingTransposer == null)
+            {
+                Debug.LogWarning($"{nameof(CameraComponent)} 未找到 CinemachineFramingTransposer，跳过 Profile 切换。");
+                return;
+            }
+
+            framingTransposer.m_ScreenX = profile.screenX;
+            framingTransposer.m_ScreenY = profile.screenY;
+            framingTransposer.m_DeadZoneWidth = profile.deadZoneWidth;
+            framingTransposer.m_DeadZoneHeight = profile.deadZoneHeight;
+            framingTransposer.m_XDamping = profile.xDamping;
+            framingTransposer.m_YDamping = profile.yDamping;
+            framingTransposer.m_SoftZoneWidth = profile.softZoneWidth;
+            framingTransposer.m_SoftZoneHeight = profile.softZoneHeight;
+            framingTransposer.m_BiasX = profile.biasX;
+            framingTransposer.m_BiasY = profile.biasY;
+        }
+
+        /// <summary>进入第三部分 Zone：跟 Y；离开：恢复右街默认。</summary>
+        public void SetKenMuNiPart3CameraMode(bool part3Active, CinemachineFramingProfile part3Profile, CinemachineFramingProfile streetProfile)
+        {
+            ApplyFramingTransposerProfile(part3Active ? part3Profile : streetProfile);
+        }
+
+        /// <summary>
+        /// 村庄探索：切换 Framing Transposer 纵深（Y）跟拍强度（旧 API，保留兼容）。
+        /// </summary>
+        public void SetFramingTransposerDepthFollow(
+            bool followDepthY,
+            float yDamping = 0.7f,
+            float deadZoneHeightWhenOff = 1f,
+            float deadZoneHeightWhenOn = 0.5f,
+            float screenYWhenOn = 0.25f)
+        {
+            if (followDepthY)
+            {
+                var profile = CinemachineFramingProfile.KenMuNiPart3DepthFollow;
+                profile.yDamping = yDamping;
+                profile.deadZoneHeight = deadZoneHeightWhenOn;
+                profile.screenY = screenYWhenOn;
+                ApplyFramingTransposerProfile(profile);
+            }
+            else
+            {
+                ApplyFramingTransposerProfile(CinemachineFramingProfile.KenMuNiStreetDefault);
+            }
         }
     }
 }

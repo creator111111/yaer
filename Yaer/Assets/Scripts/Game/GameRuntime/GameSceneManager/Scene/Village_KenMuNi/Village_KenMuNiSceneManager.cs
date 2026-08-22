@@ -6,6 +6,7 @@ using Game.GameMgr.Component.Archive.ArchiveDataClass.Scene;
 using Game.GameMgr.Component.UI;
 using Game.GameRuntime.Entities.Base.BaseSceneObj;
 using Game.GameRuntime.Entities.MainNPC;
+using Game.GameRuntime.Entities.Player;
 using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.GameSceneManager.Component;
 using Game.GameRuntime.GameSceneManager.Component.CameraGSM;

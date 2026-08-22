@@ -62,9 +62,10 @@ namespace Game.GameRuntime.GameSceneManager.Component
                                 {
                                     blackFormLogic.CloseFormFade(() =>
                                     {
-                                        // 触发黑幕结束事件
-                                        // 获取下一个场景上的该组件触发
-                                        manager.GetModule<LoadSceneComponentGSM>().OnBlackFadeEnd();
+                                        // 二次换场时旧 GSM 可能已销毁（如进屋闪回村）；取当前场景 manager 避免 MissingReferenceException。
+                                        // 替代方案：捕获 sceneName 比对后再回调——仍无法单独止闪回，故仅防御性判空。
+                                        var currentManager = GameManager.GetGameSceneManager();
+                                        currentManager?.GetModule<LoadSceneComponentGSM>()?.OnBlackFadeEnd();
                                     });
                                 }
 
