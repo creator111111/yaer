@@ -22,19 +22,8 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Painting
         /// </summary>
         protected override void SetDefaultPainting()
         {
-            // 与 StoryFormPainting.Start 查找规则一致：自身或父节点
-            bool hasSceneActor = FindDialogueActorEx() != null;
-
-            // 头饰始终跟存档；表情仅场景大立绘强制默认 Smile（Mask 由 Presenter 驱动）
+            // 头饰跟存档；表情由 RefreshAvatar → OnRefreshAvatarEvent 驱动，禁止 Start 强制 Smile 盖首句（0827 R2-雅）。
             SyncHeadwearFromArchive();
-
-            // Mask 壳：表情由 DialogueMaskAvatarPresenter 驱动，禁止强制 Smile 覆盖首句
-            if (!hasSceneActor)
-            {
-                return;
-            }
-
-            UpdateFace("Armor_NoHeadWear_Smile");
         }
 
         /// <summary>

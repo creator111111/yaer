@@ -1,6 +1,7 @@
 using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameRuntime.Story.NodeCanvasExtend;
+using Game.GameRuntime.UI.FormLogic.Shop;
 using Game.GameRuntime.UI.FormLogic.Story.Base;
 using Game.GameRuntime.UI.FormLogic.Story.Painting;
 using Game.Static.Enum.Dialogue;
@@ -26,6 +27,13 @@ namespace Game.GameRuntime.UI.FormLogic.Story
         [SerializeField] private StoryFormPainting gushaPainting;
         [SerializeField] private StoryFormPainting amyPainting;
         [SerializeField] private StoryFormPainting aliyPainting;
+        [SerializeField] private MerchantMaskPainting merchantMaskPainting;
+
+        /// <summary>
+        /// 店句 Mask 已由 <see cref="ApplyShopkeeperPortrait"/> 点亮时置 true。
+        /// 同帧 <see cref="OnGetNewStatement"/> 会传 None 写历史，须跳过 HideAll 避免 Merchant 黑块（0827 F3）。
+        /// </summary>
+        private bool shopkeeperMaskActive;
 
         /// <summary>
         /// 调试强制雅儿走 GoOut（忽略存档 Clothes）。默认 false：按存档 Dress↔GoOut 切换。
@@ -71,12 +79,20 @@ namespace Game.GameRuntime.UI.FormLogic.Story
         /// </summary>
         public void Apply(DialogueRoleName role, DialogueFaceType faceType)
         {
-            HideAllPaintings();
-
             if (role == DialogueRoleName.None)
             {
+                // 店句：TMP 在 ApplyShopkeeperPortrait 后会 Invoke(None) 写历史；勿关掉刚亮的 Merchant。
+                if (shopkeeperMaskActive)
+                {
+                    return;
+                }
+
+                HideAllPaintings();
                 return;
             }
+
+            shopkeeperMaskActive = false;
+            HideAllPaintings();
 
             var painting = ResolvePainting(role);
             if (painting == null)
@@ -109,6 +125,32 @@ namespace Game.GameRuntime.UI.FormLogic.Story
             painting.UpdateFace(faceKey);
         }
 
+        /// <summary>
+        /// 店句专用：亮 Merchant Mask 小表情，与场景合层读同一 ShopBody/ShopFace。
+        /// 不扩 <see cref="DialogueRoleName"/>；不走 <see cref="StoryFormPainting.UpdateFace"/>。
+        /// </summary>
+        public void ApplyShopkeeperPortrait(ShopkeeperBodyType body, ShopkeeperFaceType face)
+        {
+            shopkeeperMaskActive = true;
+            HideAllPaintings();
+
+            if (merchantMaskPainting == null)
+            {
+                shopkeeperMaskActive = false;
+                Debug.LogWarning("[MaskAvatar] 店句但 MerchantMaskPainting 未绑定。", this);
+                return;
+            }
+
+            merchantMaskPainting.gameObject.SetActive(true);
+            var cg = merchantMaskPainting.GetComponent<CanvasGroup>();
+            if (cg != null && cg.alpha < 1f)
+            {
+                cg.alpha = 1f;
+            }
+
+            merchantMaskPainting.Apply(body, face);
+        }
+
         private void HideAllPaintings()
         {
             SetPaintingActive(goOutYaerPainting, false);
@@ -116,6 +158,10 @@ namespace Game.GameRuntime.UI.FormLogic.Story
             SetPaintingActive(gushaPainting, false);
             SetPaintingActive(amyPainting, false);
             SetPaintingActive(aliyPainting, false);
+            if (merchantMaskPainting != null)
+            {
+                merchantMaskPainting.gameObject.SetActive(false);
+            }
         }
 
         private static void SetPaintingActive(StoryFormPainting painting, bool active)
@@ -235,6 +281,15 @@ namespace Game.GameRuntime.UI.FormLogic.Story
             if (aliyPainting == null)
             {
                 aliyPainting = FindChildPainting("AliyPainting");
+            }
+
+            if (merchantMaskPainting == null)
+            {
+                var merchantTr = transform.Find("MerchantMaskPainting");
+                if (merchantTr != null)
+                {
+                    merchantMaskPainting = merchantTr.GetComponent<MerchantMaskPainting>();
+                }
             }
         }
 

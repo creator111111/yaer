@@ -4,7 +4,13 @@
 		{"id":"61a2cb2655e341a3","type":"file","file":"Doc/图片/Pasted image 20260820155147.png","x":-40,"y":-268,"width":400,"height":168},
 		{"id":"5ab8b8decbd7fa3b","type":"file","file":"Doc/图片/Pasted image 20260820155203.png","x":-640,"y":140,"width":400,"height":191},
 		{"id":"1cbd82bde1267e59","type":"file","file":"Doc/图片/Pasted image 20260820155303.png","x":-40,"y":-30,"width":399,"height":170},
-		{"id":"17617fea95ec4762","x":-41,"y":169,"width":400,"height":134,"type":"file","file":"Pasted image 20260822155155.png"}
+		{"id":"17617fea95ec4762","type":"file","file":"Pasted image 20260822155155.png","x":-41,"y":169,"width":400,"height":134},
+		{"id":"5976a8fb4fa9192c","x":430,"y":21,"width":250,"height":60,"type":"text","text":"ChiBie"},
+		{"id":"97b4fcb4ba9f5280","x":-40,"y":360,"width":400,"height":176,"type":"file","file":"Pasted image 20260827190257.png"},
+		{"id":"8c0c462db61c7b6a","x":460,"y":418,"width":250,"height":60,"type":"text","text":"Laugh"}
 	],
-	"edges":[]
+	"edges":[
+		{"id":"caa44b74d2c5740d","fromNode":"1cbd82bde1267e59","fromSide":"right","toNode":"5976a8fb4fa9192c","toSide":"left"},
+		{"id":"5413ebd7ec52fbf9","fromNode":"97b4fcb4ba9f5280","fromSide":"right","toNode":"8c0c462db61c7b6a","toSide":"left"}
+	]
 }

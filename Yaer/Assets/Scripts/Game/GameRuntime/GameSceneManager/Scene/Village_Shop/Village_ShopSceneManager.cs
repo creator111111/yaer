@@ -1,10 +1,16 @@
+using System;
 using Cinemachine;
 using Game.GameMgr;
+using Game.GameMgr.Component;
+using Game.GameMgr.Component.Archive.ArchiveDataClass;
 using Game.GameMgr.Component.ChangeScene;
 using Game.GameMgr.Component.UI;
 using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.GameSceneManager.Component;
 using Game.GameRuntime.GameSceneManager.Component.CameraGSM;
+using Game.GameRuntime.GameSceneManager.Component.Story;
+using Game.GameRuntime.UI.FormLogic.Black;
+using Game.GameRuntime.UI.FormLogic.Story.Dialogue;
 using Game.Static.Enum.Map;
 using Game.Static.Name.Res;
 using Game.Static.Path;
@@ -26,11 +32,43 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
         /// <summary>世界空间美术合层根节点名（与 Hierarchy 一致）。</summary>
         private const string ShopCompositeRootName = "商店界面合层";
 
+        /// <summary>首次进店对白 Prefab 名（与 <c>Village_ShopStart.prefab</c>、存档键一致）。</summary>
+        private const string ShopStartStoryName = "Village_ShopStart";
+
+        /// <summary>场景买卖 UI 根节点名（Hierarchy <c>UI_Shop</c>）；序列化引用优先，Find 兜底。</summary>
+        private const string ShopUiRootName = "UI_Shop";
+
+        [SerializeField] private GameObject shopUiRoot;
+
         /// <summary>合层背景中心附近的默认机位（与执行说明一致）；找不到合层时兜底。</summary>
         private static readonly Vector3 FallbackCameraWorldPos = new Vector3(0.65f, -0.14f, -10f);
 
         /// <summary>对齐 HomeScene2 的正交尺寸，刚好框住 19.2×10.8 背景。</summary>
         private const float ShopOrthoSize = 5.4f;
+
+        /// <summary>黑幕内 Trigger 后等待对话壳就绪再淡出（对齐 KenMuNi）。</summary>
+        private const float ShopStartStoryReadyHoldSeconds = 0.15f;
+
+        /// <summary>壳未就绪时防永久卡黑的超时（秒）。</summary>
+        private const float ShopStartCoverTimeoutSeconds = 3f;
+
+        /// <summary>对白结束演出黑幕：淡入时长（秒），明显慢于换场默认 1.0s。</summary>
+        private const float ShopEndBlackShowDuration = 2.0f;
+
+        /// <summary>对白结束演出黑幕：淡出时长（秒）。</summary>
+        private const float ShopEndBlackHideDuration = 2.0f;
+
+        /// <summary>结束黑幕全黑停留（秒），增强「盖住再揭」体感。</summary>
+        private const float ShopEndBlackHoldSeconds = 0.4f;
+
+        /// <summary>是否已订阅 <see cref="StoryComponentGSM.onStoryEnd"/>，用于离场时安全退订。</summary>
+        private bool shopStartStoryEndSubscribed;
+
+        /// <summary>防止 onStoryTriggered 与超时双触发 CloseFormFade。</summary>
+        private bool shopStartCoverCloseIssued;
+
+        /// <summary>LoadScene 旁路交来的 CloseFormFade + OnBlackFadeEnd。</summary>
+        private Action deferredCloseBlackAndNotify;
 
         public override void OnInit()
         {
@@ -47,6 +85,12 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
             // 原因：上一场景（如村里）打开的 FightingPanel 会跨场景残留。
             // 替代方案：①仍在 OnEnterScene 关（会闪）；②改基类 canCreatePlayer==false 也调 OpenFightingPanel——影响面大，不采用。
             CloseFightingPanelIfOpen();
+
+            // 首次进店：换场黑幕仍全黑时藏买卖 UI，避免 OnEnterScene 后闪一帧 Bar（0827 F2）。
+            if (ShouldPlayShopStartStory())
+            {
+                HideShopUiRoot();
+            }
         }
 
         public override void OnEnterScene()
@@ -70,12 +114,337 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
             }
 
             // 无玩家：取消跟拍并锁死，再强制对准合层（Brain 关掉，避免 CM 每帧改机位）。
+            // 首次进店主路径在 TryDeferBlackFadeForCover 黑幕内对焦；此处兜底二进宫与 blackFade=false。
             LockShopCameraPipeline();
-            FocusMainCameraOnShopComposite();
+            if (!ShouldPlayShopStartStory())
+            {
+                FocusMainCameraOnShopComposite();
+            }
 
             // 验收：确认从 Door_Shop 进来时 LastSceneName 为 Village_KenMuNi1
             var last = GameManager.GetGMComponent<ChangeSceneComponentGM>().LastSceneName;
             Debug.Log($"[VillageShopDebug] enter Village_Shop lastScene={last}");
+
+            // 主路径已在换场黑幕 DeferCover 内 Trigger；此处仅兜底。
+            TryTriggerShopStartStoryOnce();
+        }
+
+        /// <summary>
+        /// 首次进店：换场黑幕仍全黑时 TriggerStory，就绪后一次 CloseFormFade（对齐 KenMuNi，消除闪店 R1）。
+        /// </summary>
+        public override bool TryDeferBlackFadeForCover(Action closeBlackAndNotify)
+        {
+            if (!ShouldPlayShopStartStory())
+            {
+                return false;
+            }
+
+            var storyGsm = GetModule<StoryComponentGSM>();
+            if (storyGsm == null)
+            {
+                Debug.LogWarning("[ShopStart] StoryComponentGSM 缺失，放弃延迟淡出");
+                return false;
+            }
+
+            if (storyGsm.HasRunningStory)
+            {
+                Debug.LogWarning("[ShopStart] 已有剧情在跑，放弃延迟淡出");
+                return false;
+            }
+
+            shopStartCoverCloseIssued = false;
+            deferredCloseBlackAndNotify = closeBlackAndNotify;
+
+            // 锁闸：图内 Wait 须等换场黑幕淡完才开始雅/古立绘淡入（0827 P1）。
+            ShopStartLayerRevealGate.ResetForDeferredCover();
+
+            // 黑幕下准备合层/相机（用户不可见），避免 OnEnterScene 后再对焦闪帧。
+            HideShopUiRoot();
+            LockShopCameraPipeline();
+            FocusMainCameraOnShopComposite();
+
+            storyGsm.onStoryTriggered += OnShopStartStoryTriggeredForCover;
+
+            bool started = storyGsm.TriggerStory(ShopStartStoryName);
+            if (!started)
+            {
+                CleanupShopStartCoverSubscriptions(storyGsm);
+                deferredCloseBlackAndNotify = null;
+                ShopStartLayerRevealGate.SignalBgFullyVisible();
+                ShowShopUiRoot();
+                Debug.LogWarning("[ShopStart] TriggerStory 未启动，回退默认淡出");
+                return false;
+            }
+
+            storyGsm.onStoryEnd += OnShopStartStoryEnd;
+            shopStartStoryEndSubscribed = true;
+            Debug.Log("[ShopStart] 黑幕阶段 TriggerStory " + ShopStartStoryName + "，等待对话壳就绪后淡出");
+            WaitForInvoke(ShopStartCoverTimeoutSeconds, OnShopStartCoverTimeout);
+            return true;
+        }
+
+        private void OnShopStartStoryTriggeredForCover()
+        {
+            var storyGsm = GetModule<StoryComponentGSM>();
+            if (storyGsm != null)
+            {
+                storyGsm.onStoryTriggered -= OnShopStartStoryTriggeredForCover;
+            }
+
+            WaitForInvoke(ShopStartStoryReadyHoldSeconds, FinalizeShopStartCoverAndCloseBlack);
+        }
+
+        private void OnShopStartCoverTimeout()
+        {
+            if (shopStartCoverCloseIssued)
+            {
+                return;
+            }
+
+            Debug.LogWarning("[ShopStart] 对话壳 Ready 超时，强制淡出黑幕");
+            FinalizeShopStartCoverAndCloseBlack();
+        }
+
+        private void FinalizeShopStartCoverAndCloseBlack()
+        {
+            if (shopStartCoverCloseIssued)
+            {
+                return;
+            }
+
+            shopStartCoverCloseIssued = true;
+
+            // 淡出前强制雅/古大立绘与对话框 alpha=0，亮屏后由图内 Action 拉回（对齐 KenMuNi Prepare）。
+            PrepareShopStartLayeredReveal();
+
+            var close = deferredCloseBlackAndNotify;
+            deferredCloseBlackAndNotify = null;
+            if (close != null)
+            {
+                var loadGsm = GetModule<LoadSceneComponentGSM>();
+                if (loadGsm != null)
+                {
+                    void OnBlackFullyGone()
+                    {
+                        loadGsm.onEndLoadingSceneEvent -= OnBlackFullyGone;
+                        ShopStartLayerRevealGate.SignalBgFullyVisible();
+                        Debug.Log("[ShopStart] 黑幕淡完，分层闸门开启（可开始立绘淡入）");
+                    }
+
+                    loadGsm.onEndLoadingSceneEvent += OnBlackFullyGone;
+                }
+                else
+                {
+                    ShopStartLayerRevealGate.SignalBgFullyVisible();
+                }
+
+                Debug.Log("[ShopStart] 立绘/框已藏，CloseFormFade");
+                close.Invoke();
+            }
+            else
+            {
+                ShopStartLayerRevealGate.SignalBgFullyVisible();
+            }
+        }
+
+        /// <summary>
+        /// 分层显现准备（白名单）：藏字幕条 + DialogueScene 下雅/古大立绘；不碰 Mask 小头像。
+        /// </summary>
+        private void PrepareShopStartLayeredReveal()
+        {
+            var uiPath = UIPrefabPath.GetUIPrefabPath("NormalDialogueNewPanel");
+            var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(uiPath);
+            if (uiForm == null || uiForm.Logic == null)
+            {
+                return;
+            }
+
+            var logicRoot = uiForm.Logic;
+
+            if (logicRoot is NormalDialogueFormNewLogic dialogueLogic
+                && dialogueLogic.dialogueUICanvasGroup != null)
+            {
+                dialogueLogic.dialogueUICanvasGroup.alpha = 0f;
+            }
+
+            var sceneRoot = UIUtils.findChild(logicRoot.gameObject, "DialogueSceneContainer", hasDebugLog: false);
+            if (sceneRoot == null)
+            {
+                Debug.LogWarning("[ShopStart][Prepare] 未找到 DialogueSceneContainer，跳过场景立绘白名单");
+                return;
+            }
+
+            SetScenePaintingCanvasGroupAlpha(sceneRoot, "GoOutStoryYaerPainting", 0f);
+            SetScenePaintingCanvasGroupAlpha(sceneRoot, "GushaPainting", 0f);
+        }
+
+        private static void SetScenePaintingCanvasGroupAlpha(GameObject sceneRoot, string paintingObjectName, float alpha)
+        {
+            var paintingGo = UIUtils.findChild(sceneRoot, paintingObjectName, hasDebugLog: false);
+            if (paintingGo == null)
+            {
+                return;
+            }
+
+            var cg = paintingGo.GetComponent<CanvasGroup>();
+            if (cg == null)
+            {
+                return;
+            }
+
+            cg.alpha = alpha;
+            Debug.Log("[ShopStart][Prepare] hide " + paintingObjectName);
+        }
+
+        private void CleanupShopStartCoverSubscriptions(StoryComponentGSM storyGsm)
+        {
+            if (storyGsm != null)
+            {
+                storyGsm.onStoryTriggered -= OnShopStartStoryTriggeredForCover;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            UnsubscribeShopStartStoryEnd();
+            var storyGsm = GetModule<StoryComponentGSM>();
+            CleanupShopStartCoverSubscriptions(storyGsm);
+        }
+
+        /// <summary>
+        /// 本档是否尚未播过首次进店对白（<see cref="StoryTriggerCountData.CheckStoryUsed"/>）。
+        /// </summary>
+        private bool ShouldPlayShopStartStory()
+        {
+            var counts = GetArchiveData<StoryTriggerCountData>();
+            return counts == null || !counts.CheckStoryUsed(ShopStartStoryName);
+        }
+
+        /// <summary>
+        /// 同档首次进入商店时 Trigger 开场对白（OnEnterScene 兜底）。
+        /// 主路径已改到 <see cref="TryDeferBlackFadeForCover"/>。
+        /// </summary>
+        private void TryTriggerShopStartStoryOnce()
+        {
+            if (!ShouldPlayShopStartStory())
+            {
+                return;
+            }
+
+            var storyGsm = GetModule<StoryComponentGSM>();
+            if (storyGsm == null)
+            {
+                Debug.LogWarning("[ShopStart] StoryComponentGSM 缺失，跳过 " + ShopStartStoryName);
+                return;
+            }
+
+            if (storyGsm.HasRunningStory)
+            {
+                // 黑幕阶段已启动：静默跳过，避免双开告警刷屏。
+                return;
+            }
+
+            HideShopUiRoot();
+            bool started = storyGsm.TriggerStory(ShopStartStoryName);
+            if (started)
+            {
+                storyGsm.onStoryEnd += OnShopStartStoryEnd;
+                shopStartStoryEndSubscribed = true;
+                Debug.Log("[ShopStart] OnEnterScene 兜底 TriggerStory " + ShopStartStoryName);
+            }
+            else
+            {
+                ShowShopUiRoot();
+                Debug.LogWarning("[ShopStart] TriggerStory 未启动 " + ShopStartStoryName);
+            }
+        }
+
+        /// <summary>首次对白结束：慢黑幕 → 可选 hold → 显买卖 UI → 慢淡出。</summary>
+        private void OnShopStartStoryEnd()
+        {
+            UnsubscribeShopStartStoryEnd();
+
+            ShowShopBlackFade(
+                blackForm =>
+                {
+                    WaitForInvoke(ShopEndBlackHoldSeconds, () =>
+                    {
+                        ShowShopUiRoot();
+                        blackForm.CloseFormFade(() =>
+                            Debug.Log("[ShopStart] onStoryEnd，黑幕淡出后显示 UI_Shop"));
+                    });
+                },
+                ShopEndBlackShowDuration,
+                ShopEndBlackHideDuration);
+        }
+
+        /// <summary>打开系统 BlackPanel 并淡入黑幕，全黑后执行 <paramref name="onBlackReady"/>。</summary>
+        private static void ShowShopBlackFade(
+            Action<BlackFormLogic> onBlackReady,
+            float? showDuration = null,
+            float? hideDuration = null)
+        {
+            var uiPath = UIPrefabPath.GetUIPrefabPath("BlackPanel");
+            GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(uiPath, EUIGroup.System, new OpenFormArgs
+            {
+                userData = new ShowBlackFormArgs
+                {
+                    showType = BlackFadeType.FadeShow,
+                    showDuration = showDuration,
+                    hideDuration = hideDuration,
+                    onShowEnd = onBlackReady
+                }
+            });
+        }
+
+        private GameObject ResolveShopUiRoot()
+        {
+            if (shopUiRoot != null)
+            {
+                return shopUiRoot;
+            }
+
+            shopUiRoot = GameObject.Find(ShopUiRootName);
+            if (shopUiRoot == null)
+            {
+                Debug.LogWarning("[ShopStart] 未找到 UI_Shop。", this);
+            }
+
+            return shopUiRoot;
+        }
+
+        private void HideShopUiRoot()
+        {
+            var root = ResolveShopUiRoot();
+            if (root != null)
+            {
+                root.SetActive(false);
+            }
+        }
+
+        private void ShowShopUiRoot()
+        {
+            var root = ResolveShopUiRoot();
+            if (root != null)
+            {
+                root.SetActive(true);
+            }
+        }
+
+        private void UnsubscribeShopStartStoryEnd()
+        {
+            if (!shopStartStoryEndSubscribed)
+            {
+                return;
+            }
+
+            var storyGsm = GetModule<StoryComponentGSM>();
+            if (storyGsm != null)
+            {
+                storyGsm.onStoryEnd -= OnShopStartStoryEnd;
+            }
+
+            shopStartStoryEndSubscribed = false;
         }
 
         /// <summary>
@@ -232,7 +601,7 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
                 }
             }
 
-            var all = Object.FindObjectsOfType<Camera>();
+            var all = UnityEngine.Object.FindObjectsOfType<Camera>();
             for (var i = 0; i < all.Length; i++)
             {
                 // UICamera 只渲 UI 层（mask 常为 1<<5），跳过它。

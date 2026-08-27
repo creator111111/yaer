@@ -60,6 +60,23 @@ namespace Game.GameRuntime.UI.Component.BlackFade
             blackMask.HideFade(callBack);
         }
 
+        /// <summary>临时覆盖淡入/淡出时长（秒）。</summary>
+        public void SetFadeDurations(float showSeconds, float hideSeconds)
+        {
+            blackMask.SetFadeDurations(showSeconds, hideSeconds);
+        }
+
+        /// <summary>恢复 BlackMask Prefab 默认 show/hide 时长。</summary>
+        public void RestoreDefaultFadeDurations()
+        {
+            blackMask.RestoreDefaultFadeDurations();
+        }
+
+        public float GetDefaultShowDuration() => blackMask.DefaultShowTime;
+        public float GetDefaultHideDuration() => blackMask.DefaultHideTime;
+        public float GetCurrentShowDuration() => blackMask.CurrentShowTime;
+        public float GetCurrentHideDuration() => blackMask.CurrentHideTime;
+
         /// <summary>
         /// 设置为直接隐藏黑幕
         /// </summary>

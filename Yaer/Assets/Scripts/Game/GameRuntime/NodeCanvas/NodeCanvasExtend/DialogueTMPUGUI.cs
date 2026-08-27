@@ -6,6 +6,8 @@ using System.Text;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Game.GameMgr;
+using Game.GameRuntime.UI.FormLogic.Shop;
+using Game.GameRuntime.UI.FormLogic.Story;
 using Game.GameRuntime.Story;
 using Game.Static.Enum.Dialogue;
 using NodeCanvas.DialogueTrees;
@@ -221,7 +223,32 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             }
 
             // 旁白「—」等未绑定 DialogueActorEx 的 dummy Actor：仅字幕、不刷立绘，避免 RefreshAvatar 空引用卡死
-            if (actor != null)
+            if (info.UseShopkeeperPortrait)
+            {
+                var shopFaceController = ShopkeeperFaceRegistry.Instance;
+                if (shopFaceController != null)
+                {
+                    shopFaceController.Apply(info.ShopBody, info.ShopFace);
+                }
+                else
+                {
+                    Debug.LogWarning("[DialogueTMPUGUI] 店句但 ShopkeeperFaceController 未注册。", this);
+                }
+
+                if (actorPortrait != null)
+                {
+                    actorPortrait.gameObject.SetActive(false);
+                }
+
+                var maskPresenter = GetComponentInChildren<DialogueMaskAvatarPresenter>(true);
+                if (maskPresenter != null)
+                {
+                    maskPresenter.ApplyShopkeeperPortrait(info.ShopBody, info.ShopFace);
+                }
+
+                OnGetNewStatement?.Invoke(DialogueRoleName.None, DialogueFaceType.None, text);
+            }
+            else if (actor != null)
             {
                 actor.RefreshAvatar(info.FaceType, (sprite) => OnGetAvatar(sprite, text));
                 OnGetNewStatement?.Invoke(actor.RoleName, info.FaceType, text);

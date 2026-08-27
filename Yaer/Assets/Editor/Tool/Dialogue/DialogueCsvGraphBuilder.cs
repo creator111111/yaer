@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Game.GameRuntime.Story.Node;
+using Game.GameRuntime.Story.Node;
+using Game.GameRuntime.UI.FormLogic.Shop;
 using Game.GameRuntime.Story.NodeCanvasExtend;
 using Game.Static.Enum.Dialogue;
 using NodeCanvas.DialogueTrees;
@@ -40,7 +42,7 @@ namespace EditorC.Tool.Dialogue
             int? startRowId,
             string assetName)
         {
-            return TryBuild(rows, mapping, startRowId, assetName, DialoguePreludeOptions.CreateDefault());
+            return TryBuild(rows, mapping, startRowId, assetName, DialoguePreludeOptions.CreateDefault(), false);
         }
 
         /// <summary>
@@ -52,7 +54,8 @@ namespace EditorC.Tool.Dialogue
             DialogueSpeakerMapping mapping,
             int? startRowId,
             string assetName,
-            DialoguePreludeOptions preludeOptions)
+            DialoguePreludeOptions preludeOptions,
+            bool hasBodyTypeColumn = false)
         {
             preludeOptions ??= DialoguePreludeOptions.CreateDefault();
 
@@ -107,7 +110,13 @@ namespace EditorC.Tool.Dialogue
                 return null;
             }
 
-            // Step4：第一轮 — 创建节点
+            // Step4：店行 Body/Face 继承表（按 CSV 行序）
+            var shopPortraitMap = BuildShopkeeperPortraitMap(
+                rows,
+                mapping,
+                hasBodyTypeColumn || rowsHaveBodyTypeColumn(rows));
+
+            // Step4b：第一轮 — 创建节点
             var nodeMap = new Dictionary<int, Node>();
             // Anim 行：入边接到 Action，出边从 Statement 接出
             var animStatementMap = new Dictionary<int, Node>();
@@ -128,7 +137,7 @@ namespace EditorC.Tool.Dialogue
                     }
 
                     var statementPos = position + new Vector2(220f, 0f);
-                    var statementNode = CreateStatementNode(tree, row, mapping, statementPos);
+                    var statementNode = CreateStatementNode(tree, row, mapping, position, shopPortraitMap);
                     if (statementNode == null)
                     {
                         UnityEngine.Object.DestroyImmediate(tree);
@@ -143,7 +152,7 @@ namespace EditorC.Tool.Dialogue
 
                 if (DialogueCsvParser.IsDialogueType(row.type))
                 {
-                    node = CreateStatementNode(tree, row, mapping, position);
+                    node = CreateStatementNode(tree, row, mapping, position, shopPortraitMap);
                 }
                 else if (DialogueCsvParser.IsChoiceType(row.type))
                 {
@@ -322,15 +331,12 @@ namespace EditorC.Tool.Dialogue
             return true;
         }
 
-        /// <summary>
-        /// 创建 StatementNodeEx，写入台词与默认表情。
-        /// actorName 的 setter 为 private，故用反射写 _actorName / _actorParameterID。
-        /// </summary>
         private static StatementNodeEx CreateStatementNode(
             DialogueTree tree,
             DialogueRow row,
             DialogueSpeakerMapping mapping,
-            Vector2 position)
+            Vector2 position,
+            Dictionary<int, (ShopkeeperBodyType body, ShopkeeperFaceType face)> shopPortraitMap)
         {
             if (!mapping.TryResolve(row.speaker, out var actorName))
             {
@@ -341,23 +347,127 @@ namespace EditorC.Tool.Dialogue
             var node = tree.AddNode<StatementNodeEx>(position);
             node.statement.text = row.text ?? string.Empty;
 
-            // FaceType：CSV 第 7 列或按 Actor 名默认（雅尔→Smile，其它→Normal）
-            if (!DialogueFaceTypeCsvDefaults.TryResolve(row.faceType, actorName, out var resolvedFace))
+            if (ShopkeeperCsvDefaults.IsShopkeeperActor(actorName))
             {
-                Debug.LogError(
-                    $"[DialogueCsvGraphBuilder] ID {row.id} FaceType「{row.faceType}」无法解析为 DialogueFaceType。");
-                return null;
-            }
+                if (!shopPortraitMap.TryGetValue(row.id, out var portrait))
+                {
+                    portrait = (ShopkeeperBodyType.Normal, ShopkeeperFaceType.Face1);
+                }
 
-            if (node.FaceType == null)
+                if (node.UseShopkeeperPortrait == null)
+                {
+                    node.UseShopkeeperPortrait = new BBParameter<bool>();
+                }
+
+                if (node.ShopBody == null)
+                {
+                    node.ShopBody = new BBParameter<ShopkeeperBodyType>();
+                }
+
+                if (node.ShopFace == null)
+                {
+                    node.ShopFace = new BBParameter<ShopkeeperFaceType>();
+                }
+
+                node.UseShopkeeperPortrait.value = true;
+                node.ShopBody.value = portrait.body;
+                node.ShopFace.value = portrait.face;
+
+                if (node.FaceType == null)
+                {
+                    node.FaceType = new BBParameter<DialogueFaceType>();
+                }
+
+                node.FaceType.value = DialogueFaceType.None;
+            }
+            else
             {
-                node.FaceType = new BBParameter<DialogueFaceType>();
-            }
+                // FaceType：CSV 第 7 列或按 Actor 名默认（雅尔→Smile，其它→Normal）
+                if (!DialogueFaceTypeCsvDefaults.TryResolve(row.faceType, actorName, out var resolvedFace))
+                {
+                    Debug.LogError(
+                        $"[DialogueCsvGraphBuilder] ID {row.id} FaceType「{row.faceType}」无法解析为 DialogueFaceType。");
+                    return null;
+                }
 
-            node.FaceType.value = resolvedFace;
+                if (node.FaceType == null)
+                {
+                    node.FaceType = new BBParameter<DialogueFaceType>();
+                }
+
+                node.FaceType.value = resolvedFace;
+
+                if (node.UseShopkeeperPortrait == null)
+                {
+                    node.UseShopkeeperPortrait = new BBParameter<bool>();
+                }
+
+                node.UseShopkeeperPortrait.value = false;
+            }
 
             SetNodeActor(node, tree, actorName);
             return node;
+        }
+
+        /// <summary>按 CSV 行序累计店行 Body/Face；空列继承上一句。</summary>
+        private static Dictionary<int, (ShopkeeperBodyType body, ShopkeeperFaceType face)> BuildShopkeeperPortraitMap(
+            IReadOnlyList<DialogueRow> rows,
+            DialogueSpeakerMapping mapping,
+            bool hasBodyTypeColumn)
+        {
+            var result = new Dictionary<int, (ShopkeeperBodyType, ShopkeeperFaceType)>();
+            var body = ShopkeeperBodyType.Normal;
+            var face = ShopkeeperFaceType.Face1;
+
+            foreach (var row in rows)
+            {
+                if (!DialogueCsvParser.IsDialogueType(row.type) && !DialogueCsvParser.IsAnimType(row.type))
+                {
+                    continue;
+                }
+
+                if (!ShopkeeperCsvDefaults.IsShopkeeperRow(row, mapping))
+                {
+                    continue;
+                }
+
+                if (!ShopkeeperCsvDefaults.ApplyFaceInheritance(row.faceType, ref face))
+                {
+                    Debug.LogWarning(
+                        $"[DialogueCsvGraphBuilder] ID {row.id} 店行 Face 继承失败，保持 {face}。");
+                }
+
+                if (hasBodyTypeColumn)
+                {
+                    if (!ShopkeeperCsvDefaults.ApplyBodyInheritance(row.bodyType, ref body))
+                    {
+                        Debug.LogWarning(
+                            $"[DialogueCsvGraphBuilder] ID {row.id} 店行 Body 继承失败，保持 {body}。");
+                    }
+                }
+                else
+                {
+                    body = ShopkeeperBodyType.Normal;
+                }
+
+                result[row.id] = (body, face);
+            }
+
+            return result;
+        }
+
+        private static bool rowsHaveBodyTypeColumn(IReadOnlyList<DialogueRow> rows)
+        {
+            // Import 窗口经 Parser 传出 hasBodyTypeColumn 更准；此处兜底：任一行 bodyType 非空视为有列。
+            foreach (var row in rows)
+            {
+                if (!string.IsNullOrWhiteSpace(row.bodyType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

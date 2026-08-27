@@ -87,6 +87,8 @@ namespace EditorC.Tool.Dialogue
                 new Entry { csvSpeaker = "3", actorParameterName = "NPC3" },
                 new Entry { csvSpeaker = "4", actorParameterName = "NPC4" },
                 new Entry { csvSpeaker = "5", actorParameterName = "NPC5" },
+                // 商店老板娘：CSV Speaker「店」→ 图内 Actor「老板娘」
+                new Entry { csvSpeaker = "店", actorParameterName = "老板娘" },
             };
             return mapping;
         }

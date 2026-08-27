@@ -29,10 +29,17 @@ namespace EditorC.Tool.Dialogue
         /// <summary>
         /// 解析 CSV 并完成结构校验。失败时 error 含原因，rows 可能为部分结果（调用方应忽略）。
         /// </summary>
-        public static bool TryParse(string csvText, out List<DialogueRow> rows, out string error)
+        /// <param name="mapping">可选；用于店行 Face/Body 分流校验。</param>
+        public static bool TryParse(
+            string csvText,
+            out List<DialogueRow> rows,
+            out string error,
+            out bool hasBodyTypeColumn,
+            DialogueSpeakerMapping mapping = null)
         {
             rows = new List<DialogueRow>();
             error = null;
+            hasBodyTypeColumn = false;
 
             if (string.IsNullOrWhiteSpace(csvText))
             {
@@ -54,6 +61,8 @@ namespace EditorC.Tool.Dialogue
                 error = headerError;
                 return false;
             }
+
+            hasBodyTypeColumn = columnMap.HasBodyTypeColumn;
 
             // 跳过表头（第一行）
             for (var lineIndex = 1; lineIndex < lines.Count; lineIndex++)
@@ -88,6 +97,7 @@ namespace EditorC.Tool.Dialogue
                     next = columnMap.GetField(fields, columnMap.NextIndex),
                     extra = columnMap.GetField(fields, columnMap.ExtraIndex),
                     faceType = columnMap.GetField(fields, columnMap.FaceTypeIndex),
+                    bodyType = columnMap.GetField(fields, columnMap.BodyTypeIndex),
                 });
             }
 
@@ -97,13 +107,17 @@ namespace EditorC.Tool.Dialogue
                 return false;
             }
 
-            return Validate(rows, out error);
+            return Validate(rows, columnMap.HasBodyTypeColumn, mapping, out error);
         }
 
         /// <summary>
         /// 校验 ID 唯一性、Next 引用存在性、Choice 行 Extra/Next 数量一致。
         /// </summary>
-        public static bool Validate(IReadOnlyList<DialogueRow> rows, out string error)
+        public static bool Validate(
+            IReadOnlyList<DialogueRow> rows,
+            bool hasBodyTypeColumn,
+            DialogueSpeakerMapping mapping,
+            out string error)
         {
             error = null;
             var idSet = new HashSet<int>();
@@ -134,12 +148,49 @@ namespace EditorC.Tool.Dialogue
                     return false;
                 }
 
-                // 仅对白/动作戏行校验 FaceType 枚举名；Choice 行忽略该列
+                // FaceType：店行 Face1～5；其它角色 DialogueFaceType
                 if ((IsDialogueType(row.type) || IsAnimType(row.type)) && !string.IsNullOrWhiteSpace(row.faceType))
                 {
-                    if (!Enum.TryParse<DialogueFaceType>(row.faceType, ignoreCase: true, out _))
+                    if (ShopkeeperCsvDefaults.IsShopkeeperRow(row, mapping))
+                    {
+                        if (ShopkeeperCsvDefaults.IsLikelyDialogueFaceType(row.faceType))
+                        {
+                            error =
+                                $"ID {row.id} 店行 FaceType「{row.faceType}」非法，须用 Face1～Face5，勿填 Laugh/Angry 等对话表情。";
+                            return false;
+                        }
+
+                        if (!ShopkeeperCsvDefaults.TryParseFace(row.faceType, out _))
+                        {
+                            error = $"ID {row.id} 店行 FaceType 非法（「{row.faceType}」），须为 Face1～Face5。";
+                            return false;
+                        }
+                    }
+                    else if (!Enum.TryParse<DialogueFaceType>(row.faceType, ignoreCase: true, out _))
                     {
                         error = $"ID {row.id} 的 FaceType 非法（「{row.faceType}」），须为 DialogueFaceType 枚举名。";
+                        return false;
+                    }
+                }
+
+                // 可选 BodyType 列：仅店行可填；无列时跳过
+                if (hasBodyTypeColumn
+                    && (IsDialogueType(row.type) || IsAnimType(row.type))
+                    && !string.IsNullOrWhiteSpace(row.bodyType))
+                {
+                    if (ShopkeeperCsvDefaults.IsShopkeeperRow(row, mapping))
+                    {
+                        if (!ShopkeeperCsvDefaults.TryParseBody(row.bodyType, out _))
+                        {
+                            error =
+                                $"ID {row.id} 店行 BodyType 非法（「{row.bodyType}」），须为 Normal / Red / YinXian。";
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        error =
+                            $"ID {row.id} 非店行 Speaker「{row.speaker}」的 BodyType 必须为空。";
                         return false;
                     }
                 }
@@ -397,9 +448,14 @@ namespace EditorC.Tool.Dialogue
             public int ExtraIndex { get; private set; }
             public int FaceTypeIndex { get; private set; } = -1;
 
+            /// <summary>可选列；-1 表示表头无 BodyType。</summary>
+            public int BodyTypeIndex { get; private set; } = -1;
+
+            public bool HasBodyTypeColumn => BodyTypeIndex >= 0;
+
             /// <summary>数据行至少需要的最大列索引（0-based）。</summary>
             public int MinRequiredFieldCount =>
-                new[] { IdIndex, TypeIndex, SpeakerIndex, TextIndex, NextIndex, ExtraIndex, FaceTypeIndex }
+                new[] { IdIndex, TypeIndex, SpeakerIndex, TextIndex, NextIndex, ExtraIndex, FaceTypeIndex, BodyTypeIndex }
                     .Where(i => i >= 0)
                     .Max();
 
@@ -475,6 +531,9 @@ namespace EditorC.Tool.Dialogue
                 {
                     map.FaceTypeIndex = FindColumnIndex(headerFields, "Face");
                 }
+
+                // 可选：商店老板娘身体变体
+                map.BodyTypeIndex = FindColumnIndex(headerFields, "BodyType");
 
                 return true;
             }
