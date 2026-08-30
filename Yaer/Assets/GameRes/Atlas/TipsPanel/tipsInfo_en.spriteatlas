@@ -7,7 +7,6 @@ SpriteAtlas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: tipsInfo_en
-  serializedVersion: 2
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -39,12 +38,14 @@ SpriteAtlas:
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 65f31ed0f0a2e104caee7465f815c851, type: 3}
+  - {fileID: 21300000, guid: 20f9e4219bd74a7aba2b824c109b39fb, type: 3}
   - {fileID: 21300000, guid: 47bd4d82aa160704eac49d2bf300c6c9, type: 3}
   - {fileID: 21300000, guid: fb41ea731dc09d845ac4489cb8cad107, type: 3}
   - {fileID: 21300000, guid: 0614e3f6715d9154cb90fc517d8c9347, type: 3}
   - {fileID: 21300000, guid: ebee0d57e9e156a4f89e9b9ce1440ac4, type: 3}
   - {fileID: 21300000, guid: 15316878c70948a41b32fe465792e618, type: 3}
   - {fileID: 21300000, guid: f92cff5951c078c4a94c818a32ea2959, type: 3}
+  - {fileID: 21300000, guid: 07bb501afc6f467cb70cc06a4ba56617, type: 3}
   - {fileID: 21300000, guid: e23ded7a3d078684eb187ff1be40a1d0, type: 3}
   - {fileID: 21300000, guid: e51e034bd31ee0746886fb9d449e9061, type: 3}
   - {fileID: 21300000, guid: bab5cd2c52b9b2d4cb0b1394071edb35, type: 3}
@@ -55,12 +56,14 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 72bcbfaf00a17c54584046be46cdd67c, type: 3}
   m_PackedSpriteNamesToIndex:
   - Arrive_ForestEastScene
+  - GetFullWaterBucket
   - DaysLater_5
   - Arrive_ForestScene
   - DaysLater_4
   - "\u83B7\u5F97\u9879\u94FE"
   - GetMap
   - GetMpBall
+  - GetEmptyWaterBucketx4
   - DaysLater_6
   - GetAiLinSword
   - Arrive_WestRappRoad
@@ -72,4 +75,3 @@ SpriteAtlas:
   m_RenderDataMap: {}
   m_Tag: tipsInfo_en
   m_IsVariant: 0
-  m_IsPlaceholder: 0

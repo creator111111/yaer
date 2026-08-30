@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Game\Static\Path\UIPrefabPath.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperFaceType.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\InitSceneResConfig.cs" />
     <Compile Include="Assets\Easy Save 3\Types\ES3UserType_PlayerClothesData.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Effect\AnimaEffectComponent.cs" />
@@ -421,6 +422,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\HomeScene2\HomeScene2Door.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_decimal.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormTurnState.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Village_Shop\WaitShopStartBgRevealActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BaseBossMogutBattleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Damage\BasePlayerDamageState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Start\StartFormLogic.cs" />
@@ -496,6 +498,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Menu\MenuFormLogic.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\PlaySoundSuccessEventArgs.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_SizeOverLifetimeModule.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\MerchantMaskPainting.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\HomeScene1\HomeScene1Xiaer.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\Battle\NormalAttack\NormalAttack3Logic.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.ProfilerInformationWindow.cs" />
@@ -572,6 +575,7 @@
     <Compile Include="Assets\Easy Save 3\Types\ES3UserType_ArchiveInfo.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_UIntPtr.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Path\IPathfindingComponent.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_Shop\ShopStartLayerRevealGate.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_MeshFilter.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\DownloadAgentHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Procedure\ProcedureBase.cs" />
@@ -656,8 +660,9 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WormEgg\Components\Anima\WormEggRuntimeController.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Component\CameraGSM\VillageCameraDepthFollowZone.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\UIPanel\OpenSystemTipsPanel2WaitSureActionTask.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\SlimeAttackState.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_Shop\ShopkeeperBodyHotspot.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Utility\StringExtension.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\SlimeAttackState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\SetArchiveBoolActionTask.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\DataTable\DataTableHelperBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\ForestSceneRabbitStory.cs" />
@@ -873,6 +878,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\WWWDownloadAgentHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Event\SceneEntityEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\SquatDeadState.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperFaceController.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\SceneObjData\SceneObjectData.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Effect\ParticleComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Story\DialogDebugPlayground.cs" />
@@ -1039,13 +1045,14 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Battle\Damage\Modifier\WeakDamageModifier.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\PureMVC\RegisterProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Buff\Monster\Tired\SlimeTiredBuff.cs" />
-    <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.ConsoleWindow.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperFaceDebugInput.cs" />
     <Compile Include="Assets\DebugScene\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\RandomGrassWave.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\VillageSceneObjectDepthSort.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\GoOut\GoOutMapStoryMapFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\SmashAttack\SmashAttackSubSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\CldController\CldControllerNode.cs" />
+    <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.ConsoleWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarVector2.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\ForestScene\CloudMoveAnimation.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\ResourceUpdateFailureEventArgs.cs" />
@@ -1079,6 +1086,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\LoadSceneArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Quest\QuestManager.cs" />
     <Compile Include="Assets\Scripts\Debug\Components\AddDateComponentGT.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperFaceRegistry.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\StoryTrigger\SlimeEatSheepStroy2.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\PhysicsDetect\FindTarget\TargetDetector.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Achievement\AchievementFormLogic.cs" />
@@ -1176,6 +1184,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_KenMuNi\Village_KenMuNiSceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\CameraTool\CameraImpluseTrigger.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\SlimeResHelper.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperBodyType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\SquatAtkState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Sit\SitSubSM.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Variable\VarMaterial.cs" />
@@ -1260,14 +1269,10 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperFaceType.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperBodyType.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperFaceRegistry.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperFaceController.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperFaceDebugInput.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\MerchantMaskPainting.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Village_Shop\WaitShopStartBgRevealActionTask.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_Shop\ShopStartLayerRevealGate.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\UIPanel\OpenTipsFormActionTask.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_KenMuNi\VillageWellLogic.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_KenMuNi\FarmerQuestStoryTrigger.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\SavePlayerBagActionTask.cs" />
     <None Include="Assets\GameRes\Config\MonsterConfig\MonsterConfig.json" />
     <None Include="Assets\GameRes\Config\AchievementConfig\AchievementConfig.json" />
     <None Include="Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.xml" />

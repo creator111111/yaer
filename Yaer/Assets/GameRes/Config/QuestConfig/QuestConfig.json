@@ -41,5 +41,27 @@
     "autoAccept": "false",
     "repeatable": "false",
     "sortOrder": "2"
+  },
+  {
+    "id": "3",
+    "questId": "Quest_003",
+    "title": "老农的浇地水",
+    "title_en": "Farmer's Water",
+    "title_jp": "老農の水やり",
+    "objectiveText": "提交满桶 4 个",
+    "objectiveType": "CollectItem",
+    "targetMonster": "",
+    "targetItem": "FullWaterBucket",
+    "targetCount": "4",
+    "rewards": [
+      {
+        "type": "Gold",
+        "amount": "40"
+      }
+    ],
+    "prerequisiteQuestIds": [],
+    "autoAccept": "false",
+    "repeatable": "true",
+    "sortOrder": "3"
   }
 ]

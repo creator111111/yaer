@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.GameRuntime.Story.Node;
+using Game.Static.Enum.Dialogue;
 using NodeCanvas.DialogueTrees;
 using NodeCanvas.Framework;
 using UnityEngine;
@@ -202,6 +203,9 @@ namespace EditorC.Tool.Dialogue
                 task.Delay = new BBParameter<float>();
             }
 
+            // 对齐 Village_ShopHead 金样：Delay=0.5 空拍后再出框（立绘先于对话框观感）。
+            task.Delay.value = 0.5f;
+
             // 须等淡入结束再进后续节点，否则 Statement 会抢跑、分层观感被抹掉
             if (task.EndActonOnAnimationEnd == null)
             {
@@ -209,6 +213,29 @@ namespace EditorC.Tool.Dialogue
             }
 
             task.EndActonOnAnimationEnd.value = true;
+
+            // 对齐 Head：渐入时 Prepare Mask 小头像，避免框出头像空窗。
+            if (task.PrepareMaskAvatarOnFadeIn == null)
+            {
+                task.PrepareMaskAvatarOnFadeIn = new BBParameter<bool>();
+            }
+
+            task.PrepareMaskAvatarOnFadeIn.value = true;
+
+            if (task.MaskAvatarRole == null)
+            {
+                task.MaskAvatarRole = new BBParameter<DialogueRoleName>();
+            }
+
+            // Head 金样：Role=Yaer(1)；Face=Smug(3)
+            task.MaskAvatarRole.value = DialogueRoleName.Yaer;
+
+            if (task.MaskAvatarFace == null)
+            {
+                task.MaskAvatarFace = new BBParameter<DialogueFaceType>();
+            }
+
+            task.MaskAvatarFace.value = DialogueFaceType.Smug;
 
             node.action = task;
             return node;

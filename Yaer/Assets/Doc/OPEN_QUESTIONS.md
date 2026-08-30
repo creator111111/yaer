@@ -928,3 +928,435 @@
 | Q1 | 45 号屋主出口是 LeftDoor 还是 RightDoor？ | ~~LeftDoor~~ → **已由 0822 产品改 RightDoor**（见下节） | ⚠️ 待重施工 |
 | Q2 | 走出后唯一目标是否 `Village_KenMuNi1`？ | **是**；禁止再指 ForestScene | ✅ 已确认 |
 | Q3 | 走进即走还是按 E？ | `TriggerWhenMoveIn:1`（走进即换场） | ✅ 已确认 |
+
+---
+
+## Village_Shop · MerchantPainting Trigger 特殊交互对话 · 2026-08-28
+
+详见：`Assets/Doc/执行文档/0828/Village_Shop_MerchantPainting_Trigger特殊交互对话_架构溯源报告.md`  
+**侦探结论**：点头/点胸走独立 Prefab；店脸 Face1～5；点击方案 B（Collider2D）；胸部 C6+ 分期。磁盘上 Trigger/Head/Chest 尚未落盘。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 0601 Smile/Angry → Face1～5 正式对照是否策划签字？ | **先按报告 §D 表施工**；可事后改 CSV | 待确认 |
+| Q2 | 点头/点胸是否可重复触发（存档旗标）？ | **可重复**；不做 CheckStoryUsed | 待确认 |
+| Q3 | 胸部线树屋场景名 / 落点是否已有资产？ | **未定**；工程无「树屋」SceneName；C6+ 下期 | 待确认 |
+| Q4 | Trigger 是否同步进 `MerchantPainting.prefab` / 合层 Prefab？ | **场景必做**；建议同步 MerchantPainting.prefab | 待确认 |
+| Q5 | 若 UI_Shop 挡住头/胸热区怎么处理？ | 调 Collider；禁止全屏挡板 Raycast | 待确认 |
+
+---
+
+## Village_Shop · 商人默认 Face1+Normal 与 Body·YinXian · 2026-08-28
+
+详见：`Assets/Doc/执行文档/0828/Village_Shop_商人默认Face1Normal与Body_YinXian_架构溯源报告.md`  
+**侦探结论**：三载体 YinXian 与默认 Active 已齐；缺口是对白结束不 `ResetDefault`（Idle 残留末句 Red）。推荐方案 A。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 对白结束是否强制回 Face1+Normal？ | **是（方案 A）** | 待确认 |
+| Q2 | 旧 `商店界面合层.prefab` 是否双写默认 Active？ | **否**；真源=场景 MerchantPainting | 待确认 |
+| Q3 | YinXian 是否必须搭配固定脸？ | **否**；Body×Face 正交 | 待确认 |
+| Q4 | ShopStart 黑幕期内 Reset 时机？ | 显 UI 前 / hold 内 | 待确认 |
+
+---
+
+## Village_Shop · Head 热区安装 Village_ShopHead · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/Village_Shop_Head热区安装Village_ShopHead对话_架构溯源报告.md`  
+**侦探结论**：热区/GSM/ResetDefault 已齐；P0 是故事名 `Village_ShopKeeper_HeadClick` ≠ Prefab `Village_ShopHead`（方案 A 改常量）。Prefab 图对齐旧「头_对白台本」而非 `Village_商店点头交互.csv`，须重 Import。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 对外故事名最终以谁为准？ | **`Village_ShopHead`（方案 A）** | ✅ 本报告拍板 |
+| Q2 | Prefab 与点头 CSV 不一致谁覆盖？ | **CSV Import 覆盖 Prefab** | 待确认 |
+| Q3 | 点胸是否仍用 `…_ChestClick`？ | **是；本期不施工** | ✅ 保持 |
+| Q4 | Trigger 是否写回 `MerchantPainting.prefab`？ | 场景已有可验；写回 P2 | 待确认 |
+| Q5 | 旧「头_对白台本.csv」是否标注废弃？ | 建议标注勿再 Import | 待确认 |
+
+---
+
+## Village_Shop · Head 悬停光标变化 · 2026-08-29
+
+详见：`执行文档/0829/Village_Shop_Head悬停光标变化_架构溯源报告.md`  
+施工：`执行文档/0829/Village_Shop_Head悬停光标Catch_施工说明.md`  
+**侦探结论**：复用四态；方案 A 挂 `CursorChangeTrigger`。  
+**施工决议（2026-08-29）**：用户选 **Catch**；场景 Head 已挂；`SetShopkeeperHotspotsEnabled` 同步开关 CursorChangeTrigger。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 悬停用哪一档 CursorState？ | **Catch（选项 2）** | ✅ 已施工 |
+| Q2 | 是否要第五种新图？ | **否** | ✅ |
+| Q3 | 点胸是否同期挂？ | **否** | ✅ |
+| Q4 | 对白关热区是否强制 Exit？ | **是**（disable CursorChangeTrigger） | ✅ 已施工 |
+| Q5 | OverlapPoint 依赖 MainCamera？ | 商店已 Tag；保持 | ✅ |
+| Q6 | Trigger 是否写回 MerchantPainting.prefab？ | 场景已够验；Prefab 同步可选 P1 | 待确认 |
+
+---
+
+## Village_Shop · ESC 退出商店回村 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/Village_Shop_ESC退出商店回村_架构溯源报告.md`  
+**侦探结论**：店内 ESC 开菜单为 0713 有意施工；改口为禁菜单 + GSM 订 ESC → 复用 `OnExitClick`。`EnterFrom_Shop` 已齐免动。对白中默认禁 ESC 离店。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 对白中 ESC 是否强退离店？ | **否**（HasRunningStory 忽略） | ✅ 已按默认施工 |
+| Q2 | 店内是否完全不要菜单？ | **是**（回村再 ESC） | ✅ 产品 |
+| Q3 | EnterPos 与脚底差半步是否接受？ | **接受门外固定点** | 待确认 |
+| Q4 | OnClose 是否仍 AllowOpenMenu(true)？ | **保留 true 利回村**；OnOpen 已改 false | ✅ 已施工 |
+
+---
+
+## Village_ShopHead · 雅儿大立绘 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/Village_ShopHead_雅儿大立绘_架构溯源报告.md`  
+**侦探结论**：GoOut 已嵌但 alpha=0、无淡入、BB 未绑；方案 A 绑 BB + 短淡入/Alpha=1。默认不改代码。Mask≠大立绘。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 短淡入还是直接显示？ | **A1 短淡入**；序被后续报告改为 **先立绘后框（T1）** | ✅ 时序单已纠正 |
+| Q2 | Pos 是否对齐 ShopStart？ | **否**；保留 (-835,52) | 待确认 |
+| Q3 | 本单是否顺带 CSV Import？ | **否**；跟 Head 安装单 | 待确认 |
+
+---
+
+## Village_ShopHead · 先立绘后对话框时序 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/Village_ShopHead_先立绘后对话框时序_架构溯源报告.md`  
+**侦探结论**：标准为立绘→框（KenMuNi/ShopStart）；ShopHead 现为 Fighting→UIAlpha 先出框。拍板 **T1**；**改拍**前序雅儿大立绘报告 A1「先框后立绘」。BB 已绑；补串行雅 CanvasGroupAlpha。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 立绘与框空拍？ | **Delay=0.5** | ✅ 已施工 |
+| Q2 | Duration 0.5 还是 1.0？ | **均 0.5**（对齐 KenMuNi） | ✅ 已施工 |
+| Q3 | 若已按错误顺序施工？ | **本单纠正 T1** | ✅ 已施工 |
+| Q4 | PrepareMask 是否开？ | **开**（Role=Yaer） | ✅ 已施工 |
+
+---
+
+## MenuPanel · Money 对接商店图片数字与真实货币 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/MenuPanel_Money对接商店图片数字与真实货币_架构溯源报告.md`  
+**侦探结论**：复用 `UiSpriteNumberDisplay`；Money 现为静态 `0.png`/`Z.png` 占位。方案 A：挂 DigitStrip + OnOpen 读 `PlayerGoldData.gold`。禁用日历双位。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | Money / Money(1) 占位如何处理？ | **隐藏 Money(0.png)**；保留 Money(1) 币标靠左；新建 Money_Digits | ✅ 已施工 |
+| Q2 | 最大位数？ | **6**（对齐 Total2） | ✅ 已施工 |
+| Q3 | 刷新是否只靠 OnOpen？ | **OnOpen + OnReveal** | ✅ 已施工 |
+| Q4 | 是否新建 MenuMoneySpacing？ | **否**，复用 ShopTotalSpacing | ✅ 已施工 |
+
+---
+
+## MenuPanel · Money 显示上限 6 位数 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/MenuPanel_Money显示上限6位数_架构溯源报告.md`  
+**侦探结论（当时）**：池/Prefab 已是 6；**C1 仅显示钳制、不钳存档**。  
+**⚠️ 改口**：C1 存档不钳 / Q2·Q3 **已废止** → 见下方「游戏金币数据上限 999999」。显示 6 位池仍有效。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 显示上限位数？ | **6（0～999999）** | ✅ 产品（仍有效） |
+| Q2 | 溢出策略？ | ~~C1 仅显示钳制~~ → **数据硬顶** | ⚠️ 已改口 |
+| Q3 | 存档/刷金是否软顶？ | ~~否~~ → **硬顶 MaxGold** | ⚠️ 已改口 |
+| Q4 | 6 位是否裁切需改 Prefab？ | Play 验后再定 | 待验收 |
+
+---
+
+## 开发工具 · 一键加 9999 金币 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/开发工具_一键加9999金币_架构溯源报告.md`  
+**侦探结论**：无现成刷金工具；API 齐。方案 A：`Tools/Debug/Add 9999 Player Gold`（仅 Play）→ AddGold+Save；刷新已开 Menu Money。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 菜单名中/英？ | **Add 9999 Player Gold** | ✅ 已施工 |
+| Q2 | 是否做 F9 热键？ | **否**（P1） | ✅ 本期不做 |
+| Q3 | RefreshMoney 如何公开？ | **private→public** | ✅ 已施工 |
+
+---
+
+## 开发工具 · 刷金自定义金额 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/开发工具_刷金自定义金额_架构溯源报告.md`  
+**侦探结论**：现网仅写死 +9999。拍板 **W1 EditorWindow**（`Player Gold Tool…`）自填金额累加；旧 +9999 保留快捷；「设为」P1；输入不钳 6 位。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 入口方案？ | **W1 EditorWindow** | ✅ 本报告 |
+| Q2 | 旧 +9999 MenuItem？ | **保留作快捷** | ✅ |
+| Q3 | 「设为」本期？ | **P1，非硬门槛** | ✅ |
+| Q4 | 并入人物状态窗？ | **否** | ✅ |
+| Q5 | 输入是否钳 ≤999999？ | ~~否~~ → **结果不得超 MaxGold**（输入可大，Add 吃顶） | ⚠️ 随数据硬顶改口 |
+
+---
+
+## Village_Shop · 购买成败对话 ShopYes / ShopNo · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/Village_Shop_购买成败对话_ShopYes_ShopNo_架构溯源报告.md`  
+**侦探结论（0829 当时）**：现网决定只 Log。拍板经 GSM `TryTriggerShopkeeperSpecial`：入包成功→Yes；仅金币不足→No；关旁路才能验 No；成败 Prefab 无大立绘，本期不抄 Head 时序。  
+**0830 更新**：Yes/No 接线**已落地**（`TryNotifyPurchaseDialogue` → `TryTriggerPurchaseResult`）。「没钱仍能买」主因是旁路仍开，见 `执行文档/0830/Village_Shop_没钱仍能购买与成败对白验收_架构溯源报告.md`。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 接线方案？ | **A 经 GSM Special** | ✅ 已施工落地 |
+| Q2 | 哪些失败播 No？ | **仅金币不足** | ✅ |
+| Q3 | bypass 成功是否播 Yes？ | **是** | ✅ |
+| Q4 | 堆叠失败播 No？ | **否** | ✅ |
+| Q5 | Yes/No 雅大立绘分层？ | **本期否** | ✅ |
+| Q6 | 出售播 No？ | **否** | ✅ |
+
+---
+
+## 开发工具 · 刷金支持减少 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/开发工具_刷金支持减少_架构溯源报告.md`  
+**侦探结论**：现窗仅累加。拍板 **U1 双按钮**；减少走 `TrySpendPlayerGold`（勿双 Save、不钳 0）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | UI 方案？ | **U1 双按钮** | ✅ 本报告 |
+| Q2 | 减少 API？ | **TrySpendPlayerGold（勿双 Save）** | ✅ |
+| Q3 | 不足是否钳 0？ | **否** | ✅ |
+| Q4 | 一键减 MenuItem？ | **否** | ✅ |
+
+---
+
+## 游戏金币 · 数据上限 999999 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/游戏金币数据上限999999_架构溯源报告.md`  
+**侦探结论**：废止「仅显示钳制、存档不钳」。**`PlayerGoldData.MaxGold=999999` 硬顶**；AddGold 触顶丢弃多余；F1 读档修超标（如 21100219）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 上限层？ | **数据硬顶 999999** | ✅ 产品 |
+| Q2 | 收口点？ | **PlayerGoldData.AddGold + MaxGold** | ✅ |
+| Q3 | 超标档？ | **F1 读档钳**；F2 工具补充 | ✅ |
+| Q4 | 触顶多余？ | **丢弃** | ✅ |
+| Q5 | 钳回是否立刻 Save？ | **建议钳后 Save 一次** | ✅ 倾向 |
+
+---
+
+## 开发工具 · 商店货单背包数量调试 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/开发工具_商店货单背包数量调试_架构溯源报告.md`  
+**侦探结论**：列表=**Buy∪Sell Candidates**（勿用全主道具一键）。拍板 **W1 Shop Bag Tool**；补 Set/delta；清空仅店货；MaxStack=10。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 列表范围？ | **Buy ∪ Sell** | ✅ 本报告 |
+| Q2 | UI？ | **W1 EditorWindow** | ✅ |
+| Q3 | 补 Set API？ | **推荐 Bag Set 或 Util delta** | ✅ |
+| Q4 | ExpectedBuy 7 vs 磁盘 8？ | **以 API 为准** | 待核对 |
+| Q5 | 出售测？ | **P2** | ✅ |
+
+---
+
+## Village_Shop · 购买堆叠上限 Console 提示 · 2026-08-29
+
+详见：`Assets/Doc/执行文档/0829/Village_Shop_购买堆叠上限Console提示_架构溯源报告.md`  
+**侦探结论**：现网已有 `LogStackOverflow`（Warning + `[ShopDebug]`），扣款前、不播 No。**L0 免施工**，只验满堆点决定必出黄字。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 现网够不够？ | **L0 免施工** | ✅ 本报告 |
+| Q2 | Tips UI？ | **本期否** | ✅ |
+| Q3 | 多行全报？ | **首行即可** | ✅ |
+| Q4 | L1 显示名？ | **P2 可选** | ✅ |
+
+---
+
+## Village_Shop · 没钱仍能购买与成败对白验收 · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_Shop_没钱仍能购买与成败对白验收_架构溯源报告.md`  
+**侦探结论**：主因 `bypassGoldCheckForBagJoint` 三处为 true（脚本 / ShopPanel / Village_Shop 场景）；扣款 API 正常；Yes/No 已接线但失败支被旁路挡死。拍板正式默认关旁路（三处同步）；成功对白=ShopYes（≠ShopStart）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 旁路是否仅 Editor / 开发菜单？ | **P1 可选**；本期先默认 false | ⏳ 待产品 |
+| Q2 | Menu 与存档金币错觉？ | 现网同源；再报错对 Console | ⏳ 观察 |
+| Q3 | 0829「只 Log 无 Trigger」？ | **已过时**；接线已落地 | ✅ 本报告 |
+| Q4 | 正式旁路默认？ | **false**（脚本+Prefab+场景） | ✅ **已施工**（见 `施工说明/0830/Village_Shop_关货币旁路默认_施工说明.md`） |
+
+---
+
+## Village_Shop · 数量输入取消闪烁光标 · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_Shop_数量输入取消闪烁光标_架构溯源报告.md`  
+**侦探结论**：闪的是 TMP caret；现网仅 caretColor a=0，仍 `caretWidth=1` + `blinkRate=0.85`。拍板方案 A：Helper `ApplyInvisibleInputTextStyle` 一处关死 width/blink/selection；运行时覆盖旧 Prefab，不必拆 InputField。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 是否保留选区高亮？ | **否**（selection 全透明） | ✅ 本报告 |
+| Q2 | 无障碍依赖 caret？ | **忽略** | ✅ |
+| Q3 | Prefab 预绑早退不 Apply？ | 施工堵上（已有引用也 Apply） | ✅ **已施工** |
+| Q4 | 关闪挂点？ | **Helper 一处**（方案 A） | ✅ **已施工**（见 `施工说明/0830/Village_Shop_数量输入取消闪烁光标_施工说明.md`） |
+
+---
+
+## Village_Shop · 非首次进店 Village_ShopRepeat · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_Shop_非首次进店Village_ShopRepeat_架构溯源报告.md`  
+**侦探结论**：现网二进宫静默（0827 旧产品作废）。拍板 R1：DeferCover 分支 Start vs Repeat；Repeat **每次**播、不写 used；进店黑幕防闪要、结束慢黑幕不要（对齐 Special）；Prefab 仅 Merchant 4 句可播。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 结束慢黑幕？ | **否**（对齐 Special） | ✅ 本报告 |
+| Q2 | Debug 进店也播？ | **是** | ✅ |
+| Q3 | 0827 二进宫静默？ | **作废**（改 Repeat） | ✅ **已施工** |
+| Q4 | Prefab 第 4 句？ | **保留** | ✅ 倾向 |
+| Q5 | 每 N 次才播？ | **否，每次非首次** | ✅ **已施工**（见 `施工说明/0830/Village_Shop_非首次进店Village_ShopRepeat_施工说明.md`） |
+
+---
+
+## Village_Shop · Chest 热区安装 Village_ShopChest · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_Shop_Chest热区安装Village_ShopChest对话_架构溯源报告.md`  
+**侦探结论**：热区/Special 管线已齐；常量仍指向不存在的 `Village_ShopKeeper_ChestClick`。拍板方案 A：改为 `Village_ShopChest`（对齐 Head）；同步 Editor 路径；Prefab 已 Bind C1～C5、无 C6；默认不做 Chest Catch。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | Chest Catch 光标？ | **本期否**（P2） | ✅ |
+| Q2 | 先 Bind 还是先改常量？ | 已 Bind → **先改常量** | ✅ **已施工** |
+| Q3 | 旧名 ChestClick 作废？ | 本报告 + 0601 建议名过时 | ✅ |
+| Q4 | 仅 Rebuild Chest 菜单？ | ✅ **已加** `Rebuild Shopkeeper Chest Prefab Only` | ✅ **已施工** |
+| Q5 | 命名方案？ | **A = Village_ShopChest** | ✅ **已施工**（见 `施工说明/0830/Village_Shop_Chest热区安装Village_ShopChest_施工说明.md`） |
+
+---
+
+## Village_ShopChest · 对齐 Head 光标立绘与对话框 Bug · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_ShopChest_对齐Head光标立绘与对话框Bug_架构溯源报告.md`  
+**侦探结论**：对话框不出现主因 D1——点胸图无 UIAlpha/壳层（仅 Statement）；立绘 alpha0 无淡入；Chest 无 Catch。拍板对齐 Head T1 + Rebuild（`fadeYaerPortrait=true`）+ 场景挂 Catch；前序「Catch 本期否」改口。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 壳层写哪？ | **Rebuild → Prefab bound** | ✅ **已施工** |
+| Q2 | UIAlpha 1:1 抄 Head？ | **是** | ✅ **已施工** |
+| Q3 | Fighting 必须？ | **建议有**（金样对齐） | ✅ **已施工**（含 Fighting） |
+| Q4 | Chest Catch？ | **本期要做**（改口） | ✅ **已施工** |
+| Q5 | EnsureHotspot 挂 Catch？ | **是** | ✅ **已施工**（见 `施工说明/0830/Village_ShopChest_对齐Head光标立绘与对话框Bug_施工说明.md`） |
+
+---
+
+## Village_KenMuNi1 · House_Tree 交互 Village_TreeHouseLock · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_KenMuNi1_House_Tree交互Village_TreeHouseLock_架构溯源报告.md`  
+**侦探结论**：磁盘 `Objects` **无** `House_Tree`（须新建/存盘）；方案 A 物体交互三件套 + `StoryPrefabName=Village_TreeHouseLock`；远程 `requirePlayerOverlap=0`；可重复；Prefab 缺 UIAlpha 须补壳；勿做成换景门 / Chest C6。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 可重复？ | **是**（本期） | ✅ **已施工** |
+| Q2 | 点击区？ | **门口小盒** | ✅ **已施工** |
+| Q3 | 光标 View/Chat？ | **View** | ✅ **已施工** |
+| Q4 | Hierarchy 有磁盘无？ | 磁盘已新建落盘 | ✅ **已施工** |
+| Q5 | 落点坐标？ | 约 `(9.23,-7.5)`；可 Scene 微调 | ✅ **已施工**（见 `施工说明/0830/Village_KenMuNi1_House_Tree交互Village_TreeHouseLock_施工说明.md`） |
+
+---
+
+## Village_KenMuNi1 · 精灵池中对齐青石围栏遮挡 · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_KenMuNi1_精灵池中对齐青石围栏遮挡_架构溯源报告.md`  
+**侦探结论**：围栏已有 DepthSort；池中缺脚本且 SR 钉死 SceneObject。拍板只改场景：池中挂 `VillageSceneObjectDepthSort`，字段先抄围栏 6/0；不改 C#；精灵池上默认不做。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 精灵池上同挂？ | **本期否**（P1） | ✅ |
+| Q2 | 锚点？ | **先自 Transform** | ✅ **已施工** |
+| Q3 | Order 必须 6/0？ | **先抄再调** | ✅ **已施工** |
+| Q4 | 初始 SceneObject 还原？ | 施工验出村 | ⏳ 验收（见 `施工说明/0830/Village_KenMuNi1_精灵池中对齐青石围栏遮挡_施工说明.md`） |
+
+---
+
+## Village_KenMuNi1 · 老农基础对话交互 · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_KenMuNi1_老农基础对话交互_架构溯源报告.md`  
+**侦探结论**：Import 因 Speaker「老人」未映射中止；合层 `农` 仅装饰且 Z≠0。拍板 M1 `老人→老人` + Import `Village_老农打水任务` + Objects/`Npc_Farmer`（Z=0、近距）；本期无 Choice/接任务。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 交互实体名？ | **`Npc_Farmer`** | ✅ **已施工**（见 `施工说明/0830/Village_KenMuNi1_老农基础对话交互_施工说明.md`） |
+| Q2 | 合层 `农` Disable Renderer？ | **否** | ✅ |
+| Q3 | 下期 QuestId / 打水道具？ | 待策划 | ⏳ |
+| Q4 | 老人立绘入库？ | **产品改口：不要立绘（取消 P1）**；见 `执行文档/0830/Village_老农打水任务_取消立绘_架构溯源报告.md` | ✅ 关闭 |
+
+---
+
+## Village_老农打水任务 · 取消立绘 · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_老农打水任务_取消立绘_架构溯源报告.md`  
+**侦探结论**：图无立绘淡入节点，但 Yaer 仍嵌 GoOut 大立绘且 BB 已绑、未覆写 alpha=0（源默认 1）。拍板方案 A 删嵌套+清 BB；保留 UIAlpha+双 Actor；PrepareMask 保持关；Mask 小头像对照 TreeHouseLock、本期不改全局。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | Mask 小头像是否也必须关？ | **本期否**（对照 TreeHouseLock）；坚持无 Mask → P1 | ✅ |
+| Q2 | 下期接受/拒绝 Prefab 也无立绘？ | **是** | ⏳ |
+| Q3 | 老人大立绘还会做？ | **产品取消** | ✅ **已施工**（见 `施工说明/0830/Village_老农打水任务_取消立绘_施工说明.md`） |
+
+---
+
+## 获得道具 Tips 横幅 · 艾琳之剑溯源与老农复用 · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/获得道具Tips横幅_艾琳之剑溯源与老农复用_架构溯源报告.md`  
+**侦探结论**：剑横幅 = `AddMainItem` + `OpenTipsForm("GetAiLinSword")`（Item）；字在图集 Sprite；`GetItemActionTask` 不弹窗。老农须同两步 + 新 Tip 图；发什么/何时发待产品。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 发道具还是金币？道具 ID？ | 待策划（文案偏钱） | ⏳ |
+| Q2 | TipKey / 三语图 / 占位？ | 新图 P0；占位须书面接受 | ⏳ |
+| Q3 | 发奖时机？ | **默认完成结算句后** | ⏳ |
+| Q4 | 对话内 Tips Action？ | **A1 新 OpenTipsFormActionTask(Item)** | ✅ **已施工**（见 `施工说明/0830/获得道具Tips横幅_艾琳之剑溯源与老农复用_施工说明.md`） |
+| Q5 | 动态拼字？ | **本期否** | ✅ |
+
+---
+
+## Village_KenMuNi1 · 老农打水空满桶·井交互·接任务 · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_老农打水_空满桶道具与井交互及接任务_架构溯源报告.md`  
+**侦探结论**：现网无空/满桶；拍板 I1 两 ID+数量4；Objects/`Well` 换桶+Tips；Quest_003 CollectItem 满桶×4；帮/不帮+Accept；Trigger 对照 Npc23。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 4 空桶 Tips 一次还是四次？ | **一次 ×4 图** | ✅ |
+| Q2 | 未接任务点井？ | **可点不成兑换+短反馈** | ✅ **已施工** |
+| Q3 | questId？ | **`Quest_003`** | ✅ **已施工** |
+| Q4 | 报酬金额？ | 暂定 **Gold 40**（待策划改数） | ⏳ 占位 |
+| Q5 | 拒后再谈 `_拒绝之后接受`？ | 本期仍回 Offer（可再帮） | ✅ 简化 |
+| Q6 | 井 overlap？ | **先远程 0** | ✅ **已施工** |
+| Q7 | 满桶>4 继续打？ | **允许至空桶尽** | ✅ **已施工** |
+
+施工说明：`施工说明/0830/Village_老农打水_空满桶道具与井交互及接任务_施工说明.md`（P0～P2 已落；Tip/Icon 占位）。
+
+---
+
+## Village_老农打水 · 任务进度与存档不同步 · 2026-08-30
+
+详见：`Assets/Doc/执行文档/0830/Village_老农打水_任务进度与存档不同步_架构溯源报告.md`  
+**侦探结论**：主因并列——(A) 井/发空不 SavePlayerBag，Accept 的 SaveSpcData 易落旧背包；(B) Collect 真进度在背包，questProgress 假 0/4；(C) TurnedIn 不回 Offer 为设计。修：井与发空后存包。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 每次点井自动存包？ | **是** | ✅ **已施工** |
+| Q2 | GetQuestProgress Collect 改读包？ | **P1 建议** | ✅ **已施工** |
+| Q3 | 交完无任务循环打水？ | **产品改口：交完可再接**（同档再 Offer；井仍须 InProgress） | ✅ **已施工** |
+| Q4 | 交完 Debug 重置？ | 可重复后一般不需要 | ✅ 关闭 |
+| Q5 | SaveSpcData 架构债？ | 本期止血不重构 | ⏳ |
+
+**改口（2026-08-31）**：交完不必读接取前档；`FarmerQuestStoryTrigger` TurnedIn→Offer；`Quest_003.repeatable=true`；`AcceptQuest` 允许 TurnedIn 重接。  
+施工说明：`施工说明/0830/Village_老农打水_交完可再接任务_施工说明.md`
+
+---
+
+## Village_老农打水 · Tips 新图替换空桶与满桶 · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0830/Village_老农打水_Tips新图替换空桶与满桶_架构溯源报告.md`  
+**侦探结论**：TipKey/挂点正确；Key 路径仍血珠占位；新图已落盘但中文文件名不会被 OpenTipsForm 取到。施工覆盖三语 GetEmptyWaterBucketx4 / GetFullWaterBucket 后 Pack。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 英日长期共用中文图？ | **暂用中文** | ✅ **已施工** |
+| Q2 | 中文文件名源图移出 Atlas？ | 源图仍留备份；可选移走 | ⏳ 可选 |
+| Q3 | en 1.7MB 异常图？ | 覆盖即消 | ✅ **已施工** |
+
+施工说明：`施工说明/0830/Village_老农打水_Tips新图替换空桶与满桶_施工说明.md`  
+**提醒**：进 Unity 后请 Pack `tipsInfo` / `_en` / `_jp` 再 Play 验收。

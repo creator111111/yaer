@@ -18,5 +18,8 @@ namespace Game.Static.Enum.Goods
         LargeMpPotion,
         BowlLiquid,
         Fish,
+        // 老农打水任务（0830）：空桶/满桶用数量表达×4，勿拆八个独立 ID
+        EmptyWaterBucket,
+        FullWaterBucket,
     }
 }

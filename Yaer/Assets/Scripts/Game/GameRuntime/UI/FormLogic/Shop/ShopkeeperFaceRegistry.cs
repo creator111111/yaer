@@ -25,5 +25,21 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 Instance = null;
             }
         }
+
+        /// <summary>
+        /// 合层大立绘恢复默认 <see cref="ShopkeeperBodyType.Normal"/> + <see cref="ShopkeeperFaceType.Face1"/>。
+        /// </summary>
+        /// <remarks>
+        /// 原因：对白句会 Apply 成 Red/Face5 等，结束若不复位，Idle 买卖会残留末句身脸（0828 方案 A）。
+        /// 替代方案：结束保留末句脸——违背产品 Idle 默认，不采用。
+        /// Mask 小表情 Idle 不显示，结束复位非必须（P2）；本 API 只转发给合层 Controller。
+        /// </remarks>
+        public static void ResetDefault()
+        {
+            if (Instance != null)
+            {
+                Instance.ResetDefault();
+            }
+        }
     }
 }

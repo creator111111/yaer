@@ -4,6 +4,7 @@ using Game.GameMgr.Component.Archive;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Quest;
 using Game.GameRuntime.GameSceneManager.Component;
+using Game.GameRuntime.GameSceneManager.Scene.Village_Shop;
 using Game.GameRuntime.UI.Component;
 using Game.GameRuntime.UI.FormLogic.Base;
 using Game.Static.Enum.Goods;
@@ -68,12 +69,14 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         [SerializeField] private Button btnConfirm;
 
         /// <summary>
-        /// 商店×背包联合验收旁路：为 true 时跳过 TrySpendPlayerGold，直接 AddMainItem。
-        /// 本阶段开发默认 true，避免「没钱」卡死入包验收；货币闭环仍见金币文档，提测货币前改 false。
+        /// 商店×背包联合验收旁路：为 true 时跳过 TrySpendPlayerGold，直接 AddMainItem 并播 ShopYes。
+        /// 正式默认 false（须与 ShopPanel.prefab、Village_Shop 场景 UI_Shop 三处一致为关）。
+        /// 联调可手开；开着时验不出「钱不够 → ShopNo」，勿宣称失败对白已验收。
         /// 禁止方案 C（扣款失败仍入包）——旁路是显式跳过，不是失败后白嫖。
+        /// 替代（P1 可选）：仅 Editor / 开发菜单暴露此开关，正式 Prefab/场景永不序列化为 true。
         /// </summary>
-        [Header("联合验收 · 货币旁路（提测金币前请关）")]
-        [SerializeField] private bool bypassGoldCheckForBagJoint = true;
+        [Header("联合验收 · 货币旁路（正式默认关；联调可手开）")]
+        [SerializeField] private bool bypassGoldCheckForBagJoint = false;
 
         [Header("离店 · 回 Village_KenMuNi1（纯 UI 商店无走路出门）")]
         [SerializeField] private Button btnExit;
@@ -120,18 +123,20 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
         /// <summary>
         /// 每次打开：防御性再 Ensure（池化复开），刷到购买 Tab。
-        /// 店内允许 ESC 开菜单（贵重物品验收可在店内完成）。
+        /// 0829：店内禁止 ESC 开菜单（改口 vs 0713）；存档/菜单须回村再 ESC。
         /// </summary>
         protected internal override void OnOpen(object userData)
         {
             base.OnOpen(userData);
             EnsureShopRuntimeBound();
             SwitchToBuyTab();
-            // 显式放行：避免其它 UI 关过后菜单仍锁死；场景侧 Village_ShopSceneManager 也会 SetAllowOpenMenu(true)。
-            AllowOpenMenu(true);
+            // 必须 false：否则会盖掉 Village_ShopSceneManager.OnEnter 的 SetAllowOpenMenu(false)，
+            // InputComponentGSM 又会 ESC→MenuPanel，与 ESC 离店双开。
+            // OnClose 仍 AllowOpenMenu(true)，利回村后菜单（OPEN Q4）。
+            AllowOpenMenu(false);
             // SN-8：每次开店再刷一次名图（池化复开 / 进店前已改语言）。
             RefreshAllShopNamesForLanguage();
-            Debug.Log("[VillageShopDebug] ShopPanel OnOpen AllowOpenMenu(true) 店内可 ESC 开菜单");
+            Debug.Log("[ShopEscExit] ShopPanel OnOpen AllowOpenMenu(false) 店内 ESC=离店非菜单");
         }
 
         /// <summary>
@@ -342,12 +347,13 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         /// 点「决定」：购买 Tab 入包并落盘；出售 Tab 本阶段未接入。
         /// 合计公式与 Total2 一致：Σ(QuantityForTotal × Price)，仅 qty&gt;0 行。
         /// 整单失败：数量为 0 / 堆叠将超；（旁路关闭时）金币不足 → 不入包。
-        /// 顺序：堆叠预检 →（可选）扣款 → AddMainItem → SavePlayerBag。
-        /// 货币旁路见 <see cref="bypassGoldCheckForBagJoint"/>：联合验收不看金币，正式验货币前关掉。
+        /// 顺序：堆叠预检 →（可选）扣款 → AddMainItem → SavePlayerBag → 成败对白。
+        /// 货币旁路见 <see cref="bypassGoldCheckForBagJoint"/>：正式默认关；手开时跳过扣款（验不出 ShopNo）。
+        /// 对白：入包成功 → Village_ShopYes；仅金币不足 → Village_ShopNo（经 GSM 特殊对白管线）。
         /// </summary>
         public void OnConfirmClick()
         {
-            // 出售为 P1：工期紧时仅提示，不改存档。
+            // 出售为 P1：工期紧时仅提示，不改存档、不播 No。
             if (!_isBuyTabActive)
             {
                 ShopDebugLogger.LogSellNotImplemented();
@@ -361,7 +367,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 total += lines[i].Quantity * lines[i].UnitPrice;
             }
 
-            // 与 Total2 同口径：全 0 则拒绝，不碰存档。
+            // 与 Total2 同口径：全 0 则拒绝，不碰存档、不播 No。
             if (lines.Count == 0 || total <= 0)
             {
                 ShopDebugLogger.LogZeroQuantityWarning();
@@ -375,7 +381,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 return;
             }
 
-            // 任一行购买后将超 MaxStackPerItem → 整单失败（先于扣款 / 旁路入包）。
+            // 任一行购买后将超 MaxStackPerItem → 整单失败（先于扣款 / 旁路入包）；不播 No（文案不符）。
             if (!TryValidateBuyStackLimits(bag, lines))
             {
                 return;
@@ -395,6 +401,8 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 if (!questMgr.TrySpendPlayerGold(total))
                 {
                     ShopDebugLogger.LogInsufficientGold(total, goldData.gold);
+                    // 仅金币不足播 No：先 Log 再 Trigger（Hide UI 由 GSM 负责）。
+                    TryNotifyPurchaseDialogue(purchaseSucceeded: false);
                     return;
                 }
             }
@@ -420,16 +428,48 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             // 成功后数量清零并刷 Total2，避免连点重复入包。
             ResetAllBuyQuantityInputs();
             RefreshTotal2();
+
+            // 入包成功（含旁路未扣款）再播 Yes；禁止先对白后扣款。
+            TryNotifyPurchaseDialogue(purchaseSucceeded: true);
         }
 
         /// <summary>
-        /// 离开纯 UI 商店：黑幕全黑时再 CloseForm，然后换场回村。
-        /// LastSceneName 将变为 Village_Shop，供村里 EnterPosConfig 匹配门外落点。
-        /// 原因：先关 Panel 再开黑幕会闪一下空场景；用 stayAction=CloseForm 与进店对称。
-        /// 替代方案：仅靠 ESC 菜单「返回」关菜单 —— 不能代替离店，故必须有明确离开入口。
+        /// 通知 GSM 播购买成败短对白（Yes/No），走特殊对白同管线。
         /// </summary>
+        /// <remarks>
+        /// 原因：UI 不直开 TriggerStory，避免漏藏买卖界面 / 叠第二段对白。
+        /// </remarks>
+        private static void TryNotifyPurchaseDialogue(bool purchaseSucceeded)
+        {
+            var shopGsm = GameManager.GetGameSceneManager() as Village_ShopSceneManager;
+            if (shopGsm == null)
+            {
+                Debug.LogWarning("[ShopPurchase] Village_ShopSceneManager 不可用，跳过成败对白");
+                return;
+            }
+
+            shopGsm.TryTriggerPurchaseResult(purchaseSucceeded);
+        }
+
+        /// <summary>
+        /// 离开纯 UI 商店：转交 <see cref="Village_ShopSceneManager.ExitShopToVillage"/>，
+        /// 与 ESC 同源（黑幕全黑藏 UI_Shop → LoadScene 回村 → EnterFrom_Shop）。
+        /// </summary>
+        /// <remarks>
+        /// 禁止本方法内再传 <see cref="CloseForm"/> 给 LoadScene：
+        /// 场景 UI_Shop 无 GF UIForm，CloseForm 会抛异常并卡死黑幕（见 GSM 注释）。
+        /// </remarks>
         public void OnExitClick()
         {
+            var shopGsm = GameManager.GetGameSceneManager() as Village_ShopSceneManager;
+            if (shopGsm != null)
+            {
+                Debug.Log("[ShopEscExit] 离开按钮 → ExitShopToVillage");
+                shopGsm.ExitShopToVillage();
+                return;
+            }
+
+            // 兜底：非店 GSM（不应发生）；同样勿用 CloseForm。
             var gsm = GameManager.GetGameSceneManager();
             if (gsm == null)
             {
@@ -437,9 +477,12 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 return;
             }
 
-            Debug.Log("[VillageShopDebug] exit shop → LoadScene Village_KenMuNi1 (CloseForm on black stay)");
-            // CloseForm 作为 stayAction：黑幕 FadeShow 结束后、切场前关闭 ShopPanel，避免面板残留到村里。
-            gsm.GetModule<LoadSceneComponentGSM>().LoadScene(SceneName.Village_KenMuNi1, CloseForm);
+            Debug.LogWarning(
+                "[ShopEscExit] 当前非 Village_ShopSceneManager，走兜底 LoadScene（Hide 自身）。",
+                this);
+            gsm.GetModule<LoadSceneComponentGSM>().LoadScene(
+                SceneName.Village_KenMuNi1,
+                () => gameObject.SetActive(false));
         }
 
         /// <summary>收集购买行中 qty&gt;0 的成交行（与 GetCurrentBuyTotal 扫行规则一致）。</summary>

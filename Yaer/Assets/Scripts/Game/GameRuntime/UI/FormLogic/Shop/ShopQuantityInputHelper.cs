@@ -58,14 +58,21 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
         /// <summary>
         /// Number 列：透明 TMP 仅承载输入逻辑，可见数字由 DigitStrip 图片显示（IMG 方案）。
+        /// 必须公开：Bind 在 Prefab 已绑 quantityInput 时也会再刷一次，避免早退漏关闪。
         /// </summary>
-        private static void ApplyInvisibleInputTextStyle(TMP_InputField inputField)
+        /// <remarks>
+        /// 原因：仅 caretColor alpha=0 不够——默认 caretWidth=1 + caretBlinkRate≈0.85 仍画/闪网格，
+        /// 叠在 DigitStrip 上会看到竖线残影。须 width=0、blink=0，且 selection 全透明（OnFocusSelectAll 蓝块）。
+        /// 替代（未采用）：逐行改 Prefab YAML（易漏，下次 Bake 又冒）；拆 InputField 改加减钮（过大）。
+        /// </remarks>
+        public static void ApplyInvisibleInputTextStyle(TMP_InputField inputField)
         {
             if (inputField == null)
             {
                 return;
             }
 
+            // 隐形字：真值走 TMP，可见层只靠 DigitStrip。
             if (inputField.textComponent != null)
             {
                 var color = inputField.textComponent.color;
@@ -82,8 +89,15 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                     0f);
             }
 
+            // 隐形 Input + 图片数字：caret 必须不可见（颜色 + 宽度 + 闪烁全关死）。
             inputField.customCaretColor = true;
             inputField.caretColor = new Color(1f, 1f, 1f, 0f);
+            inputField.caretWidth = 0;
+            inputField.caretBlinkRate = 0f;
+
+            // 聚焦全选时的蓝块也关掉，避免「闪一下」被当成 caret。
+            var selection = inputField.selectionColor;
+            inputField.selectionColor = new Color(selection.r, selection.g, selection.b, 0f);
         }
 
         /// <summary>确保 Number 下 DigitStrip 存在并刷默认数量图。</summary>

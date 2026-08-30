@@ -64,12 +64,28 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Quest
             }
 
             var questData = GetPlayerQuestData();
-            if (questData.questStates.TryGetValue(questId, out var existingState)
-                && (existingState == QuestState.InProgress || existingState == QuestState.Complete
-                    || existingState == QuestState.TurnedIn))
+            var isReAcceptAfterTurnIn = false;
+            if (questData.questStates.TryGetValue(questId, out var existingState))
             {
-                Debug.Log($"[Quest] Already accepted: {questId}");
-                return;
+                // 进行中 / 已达标未交：禁止重复 Accept
+                if (existingState == QuestState.InProgress || existingState == QuestState.Complete)
+                {
+                    Debug.Log($"[Quest] Already accepted: {questId}");
+                    return;
+                }
+
+                // 已交付：仅 repeatable 任务可重接（老农 Quest_003 / 埃吉尔 Quest_001）
+                // 重要原因：Trigger 交完回 Offer 后，若不放行 TurnedIn，会 Already accepted 卡死。
+                if (existingState == QuestState.TurnedIn)
+                {
+                    if (!configRow.repeatable)
+                    {
+                        Debug.Log($"[Quest] Already turned in (not repeatable): {questId}");
+                        return;
+                    }
+
+                    isReAcceptAfterTurnIn = true;
+                }
             }
 
             questData.questStates[questId] = QuestState.InProgress;
@@ -77,7 +93,8 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Quest
 
             SaveQuestProgress();
 
-            Debug.Log($"[Quest] Accept {questId}");
+            Debug.Log($"[Quest] Accept {questId}" +
+                      (isReAcceptAfterTurnIn ? " (re-accept after TurnedIn)" : ""));
             Debug.Log($"[Quest] Progress {questId}: 0/{configRow.targetCount} ({QuestState.InProgress})");
 
             OnQuestAccepted?.Invoke(questId);
@@ -112,7 +129,14 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Quest
             return questData.questStates.TryGetValue(questId, out var state) ? state : (QuestState?)null;
         }
 
-        /// <summary>返回当前进度与目标数量；(0, 0) 表示配置不存在或未接取。</summary>
+        /// <summary>
+        /// 返回当前进度与目标数量；(0, 0) 表示配置不存在或未接取。
+        /// <para>
+        /// CollectItem（如 Quest_002/003）：真进度在背包 <c>targetItem</c> 数量，
+        /// <c>questProgress</c> 接取后恒为 0、井不写——若只读字典会假显示 0/4。
+        /// KillMonster 仍读 <c>questProgress</c>。
+        /// </para>
+        /// </summary>
         public (int currentCount, int targetCount) GetQuestProgress(string questId)
         {
             if (string.IsNullOrEmpty(questId))
@@ -124,6 +148,14 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Quest
             if (configRow == null)
             {
                 return (0, 0);
+            }
+
+            // Collect：交时查包样板——查询进度也应对齐背包，避免 UI/Log 假 0/N
+            if (configRow.objectiveType == "CollectItem" && !string.IsNullOrEmpty(configRow.targetItem))
+            {
+                var bag = GetPlayerBagData();
+                var held = bag != null ? bag.GetMainItemCount(configRow.targetItem) : 0;
+                return (held, configRow.targetCount);
             }
 
             var questData = GetPlayerQuestData();

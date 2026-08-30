@@ -58,8 +58,8 @@ namespace EditorC.Tool.Dialogue
 
         /// <summary>
         /// 创建带项目默认映射的内存实例，供未指定 SO 时使用。
-        /// 内置十二条：雅→雅尔、古→古莎、艾米→艾米、艾莉→艾莉、村→村长、埃吉尔→埃吉尔、—→旁白、
-        /// 1→NPC1、2→NPC2、3→NPC3、4→NPC4、5→NPC5。
+        /// 内置十三条：雅→雅尔、古→古莎、艾米→艾米、艾莉→艾莉、村→村长、埃吉尔→埃吉尔、—→旁白、
+        /// 1→NPC1、2→NPC2、3→NPC3、4→NPC4、5→NPC5、店→老板娘、老人→老人。
         /// 替代方案：也可强制要求窗口必须拖入 SO，但默认映射可加速样例 CSV 验收。
         /// </summary>
         public static DialogueSpeakerMapping CreateDefaultInstance()
@@ -89,6 +89,8 @@ namespace EditorC.Tool.Dialogue
                 new Entry { csvSpeaker = "5", actorParameterName = "NPC5" },
                 // 商店老板娘：CSV Speaker「店」→ 图内 Actor「老板娘」
                 new Entry { csvSpeaker = "店", actorParameterName = "老板娘" },
+                // 0830 老农台本：CSV「老人」→ 图内 Actor「老人」（恒等；无立绘资产本期仅字幕）
+                new Entry { csvSpeaker = "老人", actorParameterName = "老人" },
             };
             return mapping;
         }

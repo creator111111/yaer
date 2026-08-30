@@ -63,16 +63,31 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             RegisterInputListeners();
         }
 
+        /// <summary>
+        /// 绑定数量框：无引用则 Ensure；已有引用也强制刷隐形样式（关 caret 闪烁）。
+        /// </summary>
+        /// <remarks>
+        /// 原因：Prefab 预绑 quantityInput 时旧逻辑直接 return，不跑 Ensure → 磁盘上 width/blink 仍闪。
+        /// 施工要求：已有引用也 Apply 一次，运行时覆盖旧序列化，不必手改 11 行 YAML。
+        /// </remarks>
         private void BindQuantityInput()
         {
+            // 已绑定：仍刷隐形样式（关 caret），再保证 _quantityNode 给 DigitStrip 用。
             if (quantityInput != null)
             {
+                ShopQuantityInputHelper.ApplyInvisibleInputTextStyle(quantityInput);
+                if (_quantityNode == null)
+                {
+                    _quantityNode = transform.Find("TxtStock") ?? transform.Find("Number");
+                }
+
                 return;
             }
 
             _quantityNode = transform.Find("TxtStock") ?? transform.Find("Number");
             if (_quantityNode != null)
             {
+                // Ensure 内部已含 ApplyInvisible；此处走完整升级路径。
                 quantityInput = ShopQuantityInputHelper.EnsureTmpIntegerInputField(
                     _quantityNode,
                     ShopQuantityInputHelper.DefaultQuantity);
