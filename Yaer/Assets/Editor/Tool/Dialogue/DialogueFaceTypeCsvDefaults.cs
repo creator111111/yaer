@@ -54,11 +54,12 @@ namespace EditorC.Tool.Dialogue
                 return DialogueFaceType.Normal;
             }
 
-            // 村长：立绘资源未接入前占位 Normal，避免因空 FaceType 列导致建图失败
+            // 村长：空列占位 Normal（晚宴路径）；门口台本应填 Face1～3 走 UseChiefPortrait，勿依赖本默认
             if (string.Equals(actorParameterName, "村长", StringComparison.Ordinal))
             {
                 Debug.LogWarning(
-                    "[DialogueFaceTypeCsvDefaults] Actor「村长」FaceType 列为空，使用 Normal；立绘图集未就绪，请检查映射与 CSV。");
+                    "[DialogueFaceTypeCsvDefaults] Actor「村长」FaceType 列为空，使用 Normal。" +
+                    "门口台本请填 Face1～Face3；晚宴可填 Smile/CloseEyes。");
                 return DialogueFaceType.Normal;
             }
 

@@ -1,4 +1,5 @@
 using Game.GameRuntime.UI.FormLogic.Shop;
+using Game.GameRuntime.UI.FormLogic.Story.Painting;
 using Game.Static.Enum.Dialogue;
 using NodeCanvas.DialogueTrees;
 using NodeCanvas.Framework;
@@ -22,6 +23,11 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
         public BBParameter<ShopkeeperBodyType> ShopBody;
         public BBParameter<ShopkeeperFaceType> ShopFace;
 
+        /// <summary>村长门口行：直通大立绘+Mask Face1～3；与 UseShopkeeperPortrait 互斥。</summary>
+        public BBParameter<bool> UseChiefPortrait;
+
+        public BBParameter<ChiefFaceType> ChiefFace;
+
         protected override Status OnExecute(UnityEngine.Component agent, IBlackboard bb)
         {
             var tempStatement = statement.BlackboardReplace(bb);
@@ -33,6 +39,13 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
                 subtitleInfo.UseShopkeeperPortrait = true;
                 subtitleInfo.ShopBody = ShopBody != null ? ShopBody.value : ShopkeeperBodyType.Normal;
                 subtitleInfo.ShopFace = ShopFace != null ? ShopFace.value : ShopkeeperFaceType.Face1;
+                subtitleInfo.FaceType = DialogueFaceType.None;
+            }
+            else if (UseChiefPortrait != null && UseChiefPortrait.value)
+            {
+                // 门口台本：CSV Face1～3 → ChiefFace；不经 MapToChiefFace（晚宴 Smile→Face3）
+                subtitleInfo.UseChiefPortrait = true;
+                subtitleInfo.ChiefFace = ChiefFace != null ? ChiefFace.value : ChiefFaceType.Face1;
                 subtitleInfo.FaceType = DialogueFaceType.None;
             }
 
@@ -49,6 +62,12 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
                 var body = ShopBody != null ? ShopBody.value.ToString() : "Normal";
                 var face = ShopFace != null ? ShopFace.value.ToString() : "Face1";
                 string info = string.Format("<i>' 店 {0}/{1}: {2} '</i>", body, face, statement.text.CapLength(30));
+                GUILayout.Label(info);
+            }
+            else if (UseChiefPortrait != null && UseChiefPortrait.value)
+            {
+                var face = ChiefFace != null ? ChiefFace.value.ToString() : "Face1";
+                string info = string.Format("<i>' 村 {0}: {1} '</i>", face, statement.text.CapLength(30));
                 GUILayout.Label(info);
             }
             else

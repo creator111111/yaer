@@ -633,18 +633,73 @@
 ## KenMuNi1 第三部分相机纵深跟随 · 2026-08-22
 
 详见：`Assets/Doc/执行文档/0822/Village_KenMuNi1_第三部分相机纵深跟随_架构溯源报告.md`  
-**侦探结论**：**H1** `FramingTransposer.m_DeadZoneHeight=1` 纵深死区满屏 → W/S 不跟 Y；**H2** 放大 `CameraArea` 只扩 Confiner、不开启跟拍。对照 HomeScene1：`DeadZoneHeight=0`、`YDamping=1`。施工 **方案 B+D**：左翼高台（世界 **x≤-93**）Trigger 进出切换 `DeadZoneHeight→0`、`YDamping→0.7`；右街低区恢复现网。
+**侦探结论**：**H1** `FramingTransposer.m_DeadZoneHeight=1` 纵深死区满屏 → W/S 不跟 Y；**H2** 放大 `CameraArea` 只扩 Confiner、不开启跟拍。对照 HomeScene1：`DeadZoneHeight=0`、`YDamping=1`。施工 **方案 B+D**：左翼高台 Trigger 进出切换 Framing；右街恢复现网。
 
 | ID | 问题 | 施工默认建议 | 状态 |
 |----|------|--------------|------|
-| Q1 | 是否全村统一开 Y 跟？ | **否**；仅第三部分 Trigger 区 | ✅ 已决议 |
-| Q2 | OrthographicSize 是否随区变化？ | **本期否**；只改 Framing 参数 | ✅ 已决议 |
-| Q3 | `CameraArea` 多边形是否再扩？ | **本期不改**（已含高台） | ✅ 已决议 |
-| Q4 | Trigger 初值？ | Center **(-133, 21)**，Size **(80, 58)**；x≤-93 左翼 | 待施工 |
-| Q5 | C# API？ | `SetFramingTransposerDepthFollow` + `VillageCameraDepthFollowZone` | 待施工 |
-| T1 | 第三部分 W/S vcam.y 跟随？ | 明显跟 Y | 待验收 |
-| T2 | 右街低区手感？ | 不劣化 | 待验收 |
-| T3 | Trigger 边界？ | 无跳变/抖动 | 待验收 |
+| Q1 | 是否全村统一开 Y 跟？ | **否**；仅第三部分 Zone | ✅ |
+| Q2 | OrthographicSize 是否随区变化？ | **本期否** | ✅ |
+| Q3 | `CameraArea` 多边形是否再扩？ | **本期不改** | ✅ |
+| Q4 | Trigger 初值？ | 曾建议 (-133,21)/(80,58)；**磁盘现 (-55,21)/(200,58) 过大** | ♻️ 见下节缩盒 |
+| Q5 | C# API？ | `SetKenMuNiPart3CameraMode` + `VillageCameraDepthFollowZone` 已落地 | ✅ 已施工 |
+| T1～T3 | 跟 Y / 右街 / 边界 | — | ♻️ **判定改口中** |
+
+**再改口（2026-08-31）**：触发条件由「玩家进区」改为「**摄像机白框完全 ⊆ Zone**」；Part3 Body 改用户实测表（**ScreenY=0.88**）。  
+详见：`执行文档/0831/Village_KenMuNi1_Part3_摄像机框完全进入才切Body_架构溯源报告.md`
+
+---
+
+## KenMuNi1 Part3 · 摄像机框完全进入才切 Body · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/Village_KenMuNi1_Part3_摄像机框完全进入才切Body_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0831/Village_KenMuNi1_Part3_摄像机框完全进入才切Body_施工说明.md`  
+**侦探结论**：现网玩家 Trigger/Contains 切 Profile ❌；应正交相机 AABB ⊆ Zone + 滞回；Part3 Profile 换 ScreenY=0.88 等；磁盘 Zone 宽 200 盖右街**必须缩**；离开 SoftH 倾向 **1** 对齐 VCam YAML。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 用哪台 Camera 算框？ | **`Brain.OutputCamera` / `Camera.main`** | ✅ **已施工**（后被双 VCam 改口覆盖判定源） |
+| Q2 | Zone 是否必须缩？ | **已缩**：Center (-133,21) Size (80,58)，右缘≈-93 | ✅ **已施工** |
+| Q3 | YDamp=0 瞬时跟 Y？ | **照用户表** | ✅ |
+| Q4 | 离开 SoftZoneHeight？ | **1**（静态默认 + 场景 streetProfile） | ✅ **已施工** |
+| Q5 | 滞回幅度？ | **0.35** 世界单位（进内缩、出外扩） | ✅ **已施工** |
+
+**返修后仍不稳**：单机 Apply 与白框判定反馈环 → 冷却/重申仅压症状。  
+**再改口（2026-08-31）**：**启用双 VCam（原 0822 方案 C）**，停用主路径 Apply。  
+详见：`执行文档/0831/Village_KenMuNi1_Part3_双VirtualCamera切换_架构溯源报告.md`
+
+---
+
+## KenMuNi1 Part3 · 双 VirtualCamera 切换 · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/Village_KenMuNi1_Part3_双VirtualCamera切换_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0831/Village_KenMuNi1_Part3_双VirtualCamera切换_施工说明.md`  
+**侦探结论**：弃单机改 Body；落地 `VCam_Street` + `VCam_Part3`，Zone 只切 Priority；判定曾拍板 **A1=街道路算框**；`CameraComponent` 双写 Follow/Confiner/Size/CancelFollow；删每帧 Reassert Apply；Blend Custom 0.4s。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 判定 A1 还是 A2？ | **A1 街道路算框** | ♻️ **被再改口覆盖**（见下节） |
+| Q2 | Blend 时长？ | **0.4s EaseInOut**（`KenMuNi1_StreetPart3_Blends`） | ✅ **已施工** |
+| Q3 | 旧 Apply API？ | **保留**；Part3 Zone 改切 Priority | ✅ **已施工** |
+| Q4 | Part3 复制 Impulse/Confiner？ | **要**（Confiner 同 CameraArea；Impulse Init 双挂） | ✅ **已施工** |
+| Q5 | 场景旧 Profile 字段？ | 留文档对照；运行时以两台 Inspector 为准 | ✅ **已施工** |
+| Q6 | 手推双机？ | **E2** 两台 Transform 对齐 | ✅ **已施工** |
+
+**再改口（2026-08-31）**：A1 实测难切上 Part3 → 进区改为 **玩家位置在 Zone 内**；双机与 Priority **保留**。  
+详见：`执行文档/0831/Village_KenMuNi1_Part3_玩家进区切双VCam_施工执行说明.md`  
+施工：`施工说明/0831/Village_KenMuNi1_Part3_玩家进区切双VCam_施工说明.md`
+
+---
+
+## KenMuNi1 Part3 · 玩家进区切双 VCam · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/Village_KenMuNi1_Part3_玩家进区切双VCam_施工执行说明.md`  
+**施工结论**：`VillageCameraDepthFollowZone` 主条件 = `Contains(玩家)` + 滞回；废弃 A1；仍只切 Priority，不 Apply Framing。
+
+| ID | 问题 | 决议 | 状态 |
+|----|------|------|------|
+| Q1 | 进区主条件？ | **玩家在 Zone 内**（P1 Contains） | ✅ **已施工** |
+| Q2 | 是否删双机？ | **否** | ✅ |
+| Q3 | 是否恢复 Apply Body？ | **否** | ✅ |
 
 ---
 
@@ -1338,12 +1393,31 @@
 |----|------|-----------------|------|
 | Q1 | 每次点井自动存包？ | **是** | ✅ **已施工** |
 | Q2 | GetQuestProgress Collect 改读包？ | **P1 建议** | ✅ **已施工** |
-| Q3 | 交完无任务循环打水？ | **产品改口：交完可再接**（同档再 Offer；井仍须 InProgress） | ✅ **已施工** |
-| Q4 | 交完 Debug 重置？ | 可重复后一般不需要 | ✅ 关闭 |
+| Q3 | 交完无任务循环打水？ | ~~交完可再接~~ → **再改口：当日不可再接**（见下节） | ♻️ **被覆盖** → ✅ 见 0831 施工 |
+| Q4 | 交完 Debug 重置？ | 改为预留 **`ResetQuest`**（跳日/Debug） | ✅ **已施工**（`QuestManager.ResetQuest` + Editor 菜单） |
 | Q5 | SaveSpcData 架构债？ | 本期止血不重构 | ⏳ |
 
-**改口（2026-08-31）**：交完不必读接取前档；`FarmerQuestStoryTrigger` TurnedIn→Offer；`Quest_003.repeatable=true`；`AcceptQuest` 允许 TurnedIn 重接。  
+**改口（2026-08-31 上午）**：交完不必读接取前档；`FarmerQuestStoryTrigger` TurnedIn→Offer；`Quest_003.repeatable=true`；`AcceptQuest` 允许 TurnedIn 重接。  
 施工说明：`施工说明/0830/Village_老农打水_交完可再接任务_施工说明.md`
+
+**再改口（2026-08-31 下午）**：**覆盖**上条——交完（TurnedIn）后当日不可再接；再谈走短循环；禁空跑 `_完成结算`；预留 `ResetQuest`。  
+详见：`执行文档/0831/Village_老农打水_当日不可再接与禁空跑结算_架构溯源报告.md`
+
+---
+
+## Village_老农打水 · 当日不可再接 + 禁空跑结算 · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/Village_老农打水_当日不可再接与禁空跑结算_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0831/Village_老农打水_当日不可再接与禁空跑结算_施工说明.md`  
+**侦探结论**：空跑=结算对白先于 TurnIn，失败仍播完；现网 TurnedIn→Offer 为旧改口须废。拍板 Trigger 对齐 Npc23 短循环；Accept 不再 TurnedIn 重接；新增 `ResetQuest`；无真实日期系统。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 锁粒度？ | **TurnedIn 后锁**（进行中仍催促） | ✅ **已施工** |
+| Q2 | 短循环 Prefab？ | **新建 `_今日已完成`** | ✅ **已施工** |
+| Q3 | `repeatable`？ | **保持 true**，仅 Reset 后可再接 | ✅ **已施工** |
+| Q4 | Reset 清不清桶？ | **只清任务状态/进度** | ✅ **已施工** |
+| Q5 | Accept 收紧是否动 Quest_001？ | **方案 A 一刀切**（TurnedIn 一律拒；001 重接也走 Reset） | ✅ **已施工** |
 
 ---
 
@@ -1360,3 +1434,112 @@
 
 施工说明：`施工说明/0830/Village_老农打水_Tips新图替换空桶与满桶_施工说明.md`  
 **提醒**：进 Unity 后请 Pack `tipsInfo` / `_en` / `_jp` 再 Play 验收。
+
+---
+
+## 精灵村长立绘 · UI 版 Mask 小表情 Face1/2/3 · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/精灵村长立绘_UI版Mask小表情Face123_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0831/精灵村长立绘_UI版Mask小表情Face123_施工说明.md`  
+**侦探结论**：SR 源不可直嵌 Mask；新建 `ChiefMaskPainting`（Face1←组2 底 + Face2/3 互斥贴脸）；扩 `DialogueRoleName.Chief`（晚宴 Leader 现为 None）；CSV 用 F2 映射 Smile→Face3、CloseEyes→Face2；勿污染 `DialogueFaceType`。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 叠法底+贴脸还是三张互斥？ | **底+贴脸** | ✅ **已施工**（肉眼可改） |
+| Q2 | CSV 策略？ | **F2 运行时映射** | ✅ **已施工** |
+| Q3 | Smile→Face3、CloseEyes→Face2？ | **是**（按文件名） | ✅ 施工默认 / ⏳ 产品确认 |
+| Q4 | Sad / Laugh →？ | 暂 **Face1** | ✅ 施工默认 / ⏳ 产品确认 |
+| Q5 | Prefab 名？ | **ChiefMaskPainting** | ✅ **已施工** |
+| Q6 | 本期场景大立绘？ | **否，只 Mask**（门口对白另案要 UI 大立绘） | ♻️ 见下节 |
+| Q7 | Actor GO「Leader」改名？ | **否**；RoleName=Chief | ✅ **已施工** |
+
+---
+
+## Village_村长家门口初次对话 · 三人大立绘 + Face123 Import · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/Village_村长家门口初次对话_三人大立绘与Face123导入_架构溯源报告.md`  
+**侦探结论**：Import 红字=仅店行认 Face1～5；须 **C1** 村长分流（`UseChiefPortrait`+`ChiefFace`）；`ChiefPainting` 磁盘仍 SR 须 UI 化；成品 Prefab 挂雅+古+村三立绘+三路淡入；门口 CSV 已写 Face1～3，不走晚宴 F2；场景触发见下节「靠近村长黑幕」。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 门口对白触发点？ | **合层 `村长` 旁新建 `Objects/Npc_Chief`**（Enter+黑幕；**非** `House_Chief`） | ✅ 侦探已拍板（见靠近报告） |
+| Q2 | 三立绘站位？ | 施工默认：雅左 / 古中 / 村右（Setup 菜单占位，产品可再调） | ✅ 施工默认 |
+| Q3 | 大立绘脚本？ | **复用 `ChiefMaskPainting.Apply`**；Prefab `ChiefPainting` 分离 | ✅ |
+| Q4 | 前奏淡入三立绘？ | **是**（Setup 菜单 Prelude 三路 CanvasGroup） | ✅ |
+| Q5 | 存档单次？ | **是**（`SingleUseInArchive`）；与 House_Chief 进屋解耦 | ✅ 侦探已拍板 |
+
+---
+
+## Village_KenMuNi1 靠近合层「村长」黑幕播门口初次对话 · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/Village_KenMuNi1_靠近村长黑幕播门口初次对话_架构溯源报告.md`  
+**侦探结论**：合层 `村长` 仅 SR、Z≈2.8 → 新建 **`Npc_Chief`** Z=0；**Enter** → BlackPanel Show→全黑 `TriggerStory("Village_村长家门口初次对话")`→壳就绪 HideFade；与 `House_Chief` 进屋解耦；单次存档。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | Enter 立刻 vs Stay？ | **Enter** | ✅ |
+| Q2 | 黑幕时长？ | 默认 BlackPanel；hold 0.1s / 超时 8s（可调序列化） | ✅ 施工默认 |
+| Q3 | 单次键？ | **SingleUseInArchive** + Prefab 名 | ✅ |
+| Q4 | 结束后自动提示进屋？ | 否；门手动 | ✅ |
+| Q5 | Prefab 未完工先合场景？ | **可**；联调等 Prefab | ✅ |
+| Q6 | 碰撞避开门热区？ | Collider 2×2、偏右 offset；Scene 可再微调 | ✅ 施工默认 |
+
+---
+
+## Village_KenMuNi1 靠近黑幕插入女二侧面涂层 · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/Village_KenMuNi1_靠近黑幕插入女二侧面涂层_架构溯源报告.md`  
+**侦探结论**：方案 **C**——与 `Npc_Chief` 同一黑幕；全黑启用预置 **`GushaSidePortrait`**（世界 SR、钉 **SceneObject**）再播 `Village_村长家门口初次对话`；「老人」=**村长/奶奶**（≠老农）；侧面≠ UI `GushaPainting`；禁止二次黑幕。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 对白结束侧面去留？ | **onStoryEnd 关闭**（`hideSideOnStoryEnd=true`） | ✅ 施工默认 |
+| Q2 | 对白中走动改遮挡？ | 跟现网 Pause；F1 钉 SceneObject 即可 | ✅ |
+| Q3 | 是否挂 DepthSort？ | **本期否** | ✅ |
+| Q4 | 精确 XY/Scale？ | 占位 `(-157,-1.55)`；换正图后 Scene 微调 | ✅ 施工占位 |
+| Q5 | 世界侧面 + UI 正脸双重古莎？ | 默认同场；嫌多再 P1 隐侧面 | ⏳ |
+| Q6 | A/B/C 身份？ | **C**（门口三人戏 + 场景氛围侧面） | ✅ |
+
+---
+
+## 门口三人立绘对白结束 → Loading 进 Village_Chief_House · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/门口三人立绘对白结束_Loading进Village_Chief_House_架构溯源报告.md`  
+**侦探结论**：「树屋外」= **A 村长门口三人戏**（≠ `House_Tree`）；**L2** `ChiefNearDoorStoryTrigger`/`onStoryEnd` → Open `LoadingPanel` → `LoadScene(Village_Chief_House, blackFade:false)`；`House_Chief` **保留**；`LoadSceneTaskAction` 现网无 Loading 勿裸用。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 「树屋外」含义？ | **A** 村长门口戏 | ✅ |
+| Q2 | 自动进屋后门是否保留？ | **保留** `House_Chief` | ✅ |
+| Q3 | 挂点 L1 vs L2？ | **L2** onStoryEnd | ✅ |
+| Q4 | Loading 时长？ | 现网 LoadingPanel 默认 | ✅ |
+| Q5 | 手动门也勾 ShowLoadingUI？ | **建议勾** | ⏳ |
+| Q6 | Prefab 未好先合 Load？ | 可先合代码；联调等 Prefab | ⏳ |
+
+---
+
+## Village_村长家门口初次对话 · 加载资源失败修复 · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/Village_村长家门口初次对话_加载资源失败修复_施工执行说明.md`  
+施工说明：`Assets/Doc/施工说明/0831/Village_村长家门口初次对话_加载资源失败修复_施工说明.md`  
+**结论**：根因 **H1**（Prefab 未落盘）；修法 = Unity 菜单 Setup；壳磁盘在、场景 guid 断链为 P1 不挡 Setup。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 根因 H1～H4？ | **H1** | ✅ |
+| Q2 | 场景 KenMuNiStart Missing？ | guid 断链；P1 重挂；不挡 Setup | ⏳ |
+| Q3 | 是否改 ResMgr？ | **否** | ✅ |
+
+---
+
+## Village_村长家门口初次对话 · 村长大立绘丢失修复 · 2026-08-31
+
+详见：`Assets/Doc/执行文档/0831/Village_村长家门口初次对话_村长大立绘丢失修复_施工执行说明.md`  
+施工说明：`Assets/Doc/施工说明/0831/Village_村长家门口初次对话_村长大立绘丢失修复_施工说明.md`  
+**结论**：**H1** 母体 `ChiefPainting` 三脸 Sprite 空；**H1b** 曾缺 png（现已回）；重跑 Setup Chief Painting；门口实例继承母体，非 Alpha 主因。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 根因？ | **H1**（空 Sprite）；H1b 历史 | ✅ |
+| Q2 | 须重跑门口 Setup？ | 默认否；母体修好即继承 | ⏳ |
+| Q3 | png 来源？ | 磁盘已补齐；保留 meta guid | ✅ |

@@ -82,8 +82,8 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         }
 
         /// <summary>
-        /// 透传 <see cref="CameraComponent.SetFramingTransposerDepthFollow"/>，供村庄分区 Trigger 调用。
-        /// 不受 <see cref="isLock"/> 限制（只改 Framing 参数，不改 Follow 目标）。
+        /// 透传旧 Framing API（单机改参）；KenMuNi Part3 Zone 主路径已改 Priority，一般勿用。
+        /// 不受 <see cref="isLock"/> 限制。
         /// </summary>
         public void SetFramingTransposerDepthFollow(
             bool followDepthY,
@@ -101,7 +101,10 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
                 followDepthY, yDamping, deadZoneHeightWhenOff, deadZoneHeightWhenOn, screenYWhenOn);
         }
 
-        /// <summary>进入 CameraDepthFollowZone_Part3 时套用 Part3 Profile，离开时恢复右街默认。</summary>
+        /// <summary>
+        /// 进入 CameraDepthFollowZone_Part3：有双 VCam 时切 Priority；否则退回旧 Apply Profile。
+        /// 不受 <see cref="isLock"/> 限制（不单独改 Follow；解锁跟拍由 Zone 显式 SetFollow）。
+        /// </summary>
         public void SetKenMuNiPart3CameraMode(
             bool part3Active,
             CinemachineFramingProfile part3Profile,
@@ -113,6 +116,17 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
             }
 
             cameraComponent.SetKenMuNiPart3CameraMode(part3Active, part3Profile, streetProfile);
+        }
+
+        /// <summary>无 Profile 重载：仅切 Priority（推荐 Zone 新路径）。</summary>
+        public void SetKenMuNiPart3CameraMode(bool part3Active)
+        {
+            if (cameraComponent == null)
+            {
+                return;
+            }
+
+            cameraComponent.SetKenMuNiPart3CameraMode(part3Active);
         }
     }
 }

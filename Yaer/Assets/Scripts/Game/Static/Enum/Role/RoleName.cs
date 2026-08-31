@@ -12,6 +12,8 @@
         GoblinElder,
         GoblinYounger,
         Amy,
-        Aliy
+        Aliy,
+        /// <summary>精灵村长（Mask 小表情 / 晚宴 Actor Leader）。只能追加末尾，勿插入中间。</summary>
+        Chief
     }
 }

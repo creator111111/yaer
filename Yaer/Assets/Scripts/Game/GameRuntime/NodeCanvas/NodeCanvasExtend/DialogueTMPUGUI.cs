@@ -8,6 +8,8 @@ using DG.Tweening;
 using Game.GameMgr;
 using Game.GameRuntime.UI.FormLogic.Shop;
 using Game.GameRuntime.UI.FormLogic.Story;
+using Game.GameRuntime.UI.FormLogic.Story.Dialogue;
+using Game.GameRuntime.UI.FormLogic.Story.Painting;
 using Game.GameRuntime.Story;
 using Game.Static.Enum.Dialogue;
 using NodeCanvas.DialogueTrees;
@@ -248,6 +250,24 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
 
                 OnGetNewStatement?.Invoke(DialogueRoleName.None, DialogueFaceType.None, text);
             }
+            else if (info.UseChiefPortrait)
+            {
+                // 门口村长：DialogueSceneContainer 下大立绘 + Mask 同帧 Apply；Invoke(None) 写历史勿关刚亮的脸
+                ApplyChiefBigPortrait(info.ChiefFace);
+
+                if (actorPortrait != null)
+                {
+                    actorPortrait.gameObject.SetActive(false);
+                }
+
+                var maskPresenter = GetComponentInChildren<DialogueMaskAvatarPresenter>(true);
+                if (maskPresenter != null)
+                {
+                    maskPresenter.ApplyChiefPortrait(info.ChiefFace);
+                }
+
+                OnGetNewStatement?.Invoke(DialogueRoleName.None, DialogueFaceType.None, text);
+            }
             else if (actor != null)
             {
                 actor.RefreshAvatar(info.FaceType, (sprite) => OnGetAvatar(sprite, text));
@@ -296,6 +316,33 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
                     Debug.LogWarning("[DialogueTMPUGUI] Continue 时异常（可能对话树已停）：" + e.Message, this);
                 }
             }
+        }
+
+        /// <summary>
+        /// 门口村长大立绘：只在 DialogueSceneContainer 下找 <see cref="ChiefMaskPainting"/>，
+        /// 避免 GetComponentInChildren 误伤 Mask 内同脚本实例。
+        /// 替代方案：对话级 Registry（店式）——多一处全局态，门口单 Prefab 不必。
+        /// </summary>
+        private void ApplyChiefBigPortrait(ChiefFaceType face)
+        {
+            var form = GetComponentInParent<NormalDialogueFormNewLogic>();
+            var bigChief = form != null ? form.FindInDialogueScene<ChiefMaskPainting>() : null;
+            if (bigChief == null)
+            {
+                Debug.LogWarning(
+                    "[DialogueTMPUGUI] 村长门口句但 DialogueSceneContainer 下无 ChiefPainting（ChiefMaskPainting）。",
+                    this);
+                return;
+            }
+
+            bigChief.gameObject.SetActive(true);
+            var cg = bigChief.GetComponent<CanvasGroup>();
+            if (cg != null && cg.alpha < 1f)
+            {
+                cg.alpha = 1f;
+            }
+
+            bigChief.Apply(face);
         }
 
         /// <summary>

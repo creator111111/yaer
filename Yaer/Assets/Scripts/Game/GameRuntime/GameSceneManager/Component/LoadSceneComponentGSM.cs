@@ -23,6 +23,40 @@ namespace Game.GameRuntime.GameSceneManager.Component
         public event Action onInitSceneMonsterEvent;
 
         /// <summary>
+        /// 先开 <c>LoadingPanel</c> 进度条，再 <see cref="LoadScene"/>(blackFade:false)。
+        /// 与 <c>SceneChangeDoor.ShowLoadingUI</c> 同路；门口对白结束自动进屋亦走此 API。
+        /// <para>
+        /// 原因：裸调 <c>LoadScene(name)</c> 默认黑幕，违背「进屋主表现=进度条」。
+        /// 替代方案：扩 <c>LoadSceneTaskAction</c> 挂图末——现网 Action 无 Loading，故本期用本助手 + onStoryEnd。
+        /// </para>
+        /// </summary>
+        /// <param name="sceneName">目标场景名（如 <c>Village_Chief_House</c>）。</param>
+        public void LoadSceneWithLoadingPanel(string sceneName)
+        {
+            if (string.IsNullOrEmpty(sceneName))
+            {
+                Debug.LogError("[SceneLoad] LoadSceneWithLoadingPanel: sceneName 为空");
+                return;
+            }
+
+            Debug.Log($"[SceneLoad] LoadSceneWithLoadingPanel scene={sceneName}");
+
+            GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(
+                UIPrefabPath.GetUIPrefabPath("LoadingPanel"),
+                EUIGroup.Top,
+                new OpenFormArgs
+                {
+                    // 与门 ShowLoadingUI 分支保持同一 OpenFormArgs 形态（空 userData Action）
+                    userData = new Action(() => { }),
+                    callBack = _ =>
+                    {
+                        // 进度条已开：切场禁止再主控 BlackPanel
+                        LoadScene(sceneName, null, false);
+                    }
+                });
+        }
+
+        /// <summary>
         /// 跳转场景黑幕
         /// </summary>
         /// <param name="sceneName">场景名</param>

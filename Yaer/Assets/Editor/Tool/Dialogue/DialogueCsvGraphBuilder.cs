@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Game.GameRuntime.Story.Node;
-using Game.GameRuntime.Story.Node;
 using Game.GameRuntime.UI.FormLogic.Shop;
+using Game.GameRuntime.UI.FormLogic.Story.Painting;
 using Game.GameRuntime.Story.NodeCanvasExtend;
 using Game.Static.Enum.Dialogue;
 using NodeCanvas.DialogueTrees;
@@ -116,6 +116,9 @@ namespace EditorC.Tool.Dialogue
                 mapping,
                 hasBodyTypeColumn || rowsHaveBodyTypeColumn(rows));
 
+            // Step4c：村长行 Face1～3 继承表（门口直通；晚宴 Smile 等不入表）
+            var chiefPortraitMap = BuildChiefPortraitMap(rows, mapping);
+
             // Step4b：第一轮 — 创建节点
             var nodeMap = new Dictionary<int, Node>();
             // Anim 行：入边接到 Action，出边从 Statement 接出
@@ -137,7 +140,8 @@ namespace EditorC.Tool.Dialogue
                     }
 
                     var statementPos = position + new Vector2(220f, 0f);
-                    var statementNode = CreateStatementNode(tree, row, mapping, position, shopPortraitMap);
+                    var statementNode = CreateStatementNode(
+                        tree, row, mapping, statementPos, shopPortraitMap, chiefPortraitMap);
                     if (statementNode == null)
                     {
                         UnityEngine.Object.DestroyImmediate(tree);
@@ -152,7 +156,8 @@ namespace EditorC.Tool.Dialogue
 
                 if (DialogueCsvParser.IsDialogueType(row.type))
                 {
-                    node = CreateStatementNode(tree, row, mapping, position, shopPortraitMap);
+                    node = CreateStatementNode(
+                        tree, row, mapping, position, shopPortraitMap, chiefPortraitMap);
                 }
                 else if (DialogueCsvParser.IsChoiceType(row.type))
                 {
@@ -336,7 +341,8 @@ namespace EditorC.Tool.Dialogue
             DialogueRow row,
             DialogueSpeakerMapping mapping,
             Vector2 position,
-            Dictionary<int, (ShopkeeperBodyType body, ShopkeeperFaceType face)> shopPortraitMap)
+            Dictionary<int, (ShopkeeperBodyType body, ShopkeeperFaceType face)> shopPortraitMap,
+            Dictionary<int, ChiefFaceType> chiefPortraitMap)
         {
             if (!mapping.TryResolve(row.speaker, out var actorName))
             {
@@ -373,6 +379,45 @@ namespace EditorC.Tool.Dialogue
                 node.ShopBody.value = portrait.body;
                 node.ShopFace.value = portrait.face;
 
+                if (node.UseChiefPortrait == null)
+                {
+                    node.UseChiefPortrait = new BBParameter<bool>();
+                }
+
+                node.UseChiefPortrait.value = false;
+
+                if (node.FaceType == null)
+                {
+                    node.FaceType = new BBParameter<DialogueFaceType>();
+                }
+
+                node.FaceType.value = DialogueFaceType.None;
+            }
+            else if (ChiefCsvDefaults.IsChiefActor(actorName)
+                     && chiefPortraitMap != null
+                     && chiefPortraitMap.TryGetValue(row.id, out var chiefFace))
+            {
+                // 门口：CSV Face1～3 → UseChiefPortrait；FaceType 置 None（运行时走 ChiefFace）
+                if (node.UseChiefPortrait == null)
+                {
+                    node.UseChiefPortrait = new BBParameter<bool>();
+                }
+
+                if (node.ChiefFace == null)
+                {
+                    node.ChiefFace = new BBParameter<ChiefFaceType>();
+                }
+
+                node.UseChiefPortrait.value = true;
+                node.ChiefFace.value = chiefFace;
+
+                if (node.UseShopkeeperPortrait == null)
+                {
+                    node.UseShopkeeperPortrait = new BBParameter<bool>();
+                }
+
+                node.UseShopkeeperPortrait.value = false;
+
                 if (node.FaceType == null)
                 {
                     node.FaceType = new BBParameter<DialogueFaceType>();
@@ -383,6 +428,7 @@ namespace EditorC.Tool.Dialogue
             else
             {
                 // FaceType：CSV 第 7 列或按 Actor 名默认（雅尔→Smile，其它→Normal）
+                // 村长晚宴 Smile/CloseEyes 也走此分支（不入 chiefPortraitMap）
                 if (!DialogueFaceTypeCsvDefaults.TryResolve(row.faceType, actorName, out var resolvedFace))
                 {
                     Debug.LogError(
@@ -403,10 +449,64 @@ namespace EditorC.Tool.Dialogue
                 }
 
                 node.UseShopkeeperPortrait.value = false;
+
+                if (node.UseChiefPortrait == null)
+                {
+                    node.UseChiefPortrait = new BBParameter<bool>();
+                }
+
+                node.UseChiefPortrait.value = false;
             }
 
             SetNodeActor(node, tree, actorName);
             return node;
+        }
+
+        /// <summary>按 CSV 行序累计村长 Face1～3；空列继承上一句；晚宴 DialogueFaceType 行不入表。</summary>
+        private static Dictionary<int, ChiefFaceType> BuildChiefPortraitMap(
+            IReadOnlyList<DialogueRow> rows,
+            DialogueSpeakerMapping mapping)
+        {
+            var result = new Dictionary<int, ChiefFaceType>();
+            ChiefFaceType? current = null;
+
+            foreach (var row in rows)
+            {
+                if (!DialogueCsvParser.IsDialogueType(row.type) && !DialogueCsvParser.IsAnimType(row.type))
+                {
+                    continue;
+                }
+
+                if (!ChiefCsvDefaults.IsChiefRow(row, mapping))
+                {
+                    continue;
+                }
+
+                if (ChiefCsvDefaults.IsChiefFaceToken(row.faceType))
+                {
+                    if (!ChiefCsvDefaults.TryParseFace(row.faceType, out var parsed))
+                    {
+                        Debug.LogWarning(
+                            $"[DialogueCsvGraphBuilder] ID {row.id} 村长 Face 解析失败，跳过入表。");
+                        continue;
+                    }
+
+                    current = parsed;
+                    result[row.id] = parsed;
+                }
+                else if (string.IsNullOrWhiteSpace(row.faceType) && current.HasValue)
+                {
+                    // 空列继承上一张村长 Face1～3
+                    result[row.id] = current.Value;
+                }
+                else
+                {
+                    // Smile/CloseEyes 等晚宴枚举：退出直通模式，后续空列不继承 Face1～3
+                    current = null;
+                }
+            }
+
+            return result;
         }
 
         /// <summary>按 CSV 行序累计店行 Body/Face；空列继承上一句。</summary>

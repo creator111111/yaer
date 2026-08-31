@@ -826,6 +826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 74119077}
+  requirePlayerOverlap: 1
 --- !u!61 &74119077
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2841,6 +2842,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 256955426}
+  requirePlayerOverlap: 1
 --- !u!114 &256955432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3972,6 +3974,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 389322188}
+  requirePlayerOverlap: 1
 --- !u!61 &389322188
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4315,6 +4318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 432499665}
+  requirePlayerOverlap: 1
 --- !u!61 &432499665
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5908,12 +5912,16 @@ MonoBehaviour:
   king: {fileID: 534194816}
   lai: {fileID: 1843064197}
   NormalLai: {fileID: 730142178}
-  soldierTurnAnimator: {fileID: 1430253588}
   soundSfxCpn: {fileID: 80187799}
   kingSoundSfxCpn: {fileID: 943160270}
   kingShowAniEventCpn: {fileID: 534194819}
   LaiFlyAniEventCpn: {fileID: 1843064200}
-  soldierTurnLeadBeforeKingSeconds: 1.5
+  delayBeforeShowKingLaiWhenNoTimeline: 1.5
+  useKingPerformanceTimeline: 1
+  kingPerformanceDirector: {fileID: 0}
+  onKingPerformanceTimelineComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &621581209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7903,6 +7911,36 @@ MonoBehaviour:
   raycastListeners: []
   cldListeners:
   - {fileID: 1732629456}
+--- !u!1 &880003001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 880003002}
+  m_Layer: 8
+  m_Name: EnterFrom_Village
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &880003002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880003001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.23, y: -3.65, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5601461776061432031}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &880890029
 GameObject:
   m_ObjectHideFlags: 0
@@ -9601,6 +9639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 1064606636}
+  requirePlayerOverlap: 1
 --- !u!61 &1064606636
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9812,12 +9851,12 @@ PrefabInstance:
     - target: {fileID: 8912268227411047967, guid: 5cad34316d506314a9d29868d5abcfb6,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.45
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8912268227411047967, guid: 5cad34316d506314a9d29868d5abcfb6,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.45
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8912268227411047967, guid: 5cad34316d506314a9d29868d5abcfb6,
         type: 3}
@@ -12856,6 +12895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 1341192976}
+  requirePlayerOverlap: 1
 --- !u!61 &1341192976
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -16234,7 +16274,8 @@ MonoBehaviour:
   isNoBreakState: 0
   componentSystem: {fileID: 1727417824}
   linEn: {fileID: 506896737}
-  cameraTrack: {fileID: 531294201}
+  debugLogCameraMoveEndFlow: 1
+  safeTriggerYaerAfterRealSeconds: 2
 --- !u!95 &1727417822
 Animator:
   serializedVersion: 5
@@ -17157,6 +17198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 1813848009}
+  requirePlayerOverlap: 1
 --- !u!61 &1813848009
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -20281,6 +20323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 2081280494}
+  requirePlayerOverlap: 1
 --- !u!114 &2081280490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21127,7 +21170,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132163533838781009}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.040890694, y: 0, z: -10}
+  m_LocalPosition: {x: 0.044445038, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4425017523823135756}
@@ -21310,10 +21353,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 44.02, y: 7.9}
-      - {x: -14, y: 7.9}
+    - - {x: 26.130901, y: 3.012035}
+      - {x: -13.952438, y: 3.096284}
       - {x: -14, y: -7.9}
-      - {x: 44.1, y: -7.9}
+      - {x: 26.026611, y: -7.8048773}
 --- !u!1 &1868230988004266325
 GameObject:
   m_ObjectHideFlags: 0
@@ -21558,36 +21601,6 @@ Transform:
   - {fileID: 880003002}
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &880003001
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 880003002}
-  m_Layer: 8
-  m_Name: EnterFrom_Village
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &880003002
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880003001}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.23, y: -3.65, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 5601461776061432031}
-  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &5601461776152013248
 Transform:
@@ -22142,6 +22155,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cinemachineBrain: {fileID: 1132163533838781022}
   virtualCamera: {fileID: 1132163533271977017}
+  virtualCameraPart3: {fileID: 0}
+  streetPriority: 10
+  part3PriorityWhenActive: 20
+  part3PriorityWhenStandby: 0
+  smoothTime: 0.3
+  followSnapOffset: {x: 0, y: 0, z: 0}
+  useUnscaledTimeForHandSnap: 1
+  maxHandSnapRealSeconds: 2.5
 --- !u!1001 &6128466088312995971
 PrefabInstance:
   m_ObjectHideFlags: 0

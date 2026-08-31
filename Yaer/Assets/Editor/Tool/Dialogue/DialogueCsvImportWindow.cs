@@ -43,7 +43,8 @@ namespace EditorC.Tool.Dialogue
             EditorGUILayout.HelpBox(
                 "阶段 1：从 CSV 生成 DialogueTree .asset（StatementNodeEx + 选项分支 + 连线）。\n" +
                 "产物需先在 NodeCanvas 编辑器中校对；合并进 Prefab 为阶段 2。\n" +
-                "CSV 支持列：…, Extra, FaceType, BodyType（可选）。FaceType：雅/古填 Laugh/Cry 等；店填 Face1～Face5。" +
+                "CSV 支持列：…, Extra, FaceType, BodyType（可选）。FaceType：雅/古填 Laugh/Cry 等；" +
+                "店填 Face1～Face5；村（村长）填 Face1～Face3（门口）或 Smile/CloseEyes（晚宴）。" +
                 "BodyType 仅店行可选（Red/YinXian）；旧表无此列照常 Import。Type=Anim 时 Extra 填动画键。" +
                 "旧 6 列仍可用（雅尔默认 Smile，古莎默认 Normal）。" +
                 "策划表含 English / Voice 等额外列时，Next 与 FaceType 按表头列名自动识别。",

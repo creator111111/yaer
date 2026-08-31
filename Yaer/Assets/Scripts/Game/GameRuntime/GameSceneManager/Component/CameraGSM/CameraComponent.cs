@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
 {
-    /// <summary>Cinemachine Framing Transposer 一组参数（进/出 Zone 时整组切换）。</summary>
+    /// <summary>Cinemachine Framing Transposer 一组参数（旧单机 Apply 路径 / 文档对照保留）。</summary>
     [Serializable]
     public struct CinemachineFramingProfile
     {
@@ -28,31 +28,43 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
             xDamping = 0.7f,
             yDamping = 0f,
             softZoneWidth = 0.25f,
-            softZoneHeight = 2f,
+            softZoneHeight = 1f,
             biasX = 0f,
             biasY = 0f,
         };
 
-        /// <summary>第三部分高台（你在 Cinemachine 上调好的跟 Y 参数）。</summary>
+        /// <summary>Part3 高台表（应固化在 VCam_Part3 Inspector；静态仅作文档/旧 API 兜底）。</summary>
         public static CinemachineFramingProfile KenMuNiPart3DepthFollow => new CinemachineFramingProfile
         {
             screenX = 0.5f,
-            screenY = 0.5f,
+            screenY = 0.88f,
             deadZoneWidth = 0f,
             deadZoneHeight = 0f,
             xDamping = 0.7f,
-            yDamping = 0.7f,
+            yDamping = 0f,
             softZoneWidth = 0.25f,
-            softZoneHeight = 0.26f,
-            biasX = 0f,
-            biasY = -4.5849f,
+            softZoneHeight = 0.351f,
+            biasX = 0.5f,
+            biasY = 0.5f,
         };
     }
 
+    /// <summary>
+    /// 场景相机组件。KenMuNi1 Part3 起支持双 VirtualCamera：Street（主）+ Part3，
+    /// 进区只切 Priority，Body 写死在 Inspector。
+    /// </summary>
     public class CameraComponent : MonoBehaviour
     {
         [SerializeField] private CinemachineBrain cinemachineBrain;
+        [Tooltip("街道路 / 主 VCam（Shop 等仍吃此引用）。")]
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
+        [Tooltip("Part3 高台 VCam；为空则退回旧「单机 Apply Profile」。")]
+        [SerializeField] private CinemachineVirtualCamera virtualCameraPart3;
+
+        [Header("双机 Priority（仅 Part3 机切换时用）")]
+        [SerializeField] private int streetPriority = 10;
+        [SerializeField] private int part3PriorityWhenActive = 20;
+        [SerializeField] private int part3PriorityWhenStandby = 0;
 
         /// <summary>
         /// <see cref="SetFollow"/> 在 <c>forceSnapToTarget==true</c> 且 smoothTime&gt;0 时，手推 vcam 靠近目标所用 SmoothDamp 时间常数。
@@ -80,26 +92,61 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         private Vector3 _snapDampVelocity;
         private float _handSnapStartUnscaledTime;
 
-        public bool FollowOnComplete => target != null && Vector2.Distance(target.position, virtualCamera.transform.position) < 0.1f;
+        public bool FollowOnComplete =>
+            target != null && virtualCamera != null
+            && Vector2.Distance(target.position, virtualCamera.transform.position) < 0.1f;
+
         public Camera MainCamera => mainCamera;
+        /// <summary>主/街道路 VCam（兼容旧调用面）。</summary>
         public CinemachineVirtualCamera VirtualCamera => virtualCamera;
+        /// <summary>Part3 高台 VCam；未配置时为 null。</summary>
+        public CinemachineVirtualCamera VirtualCameraPart3 => virtualCameraPart3;
+        /// <summary>是否已挂双机（Zone 走 Priority，不再 Apply Body）。</summary>
+        public bool HasPart3VirtualCamera => virtualCameraPart3 != null;
 
         public void Init()
         {
             mainCamera = Camera.main;
             if (cinemachineBrain == null) { Debug.LogError("CinemachineBrain未绑定"); }
             if (virtualCamera == null) { Debug.LogError("CinemachineVirtualCamera未绑定"); }
-            // 与画面同频，机位每帧更新，跟玩家无「固定步长台阶感」；不与 FixedUpdate 混用手推（曾导致 50Hz/60Hz 交错抖）
+
             if (cinemachineBrain != null)
             {
                 cinemachineBrain.m_UpdateMethod = CinemachineBrain.UpdateMethod.LateUpdate;
                 cinemachineBrain.m_BlendUpdateMethod = CinemachineBrain.BrainUpdateMethod.LateUpdate;
             }
-            InitImpulseListener();
+
+            // 街道路 Standby 也要更新：Zone A1 用 Street.State 算框，Live 为 Part3 时仍须新鲜
+            EnsureStandbyUpdateAlways(virtualCamera);
+            EnsureStandbyUpdateAlways(virtualCameraPart3);
+
+            if (virtualCamera != null)
+            {
+                virtualCamera.Priority = streetPriority;
+            }
+
+            if (virtualCameraPart3 != null)
+            {
+                virtualCameraPart3.Priority = part3PriorityWhenStandby;
+            }
+
+            InitImpulseListener(virtualCamera);
+            InitImpulseListener(virtualCameraPart3);
+        }
+
+        private static void EnsureStandbyUpdateAlways(CinemachineVirtualCamera vcam)
+        {
+            if (vcam == null)
+            {
+                return;
+            }
+
+            vcam.m_StandbyUpdate = CinemachineVirtualCameraBase.StandbyUpdateMode.Always;
         }
 
         /// <summary>
-        /// 手推 SmoothDamp 与 onComplete（非手推路径）均放在 LateUpdate，与 Brain、渲染同相位，避免 Fixed 里推机位、Late 里 CM 再算一道的错位抖。
+        /// 手推 SmoothDamp 与 onComplete（非手推路径）均放在 LateUpdate，与 Brain、渲染同相位。
+        /// 方案 E2：手推期间 Street / Part3 两台 Transform 对齐。
         /// </summary>
         private void LateUpdate()
         {
@@ -109,7 +156,6 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
             {
                 var z = virtualCamera.transform.position.z;
                 var goal = new Vector3(target.position.x, target.position.y, z) + followSnapOffset;
-                // timeScale=0 时若仍用 deltaTime，手推不前进、onComplete 永不触发，剧情回调（如 ForestScene 下一段）会卡死
                 var dt = useUnscaledTimeForHandSnap ? Time.unscaledDeltaTime : Time.deltaTime;
 
                 virtualCamera.transform.position = Vector3.SmoothDamp(
@@ -120,15 +166,20 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
                     Mathf.Infinity,
                     dt
                 );
+                // E2：Part3 同步到同一世界位，避免手推结束后 Live 切过去时跳变
+                SyncPart3TransformToStreet();
 
                 var toGoal2 = (virtualCamera.transform.position - goal).sqrMagnitude;
-                // 原 0.02^2 过严，跟移动中的玩家时 vcam 可能长期进不了阈值，onComplete 永不触发
                 var reached = toGoal2 < 0.01f;
                 var timeout = maxHandSnapRealSeconds > 0.001f
                     && Time.unscaledTime - _handSnapStartUnscaledTime >= maxHandSnapRealSeconds;
                 if (reached || timeout)
                 {
-                    if (timeout && !reached) { virtualCamera.transform.position = goal; }
+                    if (timeout && !reached)
+                    {
+                        virtualCamera.transform.position = goal;
+                        SyncPart3TransformToStreet();
+                    }
 
                     _isSmoothingSnap = false;
                     _handSnapStartUnscaledTime = 0f;
@@ -137,6 +188,7 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
                     onComplete?.Invoke();
                     onComplete = null;
                 }
+
                 return;
             }
 
@@ -147,23 +199,66 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
             }
         }
 
+        private void SyncPart3TransformToStreet()
+        {
+            if (virtualCameraPart3 == null || virtualCamera == null)
+            {
+                return;
+            }
+
+            virtualCameraPart3.transform.position = virtualCamera.transform.position;
+            virtualCameraPart3.transform.rotation = virtualCamera.transform.rotation;
+        }
+
         private void ApplyFollowWithCinemachineStateAligned(Transform followTarget, float updateDeltaTime)
         {
             if (virtualCamera == null || followTarget == null) { return; }
-            virtualCamera.Follow = followTarget;
-            virtualCamera.PreviousStateIsValid = false;
-            virtualCamera.UpdateCameraState(Vector3.up, updateDeltaTime);
-            var s = virtualCamera.State;
-            virtualCamera.ForceCameraPosition(s.FinalPosition, s.FinalOrientation);
+
+            ApplyFollowToVcam(virtualCamera, followTarget, updateDeltaTime, forceStateAlign: true);
+            // Part3：绑 Follow 并 Invalidate，不强制再推一遍（避免与 Street 抢最终位）
+            if (virtualCameraPart3 != null)
+            {
+                virtualCameraPart3.Follow = followTarget;
+                virtualCameraPart3.PreviousStateIsValid = false;
+            }
         }
 
-        private void InitImpulseListener()
+        private static void ApplyFollowToVcam(
+            CinemachineVirtualCamera vcam,
+            Transform followTarget,
+            float updateDeltaTime,
+            bool forceStateAlign)
         {
-            if (!virtualCamera.TryGetComponent<CinemachineImpulseListener>(out var impulseListener))
+            if (vcam == null || followTarget == null)
             {
-                impulseListener = virtualCamera.gameObject.AddComponent<CinemachineImpulseListener>();
+                return;
             }
-            virtualCamera.AddExtension(impulseListener);
+
+            vcam.Follow = followTarget;
+            if (!forceStateAlign)
+            {
+                return;
+            }
+
+            vcam.PreviousStateIsValid = false;
+            vcam.UpdateCameraState(Vector3.up, updateDeltaTime);
+            var s = vcam.State;
+            vcam.ForceCameraPosition(s.FinalPosition, s.FinalOrientation);
+        }
+
+        private void InitImpulseListener(CinemachineVirtualCamera vcam)
+        {
+            if (vcam == null)
+            {
+                return;
+            }
+
+            if (!vcam.TryGetComponent<CinemachineImpulseListener>(out var impulseListener))
+            {
+                impulseListener = vcam.gameObject.AddComponent<CinemachineImpulseListener>();
+            }
+
+            vcam.AddExtension(impulseListener);
         }
 
         public void SetFollow(Transform newTarget, Action onComplete = null, bool forceSnapToTarget = true)
@@ -178,7 +273,8 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
                     _isSmoothingSnap = true;
                     _snapDampVelocity = Vector3.zero;
                     _handSnapStartUnscaledTime = Time.unscaledTime;
-                    virtualCamera.Follow = null;
+                    // 手推期间两台都清 Follow，避免 CM 与手推抢位
+                    SetFollowOnBoth(null);
                 }
                 else
                 {
@@ -197,7 +293,20 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
                 _isSmoothingSnap = false;
                 _handSnapStartUnscaledTime = 0f;
                 _snapDampVelocity = Vector3.zero;
-                virtualCamera.Follow = newTarget;
+                SetFollowOnBoth(newTarget);
+            }
+        }
+
+        private void SetFollowOnBoth(Transform followTarget)
+        {
+            if (virtualCamera != null)
+            {
+                virtualCamera.Follow = followTarget;
+            }
+
+            if (virtualCameraPart3 != null)
+            {
+                virtualCameraPart3.Follow = followTarget;
             }
         }
 
@@ -207,43 +316,95 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
             _handSnapStartUnscaledTime = 0f;
             _snapDampVelocity = Vector3.zero;
             onComplete = null;
-            virtualCamera.Follow = null;
+            // 开场锁机：必须清掉两台，否则 Part3 Standby 仍跟玩家、抢 Live
+            SetFollowOnBoth(null);
         }
 
         public void ChangeVirtualCameraShowSize(float targetSize)
         {
-            virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize = targetSize;
+            SetOrthoSizeOnBoth(targetSize);
         }
 
         public float GetVirtualCameraShowSize()
         {
-            return virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize;
+            if (virtualCamera == null)
+            {
+                return 7.9f;
+            }
+
+            return virtualCamera.m_Lens.OrthographicSize;
         }
 
         public void ResetVirtualCameraShowSize()
         {
-            virtualCamera.GetComponent<CinemachineVirtualCamera>().m_Lens.OrthographicSize = 7.9f;
+            SetOrthoSizeOnBoth(7.9f);
+        }
+
+        private void SetOrthoSizeOnBoth(float size)
+        {
+            if (virtualCamera != null)
+            {
+                var lens = virtualCamera.m_Lens;
+                lens.OrthographicSize = size;
+                virtualCamera.m_Lens = lens;
+            }
+
+            if (virtualCameraPart3 != null)
+            {
+                var lens = virtualCameraPart3.m_Lens;
+                lens.OrthographicSize = size;
+                virtualCameraPart3.m_Lens = lens;
+            }
         }
 
         public void ChangeCameraBoundingArea(Collider2D newColliderArea)
         {
-            virtualCamera.GetComponent<CinemachineConfiner>().m_BoundingShape2D = newColliderArea;
+            SetConfinerOnBoth(newColliderArea);
         }
 
-        /// <summary>
-        /// 将 Framing Transposer 整组替换为指定 Profile（进/出 CameraDepthFollowZone 时用）。
-        /// </summary>
-        public void ApplyFramingTransposerProfile(CinemachineFramingProfile profile)
+        private void SetConfinerOnBoth(Collider2D shape)
         {
-            if (virtualCamera == null)
+            SetConfiner(virtualCamera, shape);
+            SetConfiner(virtualCameraPart3, shape);
+        }
+
+        private static void SetConfiner(CinemachineVirtualCamera vcam, Collider2D shape)
+        {
+            if (vcam == null)
             {
                 return;
             }
 
-            var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            var confiner = vcam.GetComponent<CinemachineConfiner>();
+            if (confiner == null)
+            {
+                Debug.LogWarning($"{nameof(CameraComponent)} 「{vcam.name}」无 CinemachineConfiner，跳过 BoundingArea。");
+                return;
+            }
+
+            confiner.m_BoundingShape2D = shape;
+        }
+
+        /// <summary>
+        /// 将 Framing Transposer 整组替换为指定 Profile（旧单机路径 / 兼容保留）。
+        /// Part3 Zone 主路径已改为切 Priority，不应再调用本方法切高台。
+        /// </summary>
+        public void ApplyFramingTransposerProfile(CinemachineFramingProfile profile)
+        {
+            ApplyFramingToVcam(virtualCamera, profile);
+        }
+
+        private static void ApplyFramingToVcam(CinemachineVirtualCamera vcam, CinemachineFramingProfile profile)
+        {
+            if (vcam == null)
+            {
+                return;
+            }
+
+            var framingTransposer = vcam.GetCinemachineComponent<CinemachineFramingTransposer>();
             if (framingTransposer == null)
             {
-                Debug.LogWarning($"{nameof(CameraComponent)} 未找到 CinemachineFramingTransposer，跳过 Profile 切换。");
+                Debug.LogWarning($"{nameof(CameraComponent)} 「{vcam.name}」未找到 FramingTransposer，跳过 Profile。");
                 return;
             }
 
@@ -259,9 +420,42 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
             framingTransposer.m_BiasY = profile.biasY;
         }
 
-        /// <summary>进入第三部分 Zone：跟 Y；离开：恢复右街默认。</summary>
-        public void SetKenMuNiPart3CameraMode(bool part3Active, CinemachineFramingProfile part3Profile, CinemachineFramingProfile streetProfile)
+        /// <summary>
+        /// 进入 Part3：拉高 Part3 Priority；离开：Part3 回 Standby。
+        /// 有双机时<strong>不</strong>改 Framing Body；无 Part3 引用时退回旧 Apply。
+        /// </summary>
+        public void SetKenMuNiPart3CameraMode(bool part3Active)
         {
+            if (virtualCameraPart3 == null)
+            {
+                ApplyFramingTransposerProfile(
+                    part3Active
+                        ? CinemachineFramingProfile.KenMuNiPart3DepthFollow
+                        : CinemachineFramingProfile.KenMuNiStreetDefault);
+                return;
+            }
+
+            if (virtualCamera != null)
+            {
+                virtualCamera.Priority = streetPriority;
+            }
+
+            virtualCameraPart3.Priority = part3Active ? part3PriorityWhenActive : part3PriorityWhenStandby;
+        }
+
+        /// <summary>兼容旧 Zone 签名；有双机时忽略 Profile，只切 Priority。</summary>
+        public void SetKenMuNiPart3CameraMode(
+            bool part3Active,
+            CinemachineFramingProfile part3Profile,
+            CinemachineFramingProfile streetProfile)
+        {
+            if (virtualCameraPart3 != null)
+            {
+                SetKenMuNiPart3CameraMode(part3Active);
+                return;
+            }
+
+            // 无双机兜底：仍走单机 Apply（其它场景）
             ApplyFramingTransposerProfile(part3Active ? part3Profile : streetProfile);
         }
 

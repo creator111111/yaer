@@ -28,12 +28,18 @@ namespace Game.GameRuntime.UI.FormLogic.Story
         [SerializeField] private StoryFormPainting amyPainting;
         [SerializeField] private StoryFormPainting aliyPainting;
         [SerializeField] private MerchantMaskPainting merchantMaskPainting;
+        [SerializeField] private ChiefMaskPainting chiefMaskPainting;
 
         /// <summary>
         /// 店句 Mask 已由 <see cref="ApplyShopkeeperPortrait"/> 点亮时置 true。
         /// 同帧 <see cref="OnGetNewStatement"/> 会传 None 写历史，须跳过 HideAll 避免 Merchant 黑块（0827 F3）。
         /// </summary>
         private bool shopkeeperMaskActive;
+
+        /// <summary>
+        /// 村长门口句：TMP 在 <see cref="ApplyChiefPortrait"/> 后 Invoke(None)；须跳过 HideAll（对齐店旗）。
+        /// </summary>
+        private bool chiefMaskActive;
 
         /// <summary>
         /// 调试强制雅儿走 GoOut（忽略存档 Clothes）。默认 false：按存档 Dress↔GoOut 切换。
@@ -81,8 +87,8 @@ namespace Game.GameRuntime.UI.FormLogic.Story
         {
             if (role == DialogueRoleName.None)
             {
-                // 店句：TMP 在 ApplyShopkeeperPortrait 后会 Invoke(None) 写历史；勿关掉刚亮的 Merchant。
-                if (shopkeeperMaskActive)
+                // 店句 / 村长门口句：TMP 在专用 Apply 后会 Invoke(None) 写历史；勿关掉刚亮的 Mask。
+                if (shopkeeperMaskActive || chiefMaskActive)
                 {
                     return;
                 }
@@ -92,7 +98,15 @@ namespace Game.GameRuntime.UI.FormLogic.Story
             }
 
             shopkeeperMaskActive = false;
+            chiefMaskActive = false;
             HideAllPaintings();
+
+            // 村长晚宴：RoleName.Chief + Smile/CloseEyes → MapToChiefFace（F2）
+            if (role == DialogueRoleName.Chief)
+            {
+                ApplyChiefPortrait(MapToChiefFace(faceType));
+                return;
+            }
 
             var painting = ResolvePainting(role);
             if (painting == null)
@@ -151,6 +165,51 @@ namespace Game.GameRuntime.UI.FormLogic.Story
             merchantMaskPainting.Apply(body, face);
         }
 
+        /// <summary>
+        /// 村长句：亮 Chief Mask。门口直通 Face1～3 或晚宴 Map 后调用。
+        /// 会置 <see cref="chiefMaskActive"/>，配合 TMP Invoke(None) 防黑块。
+        /// </summary>
+        public void ApplyChiefPortrait(ChiefFaceType face)
+        {
+            chiefMaskActive = true;
+            HideAllPaintings();
+
+            if (chiefMaskPainting == null)
+            {
+                chiefMaskActive = false;
+                Debug.LogWarning("[MaskAvatar] 村长句但 ChiefMaskPainting 未绑定。", this);
+                return;
+            }
+
+            chiefMaskPainting.gameObject.SetActive(true);
+            var cg = chiefMaskPainting.GetComponent<CanvasGroup>();
+            if (cg != null && cg.alpha < 1f)
+            {
+                cg.alpha = 1f;
+            }
+
+            chiefMaskPainting.Apply(face);
+        }
+
+        /// <summary>
+        /// F2：晚宴 CSV 旧 FaceType → ChiefFace（施工默认草稿；Sad/Laugh 暂 Face1）。
+        /// </summary>
+        public static ChiefFaceType MapToChiefFace(DialogueFaceType faceType)
+        {
+            switch (faceType)
+            {
+                case DialogueFaceType.CloseEyes:
+                    return ChiefFaceType.Face2;
+                case DialogueFaceType.Smile:
+                    return ChiefFaceType.Face3;
+                case DialogueFaceType.Normal:
+                case DialogueFaceType.None:
+                default:
+                    // Sad / Laugh / 其它：占位 Face1（OPEN Q4）
+                    return ChiefFaceType.Face1;
+            }
+        }
+
         private void HideAllPaintings()
         {
             SetPaintingActive(goOutYaerPainting, false);
@@ -161,6 +220,11 @@ namespace Game.GameRuntime.UI.FormLogic.Story
             if (merchantMaskPainting != null)
             {
                 merchantMaskPainting.gameObject.SetActive(false);
+            }
+
+            if (chiefMaskPainting != null)
+            {
+                chiefMaskPainting.gameObject.SetActive(false);
             }
         }
 
@@ -289,6 +353,15 @@ namespace Game.GameRuntime.UI.FormLogic.Story
                 if (merchantTr != null)
                 {
                     merchantMaskPainting = merchantTr.GetComponent<MerchantMaskPainting>();
+                }
+            }
+
+            if (chiefMaskPainting == null)
+            {
+                var chiefTr = transform.Find("ChiefMaskPainting");
+                if (chiefTr != null)
+                {
+                    chiefMaskPainting = chiefTr.GetComponent<ChiefMaskPainting>();
                 }
             }
         }

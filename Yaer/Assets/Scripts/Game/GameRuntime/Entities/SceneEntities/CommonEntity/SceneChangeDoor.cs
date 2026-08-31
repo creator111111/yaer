@@ -1,4 +1,3 @@
-using Game.GameMgr.Component.UI;
 using Game.GameMgr;
 using Game.GameRuntime.Entities.Base;
 using Game.GameRuntime.Entities.Base.BaseSceneObj;
@@ -6,7 +5,6 @@ using Game.GameRuntime.Entities.Component.Interactive;
 using Game.GameRuntime.Entities.Player;
 using Game.GameRuntime.GameSceneManager.Component;
 using Game.Static.Name.Res;
-using Game.Static.Path;
 using GameFramework.UnityRuntimeExtend.Component;
 using System;
 using System.Text;
@@ -112,24 +110,15 @@ namespace Game.GameRuntime.Entities.Component.Map
                     {
                         isEnter = true;
                         OnEnterSuccess();
+                        var loadGsm = SceneManager.GetModule<LoadSceneComponentGSM>();
                         if (ShowLoadingUI)
                         {
-                            GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(UIPrefabPath.GetUIPrefabPath("LoadingPanel"), EUIGroup.Top, new OpenFormArgs()
-                            {
-                                userData = new Action(() =>
-                                {
-                                    
-                                }),
-                                callBack = (uiFormLogic) =>
-                                {
-                                    SceneManager.GetModule<LoadSceneComponentGSM>().LoadScene(NextSceneName, null, false);
-                                }
-                            });
-                            
+                            // 与门口对白结束进屋共用助手，避免两处复制 Open LoadingPanel 逻辑
+                            loadGsm.LoadSceneWithLoadingPanel(NextSceneName);
                         }
                         else
                         {
-                            SceneManager.GetModule<LoadSceneComponentGSM>().LoadScene(NextSceneName, null, true);
+                            loadGsm.LoadScene(NextSceneName, null, true);
                         }
                     }
                 }

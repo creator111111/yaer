@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\Slime\Anima\State\BornSubState\SlimeBornSubSM.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\Component Types\ES3Type_CapsuleCollider.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\Paralysis\BossMogutParalysisFaceBroken2State.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\UIPanel\OpenTipsFormActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\WoodWormSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\NormalDialogueFormNewLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\ChapterEndPanel\ChapterEndFormLogic.cs" />
@@ -338,6 +339,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.InputGyroscopeInformationWindow.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Resource\AB\IABSystem.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Reflected Types\ES3ReflectedObjectType.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\SavePlayerBagActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\GameManager.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\ES3Type.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\History\StoryFormHistoryPage.cs" />
@@ -366,6 +368,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\IGameSceneResManager.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Resource\PreloadAssetInfo.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\VillageTreehouseDepthGateTriggerForward.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_KenMuNi\VillageWellLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWormRoot\WoodWormRootLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\Paralysis\BossMogutParalysisIdleState.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\StateMachine\BossMogutStorySubSM.cs" />
@@ -835,6 +838,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\StoryDialogueTriggerEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Story\BaseSceneStory.cs" />
     <Compile Include="Assets\Scripts\Debug\Components\ArchiveDataComponentGT.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_KenMuNi\FarmerQuestStoryTrigger.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\SubManager\Buff\IBuff.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Entity\AttachEntityInfo.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Jump\State\JumpFallState.cs" />
@@ -1269,10 +1273,8 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\UIPanel\OpenTipsFormActionTask.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_KenMuNi\VillageWellLogic.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_KenMuNi\FarmerQuestStoryTrigger.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\SavePlayerBagActionTask.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\Painting\ChiefMaskPainting.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_KenMuNi\ChiefNearDoorStoryTrigger.cs" />
     <None Include="Assets\GameRes\Config\MonsterConfig\MonsterConfig.json" />
     <None Include="Assets\GameRes\Config\AchievementConfig\AchievementConfig.json" />
     <None Include="Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.xml" />

@@ -169,16 +169,25 @@ namespace Game.GameRuntime.Entities.SceneEntities
         }
 
         /// <summary>
-        /// 若 <see cref="StoryComponentGSM.TriggerStory"/> 返回 true，则订阅 <see cref="StoryComponentGSM.onStoryEnd"/>，
-        /// 结束时在 <see cref="OnStoryFinished"/> 中取消订阅。
-        /// </summary>
-        /// <summary>
         /// 解析本次应播放的对话 prefab 名；子类可覆写以实现按存档/任务状态切对话（如埃吉尔交付线）。
         /// </summary>
         protected virtual string ResolveStoryPrefabName() => StoryPrefabName;
 
+        /// <summary>
+        /// 若 <see cref="StoryComponentGSM.TriggerStory"/> 返回 true，则订阅 <see cref="StoryComponentGSM.onStoryEnd"/>，
+        /// 结束时在 <see cref="OnStoryFinished"/> 中取消订阅。
+        /// </summary>
         /// <remarks>若已有剧情在运行，可能返回 false，此时不会订阅 onStoryEnd。</remarks>
         protected virtual void TriggerStory()
+        {
+            TryStartBoundStory();
+        }
+
+        /// <summary>
+        /// 子类黑幕编排用：在全黑后再调用。成功启动则订阅 onStoryEnd。
+        /// </summary>
+        /// <returns>是否已成功启动对话。</returns>
+        protected bool TryStartBoundStory()
         {
             var storyPrefab = ResolveStoryPrefabName();
             if (string.IsNullOrEmpty(storyPrefab))
@@ -187,7 +196,7 @@ namespace Game.GameRuntime.Entities.SceneEntities
                 {
                     Debug.LogWarning($"[ChapterEnd] TriggerStory 失败：剧情名为空。go={gameObject.name}");
                 }
-                return;
+                return false;
             }
 
             if (SingleUseInArchive)
@@ -199,7 +208,7 @@ namespace Game.GameRuntime.Entities.SceneEntities
                         Debug.LogWarning(
                             $"[ChapterEnd] TriggerStory 跳过：存档已使用。story={storyPrefab}");
                     }
-                    return;
+                    return false;
                 }
             }
 
@@ -210,8 +219,10 @@ namespace Game.GameRuntime.Entities.SceneEntities
                     Debug.Log($"[ChapterEnd] TriggerStory 成功启动。story={storyPrefab}");
                 }
                 storyComponentGSM.onStoryEnd += OnStoryFinished;
+                return true;
             }
-            else if (IsChapterEndDebugTarget())
+
+            if (IsChapterEndDebugTarget())
             {
                 // 常见原因：已有其它对话在跑（HasRunningStory）
                 Debug.LogWarning(
@@ -219,10 +230,42 @@ namespace Game.GameRuntime.Entities.SceneEntities
                     $"hasRunning={storyComponentGSM.HasRunningStory} " +
                     $"running={storyComponentGSM.CurrentRunningStoryName}");
             }
+
+            return false;
         }
 
-        /// <summary>剧情结束：计数并移除 onStoryEnd 订阅。</summary>
-        protected void OnStoryFinished()
+        /// <summary>
+        /// 开黑幕前预检：空名 / 单次已用 / 已有剧情在跑 → false（勿先开黑）。
+        /// </summary>
+        protected bool CanStartStoryNow()
+        {
+            var storyPrefab = ResolveStoryPrefabName();
+            if (string.IsNullOrEmpty(storyPrefab))
+            {
+                return false;
+            }
+
+            if (SingleUseInArchive && storyTriggerCountData.CheckStoryUsed(storyPrefab))
+            {
+                return false;
+            }
+
+            if (storyComponentGSM != null && storyComponentGSM.HasRunningStory)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>供子类订阅壳就绪 / 超时兜底。</summary>
+        protected StoryComponentGSM StoryGsm => storyComponentGSM;
+
+        /// <summary>
+        /// 剧情结束：计数并移除 onStoryEnd 订阅。
+        /// 子类可 <c>override</c> 后 <c>base</c>，再挂切场等收尾（如门口对白 → Loading 进屋）。
+        /// </summary>
+        protected virtual void OnStoryFinished()
         {
             TriggerCountFromInit++;
             storyComponentGSM.onStoryEnd -= OnStoryFinished;

@@ -64,7 +64,6 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Quest
             }
 
             var questData = GetPlayerQuestData();
-            var isReAcceptAfterTurnIn = false;
             if (questData.questStates.TryGetValue(questId, out var existingState))
             {
                 // 进行中 / 已达标未交：禁止重复 Accept
@@ -74,17 +73,13 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Quest
                     return;
                 }
 
-                // 已交付：仅 repeatable 任务可重接（老农 Quest_003 / 埃吉尔 Quest_001）
-                // 重要原因：Trigger 交完回 Offer 后，若不放行 TurnedIn，会 Already accepted 卡死。
+                // 已交付：一律拒绝重接（方案 A，0831 改口）。
+                // repeatable=true 仅表示「可经 ResetQuest 清锁后再接」，不再在此直接放行。
+                // 替代方案 B：仅 Quest_003 特判拒绝——语义分裂，本期不用。
                 if (existingState == QuestState.TurnedIn)
                 {
-                    if (!configRow.repeatable)
-                    {
-                        Debug.Log($"[Quest] Already turned in (not repeatable): {questId}");
-                        return;
-                    }
-
-                    isReAcceptAfterTurnIn = true;
+                    Debug.Log($"[Quest] Already turned in: {questId}");
+                    return;
                 }
             }
 
@@ -93,11 +88,41 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Quest
 
             SaveQuestProgress();
 
-            Debug.Log($"[Quest] Accept {questId}" +
-                      (isReAcceptAfterTurnIn ? " (re-accept after TurnedIn)" : ""));
+            Debug.Log($"[Quest] Accept {questId}");
             Debug.Log($"[Quest] Progress {questId}: 0/{configRow.targetCount} ({QuestState.InProgress})");
 
             OnQuestAccepted?.Invoke(questId);
+        }
+
+        /// <summary>
+        /// 将任务恢复为「未接取」：移除 <c>questStates</c> / <c>questProgress</c> 中该 id。
+        /// 供日后跳日 / 新一天调用；无日期系统时由 Debug 菜单验收。
+        /// 不改背包、不发奖、不自动播对白。
+        /// </summary>
+        /// <param name="questId">与 QuestConfig.json 中 questId 完全一致，如 Quest_003。</param>
+        public void ResetQuest(string questId)
+        {
+            if (string.IsNullOrEmpty(questId))
+            {
+                Debug.LogWarning("[Quest] ResetQuest 收到空 questId");
+                return;
+            }
+
+            // 配置校验：避免 Debug 打错 id 静默落空
+            var configRow = QuestConfigMgr.getInstance().GetQuestRow(questId);
+            if (configRow == null)
+            {
+                Debug.LogWarning($"[Quest] ResetQuest 未知 questId: {questId}");
+                return;
+            }
+
+            var questData = GetPlayerQuestData();
+            questData.questStates.Remove(questId);
+            questData.questProgress.Remove(questId);
+
+            SaveQuestProgress();
+
+            Debug.Log($"[Quest] Reset {questId}");
         }
 
         /// <summary>返回所有进行中任务的 questId 列表，供阶段 5 UI 使用。</summary>

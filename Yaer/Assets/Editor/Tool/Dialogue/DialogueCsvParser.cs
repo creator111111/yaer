@@ -148,7 +148,7 @@ namespace EditorC.Tool.Dialogue
                     return false;
                 }
 
-                // FaceType：店行 Face1～5；其它角色 DialogueFaceType
+                // FaceType：店行 Face1～5；村长行 Face1～3（门口）或 DialogueFaceType（晚宴）；其它 DialogueFaceType
                 if ((IsDialogueType(row.type) || IsAnimType(row.type)) && !string.IsNullOrWhiteSpace(row.faceType))
                 {
                     if (ShopkeeperCsvDefaults.IsShopkeeperRow(row, mapping))
@@ -163,6 +163,16 @@ namespace EditorC.Tool.Dialogue
                         if (!ShopkeeperCsvDefaults.TryParseFace(row.faceType, out _))
                         {
                             error = $"ID {row.id} 店行 FaceType 非法（「{row.faceType}」），须为 Face1～Face5。";
+                            return false;
+                        }
+                    }
+                    else if (ChiefCsvDefaults.IsChiefRow(row, mapping))
+                    {
+                        // 门口台本直写 Face1～3；晚宴仍可用 Smile/CloseEyes 等 DialogueFaceType
+                        if (!ChiefCsvDefaults.IsValidChiefFaceTypeColumn(row.faceType))
+                        {
+                            error =
+                                $"ID {row.id} 村长行 FaceType「{row.faceType}」非法，须为 Face1～Face3，或晚宴用的 DialogueFaceType（Smile/CloseEyes 等）。";
                             return false;
                         }
                     }
