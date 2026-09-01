@@ -53,6 +53,12 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         public float JumpHeight => jumpHeight;
         public float JumpDistance => jumpDistance;
+
+        /// <summary>室内 Home walk 目标速（只读）；村长家开 Town 时覆写 planar 用此同源值，避免魔法数双源。</summary>
+        public float WalkSpeed => walkSpeed;
+
+        /// <summary>战斗/村街跑目标速（只读）。</summary>
+        public float RunSpeed => runSpeed;
         #endregion
 
         public void SetDamageFlyHeight(float damageFlyHeight)

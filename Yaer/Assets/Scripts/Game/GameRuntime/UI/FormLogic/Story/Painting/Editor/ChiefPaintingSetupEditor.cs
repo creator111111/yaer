@@ -20,6 +20,8 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Painting.Editor
 
         // 与 Mask Setup 同源 SR 偏移；大立绘缩放更大，供对话场景同场三人站位
         private const float PixelsPerUnit = 100f;
+        /// <summary>根框 / Face1 满框尺寸（对齐 ChiefMaskPainting）；贴脸坐标按此标定。</summary>
+        private static readonly Vector2 FullFrameSize = new Vector2(1128f, 2625f);
         private static readonly Vector2 BodyLocal = new Vector2(5.77f, 13.160001f);
         private static readonly Vector2 Face2Local = new Vector2(9.5f, 23.320002f);
         private static readonly Vector2 Face3Local = new Vector2(9.41f, 22.525f);
@@ -57,7 +59,7 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Painting.Editor
             rootRt.anchorMin = new Vector2(0.5f, 0.5f);
             rootRt.anchorMax = new Vector2(0.5f, 0.5f);
             rootRt.pivot = new Vector2(0.5f, 0.5f);
-            rootRt.sizeDelta = new Vector2(1128f, 2625f);
+            rootRt.sizeDelta = FullFrameSize;
             // 占位站位：偏右（Q2 产品可再调）；alpha 默认 0 由前奏淡入
             rootRt.anchoredPosition = new Vector2(420f, -120f);
             rootRt.localScale = new Vector3(0.32f, 0.32f, 0.32f);
@@ -77,19 +79,22 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Painting.Editor
                 return null;
             }
 
-            CreateImageLeaf(root.transform, "Face1", face1, Vector2.zero, true);
+            // Face1 必须满框：贴脸 AnchoredPos 按满框标定；用 sprite.rect 会写成 880×2048 导致飞脸（0901 H1/H3）
+            CreateImageLeaf(root.transform, "Face1", face1, Vector2.zero, true, forceFullFrame: true);
             CreateImageLeaf(
                 root.transform,
                 "Face2",
                 face2,
                 (Face2Local - BodyLocal) * PixelsPerUnit,
-                false);
+                false,
+                forceFullFrame: false);
             CreateImageLeaf(
                 root.transform,
                 "Face3",
                 face3,
                 (Face3Local - BodyLocal) * PixelsPerUnit,
-                false);
+                false,
+                forceFullFrame: false);
 
             root.GetComponent<ChiefMaskPainting>().EditorResetDefaultActiveState();
             var cg = root.GetComponent<CanvasGroup>();
@@ -103,12 +108,17 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Painting.Editor
             return prefab;
         }
 
+        /// <param name="forceFullFrame">
+        /// Face1=true：强制 <see cref="FullFrameSize"/>（对齐 Mask）；Face2/3=false：仍用 sprite 像素尺寸。
+        /// 原因：仅信 sprite.rect 会把底图缩成 880×2048，贴脸坐标相对可见底图飞偏。
+        /// </param>
         private static void CreateImageLeaf(
             Transform parent,
             string name,
             Sprite sprite,
             Vector2 anchoredPosition,
-            bool active)
+            bool active,
+            bool forceFullFrame)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image));
             go.layer = 5;
@@ -124,10 +134,15 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Painting.Editor
 
             var image = go.GetComponent<Image>();
             image.sprite = sprite;
+            // 与 Mask 一致：preserveAspect=1；Face1 满框后由 Image 保持比例（Q1）
             image.preserveAspect = true;
             image.raycastTarget = false;
 
-            if (sprite != null)
+            if (forceFullFrame)
+            {
+                rt.sizeDelta = FullFrameSize;
+            }
+            else if (sprite != null)
             {
                 rt.sizeDelta = sprite.rect.size;
             }

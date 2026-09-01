@@ -1543,3 +1543,245 @@
 | Q1 | 根因？ | **H1**（空 Sprite）；H1b 历史 | ✅ |
 | Q2 | 须重跑门口 Setup？ | 默认否；母体修好即继承 | ⏳ |
 | Q3 | png 来源？ | 磁盘已补齐；保留 meta guid | ✅ |
+
+---
+
+## 门口对白结束 → Loading 进村长家 → 自动播继续对话 · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_门口对白结束_Loading进村长家_自动播继续对话_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_门口对白结束_Loading进村长家_自动播继续对话_施工说明.md`  
+**侦探结论**：**C1** `Village_Chief_HouseSceneManager.OnEnterScene` + **F1**（门口戏已用 ∧ 续聊未用）→ `TriggerStory("Village_村长家继续对话")`；**P0** 续聊 Prefab 磁盘缺失须 Setup；保留既有 Loading 进屋；≠ 晚宴台本。  
+**施工状态（2026-09-01）**：C1+F1 已挂代码；续聊 Prefab 已 Setup 落盘；Play 验收待用户。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 挂点 C1/C2/C3？ | **C1** | ✅ 已施工 |
+| Q2 | 手动 `House_Chief` 是否补播续聊？ | **F1 补播一次**；只要自动链则改 F2 | ⏳ |
+| Q3 | Loading 关→壳 Ready 要二次遮罩？ | 先可接受短露景；穿帮再 A′ | ⏳ |
+| Q4 | 续聊 Prefab 三人立绘？ | **是** | ✅ 已 Setup |
+| Q5 | Prefab Setup 路径？ | 最小复用门口 Setup 改名 | ✅ 已落地菜单 |
+
+---
+
+## Village_村长家继续对话 · 中途获得针线包 Tips · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_村长家继续对话_中途获得针线包Tips_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_村长家继续对话_中途获得针线包Tips_施工说明.md`  
+**侦探结论**：锚句 `$id:36`（CSV 34）后挂 `GetItem(SewingKit,1)` → `OpenTipsForm(GetSewingKit, Item)` → `SavePlayerBag`；补枚举/库/Icon；中文「获得了针线包.png」须覆盖为三语 `GetSewingKit.png` 再 Pack；本期不建 Quest。  
+**施工状态（2026-09-01）**：枚举/库/三语图/图集 Pack/续聊 Prefab 三连已落地；Play 验收待用户。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 枚举名？ | **`SewingKit`** | ✅ 已施工 |
+| Q2 | TipKey？ | **`GetSewingKit`** | ✅ 已施工 |
+| Q3 | 本期建 Quest？ | **否**；只入包+Tips | ✅ |
+| Q4 | 续聊 Prefab？ | **已存在**，可直接挂 | ✅ |
+| Q5 | 英日 Tip 图？ | 暂共用中文像素 | ✅ |
+| Q6 | GetItem 后 Save？ | **要** SavePlayerBag | ✅ |
+| Q7 | 中文源图移出 Atlas？ | 施工后建议移走 | ⏳ |
+
+---
+
+## Village_村长家对话 · 村长大立绘 Scale 过小修复 · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_村长家对话_村长大立绘Scale过小修复_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_村长家对话_村长大立绘Scale过小修复_施工说明.md`  
+**侦探结论**：母体 0.32；门口 0.65 Override **fileID 断链**回落；继续从未写 Scale。施工：两 Prefab Override→当前 RT=`7950…` Scale **0.65** + Setup Nudge 防回潮；勿改母体默认/雅古。  
+**施工状态（2026-09-01）**：门口+继续 Scale=0.65；门口断链旧 Override 已清；Door/Continue Setup Nudge 写 Scale；Fix 菜单可重跑。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 母体默认改 0.65？ | **否**；仅对话 Override | ✅ 已施工 |
+| Q2 | Y 微调？ | 先只 Scale | ⏳ |
+| Q3 | 其它嵌 Chief？ | Dialogue 仅门口+继续 | ✅ |
+
+---
+
+## ChiefPainting · Face2/Face3 贴脸偏离修复 · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/ChiefPainting_Face2Face3贴脸偏离修复_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/ChiefPainting_Face2Face3贴脸偏离修复_施工说明.md`  
+**侦探结论**：**H1** Face1 Size=`880×2048`（sprite）未满框，Mask Face1=`1128×2625`；Face2/3 Pos 已对齐。施工：Face1 抄 Mask 满框 + Setup 强制防回潮；勿瞎挪 Face2/3；勿改 Mask/SR。  
+**施工状态（2026-09-01）**：母体 Face1=`1128×2625`；Setup A+ 已落地。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | Face1 强制满框是否拉伸？ | 对齐 Mask；preserveAspect 同 Mask | ✅ 已施工 |
+| Q2 | 同步重跑 Mask Setup？ | **否** | ✅ |
+| Q3 | 肉眼 1～2px？ | 以 Mask 为准微调 | ⏳ |
+
+---
+
+## Village_Chief_House · 续聊结束黑幕换古莎动画待机 · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_Chief_House_续聊结束黑幕换古莎动画待机_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_Chief_House_续聊结束黑幕换古莎动画待机_施工说明.md`  
+**侦探结论**：**G1** GSM 订续聊 `onStoryEnd` → BlackPanel 全黑关 `古莎待机`、开预置 `古莎动画合层`（关「背景」）；改场景引用的 **`Prefab/村长家合层`**；无 Animator 先 SR 合层；读档已换静默 Active。  
+**施工状态（2026-09-01）**：合层已预置；GSM 换人+旗已挂；Play 验收待用户。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 对话名？ | **Village_村长家继续对话** | ✅ |
+| Q2 | Animator？ | 先 SR 合层；帧动画另案 | ✅ |
+| Q3 | 改哪份合层？ | **Prefab/村长家合层**（场景引用） | ✅ 已施工 |
+| Q4 | 关「背景」？ | **是** | ✅ 已施工 |
+| Q5 | 读档跳过黑幕？ | **是** | ✅ 已施工 |
+| Q6 | 替玩家？ | **否** | ✅ |
+| Q7 | 续聊已用但旗未立？ | 静默 Apply | ✅ 已按此施工 |
+
+---
+
+## Village_Chief_House · 续聊结束正面古莎未出现（验收排查）· 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_Chief_House_续聊结束正面古莎未出现_验收排查报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_Chief_House_续聊结束正面古莎未出现_施工说明.md`  
+**排查结论**：**主因 H2+H8**。场景 `Design/村长家合层` 为**拆包 GO**（未挂 `5cad`），有 `古莎待机` **无** `古莎动画合层`；Setup 只写入 Prefab 资产。`Apply(true)` 关待机、Find 失败 → 正面空白。GSM 换人链本身已落地。  
+**施工状态（2026-09-01）**：Setup 已同时 patch **场景合层**（仅动画实例 + GSM 两引用）；菜单/request 跑一次即可。未动其它手改场景设置。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 主因？ | **场景缺动画实例** | ✅ |
+| Q2 | 修场景 vs 重挂 Prefab？ | **场景补实例**（免冲手改） | ✅ |
+| Q3 | 旧档？ | 修场景后 Q7 恢复 | ✅ |
+| Q4 | 缺 Animator？ | 否 | ✅ |
+| Q5 | 测档 H1？ | 验收填三键 | ⏳ |
+
+---
+## Village_Chief_House · 室内划区 2.5D 与楼梯树屋化 · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_Chief_House_室内划区2.5D与楼梯树屋化_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_Chief_House_室内划区2.5D与楼梯树屋化_施工说明.md`  
+**侦探结论（2026-09-01）**：村模式只认 `KenMuNi1` → 进屋无纵深。**A1** 白名单仅加 `Village_Chief_House` + 窄 `VillageWalkArea`（含进门→楼梯条带）+ Y 标尺；再方案1障碍 + 可选 DepthZone；Gate 默认不上；合层 `楼梯` 仅美术；其它 Home 不开。  
+**施工状态（2026-09-01）**：`IsVillageExplorationScene` 已落地；场景已摆 WalkArea / DepthY / Obstacles / DepthZone_StairsUpper；Setup 菜单可重跑。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | A1 vs A2？ | **A1** | ✅ 已施工 |
+| Q2 | WalkArea 名？ | **VillageWalkArea** | ✅ 已施工 |
+| Q3 | 双 Trigger Gate？ | 先 Zone+障碍 | ✅ 已按此施工（无 Gate） |
+| Q4 | 区外？ | **夹死** | ✅ 已施工 |
+| Q5 | 禁跳？ | **是** | ✅（村模式） |
+| Q6 | 与续聊/换古莎？ | 正交；落点进区 | ✅ |
+| Q7 | WalkArea 覆盖范围？ | 尽量窄（进门条带+楼梯+小平台）；**Scene 肉眼调点** | ⏳ 验收调点 |
+
+---
+
+## Village_Chief_House · 进场飞出 / 不在 DefaultBornPos（验收排查）· 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_Chief_House_进场飞出DefaultBornPos_验收排查报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_Chief_House_进场飞出DefaultBornPos_施工说明.md`  
+**排查结论**：**H1+H2**。从村进屋走 `EnterFrom_Village`（**不用** DefaultBorn）；手调后 WalkArea 底带上沿≈Y−6.4，原 EnterFrom `(17.42,-3.65)` **形外** → ClosestPoint 吸入底带。  
+**施工状态**：`EnterFrom_Village` 已对齐 DefaultBorn `(17.1,-6.61)`；`[ChiefEnterPos]` 可关。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 落点锚？ | **EnterFrom**；与 DefaultBorn 对齐 | ✅ 已施工 |
+| Q2 | 飞出主因？ | **区外 + ClosestPoint** | ✅ |
+| Q3 | 移落点 vs 扩多边形？ | **已移 EnterFrom**（未改多边形） | ✅ |
+| Q4 | 读档也飞？ | 验收对比 | ⏳ |
+| Q5 | EnterPos 改绑 DefaultBorn？ | 不必须 | ✅ |
+
+---
+
+## Village_Chief_House · 进场落点吸到楼梯（验收排查）· 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_Chief_House_进场落点吸到楼梯_验收排查报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_Chief_House_进场落点吸到楼梯_施工说明.md`  
+**排查结论**：**H1+H2**。EnterFrom 已形内仍站楼梯：OnInit 过早 Flush + `SetPos` 不同步 Rb。  
+**施工状态**：F1 `TeleportAuthoritativeVillagePos`；F2 权威落点前跳过夹区；F3 Chief 再 Flush；村模式 `SetPos` 走 Teleport。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 主因？ | **过早 Flush + SetPos/Rb 脱节** | ✅ |
+| Q2 | F1/F2/F3？ | **F1+F2+F3** | ✅ 已施工 |
+| Q3 | 全局 SetPos vs Town API？ | **Town API**；村模式 SetPos 转调 | ✅ |
+| Q4 | 读档？ | 同权威 Teleport | ✅ |
+
+---
+
+## Village_Chief_House · 室内走路过快对齐村民家 · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_Chief_House_室内走路过快对齐村民家_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_Chief_House_室内走路过快对齐村民家_施工说明.md`  
+**侦探结论**：**H1**。Chief 开 `Village2_5D` 吃 `villagePlanarMoveSpeed=11.2`；其它 Home 仍 `walkSpeed=4.2`。**S1**：仅 Chief 覆写 Town 平面目标速为 walkSpeed；村街不变；不撤白名单。Animator 本期不动。  
+**施工状态（2026-09-01）**：`IsIndoorVillageExplorationScene` + `ResolveVillagePlanarMoveSpeed` 已落地。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 改 Animator 片？ | **本期否** | ✅ |
+| Q2 | 仅 Chief？ | **是** | ✅ 已施工 |
+| Q3 | Inspector 另调速？ | 默认同 walkSpeed | ✅ |
+| Q4 | 测试面板改速？ | 验收排除 | ⏳ |
+
+---
+
+## Village_村长家继续对话 · 三人大立绘摆位对齐门口 · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_村长家继续对话_三人大立绘摆位对齐门口_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_村长家继续对话_三人大立绘摆位对齐门口_施工说明.md`  
+**侦探结论**：续聊雅 Painting `(-380,52)` vs 门口 `(348,52)`；Actor 村长续聊 `(0,0)` vs 门口 `(1156,-232)+Y180`。Setup 仍写死 `-380` 会冲门口。施工：整树抄门口 + Door/Continue Nudge 改定稿。  
+**施工状态（2026-09-01）**：Continue Prefab 已对齐；共享 `VillageChiefDialoguePortraitLayout`；Door/Continue Nudge 同源。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 门口雅 348 最终？ | **是** | ✅ 已施工 |
+| Q2 | Door Setup 一并改？ | **是** | ✅ 已施工 |
+| Q3 | 共享 Layout 类？ | **是**（`VillageChiefDialoguePortraitLayout`） | ✅ 已施工 |
+
+---
+
+## Village_Chief_House · 楼梯上楼换场巨树 2 楼 · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_Chief_House_楼梯上楼换场巨树2楼_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_Chief_House_楼梯上楼换场巨树2楼_施工说明.md`  
+**侦探结论**：EnterPos `Village_Chief_House`→`ExitFrom_HomeSceneChief2f` 已配对；缺楼梯顶门 + **W1** 切 `VillageWalkArea2`（禁止改其形状）。1 楼 `LeftDoor` 冲突用 **E3′**（`enterPosKey` + 新建 1f `ExitFrom_HomeSceneChief`）。Trigger 走进即切；黑幕对齐 LeftDoor；回程本期不做。依赖室内划区 A1。  
+**施工状态（2026-09-01）**：enterPosKey / W1 Override / 1f ExitFrom+EnterPos / LeftDoor 键已落地；楼梯门靠 Setup 菜单摆 `StairsDoor_ToTree2f`（须开 Unity 跑一次）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 上楼 TriggerWhenMoveIn？ | **true** | ✅ 已施工 |
+| Q2 | 1 楼门 vs 2 楼落点？ | **E3′** | ✅ 已施工 |
+| Q3 | WalkArea2 生效？ | **W1**；不改形状 | ✅ 已施工 |
+| Q4 | 黑幕 / Loading？ | **黑幕** | ✅ |
+| Q5 | 2 楼回程进村长家？ | 本期不做 | ⏳ |
+| Q6 | 同场景下树切回 WalkArea？ | 最小：仅进 2f 绑 2 | ✅ |
+| Q7 | 室内 A1 可玩？ | 依赖前案 | ⏳ 验收 |
+
+---
+
+## Village_KenMuNi1 · 巨树 2 楼 WalkArea2 宝箱 Hp/Mp×3 · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_KenMuNi1_巨树2楼WalkArea2宝箱HpMp×3_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_KenMuNi1_巨树2楼WalkArea2宝箱HpMp×3_施工说明.md`  
+**侦探结论**：**B1** 仿 WestRapp；新建 `VillageKenMuNi1HpMpBox`（默认 3/3，无 Story）+ `VillageKenMuNi1Data.tree2fHpMpBoxOpened`；实例化 `Prefabs/Box.prefab` 放 WalkArea2 内（建议近 ExitFrom 错开）；`GetHpBall`→`GetMpBall`；**禁止**改 WalkArea2、禁止挂西境脚本。  
+**施工状态（2026-09-01）**：Data + 村脚本已落地；场景箱靠菜单 `Setup KenMuNi1 巨树2楼 WalkArea2 宝箱 HpMp×3`（或 request 自动跑）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 交互？ | **点交互** | ✅ 已施工 |
+| Q2 | ×3 专图？ | **否** | ✅ |
+| Q3 | 脚本？ | **新建村用类** | ✅ 已施工 |
+| Q4 | 存档？ | **VillageKenMuNi1Data** | ✅ 已施工 |
+| Q5 | 对白？ | **无** | ✅ |
+| Q6 | 开箱强制 SaveBag？ | 否（对齐 West） | ⏳ 产品另开 |
+| Q7 | 上游 2 楼可达+W1？ | 依赖 | ⏳ 验收 |
+
+---
+
+## Village · 出村长家古雅对白转场树屋门口 · 2026-09-01
+
+详见：`Assets/Doc/执行文档/0901/Village_出村长家_古雅对白转场树屋门口_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0901/Village_出村长家_古雅对白转场树屋门口_施工说明.md`  
+**侦探结论**：**O1+G1+T1**。1 楼出门须 **E3′** 落门前 `ExitFrom_HomeSceneChief`（勿与 2 楼抢 EnterPos）；KenMuNi1 `OnEnterScene` 认门前键播一段 `Village_出村长家送树屋`；中段新建 BlackPanel 传送 Action → `House_Tree` 旁 Walk 内点再段 B。2 楼回来不播；不进树屋 Scene；晚宴旗本期不接。  
+**施工状态（2026-09-01）**：`BlackFadeTeleportPlayerActionTask` + CSV + G1 已落地；Prefab/传送点靠菜单 `Setup Village 出村长家送树屋`（或 request）。E3′ 已依赖上游。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 出门落点 O1？ | **是** + E3′ | ✅ 已施工 |
+| Q2 | 转场？ | **BlackPanel** | ✅ 已施工 |
+| Q3 | Prefab？ | **一段 + 中段传送** | ✅ Setup |
+| Q4 | 树屋落点？ | `TeleportTo_YaerTreeHouseDoor`；近 House_Tree；Y∈Walk | ✅ Setup 摆点 |
+| Q5 | 场景古莎跟随？ | **不强制** | ✅ |
+| Q6 | 晚宴旗？ | **本期否** | ✅ |
+| Q7 | E3′ 已施工？ | 本戏依赖 | ✅ 上游已有 |
+| Q8 | 转场保持对白壳？ | **倾向保持** | ✅ Action 不关壳 |

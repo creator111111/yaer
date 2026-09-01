@@ -185,6 +185,9 @@ namespace Game.GameRuntime.Entities.Player.Components
         /// <summary>旧 Prefab 缺字段写成 0 时的目标走速回退（与现网 runSpeed 一致）。</summary>
         private const float VillagePlanarMoveSpeedFallback = 11.2f;
 
+        /// <summary>室内村探索（Chief）planar fallback；与 Player Prefab <c>walkSpeed</c> 对齐。</summary>
+        private const float IndoorVillagePlanarMoveSpeedFallback = 4.2f;
+
         /// <summary>与现网 Town / Combat 横纵意图死区一致。</summary>
         private const float VillagePlanarInputDeadZone = 0.01f;
 
@@ -199,6 +202,12 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         /// <summary>玩家根上的 2D 刚体（与 PlayerLogic 同物体）。</summary>
         private Rigidbody2D _playerRootRb2D;
+
+        /// <summary>
+        /// 本轮进村是否已做过权威落点 Teleport。
+        /// false 时跳过 WalkArea ClosestPoint，避免 OnInit 在 SetPlayerPos 前把原点吸到楼梯（0901 H1）。
+        /// </summary>
+        private bool _hasAuthoritativeVillageSpawnThisEnable;
 
         /// <summary>进村时从场景解析到的 WalkArea（无 Override 时使用）；离村清空，避免跨场景误引用（验收 P-06）。</summary>
         private PolygonCollider2D _villageWalkPolygonFromScene;
@@ -354,7 +363,7 @@ namespace Game.GameRuntime.Entities.Player.Components
                         : "clamp_ok";
                 PlayerMoveComponent moveForLog = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
                 Debug.Log(
-                    $"[TownLocomotion] dt={dt:F4} axisH={inputH:F3} intentH={input.HasVillageExploreHorizontalMoveIntent()} " +
+                    $"[TownLocomotion] scene={SceneManager.GetActiveScene().name} dt={dt:F4} axisH={inputH:F3} intentH={input.HasVillageExploreHorizontalMoveIntent()} " +
                     $"axisV={inputAxis:F3} intentV={input.HasVillageExploreVerticalMoveIntent()} branch={planarBranch} " +
                     $"inputDepth={inputDepth:F3} depthVel={depthVelocity:F3} " +
                     $"vx={(moveForLog != null ? moveForLog.moveSpeedX : 0f):F3} " +
@@ -414,6 +423,8 @@ namespace Game.GameRuntime.Entities.Player.Components
                 _villageDepthFootProbeResolved = null;
                 _villageDepthFootProbeSearchFailed = false;
                 _hasLastFreeVillagePose = false;
+                // 离村清权威落点旗，下次进村重新 defer ClosestPoint
+                _hasAuthoritativeVillageSpawnThisEnable = false;
             }
             else
             {
@@ -428,21 +439,109 @@ namespace Game.GameRuntime.Entities.Player.Components
                     _playerRootRb2D = PlayerLogic.gameObject.GetComponent<Rigidbody2D>();
                 }
 
+                // 冷进村（或旗仍为 false）：尚未 SetPlayerPos/Teleport 前不跑多边形夹区（F2）
+                bool deferWalkPolygon = !_hasAuthoritativeVillageSpawnThisEnable;
+
                 TryBindVillageWalkPolygonFromActiveScene();
                 _frozenWorldZ = PlayerLogic.transform.position.z;
                 _villageWorldY = _playerRootRb2D != null ? _playerRootRb2D.position.y : PlayerLogic.transform.position.y;
                 _villageWorldY = Mathf.Clamp(_villageWorldY, depthYMinWorld, depthYMaxWorld);
                 WriteRootTransformWithAuthoritativeDepthY();
-                Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null ? _playerRootRb2D.position : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
-                ApplyVillageWalkPolygonPostCorrection();
-                ApplyVillageWalkObstacleClampAfterWalkPolygonIfNeeded(rootRbBeforeWalkPolygon);
-                ApplyVillageWalkObstacleHorizontalVelocityClamp();
-                // 进村时若脚在墙外，先记下初值；若已重叠则保险 Distance 推（不闪回楼梯中线）。
-                TryCaptureVillageLastFreePose();
-                ApplyVillageWalkObstaclePenetrationInsurance();
+
+                if (!deferWalkPolygon)
+                {
+                    Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null
+                        ? _playerRootRb2D.position
+                        : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
+                    ApplyVillageWalkPolygonPostCorrection();
+                    ApplyVillageWalkObstacleClampAfterWalkPolygonIfNeeded(rootRbBeforeWalkPolygon);
+                    ApplyVillageWalkObstacleHorizontalVelocityClamp();
+                    TryCaptureVillageLastFreePose();
+                    ApplyVillageWalkObstaclePenetrationInsurance();
+                }
+                else if (acceptanceDebugLog)
+                {
+                    Debug.Log(
+                        "[VillageEnterFlush] ApplyVillageMode 推迟 WalkArea 夹区（等待权威 Teleport）。"
+                        + " foot=" + PlayerLogic.transform.position
+                        + " rb=" + (_playerRootRb2D != null ? _playerRootRb2D.position.ToString() : "null"),
+                        this);
+                }
+
                 RegisterVillageTurnObstacleGuard();
                 _postPhysicsDepthCoroutine = StartCoroutine(PostPhysicsResyncDepthCoroutine());
             }
+        }
+
+        /// <summary>
+        /// 村模式权威传送：同步 Transform + Rigidbody2D + <c>_villageWorldY</c>，再可选 Flush。
+        /// 原因（0901 H2）：只改 Transform 时多边形/WriteRoot 仍读刚体，Loading 后再 Flush 会把人写回旧点（楼梯）。
+        /// 替代方案：全局改 SetPos——非村场景副作用不明，故抽 Town API 由村模式调用。
+        /// </summary>
+        /// <param name="worldXy">目标世界 X/Y（Z 保持冻结纵深）。</param>
+        /// <param name="thenFlush">为 true 时标记落点完成并套 WalkArea（落点应已在形内）。</param>
+        public void TeleportAuthoritativeVillagePos(Vector2 worldXy, bool thenFlush = true)
+        {
+            if (!enabled || PlayerLogic == null)
+            {
+                return;
+            }
+
+            if (_playerRootRb2D == null)
+            {
+                _playerRootRb2D = PlayerLogic.gameObject.GetComponent<Rigidbody2D>();
+            }
+
+            _frozenWorldZ = PlayerLogic.transform.position.z;
+            _villageWorldY = Mathf.Clamp(worldXy.y, depthYMinWorld, depthYMaxWorld);
+            Vector2 rb = new Vector2(worldXy.x, _villageWorldY);
+
+            if (_playerRootRb2D != null)
+            {
+                _playerRootRb2D.position = rb;
+                _playerRootRb2D.velocity = Vector2.zero;
+            }
+
+            PlayerLogic.transform.position = new Vector3(rb.x, rb.y, _frozenWorldZ);
+
+            var move = PlayerLogic.componentSystem != null
+                ? PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>()
+                : null;
+            if (move != null)
+            {
+                move.moveSpeedY = 0f;
+                move.StopMoveInX();
+            }
+
+            depthVelocity = 0f;
+            _hasAuthoritativeVillageSpawnThisEnable = true;
+
+            if (acceptanceDebugLog)
+            {
+                Debug.Log(
+                    "[VillageEnterFlush] TeleportAuthoritative → " + rb
+                    + " thenFlush=" + thenFlush,
+                    this);
+            }
+
+            if (thenFlush)
+            {
+                FlushAuthoritativeVillageTransformAfterSceneDepthInject();
+            }
+        }
+
+        /// <summary>
+        /// Loading 结束兜底：若进村后从未权威 Teleport，以当前 Transform 提交并 Flush（防 defer 永久跳过夹区）。
+        /// </summary>
+        public void EnsureAuthoritativeVillageSpawnCommitted()
+        {
+            if (!enabled || PlayerLogic == null || _hasAuthoritativeVillageSpawnThisEnable)
+            {
+                return;
+            }
+
+            Vector3 p = PlayerLogic.transform.position;
+            TeleportAuthoritativeVillagePos(new Vector2(p.x, p.y), thenFlush: true);
         }
 
         /// <summary>
@@ -457,7 +556,21 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
 
             WriteRootTransformWithAuthoritativeDepthY();
-            Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null ? _playerRootRb2D.position : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
+
+            // F2：权威落点前不夹区（否则原点→楼梯；随后只摆皮到门口会被写回）
+            if (!_hasAuthoritativeVillageSpawnThisEnable)
+            {
+                if (acceptanceDebugLog)
+                {
+                    Debug.Log("[VillageEnterFlush] Flush 跳过 WalkArea（尚未权威 Teleport）", this);
+                }
+
+                return;
+            }
+
+            Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null
+                ? _playerRootRb2D.position
+                : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
             ApplyVillageWalkPolygonPostCorrection();
             ApplyVillageWalkObstacleClampAfterWalkPolygonIfNeeded(rootRbBeforeWalkPolygon);
             ApplyVillageWalkObstacleHorizontalVelocityClamp();
@@ -493,9 +606,34 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
         }
 
-        /// <summary>村庄地面目标走速；≤0 时回退 <see cref="VillagePlanarMoveSpeedFallback"/>。</summary>
+        /// <summary>
+        /// 村庄地面目标走速。
+        /// <para>
+        /// 原因（0901）：村长家为楼梯进白名单开 Town 后误吃 <c>villagePlanarMoveSpeed=11.2</c>，
+        /// 其它村民家仍 Default+<c>walkSpeed=4.2</c>。S1：仅室内村探索场景覆写为 WalkSpeed；KenMuNi1 仍 11.2。
+        /// </para>
+        /// <para>替代方案：撤白名单降速——会丢 W/S 楼梯，否决；全局改 11.2→4.2——拖慢村街，否决。</para>
+        /// </summary>
         private float ResolveVillagePlanarMoveSpeed()
         {
+            // 每帧按活动场景分支，进/离场无需缓存写回
+            string active = SceneManager.GetActiveScene().name;
+            if (SceneName.IsIndoorVillageExplorationScene(active))
+            {
+                float walk = 0f;
+                if (PlayerLogic != null && PlayerLogic.componentSystem != null)
+                {
+                    var move = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
+                    if (move != null)
+                    {
+                        walk = move.WalkSpeed;
+                    }
+                }
+
+                // fallback 与 Player Prefab walkSpeed 对齐，仅读不到组件时用
+                return walk > 0f ? walk : IndoorVillagePlanarMoveSpeedFallback;
+            }
+
             return villagePlanarMoveSpeed > 0f ? villagePlanarMoveSpeed : VillagePlanarMoveSpeedFallback;
         }
 
@@ -770,7 +908,21 @@ namespace Game.GameRuntime.Entities.Player.Components
         }
 
         /// <summary>
-        /// 在 <see cref="SceneName.Village_KenMuNi1"/> 下按物体名 <c>VillageWalkArea</c> 查找 <see cref="PolygonCollider2D"/>（可挂在同名物体自身或子级）。
+        /// 运行时切换生效 WalkArea（W1：巨树 2 楼绑 <c>VillageWalkArea2</c>）。
+        /// <para>传 null 清除覆盖并重新按名绑 <c>VillageWalkArea</c>。禁止用改多边形尺寸代替切换。</para>
+        /// </summary>
+        public void SetVillageWalkAreaOverride(PolygonCollider2D poly)
+        {
+            villageWalkAreaOverride = poly;
+            if (poly == null && enabled)
+            {
+                TryBindVillageWalkPolygonFromActiveScene();
+            }
+        }
+
+        /// <summary>
+        /// 在村庄探索白名单场景下按物体名 <c>VillageWalkArea</c> 查找 <see cref="PolygonCollider2D"/>（可挂在同名物体自身或子级）。
+        /// <para>白名单：<see cref="SceneName.IsVillageExplorationScene"/>（KenMuNi1 + Chief_House，0901）。</para>
         /// <para><b>替代方案</b>：多块区域时用列表 + 并集判定；首版仅支持单 Polygon（执行说明 §4.1）。</para>
         /// </summary>
         private void TryBindVillageWalkPolygonFromActiveScene()
@@ -782,7 +934,7 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
 
             Scene scene = SceneManager.GetActiveScene();
-            if (!scene.IsValid() || scene.name != SceneName.Village_KenMuNi1)
+            if (!scene.IsValid() || !SceneName.IsVillageExplorationScene(scene.name))
             {
                 return;
             }

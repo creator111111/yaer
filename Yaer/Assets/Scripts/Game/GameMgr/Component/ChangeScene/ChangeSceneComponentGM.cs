@@ -83,8 +83,8 @@ namespace Game.GameMgr.Component.ChangeScene
             // initscene不需要卸载
             if (nowSceneName == SceneName.InitScene)
             {
-                // 保存上一个场景名
-                lastSceneName = nowSceneName;
+                // 保存上一个场景名（E3′：门可覆盖 EnterPos 键）
+                lastSceneName = ResolveLastSceneNameForEnterPos(args);
                 loadArgsList.Add(args);
                 GameManager.GetGFComponent<SceneComponent>().LoadScene(SceneAssetPath.GetSceneAssetPath(args.sceneName), args);
             }
@@ -95,8 +95,8 @@ namespace Game.GameMgr.Component.ChangeScene
                     unloadSceneName = nowSceneName,
                     callBack = () =>
                     {
-                        // 保存上一个场景名
-                        lastSceneName = nowSceneName;
+                        // 保存上一个场景名（须在卸场回调内；优先 enterPosKey）
+                        lastSceneName = ResolveLastSceneNameForEnterPos(args);
                         if (args.sceneName == SceneName.InitScene)
                         {
                             // 如果加载的场景有问题则回到游戏开始界面
@@ -113,6 +113,19 @@ namespace Game.GameMgr.Component.ChangeScene
                 // 卸载当前场景
                 GameManager.GetGFComponent<SceneComponent>().UnloadScene(SceneAssetPath.GetSceneAssetPath(nowSceneName), unloadArgs);
             }
+        }
+
+        /// <summary>
+        /// EnterPos 用的 lastScene：有 <see cref="LoadSceneArgs.enterPosKey"/> 则用之，否则用当前卸场场景名。
+        /// </summary>
+        private string ResolveLastSceneNameForEnterPos(LoadSceneArgs args)
+        {
+            if (args != null && !string.IsNullOrEmpty(args.enterPosKey))
+            {
+                return args.enterPosKey;
+            }
+
+            return nowSceneName;
         }
 
         public override void OnExit()

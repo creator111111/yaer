@@ -221,31 +221,13 @@ namespace EditorC.Tool.Dialogue
             Debug.Log($"[ChiefDoorSetup] BB {paintingName} → CanvasGroup", cg);
         }
 
-        /// <summary>三人占位：雅左 / 古中 / 村右（Q2 产品可再调）。</summary>
+        /// <summary>
+        /// 三人占位对齐门口定稿（雅 348/古 -330/村 Scale0.65 + Actor 村长 1156,-232 Y180）。
+        /// <para>原因（0901）：旧 Nudge 写死雅 X=-380，重跑会冲掉门口手调；Continue 永远对不齐。</para>
+        /// </summary>
         private static void NudgePortraitLayout(GameObject root)
         {
-            TrySetAnchoredX(FindDeepChild(root.transform, "GoOutStoryYaerPainting"), -380f);
-            TrySetAnchoredX(FindDeepChild(root.transform, "GushaPainting"), 0f);
-            TrySetAnchoredX(FindDeepChild(root.transform, "ChiefPainting"), 420f);
-        }
-
-        private static void TrySetAnchoredX(Transform t, float x)
-        {
-            if (t == null)
-            {
-                return;
-            }
-
-            var rt = t as RectTransform;
-            if (rt == null)
-            {
-                return;
-            }
-
-            var p = rt.anchoredPosition;
-            p.x = x;
-            rt.anchoredPosition = p;
-            EditorUtility.SetDirty(rt);
+            VillageChiefDialoguePortraitLayout.ApplyToDialogueRoot(root);
         }
 
         private static bool TryImportCsvIntoController(GameObject prefabRoot, out string error)

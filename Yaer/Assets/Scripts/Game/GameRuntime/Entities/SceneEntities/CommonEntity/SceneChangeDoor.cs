@@ -21,6 +21,12 @@ namespace Game.GameRuntime.Entities.Component.Map
         [SerializeField] protected bool TriggerWhenMoveIn = false;
         [SerializeField] protected bool ShowLoadingUI = false;
 
+        /// <summary>
+        /// 可选 EnterPos 匹配键（空=卸场真实场景名）。
+        /// 例：村长家 LeftDoor 填 <see cref="SceneName.Village_Chief_House_Door"/>，楼梯门留空→落 2 楼。
+        /// </summary>
+        [SerializeField] protected string EnterPosKey;
+
         public Transform BornPos => bornPos;
         protected InteractiveComponent interactiveComponent;
 
@@ -114,11 +120,11 @@ namespace Game.GameRuntime.Entities.Component.Map
                         if (ShowLoadingUI)
                         {
                             // 与门口对白结束进屋共用助手，避免两处复制 Open LoadingPanel 逻辑
-                            loadGsm.LoadSceneWithLoadingPanel(NextSceneName);
+                            loadGsm.LoadSceneWithLoadingPanel(NextSceneName, EnterPosKey);
                         }
                         else
                         {
-                            loadGsm.LoadScene(NextSceneName, null, true);
+                            loadGsm.LoadScene(NextSceneName, null, true, EnterPosKey);
                         }
                     }
                 }

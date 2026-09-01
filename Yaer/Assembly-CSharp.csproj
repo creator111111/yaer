@@ -115,6 +115,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Base\BaseEntityLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Archive\GetArchiveFloatActionTask.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Sound\PlaySoundFailureEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\Scene\VillageKenMuNi1Data.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Debugger\DebuggerComponent.ScrollableDebuggerWindowBase.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\VillageWalkObstacleTurnImmediateBlock.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Collection Types\ES3StackType.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\DeadPanel\DeadPanelProxy.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Archive\ArchiveDataClass\BaseDataClass\IArchiveData.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Unity Types\ES3Type_ShapeModule.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_KenMuNi\ChiefNearDoorStoryTrigger.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Other\SceneResourcesConfig.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\WWWFormInfo.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Utility\Physics2DUtility.cs" />
@@ -422,6 +424,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\DownloadFailureEventArgs.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\Squat\SquatSM.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Story\BaseSceneStoryMgr.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_KenMuNi\VillageKenMuNi1HpMpBox.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\HomeScene2\HomeScene2Door.cs" />
     <Compile Include="Assets\Easy Save 3\Scripts\Types\Primitive Types\ES3Type_decimal.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\WoodWorm\Components\Anima\State\WoodWormTurnState.cs" />
@@ -521,6 +524,7 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\Dust\JumpUpDustEffect.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\PlayerKBFallDown.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Physics\Physics2DComponent.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\Painting\ChiefMaskPainting.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\BagPack\ItemMpBall.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Combat\State\SmashAttack\SmashAttack1State.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopBarRowView.cs" />
@@ -1176,6 +1180,7 @@
     <Compile Include="Assets\Easy Save 3\Scripts\Streams\ES3ResourcesStream.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\Battle\PlayerBattleComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Player\Components\CsAnimator\Home\Idle\HomeIdleState.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\NodeCanvas\NodeCanvasNode\ActionTask\Player\BlackFadeTeleportPlayerActionTask.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\Move\MoveCurveDataPath.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Effect\Player\Dust\ChangeDirDustEffect.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Extend\Mono\MonoSystem.cs" />
@@ -1273,8 +1278,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Story\Painting\ChiefMaskPainting.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\Village_KenMuNi\ChiefNearDoorStoryTrigger.cs" />
     <None Include="Assets\GameRes\Config\MonsterConfig\MonsterConfig.json" />
     <None Include="Assets\GameRes\Config\AchievementConfig\AchievementConfig.json" />
     <None Include="Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.xml" />

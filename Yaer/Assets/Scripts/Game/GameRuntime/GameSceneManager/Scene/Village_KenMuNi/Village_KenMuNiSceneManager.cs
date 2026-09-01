@@ -3,10 +3,12 @@ using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.Archive.ArchiveDataClass;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Scene;
+using Game.GameMgr.Component.ChangeScene;
 using Game.GameMgr.Component.UI;
 using Game.GameRuntime.Entities.Base.BaseSceneObj;
 using Game.GameRuntime.Entities.MainNPC;
 using Game.GameRuntime.Entities.Player;
+using Game.GameRuntime.Entities.Player.Components;
 using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.GameSceneManager.Component;
 using Game.GameRuntime.GameSceneManager.Component.CameraGSM;
@@ -19,6 +21,7 @@ using Game.Static.Path;
 using Game.Static.Path.Sound;
 using GameFramework.UnityRuntime.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
 {
@@ -101,6 +104,12 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
         const string VillageStartStoryName = "Village_KenMuNiStart";
 
         /// <summary>
+        /// 1 楼出门 → 门前 → 古雅送树屋（与 CSV / Prefab / StoryTriggerCount 同名）。
+        /// G1 只认 <see cref="SceneName.Village_Chief_House_Door"/>，禁止裸判 Village_Chief_House（防 2 楼误播）。
+        /// </summary>
+        const string LeaveChiefEscortStoryName = "Village_出村长家送树屋";
+
+        /// <summary>
         /// 壳 Open + Prefab 实例化（含全屏 BG）所需极短 hold。
         /// 分层节奏（框→立绘各≈1s）交给 Prefab 亮屏后播放，不再等满前奏。
         /// <para>替代方案：若偶发 BG 未就绪就淡出，可略增本值或在 Finalize 内再补一帧 hold。</para>
@@ -133,6 +142,158 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
             // 正常进村：开场已在黑幕阶段 Trigger（TryDeferBlackFadeForCover）。
             // 此处仅兜底（例如 blackFade=false）；HasRunningStory / CheckStoryUsed 防双开。
             TryTriggerVillageStartStoryOnce();
+
+            // G1：1 楼 LeftDoor（enterPosKey=Village_Chief_House_Door）→ 门前自动送树屋戏。
+            // 须在开场兜底之后；开场已用 / 无 Running 时才可能启动。楼梯 2 楼键不进此分支。
+            TryTriggerLeaveChiefEscortOnce();
+        }
+
+        /// <summary>
+        /// 同档首次：从村长家 1 楼门回村落门前时 Trigger「出村长家送树屋」。
+        /// </summary>
+        void TryTriggerLeaveChiefEscortOnce()
+        {
+            if (!ShouldPlayLeaveChiefEscort())
+            {
+                return;
+            }
+
+            var storyGsm = GetModule<StoryComponentGSM>();
+            if (storyGsm == null)
+            {
+                Debug.LogWarning("[LeaveChiefEscort] StoryComponentGSM 缺失，跳过 " + LeaveChiefEscortStoryName);
+                return;
+            }
+
+            if (storyGsm.HasRunningStory)
+            {
+                // 开场等其它戏占场：本档下次再进门前也不会重试（仅 OnEnter）；产品路径上开场应已用完
+                Debug.Log("[LeaveChiefEscort] 已有剧情在跑，跳过本次 Trigger");
+                return;
+            }
+
+            bool started = storyGsm.TriggerStory(LeaveChiefEscortStoryName);
+            Debug.Log(started
+                ? "[LeaveChiefEscort] OnEnterScene TriggerStory " + LeaveChiefEscortStoryName
+                : "[LeaveChiefEscort] TriggerStory 未启动 " + LeaveChiefEscortStoryName);
+        }
+
+        /// <summary>
+        /// 门闩：LastScene 必须是大门键（E3′），且本戏未用。
+        /// 禁止 <c>last == Village_Chief_House</c>（楼梯 2 楼会误播）。
+        /// </summary>
+        bool ShouldPlayLeaveChiefEscort()
+        {
+            var last = GameManager.GetGMComponent<ChangeSceneComponentGM>()?.LastSceneName;
+            if (last != SceneName.Village_Chief_House_Door)
+            {
+                return false;
+            }
+
+            var counts = GetArchiveData<StoryTriggerCountData>();
+            return counts == null || !counts.CheckStoryUsed(LeaveChiefEscortStoryName);
+        }
+
+        /// <summary>
+        /// 楼梯从村长家上楼：落 2 楼后把生效 WalkArea 切到 <c>VillageWalkArea2</c>（W1）。
+        /// 1 楼大门键 <see cref="SceneName.Village_Chief_House_Door"/> 不切，避免套错多边形。
+        /// <para>禁止改 WalkArea2 点集/尺寸。</para>
+        /// </summary>
+        protected override void SetPlayerPos(PlayerLogic playerLogic)
+        {
+            base.SetPlayerPos(playerLogic);
+            TryBindVillageWalkArea2AfterChiefStairsLanding(playerLogic);
+        }
+
+        private void TryBindVillageWalkArea2AfterChiefStairsLanding(PlayerLogic playerLogic)
+        {
+            if (playerLogic == null)
+            {
+                return;
+            }
+
+            var last = GameManager.GetGMComponent<ChangeSceneComponentGM>()?.LastSceneName;
+            // 仅楼梯路径：真实场景名 Village_Chief_House（EnterPos→2f）；大门键不绑 2
+            if (last != SceneName.Village_Chief_House)
+            {
+                return;
+            }
+
+            var town = playerLogic.componentSystem != null
+                ? playerLogic.componentSystem.TryGetComponent<TownPlayerLocomotion>()
+                : null;
+            if (town == null)
+            {
+                Debug.LogWarning("[Village2f] 无 TownPlayerLocomotion，无法绑 VillageWalkArea2");
+                return;
+            }
+
+            UnityEngine.SceneManagement.Scene scene = SceneManager.GetActiveScene();
+            Transform named = FindNamedTransformInScene(scene, "VillageWalkArea2");
+            if (named == null)
+            {
+                Debug.LogError("[Village2f] 未找到 VillageWalkArea2（禁止新建/改形状替代）");
+                return;
+            }
+
+            var poly = named.GetComponent<PolygonCollider2D>();
+            if (poly == null)
+            {
+                poly = named.GetComponentInChildren<PolygonCollider2D>(true);
+            }
+
+            if (poly == null)
+            {
+                Debug.LogError("[Village2f] VillageWalkArea2 无 PolygonCollider2D");
+                return;
+            }
+
+            town.SetVillageWalkAreaOverride(poly);
+            town.FlushAuthoritativeVillageTransformAfterSceneDepthInject();
+            Debug.Log("[Village2f] 已 SetVillageWalkAreaOverride(VillageWalkArea2)，落点后不应用 1 楼 WalkArea");
+        }
+
+        /// <summary>仅在指定 Scene 根下按名查找（与 PlayerLogic / Town 同源策略）。</summary>
+        /// <remarks>
+        /// 须写全名：本文件命名空间含 <c>...GameSceneManager.Scene...</c>，裸写 <c>Scene</c> 会被当成命名空间（CS0118）。
+        /// </remarks>
+        private static Transform FindNamedTransformInScene(
+            UnityEngine.SceneManagement.Scene scene, string objectName)
+        {
+            if (!scene.IsValid() || string.IsNullOrEmpty(objectName))
+            {
+                return null;
+            }
+
+            foreach (GameObject root in scene.GetRootGameObjects())
+            {
+                Transform found = FindNamedTransformRecursive(root.transform, objectName);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
+        }
+
+        private static Transform FindNamedTransformRecursive(Transform tr, string objectName)
+        {
+            if (tr.name == objectName)
+            {
+                return tr;
+            }
+
+            for (int i = 0; i < tr.childCount; i++)
+            {
+                Transform child = FindNamedTransformRecursive(tr.GetChild(i), objectName);
+                if (child != null)
+                {
+                    return child;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

@@ -68,6 +68,34 @@ namespace Game.Static.Name.Res
         public const string Village_Chief_House = "Village_Chief_House";
 
         /// <summary>
+        /// 从村长家 <c>LeftDoor</c>（1 楼大门）回村时的 EnterPos 键（E3′）。
+        /// 与真实场景名 <see cref="Village_Chief_House"/>（楼梯上楼→2 楼）拆开，避免抢同一落点。
+        /// </summary>
+        public const string Village_Chief_House_Door = "Village_Chief_House_Door";
+
+        /// <summary>
+        /// 是否启用村庄探索移动（Town / WalkArea / 纵深 Y）。
+        /// 原因（0901）：原闸仅认 <see cref="Village_KenMuNi1"/>，进屋无 W/S；
+        /// 现白名单仅再加 <see cref="Village_Chief_House"/>，其它 Home 仍 Default。
+        /// <para>替代方案：各场景脚本地名字符串比对——易散落魔法字符串，故集中于此。</para>
+        /// </summary>
+        /// <param name="sceneName">激活场景名（通常 <c>SceneManager.GetActiveScene().name</c>）</param>
+        public static bool IsVillageExplorationScene(string sceneName)
+        {
+            return sceneName == Village_KenMuNi1 || sceneName == Village_Chief_House;
+        }
+
+        /// <summary>
+        /// 是否「室内」村探索（开 Town/2.5D 但平面速应对齐 Home walk）。
+        /// 原因（0901）：<see cref="Village_Chief_House"/> 为楼梯进白名单后误吃村街 <c>villagePlanarMoveSpeed=11.2</c>；
+        /// 其它 Home 不在此列。勿把 Home1/2 等扩进来除非产品明确要室内 2.5D。
+        /// </summary>
+        public static bool IsIndoorVillageExplorationScene(string sceneName)
+        {
+            return sceneName == Village_Chief_House;
+        }
+
+        /// <summary>
         /// 肯姆尼村外（<c>Assets/GameRes/Scenes/Village_OutSide.unity</c>）；由村里 MapRight/RightDoor 进入。
         /// </summary>
         public const string Village_OutSide = "Village_OutSide";

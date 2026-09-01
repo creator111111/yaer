@@ -31,7 +31,8 @@ namespace Game.GameRuntime.GameSceneManager.Component
         /// </para>
         /// </summary>
         /// <param name="sceneName">目标场景名（如 <c>Village_Chief_House</c>）。</param>
-        public void LoadSceneWithLoadingPanel(string sceneName)
+        /// <param name="enterPosKey">可选 EnterPos 键；空则用卸场真实场景名。</param>
+        public void LoadSceneWithLoadingPanel(string sceneName, string enterPosKey = null)
         {
             if (string.IsNullOrEmpty(sceneName))
             {
@@ -39,7 +40,7 @@ namespace Game.GameRuntime.GameSceneManager.Component
                 return;
             }
 
-            Debug.Log($"[SceneLoad] LoadSceneWithLoadingPanel scene={sceneName}");
+            Debug.Log($"[SceneLoad] LoadSceneWithLoadingPanel scene={sceneName} enterPosKey={enterPosKey}");
 
             GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(
                 UIPrefabPath.GetUIPrefabPath("LoadingPanel"),
@@ -51,7 +52,7 @@ namespace Game.GameRuntime.GameSceneManager.Component
                     callBack = _ =>
                     {
                         // 进度条已开：切场禁止再主控 BlackPanel
-                        LoadScene(sceneName, null, false);
+                        LoadScene(sceneName, null, false, enterPosKey);
                     }
                 });
         }
@@ -61,13 +62,15 @@ namespace Game.GameRuntime.GameSceneManager.Component
         /// </summary>
         /// <param name="sceneName">场景名</param>
         /// <param name="stayAction">黑幕完全打开时执行</param>
-        public void LoadScene(string sceneName, Action stayAction = null, bool blackFade=true)
+        /// <param name="blackFade">是否黑幕转场</param>
+        /// <param name="enterPosKey">可选 EnterPos 键（E3′）；空=真实场景名</param>
+        public void LoadScene(string sceneName, Action stayAction = null, bool blackFade=true, string enterPosKey = null)
         {
             // 0722 章末被跳过溯源：统一换场入口打栈，过滤 Console「SceneLoad」即可看到真正调用方
             // （正规进村应先有 [MapSelect]；若无 MapSelect 却有本日志 → R7 后门）
             // 替代方案：只在进 Village_KenMuNi1 时打日志——覆盖面窄，漏掉其它误跳，故入口全量记录。
             Debug.Log(
-                $"[SceneLoad] scene={sceneName} blackFade={blackFade} from={gameObject.name}\n" +
+                $"[SceneLoad] scene={sceneName} blackFade={blackFade} enterPosKey={enterPosKey} from={gameObject.name}\n" +
                 UnityEngine.StackTraceUtility.ExtractStackTrace());
 
             onStartLoadingSceneEvent?.Invoke();
@@ -124,7 +127,8 @@ namespace Game.GameRuntime.GameSceneManager.Component
                             // 加载场景
                             GameManager.GetGMComponent<ChangeSceneComponentGM>().LoadScene(new LoadSceneArgs()
                             {
-                                sceneName = sceneName
+                                sceneName = sceneName,
+                                enterPosKey = enterPosKey
                             });
                         }
                     },
@@ -147,7 +151,8 @@ namespace Game.GameRuntime.GameSceneManager.Component
                 // 加载场景
                 GameManager.GetGMComponent<ChangeSceneComponentGM>().LoadScene(new LoadSceneArgs()
                 {
-                    sceneName = sceneName
+                    sceneName = sceneName,
+                    enterPosKey = enterPosKey
                 });
             }
             
