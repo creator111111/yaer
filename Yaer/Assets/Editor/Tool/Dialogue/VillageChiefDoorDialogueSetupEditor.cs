@@ -262,6 +262,8 @@ namespace EditorC.Tool.Dialogue
             PrefabUtility.SaveAsPrefabAsset(prefabRoot, TargetPrefabPath);
             var refPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(TargetPrefabPath);
 
+            // 产品（0902）：门口要「空框 → 首句再出 Mask」，禁止照搬 KenMuNiStart 预亮。
+            // 替代方案：仅手改 Prefab BB；但 Setup 拷壳+重建图会回潮 true，故须在此钉死 false。
             var prelude = new DialoguePreludeOptions
             {
                 FadeDialogueUI = true,
@@ -269,7 +271,8 @@ namespace EditorC.Tool.Dialogue
                 RestoreFightingPanelOnEnd = false,
                 FadePortraitCanvasGroups = true,
                 PortraitReferencePrefab = refPrefab,
-                PreludeFadeDuration = 1.0f
+                PreludeFadeDuration = 1.0f,
+                PrepareMaskAvatarOnFadeIn = false
             };
 
             var tree = DialogueCsvGraphBuilder.TryBuild(

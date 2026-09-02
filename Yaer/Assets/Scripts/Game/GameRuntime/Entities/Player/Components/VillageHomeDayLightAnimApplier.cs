@@ -27,8 +27,13 @@ namespace Game.GameRuntime.Entities.Player.Components
         private const string LogTag = "[VillageHomeDayLight]";
 
         /// <summary>
-        /// Unity 场景文件名白名单。House4 现网场景文件可能缺失，仍暂留占位；45 已接通进屋。
+        /// Unity 场景文件名白名单（村民家室内光亮）。House4 现网场景文件可能缺失，仍暂留占位；45 已接通进屋。
+        /// 0902：<see cref="SceneName.Village_Chief_House"/> 算村民家光亮（自由移动 Idle/Walk/Bink → *_DayLight）。
         /// 判断只用 <see cref="SceneManager.GetActiveScene"/>.name，不用 GSM 的 nowSceneName。
+        /// <para>
+        /// 禁止：用 Indoor / <c>!isFightingScene</c> 当总开关（龙宫也会中招）；
+        /// 禁止把 <c>Village_Chief_House_Door</c>（仅 EnterPos 键）或龙宫 <c>HomeScene1/2</c>、村街写入本名单。
+        /// </para>
         /// </summary>
         private static readonly HashSet<string> VillageHomeSceneNames = new HashSet<string>
         {
@@ -37,6 +42,8 @@ namespace Game.GameRuntime.Entities.Player.Components
             SceneName.Village_HomeScene23,
             SceneName.Village_House4,
             SceneName.Village_HomeScene45,
+            // 村长家室内自由移动 = 村民家光亮（0902 F1）；非 Combat、非续聊涂层
+            SceneName.Village_Chief_House,
         };
 
         /// <summary>

@@ -14,15 +14,15 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
     /// <summary>
     /// 村长家门口初次对话：靠近 <c>Npc_Chief</c> → 系统 BlackPanel 全黑 →
     /// 启用女二侧面涂层 → TriggerStory → 壳就绪 HideFade；对白结束关侧面，
-    /// 再经 LoadingPanel 进 <see cref="SceneName.Village_Chief_House"/>。
+    /// 再经日常黑幕 <see cref="LoadSceneComponentGSM.LoadScene"/> 进
+    /// <see cref="SceneName.Village_Chief_House"/>。
     /// <para>
-    /// 0831：靠近黑幕只服务插层+三人戏；进屋另开 Loading，禁止用 BlackPanel 当进屋主表现。
-    /// 侧面 = 世界 SR（SceneObject）；与 UI <c>GushaPainting</c> / Mask 正脸职责分离。
+    /// 0902 产品改口：日常进屋用 BlackPanel；LoadingPanel 仅留给时间跳转。
+    /// 推翻 0831「进屋=蛋糕读条」。侧面 = 世界 SR（SceneObject）；与 UI 正脸分离。
     /// </para>
     /// <para>
-    /// 替代方案：图末 <c>LoadSceneTaskAction</c>（现网无 Loading，勿裸用）；
-    /// 对白结束常驻侧面——关 <see cref="hideSideOnStoryEnd"/>；
-    /// 仅解锁门仍点 E——产品要自动故否。
+    /// 替代方案：再开 <c>LoadSceneWithLoadingPanel</c>（产品否，勿回潮）；
+    /// 图末 <c>LoadSceneTaskAction</c>；对白结束常驻侧面——关 <see cref="hideSideOnStoryEnd"/>。
     /// </para>
     /// </summary>
     public class ChiefNearDoorStoryTrigger : SimpleStoryTrigger
@@ -59,8 +59,8 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
         [SerializeField]
         private bool hideSideOnStoryEnd = true;
 
-        [Header("对白结束 → 进屋（Loading）")]
-        [Tooltip("门口初次对话结束后自动 Loading 进村长家；与手动 House_Chief 并存。")]
+        [Header("对白结束 → 进屋（黑幕）")]
+        [Tooltip("门口初次对话结束后自动黑幕进村长家；与手动 House_Chief 并存。勿再勾 Loading。")]
         [SerializeField]
         private bool loadChiefHouseOnStoryEnd = true;
 
@@ -225,8 +225,10 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
         }
 
         /// <summary>
-        /// L2：对白结束 → LoadingPanel → <c>Village_Chief_House</c>（blackFade:false）。
-        /// 仅当本 Trigger 播的是门口初次对话，且开关开启；勿再 Open BlackPanel。
+        /// 0902 F1：对白结束 → 日常黑幕 <c>LoadScene(Village_Chief_House)</c>（默认 blackFade:true）。
+        /// 仅当本 Trigger 播的是门口初次对话，且开关开启。
+        /// 原因：产品日常进屋不要 LoadingPanel；API <c>LoadSceneWithLoadingPanel</c> 留给时间跳转，勿删。
+        /// 续聊遮罩由村长家 GSM 的 <c>TryDeferBlackFadeForCover</c>（F1′）接手，勿挂 stayAction。
         /// </summary>
         protected override void OnStoryFinished()
         {
@@ -249,14 +251,15 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
             var loadGsm = SceneManager?.GetModule<LoadSceneComponentGSM>();
             if (loadGsm == null)
             {
-                Debug.LogError("[ChiefNearDoor] LoadSceneComponentGSM 缺失，无法 Loading 进屋。", this);
+                Debug.LogError("[ChiefNearDoor] LoadSceneComponentGSM 缺失，无法黑幕进屋。", this);
                 return;
             }
 
             Debug.Log(
-                $"[ChiefNearDoor] 对白结束 → LoadSceneWithLoadingPanel({SceneName.Village_Chief_House})",
+                $"[ChiefNearDoor] 对白结束 → LoadScene({SceneName.Village_Chief_House}) blackFade=true",
                 this);
-            loadGsm.LoadSceneWithLoadingPanel(SceneName.Village_Chief_House);
+            // 默认 blackFade:true → BlackPanel；禁止再走 LoadSceneWithLoadingPanel
+            loadGsm.LoadScene(SceneName.Village_Chief_House);
         }
 
         private void OnStoryShellReady()

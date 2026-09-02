@@ -73,12 +73,13 @@ namespace EditorC.Tool.Dialogue
                 LinkPreludeStep(ref entryNode, ref tailNode, ref previous, node);
             }
 
-            // 3. 对话框 UI 淡入（含 Mask 小头像随条显现）
+            // 3. 对话框 UI 淡入（是否预亮 Mask 由 options.PrepareMaskAvatarOnFadeIn 决定）
             if (options.FadeDialogueUI)
             {
                 var node = CreateDialogueUiFadeNode(
                     tree,
                     options.PreludeFadeDuration,
+                    options.PrepareMaskAvatarOnFadeIn,
                     preludeStepCount,
                     ref preludeIndex);
                 LinkPreludeStep(ref entryNode, ref tailNode, ref previous, node);
@@ -181,9 +182,14 @@ namespace EditorC.Tool.Dialogue
             return node;
         }
 
+        /// <param name="prepareMaskAvatarOnFadeIn">
+        /// true：框淡入前 Apply Mask（KenMuNiStart / Shop 同拍）；
+        /// false：空框，等首句 Statement 再出头像（门口三人戏产品）。
+        /// </param>
         private static ActionNode CreateDialogueUiFadeNode(
             DialogueTree tree,
             float duration,
+            bool prepareMaskAvatarOnFadeIn,
             int preludeStepCount,
             ref int preludeIndex)
         {
@@ -214,20 +220,20 @@ namespace EditorC.Tool.Dialogue
 
             task.EndActonOnAnimationEnd.value = true;
 
-            // 对齐 Head：渐入时 Prepare Mask 小头像，避免框出头像空窗。
+            // 是否预亮：默认 true（ShopHead / KenMuNi）；门口须传 false，禁止硬写 true 回潮
             if (task.PrepareMaskAvatarOnFadeIn == null)
             {
                 task.PrepareMaskAvatarOnFadeIn = new BBParameter<bool>();
             }
 
-            task.PrepareMaskAvatarOnFadeIn.value = true;
+            task.PrepareMaskAvatarOnFadeIn.value = prepareMaskAvatarOnFadeIn;
 
             if (task.MaskAvatarRole == null)
             {
                 task.MaskAvatarRole = new BBParameter<DialogueRoleName>();
             }
 
-            // Head 金样：Role=Yaer(1)；Face=Smug(3)
+            // Head 金样：Role=Yaer(1)；Face=Smug(3)。未勾预亮时不会 Apply，仅作 BB 占位
             task.MaskAvatarRole.value = DialogueRoleName.Yaer;
 
             if (task.MaskAvatarFace == null)

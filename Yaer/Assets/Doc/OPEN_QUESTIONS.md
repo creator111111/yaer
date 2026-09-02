@@ -1505,16 +1505,17 @@
 ## 门口三人立绘对白结束 → Loading 进 Village_Chief_House · 2026-08-31
 
 详见：`Assets/Doc/执行文档/0831/门口三人立绘对白结束_Loading进Village_Chief_House_架构溯源报告.md`  
-**侦探结论**：「树屋外」= **A 村长门口三人戏**（≠ `House_Tree`）；**L2** `ChiefNearDoorStoryTrigger`/`onStoryEnd` → Open `LoadingPanel` → `LoadScene(Village_Chief_House, blackFade:false)`；`House_Chief` **保留**；`LoadSceneTaskAction` 现网无 Loading 勿裸用。
+**侦探结论（0831 当时）**：「树屋外」= **A 村长门口三人戏**；**L2** → LoadingPanel 进屋。  
+**⚠️ 0902 产品改口**：日常进屋改为 **BlackPanel**；Loading 仅时间跳转。见下节「改黑屏切场」。
 
 | ID | 问题 | 决议 / 施工默认 | 状态 |
 |----|------|-----------------|------|
 | Q1 | 「树屋外」含义？ | **A** 村长门口戏 | ✅ |
 | Q2 | 自动进屋后门是否保留？ | **保留** `House_Chief` | ✅ |
 | Q3 | 挂点 L1 vs L2？ | **L2** onStoryEnd | ✅ |
-| Q4 | Loading 时长？ | 现网 LoadingPanel 默认 | ✅ |
-| Q5 | 手动门也勾 ShowLoadingUI？ | **建议勾** | ⏳ |
-| Q6 | Prefab 未好先合 Load？ | 可先合代码；联调等 Prefab | ⏳ |
+| Q4 | 进屋主表现？ | ~~LoadingPanel~~ → **0902 改 BlackPanel** | ♻️ 改口 |
+| Q5 | 手动门 ShowLoadingUI？ | ~~建议勾~~ → **0902 改 false** | ♻️ 改口 |
+| Q6 | Prefab 未好先合 Load？ | 可先合代码；联调等 Prefab | ✅ 已过 |
 
 ---
 
@@ -1550,14 +1551,14 @@
 
 详见：`Assets/Doc/执行文档/0901/Village_门口对白结束_Loading进村长家_自动播继续对话_架构溯源报告.md`  
 施工：`Assets/Doc/施工说明/0901/Village_门口对白结束_Loading进村长家_自动播继续对话_施工说明.md`  
-**侦探结论**：**C1** `Village_Chief_HouseSceneManager.OnEnterScene` + **F1**（门口戏已用 ∧ 续聊未用）→ `TriggerStory("Village_村长家继续对话")`；**P0** 续聊 Prefab 磁盘缺失须 Setup；保留既有 Loading 进屋；≠ 晚宴台本。  
-**施工状态（2026-09-01）**：C1+F1 已挂代码；续聊 Prefab 已 Setup 落盘；Play 验收待用户。
+**侦探结论（0901）**：**C1** `OnEnterScene` + 门闩 → 自动续聊；当时依赖 Loading 盖景。  
+**⚠️ 0902**：进屋改黑幕后，遮罩改为 **BlackPanel + 建议 TryDeferBlackFadeForCover（F1′）**；门闩逻辑保留。见「改黑屏切场」。
 
 | ID | 问题 | 决议 / 施工默认 | 状态 |
 |----|------|-----------------|------|
-| Q1 | 挂点 C1/C2/C3？ | **C1** | ✅ 已施工 |
-| Q2 | 手动 `House_Chief` 是否补播续聊？ | **F1 补播一次**；只要自动链则改 F2 | ⏳ |
-| Q3 | Loading 关→壳 Ready 要二次遮罩？ | 先可接受短露景；穿帮再 A′ | ⏳ |
+| Q1 | 挂点 C1/C2/C3？ | **C1**（0902 可迁到 defer 全黑内） | ✅ 已施工 / ♻️ 时序微调 |
+| Q2 | 手动 `House_Chief` 是否补播续聊？ | **门闩补播一次** | ⏳ |
+| Q3 | 遮罩？ | ~~靠 Loading~~ → **0902 靠 Black / F1′** | ♻️ 改口 |
 | Q4 | 续聊 Prefab 三人立绘？ | **是** | ✅ 已 Setup |
 | Q5 | Prefab Setup 路径？ | 最小复用门口 Setup 改名 | ✅ 已落地菜单 |
 
@@ -1785,3 +1786,87 @@
 | Q6 | 晚宴旗？ | **本期否** | ✅ |
 | Q7 | E3′ 已施工？ | 本戏依赖 | ✅ 上游已有 |
 | Q8 | 转场保持对白壳？ | **倾向保持** | ✅ Action 不关壳 |
+
+---
+
+## Village_村长家门口初次对话 · 框出时空头像 · 2026-09-02
+
+详见：`Assets/Doc/执行文档/0902/Village_村长家门口初次对话_框出时空头像_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0902/Village_村长家门口初次对话_框出时空头像_施工说明.md`  
+**侦探结论**：**H1 成立**。门口 Prefab 框 FadeIn 勾了 `PrepareMaskAvatarOnFadeIn=true`（Yaer/Smug），与清字同拍 → 空字却有雅儿 Mask；首句实为古莎「奶奶。」Happy。施工默认 **F1**：仅门口关预亮；**禁止**动 KenMuNiStart「框+头像同拍」。H2/H3/H4 非主因。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 框出是否允许预亮小头像？ | **否**；空框 → 首句再出 | ✅ 产品钉死 |
+| Q2 | 根因？ | **PrepareMaskAvatarOnFadeIn**（非 Portrait / 非 SetDefault Smile） | ✅ 侦探已拍板 |
+| Q3 | 方案？ | **F1** 门口 Prefab 关预亮；F2 仅兜底 | ✅ 已施工 |
+| Q4 | KenMuNiStart 预亮？ | **保留** | ✅ |
+| Q5 | Setup 工具是否会回潮写预亮=true？ | Door Setup 钉 `PrepareMaskAvatarOnFadeIn=false`；Prelude options 默认仍 true | ✅ 已施工核对 |
+
+---
+
+## Village · 门口进村长家改黑屏切场 · 2026-09-02
+
+详见：`Assets/Doc/执行文档/0902/Village_门口进村长家_改黑屏切场_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0902/Village_门口进村长家_改黑屏切场_施工说明.md`  
+**侦探结论**：推翻 0831「进屋=Loading」。**H1+H2**：自动 `LoadSceneWithLoadingPanel` + `House_Chief.ShowLoadingUI=1`。施工 **F1+F2** → 日常 `LoadScene` 黑幕；**保留**续聊门闩；**H3** 黑幕淡出后才 `OnEnterScene` → 推荐同批 **F1′** `TryDeferBlackFadeForCover` 全黑 Trigger。Loading API 留给时间跳转，勿删。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 进屋主表现？ | **BlackPanel**（非蛋糕读条） | ✅ 产品钉死 |
+| Q2 | Loading 留给谁？ | **仅时间跳转**；日常进门不算 | ✅ |
+| Q3 | 自动进屋改法？ | **F1** `LoadScene(Chief_House)` | ✅ 已施工 |
+| Q4 | 手动 House_Chief？ | **F2** ShowLoadingUI=false | ✅ 已施工 |
+| Q5 | 续聊？ | **保留**门闩；遮罩 **F1′** defer | ✅ 已施工 |
+| Q6 | 删 LoadSceneWithLoadingPanel？ | **否** | ✅ |
+| Q7 | 其它场景已勾读条门？ | 本期不扫；另案 | ⏳ 可选 |
+
+---
+
+## Village_村长家继续对话 · 开场分层淡入对齐门口 · 2026-09-02
+
+详见：`Assets/Doc/执行文档/0902/Village_村长家继续对话_开场分层淡入对齐门口_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0902/Village_村长家继续对话_开场分层淡入对齐门口_施工说明.md`  
+**侦探结论**：续聊与门口 **前奏图头同构**（非缺节点）。硬切主因 **H1b/H4**：`TryDeferBlackFadeForCover` 在 `onStoryTriggered` 后 0.1s 揭换场黑幕，但 `StartDialogue` 仍 `Yield+Instantiate`，先露空房再齐活。另续聊 **PrepareMask=true** 须关。推荐 **T1′**（全黑内 alpha=0 备好再揭）+ **T3**；本期不做结束淡出；禁止整壳覆盖/Loading。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 缺前奏节点？ | **否**；同构 | ✅ |
+| Q2 | 硬切主因？ | **揭黑早于树就绪**（H1b/H4） | ✅ |
+| Q3 | 方案？ | **T1′ + T3** | ✅ 已施工 |
+| Q4 | 续聊 PrepareMask？ | **false**（对齐门口空框） | ✅ 已施工 |
+| Q5 | 本期结束淡出？ | **否**（门口图亦无；换古莎另案） | ✅ |
+| Q6 | 整 Prefab 覆盖门口？ | **否**（保 Tips） | ✅ |
+| Q7 | 二次对话专用黑幕（T1）？ | T1′ 优先；验收不够再上 | ⏳ 验收决定 |
+
+---
+
+## Village_Chief_House · 续聊战斗待机与室内主角显隐 · 2026-09-02
+
+详见：`Assets/Doc/执行文档/0902/Village_Chief_House_续聊战斗待机与室内主角显隐_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0902/Village_Chief_House_续聊战斗待机与室内主角显隐_施工说明.md`  
+**侦探结论**：载体 **A** 合层预置「雅儿战斗待机」（勿 B 切真 Combat）。开场 **S1** 全黑内关玩家 `SpriteRenderer` + 亮待机；结束 **扩展**既有 `OnBlackFullyShownForGushaSwap` 同一次黑幕关战斗待机+古莎待机、恢复主角；**默认仍开**古莎动画合层。有 Combat Idle 帧、**无**现成待机 Prefab → Setup/美术补壳；场景拆包合层须双写。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 结束仍开古莎动画合层？ | **是**（默认） | ✅ 已施工 |
+| Q2 | 待机帧选型？ | **铠甲基本无** 第 1 帧；可选跟存档头饰另案 | ⏳ 美术确认 |
+| Q3 | 单帧 vs Animator？ | **单帧 SR 先** | ✅ 已施工 |
+| Q4 | 门口初次同套？ | **否** | ✅ |
+| Q5 | 玩家显隐方式？ | **SR.enabled**；禁 HideEntity/整根关 | ✅ 已施工 |
+| Q6 | 合层写哪？ | 场景拆包 + Prefab 资产双写（Setup 菜单） | ⏳ 须 Unity 跑 Setup |
+
+---
+
+## Village_Chief_House · 自由移动光亮 DayLight · 2026-09-02
+
+详见：`Assets/Doc/执行文档/0902/Village_Chief_House_自由移动光亮DayLight_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0902/Village_Chief_House_自由移动光亮DayLight_施工说明.md`  
+**侦探结论**：**H1**——`VillageHomeDayLightAnimApplier` 白名单无 `Village_Chief_House`，进房 Home 暗版。产品钉死村长家算村民家光亮。施工 **F1** 加白名单；非 Combat；龙宫/村街勿进名单。与续聊战斗涂层解耦：自由移动还控后仍须 DayLight Home。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 村长家算不算 DayLight 白名单？ | **算** | ✅ 产品钉死 |
+| Q2 | 方案？ | **F1** 加 `Village_Chief_House` | ✅ 已施工 |
+| Q3 | 龙宫 / 村街？ | **不加** | ✅ |
+| Q4 | 改状态名 / 方案 E？ | **否** | ✅ |
