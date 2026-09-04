@@ -916,6 +916,7 @@
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Resource\ReadWritePathType.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Component\CldController\CldControllerComponent.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\Monster\BossMogut\BossMogutRuntimeController.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_Shop\Village_ShopSceneManager.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopDebugLogger.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\StoryTrigger\WestRappRoadBattleStory.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\Download\DownloadStartEventArgs.cs" />
@@ -1247,7 +1248,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\GameSceneManager\Scene\Village_Shop\Village_ShopSceneManager.cs" />
     <None Include="Assets\GameRes\Config\MonsterConfig\MonsterConfig.json" />
     <None Include="Assets\GameRes\Config\AchievementConfig\AchievementConfig.json" />
     <None Include="Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.xml" />
