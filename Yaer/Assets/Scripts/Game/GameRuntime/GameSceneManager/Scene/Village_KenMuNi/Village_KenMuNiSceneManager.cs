@@ -2,6 +2,7 @@ using System;
 using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.Archive.ArchiveDataClass;
+using Game.GameMgr.Component.Archive.ArchiveDataClass.Date;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Scene;
 using Game.GameMgr.Component.ChangeScene;
 using Game.GameMgr.Component.UI;
@@ -195,28 +196,41 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
         }
 
         /// <summary>
-        /// 楼梯从村长家上楼：落 2 楼后把生效 WalkArea 切到 <c>VillageWalkArea2</c>（W1）。
-        /// 1 楼大门键 <see cref="SceneName.Village_Chief_House_Door"/> 不切，避免套错多边形。
+        /// 楼梯从村长家上楼：先扩纵深 + 绑 <c>VillageWalkArea2</c>，再权威落到 2f ExitFrom（W1 + 0903 F_Order）。
+        /// 1 楼大门键 <see cref="SceneName.Village_Chief_House_Door"/> 不切，走 <see cref="BaseGameSceneManager.SetPlayerPos"/>。
         /// <para>禁止改 WalkArea2 点集/尺寸。</para>
+        /// <para>
+        /// 原因（0903 DepthGap）：若先 <c>base.SetPos</c>，Prefab <c>depthYMax=8</c> 会削掉 Y≈41；
+        /// 即便场景已摆标尺，Flush 仍可能用 1 楼 WalkArea ClosestPoint 把人往下吸，再与 WalkArea2 撕扯。
+        /// 替代方案：只抬 Prefab max——会放开所有未摆标尺村场景，否决。
+        /// </para>
         /// </summary>
         protected override void SetPlayerPos(PlayerLogic playerLogic)
         {
+            if (TryApplyChiefStairsLandingToTree2f(playerLogic))
+            {
+                return;
+            }
+
             base.SetPlayerPos(playerLogic);
-            TryBindVillageWalkArea2AfterChiefStairsLanding(playerLogic);
         }
 
-        private void TryBindVillageWalkArea2AfterChiefStairsLanding(PlayerLogic playerLogic)
+        /// <summary>
+        /// 楼梯键路径：F_D2 按 WalkArea2.bounds 抬 Max → Override → Teleport ExitFrom → Flush。
+        /// </summary>
+        /// <returns>true=已处理落点；false=非楼梯键或前置失败（调用方走 base）。</returns>
+        private bool TryApplyChiefStairsLandingToTree2f(PlayerLogic playerLogic)
         {
             if (playerLogic == null)
             {
-                return;
+                return false;
             }
 
             var last = GameManager.GetGMComponent<ChangeSceneComponentGM>()?.LastSceneName;
             // 仅楼梯路径：真实场景名 Village_Chief_House（EnterPos→2f）；大门键不绑 2
             if (last != SceneName.Village_Chief_House)
             {
-                return;
+                return false;
             }
 
             var town = playerLogic.componentSystem != null
@@ -225,15 +239,86 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
             if (town == null)
             {
                 Debug.LogWarning("[Village2f] 无 TownPlayerLocomotion，无法绑 VillageWalkArea2");
-                return;
+                return false;
             }
 
+            PolygonCollider2D poly = FindVillageWalkArea2Polygon();
+            if (poly == null)
+            {
+                return false;
+            }
+
+            // F_D2：按多边形世界包围盒抬 Max（只升不降 Min），防漏摆场景标尺再炸
+            ExpandDepthYMaxForWalkArea2(town, poly);
+
+            // F_Order：先 Override，再权威 Teleport（首帧 Flush 只夹 WalkArea2）
+            town.SetVillageWalkAreaOverride(poly);
+            Debug.Log("[Village2f] 已 SetVillageWalkAreaOverride(VillageWalkArea2)，落点后不应用 1 楼 WalkArea");
+
+            if (!TryTeleportToEnterPosMatchingLastScene(playerLogic, town, last))
+            {
+                // EnterPos 缺失时仍保留 Override，回退 base 落点以免完全不出生
+                Debug.LogWarning("[Village2f] 未命中 EnterPos，Override 已绑，回退 base.SetPlayerPos");
+                base.SetPlayerPos(playerLogic);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// F_D2：用 WalkArea2 世界 bounds 扩展纵深 Max；Min 保持当前（场景标尺或 Prefab）。
+        /// ε 略高于上沿，避免脚贴边被 Clamp 削尖。
+        /// </summary>
+        private static void ExpandDepthYMaxForWalkArea2(TownPlayerLocomotion town, PolygonCollider2D poly)
+        {
+            const float maxYEpsilon = 0.5f;
+            float minY = town.DebugDepthYMinWorld;
+            float polyMaxY = poly.bounds.max.y;
+            float raisedMax = Mathf.Max(town.DebugDepthYMaxWorld, polyMaxY + maxYEpsilon);
+            town.SetDepthYBounds(minY, raisedMax);
+            Debug.Log(
+                "[Village2f] depthYMax→" + raisedMax.ToString("F2")
+                + "（poly.bounds.max.y=" + polyMaxY.ToString("F2")
+                + "，min 保持 " + minY.ToString("F2") + "）");
+        }
+
+        /// <summary>按 LastScene 命中 EnterPos：权威 Teleport + ThroughDate（对齐 base.SetPlayerPos）。</summary>
+        private bool TryTeleportToEnterPosMatchingLastScene(
+            PlayerLogic playerLogic, TownPlayerLocomotion town, string lastSceneName)
+        {
+            if (EnterPosConfig == null || EnterPosConfig.Count == 0)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < EnterPosConfig.Count; i++)
+            {
+                EnterPos enterPos = EnterPosConfig[i];
+                if (enterPos == null || enterPos.lastScene != lastSceneName || enterPos.pos == null)
+                {
+                    continue;
+                }
+
+                Vector3 p = enterPos.pos.position;
+                // thenFlush=true：权威旗置位后按已 Override 的 WalkArea2 夹区
+                town.TeleportAuthoritativeVillagePos(new Vector2(p.x, p.y), thenFlush: true);
+                GetArchiveData<DateData>().ThroughDate(
+                    enterPos.DatePass.x, enterPos.DatePass.y, enterPos.DatePass.z);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>查找现网 <c>VillageWalkArea2</c> 多边形；禁止新建/改形状替代。</summary>
+        private PolygonCollider2D FindVillageWalkArea2Polygon()
+        {
             UnityEngine.SceneManagement.Scene scene = SceneManager.GetActiveScene();
             Transform named = FindNamedTransformInScene(scene, "VillageWalkArea2");
             if (named == null)
             {
                 Debug.LogError("[Village2f] 未找到 VillageWalkArea2（禁止新建/改形状替代）");
-                return;
+                return null;
             }
 
             var poly = named.GetComponent<PolygonCollider2D>();
@@ -245,12 +330,9 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
             if (poly == null)
             {
                 Debug.LogError("[Village2f] VillageWalkArea2 无 PolygonCollider2D");
-                return;
             }
 
-            town.SetVillageWalkAreaOverride(poly);
-            town.FlushAuthoritativeVillageTransformAfterSceneDepthInject();
-            Debug.Log("[Village2f] 已 SetVillageWalkAreaOverride(VillageWalkArea2)，落点后不应用 1 楼 WalkArea");
+            return poly;
         }
 
         /// <summary>仅在指定 Scene 根下按名查找（与 PlayerLogic / Town 同源策略）。</summary>

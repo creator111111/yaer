@@ -1736,17 +1736,19 @@
 详见：`Assets/Doc/执行文档/0901/Village_Chief_House_楼梯上楼换场巨树2楼_架构溯源报告.md`  
 施工：`Assets/Doc/施工说明/0901/Village_Chief_House_楼梯上楼换场巨树2楼_施工说明.md`  
 **侦探结论**：EnterPos `Village_Chief_House`→`ExitFrom_HomeSceneChief2f` 已配对；缺楼梯顶门 + **W1** 切 `VillageWalkArea2`（禁止改其形状）。1 楼 `LeftDoor` 冲突用 **E3′**（`enterPosKey` + 新建 1f `ExitFrom_HomeSceneChief`）。Trigger 走进即切；黑幕对齐 LeftDoor；回程本期不做。依赖室内划区 A1。  
-**施工状态（2026-09-01）**：enterPosKey / W1 Override / 1f ExitFrom+EnterPos / LeftDoor 键已落地；楼梯门靠 Setup 菜单摆 `StairsDoor_ToTree2f`（须开 Unity 跑一次）。
+**施工状态（2026-09-01）**：enterPosKey / W1 Override / 1f ExitFrom+EnterPos / LeftDoor 键已落地；楼梯门靠 Setup 菜单摆 `StairsDoor_ToTree2f`（须开 Unity 跑一次）。  
+**验收（2026-09-03）**：现网曾卡 2 楼 —— 根因见 **0903 DepthGap**；**已施工补标尺 + F_D2/F_Order**，请重验「2 楼可达+W1」。
 
 | ID | 问题 | 决议 / 施工默认 | 状态 |
 |----|------|-----------------|------|
 | Q1 | 上楼 TriggerWhenMoveIn？ | **true** | ✅ 已施工 |
 | Q2 | 1 楼门 vs 2 楼落点？ | **E3′** | ✅ 已施工 |
-| Q3 | WalkArea2 生效？ | **W1**；不改形状 | ✅ 已施工 |
+| Q3 | WalkArea2 生效？ | **W1**；不改形状 | ✅ 代码已施工；**联调见 0903 重验** |
 | Q4 | 黑幕 / Loading？ | **黑幕** | ✅ |
 | Q5 | 2 楼回程进村长家？ | 本期不做 | ⏳ |
 | Q6 | 同场景下树切回 WalkArea？ | 最小：仅进 2f 绑 2 | ✅ |
 | Q7 | 室内 A1 可玩？ | 依赖前案 | ⏳ 验收 |
+| Q8 | 2 楼可达联调？ | DepthGap 已补 F_D1/D2/Order | ⏳ 待重验 |
 
 ---
 
@@ -1755,7 +1757,8 @@
 详见：`Assets/Doc/执行文档/0901/Village_KenMuNi1_巨树2楼WalkArea2宝箱HpMp×3_架构溯源报告.md`  
 施工：`Assets/Doc/施工说明/0901/Village_KenMuNi1_巨树2楼WalkArea2宝箱HpMp×3_施工说明.md`  
 **侦探结论**：**B1** 仿 WestRapp；新建 `VillageKenMuNi1HpMpBox`（默认 3/3，无 Story）+ `VillageKenMuNi1Data.tree2fHpMpBoxOpened`；实例化 `Prefabs/Box.prefab` 放 WalkArea2 内（建议近 ExitFrom 错开）；`GetHpBall`→`GetMpBall`；**禁止**改 WalkArea2、禁止挂西境脚本。  
-**施工状态（2026-09-01）**：Data + 村脚本已落地；场景箱靠菜单 `Setup KenMuNi1 巨树2楼 WalkArea2 宝箱 HpMp×3`（或 request 自动跑）。
+**施工状态（2026-09-01）**：Data + 村脚本已落地；场景箱靠菜单 `Setup KenMuNi1 巨树2楼 WalkArea2 宝箱 HpMp×3`（或 request 自动跑）。  
+**验收（2026-09-03）**：磁盘 **已有** `Objects/Tree2fHpMpBox@(-152,41.2)` 且∈WalkArea2——见 **0903 宝箱看不见验收排查**；「看不见」≠未摆。
 
 | ID | 问题 | 决议 / 施工默认 | 状态 |
 |----|------|-----------------|------|
@@ -1765,7 +1768,79 @@
 | Q4 | 存档？ | **VillageKenMuNi1Data** | ✅ 已施工 |
 | Q5 | 对白？ | **无** | ✅ |
 | Q6 | 开箱强制 SaveBag？ | 否（对齐 West） | ⏳ 产品另开 |
-| Q7 | 上游 2 楼可达+W1？ | 依赖 | ⏳ 验收 |
+| Q7 | 上游 2 楼可达+W1？ | 依赖 | ⏳ **0903 DepthGap 已施工**；待重验 |
+| Q8 | 场景箱可见/可互动？ | 磁盘已摆；**V1 Sorting=50** 已施工 | ⏳ Play 开箱待重验 |
+
+---
+
+## Village_KenMuNi1 · 巨树 2 楼 WalkArea2 宝箱看不见未摆放 · 2026-09-03
+
+详见：`Assets/Doc/执行文档/0903/Village_KenMuNi1_巨树2楼WalkArea2宝箱看不见未摆放_验收排查报告.md`  
+提示词：`Assets/Doc/提示词/0903/Village_KenMuNi1_巨树2楼WalkArea2宝箱看不见未摆放_验收排查提示词.md`  
+施工：`Assets/Doc/施工说明/0903/Village_KenMuNi1_巨树2楼WalkArea2宝箱看不见未摆放_施工说明.md`  
+**侦探结论**：**非未摆**。磁盘已有 `Tree2fHpMpBox` @ `(-152,41.2)`，PIP∈WalkArea2，村脚本/sceneObjs/去 HomeScene2Box 齐全。用户「看不见」优先 **H0 本机不同步 ∪ H6 视口/卡住误判（箱在 ExitFrom 东侧）∪ 可选 H1 Sorting**。推荐先 Hierarchy 搜+Frame；无箱再 V2 Setup；Game 被挡再 V1 抬 Order。**严禁**改 WalkArea2 / 挂西境箱。与卡住案解耦。  
+**施工状态（2026-09-03）**：**V1** 实例 `SortingOrder=50` + Setup 幂等写入已落地；本机无箱仍跑 V2 Setup。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 磁盘是否已摆？ | **是** @(-152,41.2) | ✅ 本报告 |
+| Q2 | 「看不见」主因？ | **H0∪H6（±H1）** | ✅ |
+| Q3 | 是否改 WalkArea2？ | **否** | ✅ |
+| Q4 | 施工？ | **V1 Sorting=50**；无箱→V2；开箱 Play 待重验 | ✅ V1 已施工 |
+| Q5 | 与卡住案？ | **解耦**；走不到≠未摆 | ✅ |
+
+---
+
+## Village_KenMuNi1 · 上楼巨树 2 楼 WalkArea2 卡住不动 · 2026-09-03
+
+详见：`Assets/Doc/执行文档/0903/Village_KenMuNi1_村长家上楼巨树2楼_WalkArea2卡住不动_架构溯源报告.md`  
+提示词：`Assets/Doc/提示词/0903/Village_KenMuNi1_村长家上楼巨树2楼_WalkArea2卡住不动_架构侦探提示词.md`  
+施工：`Assets/Doc/施工说明/0903/Village_KenMuNi1_村长家上楼巨树2楼_WalkArea2卡住不动_施工说明.md`  
+**侦探结论**：**主因 DepthGap**：KenMuNi1 **无** `VillageDepthY_Min/Max`，Prefab `depthYMaxWorld=8`，ExitFrom/WalkArea2 在 Y≈41；权威 Teleport/每帧 Clamp 与 W1 ClosestPoint **撕扯** → 未稳 ExitFrom、区里卡死。W1/门/EnterPos **非缺席**；ExitFrom **在** WalkArea2 形内。推荐 **F_D1** 摆标尺（Max≥45）+ **F_D2** W1 按 bounds 抬 Max；可选先 Override 再 Teleport。**严禁**改 WalkArea2 形状 / 关 ClosestPoint。  
+**施工状态（2026-09-03）**：F_D1（场景 Min=−20 / Max=46 + Editor 菜单）+ F_D2（W1 按 poly.bounds 抬 Max）+ F_Order（先 Override 再 Teleport）已落地。  
+**验收复测（2026-09-03）**：见 `执行文档/0903/Village_KenMuNi1_巨树2楼仍卡住_WalkArea2嫌疑_验收排查报告.md`——**WalkArea2 形状不是主因**；磁盘标尺/楼梯路径已在；用户「仍卡」优先查本机 DepthY + Console `[Village2f]`（待 Play）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 主因？ | **DepthGap（maxY=8 vs Y≈41）+ WalkArea2 撕扯** | ✅ 侦探拍板 |
+| Q2 | 方案？ | **F_D1 + F_D2 + F_Order** | ✅ 已施工 |
+| Q3 | 是否改 WalkArea2 形状？ | **否** | ✅；验收复申 **否** |
+| Q4 | W1 是否重写？ | **否**；保留 Override，只补标尺/时序 | ✅ |
+| Q5 | 障碍 H4？ | 标尺 Play 通过后再复测 | ⏳ |
+| Q6 | 修后仍卡？ | 磁盘施工在；先本机 A1/A2/A3 Play | ⏳ 用户自检 |
+
+---
+
+## Village_KenMuNi1 · 巨树 2 楼仍卡住 WalkArea2 嫌疑 · 2026-09-03
+
+详见：`Assets/Doc/执行文档/0903/Village_KenMuNi1_巨树2楼仍卡住_WalkArea2嫌疑_验收排查报告.md`  
+提示词：`Assets/Doc/提示词/0903/Village_KenMuNi1_巨树2楼仍卡住_WalkArea2嫌疑_验收排查提示词.md`  
+**验收结论**：**不是 WalkArea2 多边形坏了**。仓库已有 `VillageDepthY_Min=-20` / `Max=46`；楼梯 `SetPlayerPos` 有 F_D2+Override+Teleport；WalkArea2 点集未改；ExitFrom≈`(-157.65,41.66)` 仍 PIP∈区。用户仍卡 → 先 Hierarchy/Console 证本机生效；日志齐全仍卡再查 A4。**禁止改 WalkArea2 形状。**
+
+| ID | 问题 | 决议 | 状态 |
+|----|------|------|------|
+| Q1 | 是 WalkArea2 形状问题？ | **否** | ✅ |
+| Q2 | 磁盘施工是否在？ | **是**（F_D1/D2/Order） | ✅ |
+| Q3 | 用户仍卡下一步？ | 本机 DepthY + `[Village2f]` 自检 | ⏳ Play |
+| Q4 | 可否改多边形？ | **否** | ✅ |
+
+---
+
+## Village_KenMuNi1 · 巨树 2 楼进层对白与开箱 Tips · 2026-09-03
+
+详见：`Assets/Doc/执行文档/0903/Village_KenMuNi1_巨树2楼_进层对白与开箱Tips_架构溯源报告.md`  
+提示词：`Assets/Doc/提示词/0903/Village_KenMuNi1_巨树2楼_进层对白与开箱Tips_架构侦探提示词.md`  
+**侦探结论**：Tree/CSV **已有**；缺 **Dialogue Prefab×2**、缺进层挂点、开箱图无发奖/开箱节点；箱仍 `useStoryOnOpen=0` 直发。拍板 **E1**（`LastScene==Village_Chief_House` + `StoryTriggerCount` 单次播进层）+ **B1**（`useStoryOnOpen=true` + ExecuteFunction→`OnOpenBox`/`OnGetHpMp`）。Tips 复用 GetHpBall→GetMpBall，**否**×3 专图；存档仍 `tree2fHpMpBoxOpened`。大门路径不播进层；同场景爬楼另案。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 进层触发？ | **E1** GSM 楼梯键 | ✅ 侦探拍板；待施工 |
+| Q2 | 开箱？ | **B1** Story + ExecuteFunction | ✅ 待施工 |
+| Q3 | Prefab 壳？ | **须新建两壳** | 待施工 |
+| Q4 | 单次键？ | 进层=戏名；开箱=`tree2fHpMpBoxOpened` | ✅ |
+| Q5 | 非楼梯进 2 楼也播？ | **本期否**（仅 Chief 楼梯） | ✅ 默认 |
+| Q6 | Tips×3 专图？ | **否** | ✅ |
+| Q7 | HasRunningStory 跳过？ | 施工须防「永跳」 | ⏳ |
 
 ---
 
