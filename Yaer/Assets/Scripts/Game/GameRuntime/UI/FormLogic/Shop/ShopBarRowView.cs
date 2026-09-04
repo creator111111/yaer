@@ -11,8 +11,8 @@ using UnityEditor;
 namespace Game.GameRuntime.UI.FormLogic.Shop
 {
     /// <summary>
-    /// Shop_Bar 单行视图：Editor Bake 写入 Icon / Name / Price 与 baked 序列化字段；
-    /// 运行时 Awake 只读 baked 字段，不再调 Provider / Bind。
+    /// Shop_Bar 单行视图：Editor Bake 写入 Icon / Name(名图) / Price 与 baked 序列化字段；
+    /// 运行时 Awake 只读 baked 字段；Play 进店 / 切语言时按当前语 ResolveShopNameSprite 贴 Name。
     /// 挂在 Shop_Bar.prefab 根节点；ItemId / Price 供合计与阶段四交易读取。
     /// </summary>
     [DisallowMultipleComponent]
@@ -24,8 +24,8 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
         [Header("可选：Inspector 预绑，留空则 Awake 时 Find")]
         [SerializeField] private Image iconImage;
-        [SerializeField] private Text nameText;
-        [SerializeField] private TextMeshProUGUI nameTextTmp;
+        /// <summary>商店名图节点（原 TMP Name，现为 Image）。</summary>
+        [SerializeField] private Image nameImage;
         [SerializeField] private Text priceText;
         [SerializeField] private TextMeshProUGUI priceTextTmp;
 
@@ -42,13 +42,19 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         /// <summary>本行商店单价（买价或卖价，由所在列表决定语义）。</summary>
         public int Price { get; private set; }
 
+        /// <summary>Awake / Bind 已写出行身份后才能用 ItemId 解析名图。</summary>
+        private bool _hasRuntimeIdentity;
+
         private void Awake()
         {
             CacheUiReferences();
             // EB-2：从场景烘焙的序列化字段恢复，不依赖 MainItemDefProvider / 图集异步加载。
             ItemId = bakedItemId;
             Price = bakedPrice;
+            _hasRuntimeIdentity = true;
             ApplyPrice(Price);
+            // SN-7：Play 时按当前语言重贴名图（Bake 仅为中文预览）。
+            RefreshShopNameForLanguage();
         }
 
 #if UNITY_EDITOR
@@ -80,6 +86,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
             ItemId = def.ItemId;
             Price = isBuyRow ? def.BuyPrice : def.SellPrice;
+            _hasRuntimeIdentity = true;
 
             // Fix-I2：Bind 时实时 ResolveIcon，避免 def.Icon 在图集异步加载前被缓存为 null。
             var icon = MainItemDefProvider.ResolveIcon(def.ItemId);
@@ -93,8 +100,21 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                     this);
             }
 
-            ApplyName(def.DisplayName);
+            // 禁止再写 displayName 到 Name；整图路径 + 当前语言。
+            ApplyShopName(MainItemDefProvider.ResolveShopNameSprite(def.ItemId));
             ApplyPrice(Price);
+        }
+
+        /// <summary>
+        /// 按当前游戏语言重刷本行商店名图；切语言 / 进店时幂等调用。
+        /// 原因：Bake 死贴中文预览，Play Resolve 才是真语种。
+        /// 父级 ShopFormLogic.Awake 可能早于本行 Awake：未就绪时回退 bakedItemId。
+        /// </summary>
+        public void RefreshShopNameForLanguage()
+        {
+            CacheUiReferences();
+            var itemId = _hasRuntimeIdentity ? ItemId : bakedItemId;
+            ApplyShopName(MainItemDefProvider.ResolveShopNameSprite(itemId));
         }
 
         private void CacheUiReferences()
@@ -104,14 +124,9 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 iconImage = transform.Find(IconNodeName)?.GetComponent<Image>();
             }
 
-            if (nameText == null && nameTextTmp == null)
+            if (nameImage == null)
             {
-                var nameNode = transform.Find(NameNodeName);
-                if (nameNode != null)
-                {
-                    nameText = nameNode.GetComponent<Text>();
-                    nameTextTmp = nameNode.GetComponent<TextMeshProUGUI>();
-                }
+                nameImage = transform.Find(NameNodeName)?.GetComponent<Image>();
             }
 
             if (priceText == null && priceTextTmp == null)
@@ -141,9 +156,25 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             iconImage.enabled = sprite != null;
         }
 
-        private void ApplyName(string displayName)
+        /// <summary>
+        /// 贴商店名图；sprite=null 时 Image 禁用且不回退写 displayName。
+        /// </summary>
+        public void ApplyShopName(Sprite sprite)
         {
-            SetLabelText(nameText, nameTextTmp, displayName ?? string.Empty);
+            if (nameImage == null)
+            {
+                Debug.LogWarning(
+                    $"[ShopNameSprite] Name 节点缺少 Image（row={name}）；请将 Shop_Bar.Name 换成 Image 后 Bake。",
+                    this);
+                return;
+            }
+
+            nameImage.sprite = sprite;
+            nameImage.enabled = sprite != null;
+            if (sprite == null)
+            {
+                Debug.LogWarning($"[ShopNameSprite] Name 空图：{ItemId}", this);
+            }
         }
 
         /// <summary>优先 UiSpriteNumberDisplay 图片价；无 Display 时回退 Legacy Text（兼容旧场景）。</summary>

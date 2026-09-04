@@ -100,6 +100,14 @@ namespace Game.GameRuntime.Entities.SceneEntities
             {
                 if (storyTriggerCountData.CheckStoryUsed(StoryPrefabName))
                 {
+                    // 0722 验收：存档已记过章末剧情名时，右缘再走进来也不会开章末面板（最常见「没演出」原因）
+                    if (IsChapterEndDebugTarget())
+                    {
+                        Debug.LogWarning(
+                            $"[ChapterEnd] SimpleStoryTrigger 已用过，组件禁用。story={StoryPrefabName} " +
+                            $"go={gameObject.name} path={BuildDebugPath(transform)} " +
+                            $"triggerCount={storyTriggerCountData.GetStoryTriggerCount(StoryPrefabName)}");
+                    }
                     this.enabled = false;
                     InitSomeEventState(StoryPrefabName);
                     return;
@@ -117,6 +125,12 @@ namespace Game.GameRuntime.Entities.SceneEntities
             else if (triggerType == TriggerType.Enter)
             {
                 interactiveComponent.onEnterInteractiveEvent += OnEnterTriggerStory;
+                if (IsChapterEndDebugTarget())
+                {
+                    Debug.Log(
+                        $"[ChapterEnd] SimpleStoryTrigger 已订阅 Enter。story={StoryPrefabName} " +
+                        $"go={gameObject.name} singleUse={SingleUseInArchive}");
+                }
             }
             else
             {
@@ -133,7 +147,17 @@ namespace Game.GameRuntime.Entities.SceneEntities
             {
                 if (!playerLogic.isDead)
                 {
+                    if (IsChapterEndDebugTarget())
+                    {
+                        Debug.Log(
+                            $"[ChapterEnd] Enter 命中，准备 TriggerStory。story={StoryPrefabName} go={gameObject.name}");
+                    }
                     TriggerStory();
+                }
+                else if (IsChapterEndDebugTarget())
+                {
+                    Debug.LogWarning(
+                        $"[ChapterEnd] Enter 命中但玩家已死亡，跳过。story={StoryPrefabName}");
                 }
             }
         }
@@ -145,39 +169,103 @@ namespace Game.GameRuntime.Entities.SceneEntities
         }
 
         /// <summary>
-        /// 若 <see cref="StoryComponentGSM.TriggerStory"/> 返回 true，则订阅 <see cref="StoryComponentGSM.onStoryEnd"/>，
-        /// 结束时在 <see cref="OnStoryFinished"/> 中取消订阅。
-        /// </summary>
-        /// <summary>
         /// 解析本次应播放的对话 prefab 名；子类可覆写以实现按存档/任务状态切对话（如埃吉尔交付线）。
         /// </summary>
         protected virtual string ResolveStoryPrefabName() => StoryPrefabName;
 
+        /// <summary>
+        /// 若 <see cref="StoryComponentGSM.TriggerStory"/> 返回 true，则订阅 <see cref="StoryComponentGSM.onStoryEnd"/>，
+        /// 结束时在 <see cref="OnStoryFinished"/> 中取消订阅。
+        /// </summary>
         /// <remarks>若已有剧情在运行，可能返回 false，此时不会订阅 onStoryEnd。</remarks>
         protected virtual void TriggerStory()
+        {
+            TryStartBoundStory();
+        }
+
+        /// <summary>
+        /// 子类黑幕编排用：在全黑后再调用。成功启动则订阅 onStoryEnd。
+        /// </summary>
+        /// <returns>是否已成功启动对话。</returns>
+        protected bool TryStartBoundStory()
         {
             var storyPrefab = ResolveStoryPrefabName();
             if (string.IsNullOrEmpty(storyPrefab))
             {
-                return;
+                if (IsChapterEndDebugTarget())
+                {
+                    Debug.LogWarning($"[ChapterEnd] TriggerStory 失败：剧情名为空。go={gameObject.name}");
+                }
+                return false;
             }
 
             if (SingleUseInArchive)
             {
                 if (storyTriggerCountData.CheckStoryUsed(storyPrefab))
                 {
-                    return;
+                    if (IsChapterEndDebugTarget())
+                    {
+                        Debug.LogWarning(
+                            $"[ChapterEnd] TriggerStory 跳过：存档已使用。story={storyPrefab}");
+                    }
+                    return false;
                 }
             }
 
             if (storyComponentGSM.TriggerStory(storyPrefab))
             {
+                if (IsChapterEndDebugTarget())
+                {
+                    Debug.Log($"[ChapterEnd] TriggerStory 成功启动。story={storyPrefab}");
+                }
                 storyComponentGSM.onStoryEnd += OnStoryFinished;
+                return true;
             }
+
+            if (IsChapterEndDebugTarget())
+            {
+                // 常见原因：已有其它对话在跑（HasRunningStory）
+                Debug.LogWarning(
+                    $"[ChapterEnd] TriggerStory 被拒绝（可能已有剧情在播）。story={storyPrefab} " +
+                    $"hasRunning={storyComponentGSM.HasRunningStory} " +
+                    $"running={storyComponentGSM.CurrentRunningStoryName}");
+            }
+
+            return false;
         }
 
-        /// <summary>剧情结束：计数并移除 onStoryEnd 订阅。</summary>
-        protected void OnStoryFinished()
+        /// <summary>
+        /// 开黑幕前预检：空名 / 单次已用 / 已有剧情在跑 → false（勿先开黑）。
+        /// </summary>
+        protected bool CanStartStoryNow()
+        {
+            var storyPrefab = ResolveStoryPrefabName();
+            if (string.IsNullOrEmpty(storyPrefab))
+            {
+                return false;
+            }
+
+            if (SingleUseInArchive && storyTriggerCountData.CheckStoryUsed(storyPrefab))
+            {
+                return false;
+            }
+
+            if (storyComponentGSM != null && storyComponentGSM.HasRunningStory)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>供子类订阅壳就绪 / 超时兜底。</summary>
+        protected StoryComponentGSM StoryGsm => storyComponentGSM;
+
+        /// <summary>
+        /// 剧情结束：计数并移除 onStoryEnd 订阅。
+        /// 子类可 <c>override</c> 后 <c>base</c>，再挂切场等收尾（如门口对白 → Loading 进屋）。
+        /// </summary>
+        protected virtual void OnStoryFinished()
         {
             TriggerCountFromInit++;
             storyComponentGSM.onStoryEnd -= OnStoryFinished;
@@ -246,6 +334,30 @@ namespace Game.GameRuntime.Entities.SceneEntities
                 default:
                     break;
             }
+        }
+
+        /// <summary>验收日志用：输出物体层级路径，便于确认是否是 ChapterEndTrigger。</summary>
+        static string BuildDebugPath(Transform t)
+        {
+            var names = new System.Collections.Generic.List<string>();
+            while (t != null)
+            {
+                names.Add(t.name);
+                t = t.parent;
+            }
+            names.Reverse();
+            return string.Join("/", names);
+        }
+
+        /// <summary>仅章末相关触发器打 [ChapterEnd] 日志，避免污染其它 Enter 剧情 Console。</summary>
+        bool IsChapterEndDebugTarget()
+        {
+            if (gameObject.name == "ChapterEndTrigger")
+            {
+                return true;
+            }
+            return !string.IsNullOrEmpty(StoryPrefabName) &&
+                   StoryPrefabName.StartsWith("ChapterEndStory");
         }
     }
 }

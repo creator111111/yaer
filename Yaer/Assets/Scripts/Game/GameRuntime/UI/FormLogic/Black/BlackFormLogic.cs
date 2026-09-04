@@ -8,11 +8,16 @@ namespace Game.GameRuntime.UI.FormLogic.Black
 {
     public class BlackFormLogic : BaseUIFormLogic
     {
+        private BlackFadeComponent blackFadeComponent;
+        private float? pendingShowDuration;
+        private float? pendingHideDuration;
+
         protected internal override void OnInit(object userData)
         {
             base.OnInit(userData);
 
             GetProxy<BlackFormProxy>();
+            blackFadeComponent = componentSystemUI.GetComponent<BlackFadeComponent>();
         }
 
         protected internal override void OnOpen(object userData)
@@ -21,13 +26,24 @@ namespace Game.GameRuntime.UI.FormLogic.Black
 
             if (userData is ShowBlackFormArgs args)
             {
+                pendingShowDuration = args.showDuration;
+                pendingHideDuration = args.hideDuration;
+
+                if (blackFadeComponent != null
+                    && (args.showDuration.HasValue || args.hideDuration.HasValue))
+                {
+                    float show = args.showDuration ?? blackFadeComponent.GetDefaultShowDuration();
+                    float hide = args.hideDuration ?? blackFadeComponent.GetDefaultHideDuration();
+                    blackFadeComponent.SetFadeDurations(show, hide);
+                }
+
                 if (args.showType == BlackFadeType.FadeShow)
                 {
-                    componentSystemUI.GetComponent<BlackFadeComponent>().ShowFade(()=> args.onShowEnd?.Invoke(this));
+                    blackFadeComponent.ShowFade(() => args.onShowEnd?.Invoke(this));
                 }
                 else if (args.showType == BlackFadeType.RawShow)
                 {
-                    componentSystemUI.GetComponent<BlackFadeComponent>().ShowRow(()=> args.onShowEnd?.Invoke(this));
+                    blackFadeComponent.ShowRow(() => args.onShowEnd?.Invoke(this));
                 }
             }
             else
@@ -38,7 +54,26 @@ namespace Game.GameRuntime.UI.FormLogic.Black
 
         public void CloseFormFade(Action action = null)
         {
-            componentSystemUI.GetComponent<BlackFadeComponent>().CloseFormHideFade(UIForm, action);
+            if (blackFadeComponent == null)
+            {
+                action?.Invoke();
+                return;
+            }
+
+            if (pendingHideDuration.HasValue)
+            {
+                blackFadeComponent.SetFadeDurations(
+                    blackFadeComponent.GetCurrentShowDuration(),
+                    pendingHideDuration.Value);
+            }
+
+            blackFadeComponent.CloseFormHideFade(UIForm, () =>
+            {
+                blackFadeComponent.RestoreDefaultFadeDurations();
+                pendingShowDuration = null;
+                pendingHideDuration = null;
+                action?.Invoke();
+            });
         }
 
         public override void PlayerOpenAudio()

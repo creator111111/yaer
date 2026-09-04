@@ -80,5 +80,53 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         {
             if (cameraComponent != null) { cameraComponent.ChangeCameraBoundingArea(collider); }
         }
+
+        /// <summary>
+        /// 透传旧 Framing API（单机改参）；KenMuNi Part3 Zone 主路径已改 Priority，一般勿用。
+        /// 不受 <see cref="isLock"/> 限制。
+        /// </summary>
+        public void SetFramingTransposerDepthFollow(
+            bool followDepthY,
+            float yDamping = 0.7f,
+            float deadZoneHeightWhenOff = 1f,
+            float deadZoneHeightWhenOn = 0.5f,
+            float screenYWhenOn = 0.25f)
+        {
+            if (cameraComponent == null)
+            {
+                return;
+            }
+
+            cameraComponent.SetFramingTransposerDepthFollow(
+                followDepthY, yDamping, deadZoneHeightWhenOff, deadZoneHeightWhenOn, screenYWhenOn);
+        }
+
+        /// <summary>
+        /// 进入 CameraDepthFollowZone_Part3：有双 VCam 时切 Priority；否则退回旧 Apply Profile。
+        /// 不受 <see cref="isLock"/> 限制（不单独改 Follow；解锁跟拍由 Zone 显式 SetFollow）。
+        /// </summary>
+        public void SetKenMuNiPart3CameraMode(
+            bool part3Active,
+            CinemachineFramingProfile part3Profile,
+            CinemachineFramingProfile streetProfile)
+        {
+            if (cameraComponent == null)
+            {
+                return;
+            }
+
+            cameraComponent.SetKenMuNiPart3CameraMode(part3Active, part3Profile, streetProfile);
+        }
+
+        /// <summary>无 Profile 重载：仅切 Priority（推荐 Zone 新路径）。</summary>
+        public void SetKenMuNiPart3CameraMode(bool part3Active)
+        {
+            if (cameraComponent == null)
+            {
+                return;
+            }
+
+            cameraComponent.SetKenMuNiPart3CameraMode(part3Active);
+        }
     }
 }

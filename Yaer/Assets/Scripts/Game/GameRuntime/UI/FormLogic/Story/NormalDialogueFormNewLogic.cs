@@ -35,6 +35,21 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Dialogue
         public CanvasGroup dialogueUICanvasGroup => dialogueUI.subtitlesCanvasGroup;
         private Button dialogueUICanvasGroupBtn;
 
+        /// <summary>
+        /// 在已实例化的对话 Prefab 根（DialogueSceneContainer）下查找组件。
+        /// 用于门口村长大立绘：与 Mask 内同脚本隔离，勿对 Panel 做 GetComponentInChildren。
+        /// 注意：本文件已 using Game.GameMgr.Component（命名空间），约束须写 UnityEngine.Component，否则 CS0118。
+        /// </summary>
+        public T FindInDialogueScene<T>() where T : UnityEngine.Component
+        {
+            if (DialogueSceneContainer == null)
+            {
+                return null;
+            }
+
+            return DialogueSceneContainer.GetComponentInChildren<T>(true);
+        }
+
         [Header("Controll Button")]
         [SerializeField] private Button btnSave;
         [SerializeField] private Button btnLoad;

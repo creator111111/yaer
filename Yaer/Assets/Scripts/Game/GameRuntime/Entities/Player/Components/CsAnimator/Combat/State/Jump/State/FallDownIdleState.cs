@@ -62,6 +62,7 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Ju
 
         private void Jump(bool isCheckDir=true)
         {
+            if (!playerLogic.isEnableJump) { return; }
             ChangeState<JumpUpState>();
         }
 

@@ -40,13 +40,14 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
         }
 
-        /// <summary>村庄探索下不允许入队、不应触发回调的指令（与策划裁剪表一致）。</summary>
+        /// <summary>村庄探索下不允许入队、不应触发回调的指令（与策划裁剪表一致；DNF 式移动禁止跳跃）。</summary>
         private static bool IsBlockedInVillageExploration(ControlInputType cmd)
         {
             return cmd == ControlInputType.Squat
                    || cmd == ControlInputType.NormalAttack
                    || cmd == ControlInputType.SmashAttack
-                   || cmd == ControlInputType.DashAttack;
+                   || cmd == ControlInputType.DashAttack
+                   || cmd == ControlInputType.Jump;
         }
 
         private InputActions inputActions;
@@ -201,6 +202,126 @@ namespace Game.GameRuntime.Entities.Player.Components
 
             return false;
         }
+
+        /// <summary>
+        /// 村庄纵深键位意图：Raw Vertical + W/S/方向键。不含松键后的纵深惯性（惯性清 X 会误伤 0513）。
+        /// </summary>
+        public bool HasVillageExploreVerticalMoveIntent()
+        {
+            const float deadZone = 0.01f;
+            if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > deadZone)
+            {
+                return true;
+            }
+
+            return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)
+                   || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow);
+        }
+
+        /// <summary>
+        /// 村庄横向符号：轴 → 物理键/键位表 → 队列第一条 Left/Right。禁止用默认朝右当第一手（0818）。
+        /// 左右同时按下跟队列先后。轴恒为 0 时仍能给出 ±1（本工程 Horizontal 可能未绑）。
+        /// </summary>
+        /// <returns>-1 左、+1 右、0 解析不出。</returns>
+        public float GetVillageExploreHorizontalSign()
+        {
+            const float deadZone = 0.01f;
+            float axis = Input.GetAxisRaw("Horizontal");
+            if (Mathf.Abs(axis) > deadZone)
+            {
+                return Mathf.Sign(axis);
+            }
+
+            bool leftHeld = IsVillageHorizontalKeyHeld(-1);
+            bool rightHeld = IsVillageHorizontalKeyHeld(1);
+            if (leftHeld != rightHeld)
+            {
+                return leftHeld ? -1f : 1f;
+            }
+
+            ControlInputType queued = FindFirstHorizontalCommandInQueue();
+            if (queued == ControlInputType.Left)
+            {
+                return -1f;
+            }
+
+            if (queued == ControlInputType.Right)
+            {
+                return 1f;
+            }
+
+            return 0f;
+        }
+
+        /// <summary>村庄纵深符号：轴优先，否则 W/↑=+1、S/↓=-1。</summary>
+        public float GetVillageExploreVerticalSign()
+        {
+            const float deadZone = 0.01f;
+            float axis = Input.GetAxisRaw("Vertical");
+            if (Mathf.Abs(axis) > deadZone)
+            {
+                return Mathf.Sign(axis);
+            }
+
+            bool upHeld = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
+            bool downHeld = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
+            if (upHeld != downHeld)
+            {
+                return upHeld ? 1f : -1f;
+            }
+
+            return 0f;
+        }
+
+        /// <summary>队列从前到后第一条 Left/Right，与 Parse 队首语义一致。</summary>
+        public ControlInputType FindFirstHorizontalCommandInQueue()
+        {
+            for (int i = 0; i < curPlayerAllCmds.Count; i++)
+            {
+                ControlInputType c = curPlayerAllCmds[i];
+                if (c == ControlInputType.Left || c == ControlInputType.Right)
+                {
+                    return c;
+                }
+            }
+
+            return ControlInputType.None;
+        }
+
+        /// <param name="sign">-1 查左，+1 查右。</param>
+        private bool IsVillageHorizontalKeyHeld(int sign)
+        {
+            if (sign < 0)
+            {
+                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                {
+                    return true;
+                }
+
+                return IsBoundCommandKeyHeld(ControlInputType.Left);
+            }
+
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                return true;
+            }
+
+            return IsBoundCommandKeyHeld(ControlInputType.Right);
+        }
+
+        private bool IsBoundCommandKeyHeld(ControlInputType cmd)
+        {
+            foreach (var kv in keyCodeToCmdDict)
+            {
+                if (kv.Value == cmd && Input.GetKey(kv.Key))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// 同时XY输入
         /// </summary>
@@ -407,6 +528,12 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         void ParseMoveCmd(ControlInputType curPlayerCmd)
         {
+            // 跳跃在 moveInputFuncDict 中走本路径（不走 ParseOtherCmd）；村内必须在此一并拦截，否则 Space 仍会触发 onJumpInput。
+            if (LocomotionMode == PlayerLocomotionMode.Village2_5D && IsBlockedInVillageExploration(curPlayerCmd))
+            {
+                return;
+            }
+
             var playerMove = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
             // IsMoveUp/Down 实为 Velocity.y 正负，并非仅「跳跃状态机」；贴地微弹跳、重力与 FixedUpdate 相位都可能使 y≠0，
             // 此处整段 return 会跳过本帧 Left/Right 的 MoveLeft/MoveRight 刷新，与 CombatRun 清 X 叠加后加重「横移迟滞」（执行文档 0513 修订 §1 次要因素）。

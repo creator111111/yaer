@@ -9,6 +9,7 @@ using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.UI.FormLogic.Base;
 using Game.GameRuntime.UI.FormLogic.Black;
 using Game.GameRuntime.UI.FormLogic.Map;
+using Game.Static.Enum.Map;
 using Game.Static.Path;
 using Game.Static.Path.Sound;
 using System.Collections.Generic;
@@ -76,6 +77,18 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
         /// 序章交错双行字幕时，第二行启动前的延迟 Tween；跳过或关闭时必须 Kill，避免延迟回调在跳过后仍启动第二行。
         /// </summary>
         Tween chapterEndTalkDelayTween;
+
+        /// <summary>
+        /// ESC 跳过字幕时 MapPanel 尚未 Open 回调（mapLogic 仍空）：已收束字幕视觉，等地图就绪后再走 <see cref="OnTextShowFinsh"/>。
+        /// 原因：OpenMap 与 StartShowTalkText 并行，字幕滚动可能早于 mapLogic 赋值。
+        /// </summary>
+        bool pendingSkipRollingWhenMapReady;
+
+        /// <summary>
+        /// 字幕自然结束时 mapLogic 仍空：等 Open 回调后再 <see cref="MapFormLogic.SelectPlaceLight"/>。
+        /// </summary>
+        bool pendingSelectPlaceLightWhenMapReady;
+
         SpriteAtlas spriteBigTitleAtlas;
         PlayerLogic playerLogic;
         BaseGameSceneManager sceneManager;
@@ -183,6 +196,12 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
                         playerLogic = logic;
                     }
                 }
+                // 重要：玩家实体未就绪时禁止空引用，否则 ChapterEndPanel 打开即炸，表现为「无大标题」
+                if (playerLogic == null)
+                {
+                    Debug.LogWarning("[ChapterEnd] DisablePlayerLogic：玩家尚未就绪，跳过禁输入（面板仍继续）");
+                    return;
+                }
                 playerLogic.componentSystem.GetComponent<PlayerInputComponent>().canInputContorll = false;
                 playerLogic.DisablePlayerMove();// 禁止玩家行动
                 sceneManager.canShowItemBag = false;
@@ -194,6 +213,7 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
 
         void StartChapterEndAni()
         {
+            Debug.Log($"[ChapterEnd] StartChapterEndAni 大标题开始，chapter={curChapterId} textNum={curChapterTextNum}");
             chapterEndBigTitleRolling = true;
             imgBigTitle.SetActive(true);
             imgBigTitle.GetComponent<CanvasGroup>().alpha = 0f;// 设置透明
@@ -253,6 +273,10 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
             maskBg.SetActive(true);
             maskBg.GetComponent<CanvasGroup>().alpha = 0f;
             GameActionMgr.runFadeAction(maskBg, 1f, 1);
+
+            // MP-1：开图前写入存档解锁，MapFormLogic.OnOpen → ShowUnlockPlace 才能正式点亮关卡（禁止只靠 SelectPlaceLight）。
+            UnlockChapterEndMapPlace();
+
             // 打开地图
             string uiPrefabPath = UIPrefabPath.GetUIPrefabPath("MapPanel");
             GameManager.GetGMComponent<UIComponentGM>()
@@ -266,8 +290,91 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
                     canvas.sortingOrder = mapLogic.GetCanvas().sortingOrder + 1;
                     mapLogic.SetAllowEscapeClose(false);
 
+                    // MP-3：ESC 跳过字幕时若 map 尚未就绪，此处补跑收尾 / 高亮。
+                    FlushPendingMapReadyActions();
                 }
             });
+        }
+
+        /// <summary>
+        /// 序章结束解锁本章地图关卡点。ButtonJingLingVillage → PlaceName.JingLingVillage（肯姆尼）。
+        /// 本期不做 UnlockRoad；点选后进村由 MapFormLogic 保留 LoadScene。
+        /// </summary>
+        void UnlockChapterEndMapPlace()
+        {
+            if (!chapterEndAutoSelectMapName.TryGetValue(curChapterId, out var buttonName) ||
+                string.IsNullOrEmpty(buttonName))
+            {
+                Debug.LogWarning($"[MapSelect] 本章无自动选中关卡配置，跳过 UnlockPlace。chapter={curChapterId}");
+                return;
+            }
+
+            // 约定：地图按钮名 = "Button" + Place 解锁键
+            const string buttonPrefix = "Button";
+            var placeKey = buttonName.StartsWith(buttonPrefix)
+                ? buttonName.Substring(buttonPrefix.Length)
+                : buttonName;
+            if (string.IsNullOrEmpty(placeKey))
+            {
+                Debug.LogWarning($"[MapSelect] 无法从按钮名解析解锁键：{buttonName}");
+                return;
+            }
+
+            var playerData = GameManager.GetGMComponent<PlayerDataComponentGM>();
+            if (playerData == null)
+            {
+                Debug.LogWarning("[MapSelect] PlayerDataComponentGM 不可用，无法 UnlockPlace。");
+                return;
+            }
+
+            var newlyAdded = playerData.UnlockPlace(placeKey);
+            // 序章定稿解锁键应对齐 PlaceName.JingLingVillage（肯姆尼）
+            if (curChapterId == 0 && placeKey != PlaceName.JingLingVillage)
+            {
+                Debug.LogWarning(
+                    $"[MapSelect] 序章解锁键与 PlaceName.JingLingVillage 不一致：got={placeKey}，expected={PlaceName.JingLingVillage}");
+            }
+
+            Debug.Log(
+                $"[MapSelect] 序章/章末解锁关卡 place={placeKey}（按钮={buttonName}），newlyAdded={newlyAdded}，chapter={curChapterId}");
+        }
+
+        /// <summary>
+        /// MapPanel Open 回调到达后：消化「跳过字幕排队」与「高亮排队」。
+        /// </summary>
+        void FlushPendingMapReadyActions()
+        {
+            if (mapLogic == null)
+            {
+                return;
+            }
+
+            if (pendingSkipRollingWhenMapReady)
+            {
+                pendingSkipRollingWhenMapReady = false;
+                pendingSelectPlaceLightWhenMapReady = false;
+                if (!hasEnd)
+                {
+                    Debug.Log($"[ChapterEnd] FlushPending SkipRolling → OnTextShowFinsh，chapter={curChapterId}");
+                    OnTextShowFinsh();
+                }
+                else if (chapterEndAutoSelectMapName.TryGetValue(curChapterId, out var targetMapName))
+                {
+                    mapLogic.SelectPlaceLight(targetMapName);
+                }
+
+                return;
+            }
+
+            if (pendingSelectPlaceLightWhenMapReady)
+            {
+                pendingSelectPlaceLightWhenMapReady = false;
+                if (chapterEndAutoSelectMapName.TryGetValue(curChapterId, out var targetMapName))
+                {
+                    mapLogic.SelectPlaceLight(targetMapName);
+                    Debug.Log($"[MapSelect] 延迟 SelectPlaceLight {targetMapName}，chapter={curChapterId}");
+                }
+            }
         }
 
         void StartShowTalkText()
@@ -342,9 +449,18 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
                     AllowOpenMenu(true);
                     chapterEndRootOutroRolling = false;
                 };
-                // 显示完所有的文本后点亮地图
+                // 显示完所有的文本后点亮地图（Unlock 已写入；此处仅高亮提示）
                 var targetMapName = chapterEndAutoSelectMapName[curChapterId];
-                mapLogic.SelectPlaceLight(targetMapName);
+                if (mapLogic != null)
+                {
+                    mapLogic.SelectPlaceLight(targetMapName);
+                }
+                else
+                {
+                    pendingSelectPlaceLightWhenMapReady = true;
+                    Debug.LogWarning(
+                        $"[ChapterEnd] OnTextShowFinsh：mapLogic 仍空，排队 SelectPlaceLight={targetMapName}，chapter={curChapterId}");
+                }
             };
         }
 
@@ -367,9 +483,17 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
                 return;
             }
 
+            // MP-3：OpenMap 与字幕并行，mapLogic 可能尚未赋值 —— 禁止静默 return，改为排队等 Open 回调。
             if (mapLogic == null)
             {
-                Debug.LogWarning($"[ChapterEnd] SkipRollingSubtitles ignored: mapLogic null, chapter={curChapterId}");
+                pendingSkipRollingWhenMapReady = true;
+                KillChapterEndTweenTargets(true);
+                curShowTextCount = curChapterTextNum + 1;
+                SnapChapterEndTalkToSkippedVisualState();
+                // 停止「滚动中」标记，避免每帧重复 ESC；地图就绪后 FlushPending 再进 OnTextShowFinsh。
+                isChapterEndTalkRolling = false;
+                Debug.LogWarning(
+                    $"[ChapterEnd] SkipRollingSubtitles deferred (mapLogic null)，chapter={curChapterId}");
                 return;
             }
 
@@ -532,6 +656,8 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
             isChapterEndTalkRolling = false;
             chapterEndBigTitleRolling = false;
             chapterEndRootOutroRolling = false;
+            pendingSkipRollingWhenMapReady = false;
+            pendingSelectPlaceLightWhenMapReady = false;
         }
 
         protected internal override void OnUpdate(float elapseSeconds, float realElapseSeconds)

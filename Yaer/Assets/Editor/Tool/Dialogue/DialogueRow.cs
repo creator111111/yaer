@@ -28,8 +28,15 @@ namespace EditorC.Tool.Dialogue
 
         /// <summary>
         /// CSV 第 7 列：DialogueFaceType 枚举名（如 Smile）。空串表示走说话人默认。
+        /// 店行填 Face1～Face5（经 Speaker 分流）。
         /// Choice 行可忽略。
         /// </summary>
         public string faceType;
+
+        /// <summary>
+        /// 可选列 BodyType：店行填 Normal/Red/YinXian；空=继承上一句。
+        /// 表头无此列时恒为空串。
+        /// </summary>
+        public string bodyType;
     }
 }

@@ -1,5 +1,6 @@
 using Game.GameMgr;
 using Game.GameMgr.Component;
+using Game.GameMgr.Component.Archive.ArchiveDataClass.Quest;
 using Game.GameMgr.Component.UI;
 using Game.GameRuntime.Entities.Player;
 using Game.GameRuntime.GameSceneManager.Base;
@@ -15,6 +16,7 @@ using Game.Static.Path;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
+using UnityEngine.UI;
 
 namespace Game.GameRuntime.UI.FormLogic.Menu
 {
@@ -50,6 +52,24 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
         SpriteAtlas spriteAtlas;
         SpriteAtlas spriteAtlas_en;
         SpriteAtlas spriteAtlas_jp;
+
+        /// <summary>
+        /// 菜单金币图片数字（与商店 Total2 同款 <see cref="UiSpriteNumberDisplay"/>）。
+        /// 可空：运行时在 ButtonMoney/Money_Digits 下 Find / Ensure。
+        /// </summary>
+        [SerializeField] private UiSpriteNumberDisplay moneyDigits;
+
+        private const string ButtonMoneyNodeName = "ButtonMoney";
+        private const string MoneyDigitsHostNodeName = "Money_Digits";
+        /// <summary>静态占位「0.png」节点名；接 DigitStrip 后须隐藏，避免双「0」。</summary>
+        private const string MoneyStaticZeroNodeName = "Money";
+
+        /// <summary>
+        /// 菜单 Money 显示防御上限，真源对齐 <see cref="PlayerGoldData.MaxGold"/>。
+        /// 0829 改口：存档/逻辑已硬顶 999999；此处 Min 仅防 Digit 池异常扩位。
+        /// 禁止 PadLeft 凑满 6 位；禁止改 UiSpriteNumberDisplay.EnsurePoolSize 中枢。
+        /// </summary>
+        public const int MenuMoneyMaxDisplayValue = PlayerGoldData.MaxGold;
 
         protected internal override void OnInit(object userData)
         {
@@ -198,6 +218,9 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             // 打开菜单时刷新一次日历数字图片，确保与存档日期一致
             var dayNumDisplay = GetComponentInChildren<MenuCalendarDayNumDisplay>(true);
             dayNumDisplay?.RefreshFromArchive();
+
+            // 0829：Money 区读真实金币 → 商店同款图片数字（自然位数，无前导零）
+            RefreshMoneyFromArchive();
         }
 
         protected internal override void OnReveal()
@@ -215,6 +238,150 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             btnLoad.ResetNormalState();
             btnBack.ResetNormalState();
             btnExit.ResetNormalState();
+
+            // 从设置等子界面返回菜单时再刷一次余额（可选；OnOpen 为主路径）
+            RefreshMoneyFromArchive();
+        }
+
+        /// <summary>
+        /// 读 <see cref="QuestManager.GetPlayerGoldData"/> → <c>SetNumber</c>。
+        /// goldData 为 null 时显示 0，不 NRE、不隐藏整条数字条。
+        /// public：供 Editor 刷金工具在菜单已开时即时刷新。
+        /// 原因：与商店购买门面同源，避免另起 displayGold 字段漂移。
+        /// 防御 Min：正常 gold 应已 ≤ <see cref="PlayerGoldData.MaxGold"/>；若仍超则 Warning 并顶格（脏档未钳时兜底）。
+        /// </summary>
+        public void RefreshMoneyFromArchive()
+        {
+            ResolveMoneyDigitsReference();
+            if (moneyDigits == null)
+            {
+                return;
+            }
+
+            var goldData = QuestManager.getInstance().GetPlayerGoldData();
+            var gold = goldData != null ? goldData.gold : 0;
+            if (gold < 0)
+            {
+                gold = 0;
+            }
+
+            // 防御 Digit 池；数据合法后 Warning 应极少触发。
+            var displayGold = gold;
+            if (displayGold > MenuMoneyMaxDisplayValue)
+            {
+                Debug.LogWarning(
+                    $"[MenuMoney] gold={gold} 超过 MaxGold={MenuMoneyMaxDisplayValue}（异常），菜单按上限顶格显示。",
+                    this);
+                displayGold = MenuMoneyMaxDisplayValue;
+            }
+
+            moneyDigits.SetNumber(displayGold);
+            Debug.Log($"[MenuMoney] SetNumber display={displayGold} (archive gold={gold})");
+        }
+
+        /// <summary>
+        /// 解析 ButtonMoney/Money_Digits 上的 DigitStrip；缺则 EnsureOn（Editor Play 可补 Sprite）。
+        /// Prefab 经 Tools/UI/Setup MenuPanel Money Digits 烘焙后应已有完整引用。
+        /// </summary>
+        private void ResolveMoneyDigitsReference()
+        {
+            if (moneyDigits != null)
+            {
+                moneyDigits.ApplyShopTotalLayout();
+                HideStaticMoneyZeroPlaceholder();
+                return;
+            }
+
+            var buttonMoney = FindDeepChild(transform, ButtonMoneyNodeName);
+            if (buttonMoney == null)
+            {
+                Debug.LogWarning("[MenuMoney] 未找到 ButtonMoney，无法显示金币数字。", this);
+                return;
+            }
+
+            HideStaticMoneyZeroPlaceholder(buttonMoney);
+
+            var host = buttonMoney.Find(MoneyDigitsHostNodeName) as RectTransform;
+            if (host == null)
+            {
+                // 运行时兜底建宿主：左留币标宽，右贴数字（与 Bake 布局一致）
+                var hostGo = new GameObject(MoneyDigitsHostNodeName, typeof(RectTransform));
+                hostGo.layer = buttonMoney.gameObject.layer;
+                host = hostGo.GetComponent<RectTransform>();
+                host.SetParent(buttonMoney, false);
+                StretchMoneyDigitsHost(host);
+            }
+
+            moneyDigits = UiSpriteNumberDisplay.FindUnder(host);
+            if (moneyDigits == null)
+            {
+                moneyDigits = UiSpriteNumberDisplay.EnsureOn(
+                    host,
+                    TextAnchor.MiddleRight,
+                    stripSpacing: UiSpriteNumberDisplay.ShopTotalSpacing,
+                    capacity: UiSpriteNumberDisplay.ShopTotalPoolCapacity);
+                moneyDigits.TryLoadDefaultSpritesIfEmpty();
+                moneyDigits.ApplyShopTotalLayout();
+            }
+            else
+            {
+                moneyDigits.ApplyShopTotalLayout();
+            }
+        }
+
+        private void HideStaticMoneyZeroPlaceholder()
+        {
+            var buttonMoney = FindDeepChild(transform, ButtonMoneyNodeName);
+            if (buttonMoney != null)
+            {
+                HideStaticMoneyZeroPlaceholder(buttonMoney);
+            }
+        }
+
+        private static void HideStaticMoneyZeroPlaceholder(Transform buttonMoney)
+        {
+            var moneyZero = buttonMoney.Find(MoneyStaticZeroNodeName);
+            if (moneyZero != null && moneyZero.gameObject.activeSelf)
+            {
+                // 禁止静态 0.png 与 DigitStrip 叠出双「0」
+                moneyZero.gameObject.SetActive(false);
+            }
+        }
+
+        private static void StretchMoneyDigitsHost(RectTransform host)
+        {
+            host.anchorMin = Vector2.zero;
+            host.anchorMax = Vector2.one;
+            host.pivot = new Vector2(0.5f, 0.5f);
+            // 左侧留给 Money (1) 币标约 36px，避免数字压住图标
+            host.offsetMin = new Vector2(36f, 0f);
+            host.offsetMax = Vector2.zero;
+            host.localScale = Vector3.one;
+            host.localRotation = Quaternion.identity;
+        }
+
+        private static Transform FindDeepChild(Transform root, string childName)
+        {
+            if (root == null || string.IsNullOrEmpty(childName))
+            {
+                return null;
+            }
+
+            if (root.name == childName)
+            {
+                return root;
+            }
+
+            for (var i = 0; i < root.childCount; i++)
+            {
+                var found = FindDeepChild(root.GetChild(i), childName);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
         }
 
         protected internal override void OnClose(bool isShutdown, object userData)

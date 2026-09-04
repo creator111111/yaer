@@ -55,6 +55,8 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Gr
 
         protected virtual void Jump(bool isCheckDir=true)
         {
+            // isEnableJump 由 SetVillageExplorationMode / 区域限制写入；村内 DNF 为 false，禁止起跳。
+            if (!playerLogic.isEnableJump) { return; }
             var needStamina = staminaComponent.GetCostStamina("JumpState");
             if (!staminaComponent.ChekcHasEnoughStamina(needStamina)) { return; }
             if (GetSign("IsJumping") == false)

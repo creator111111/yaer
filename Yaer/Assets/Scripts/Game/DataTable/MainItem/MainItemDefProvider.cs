@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.Static.Enum.Goods;
+using Game.Static.Name.Settings;
 using Game.Static.Path;
 using UnityEngine;
 using UnityEngine.U2D;
@@ -17,6 +18,8 @@ namespace Game.DataTable.MainItem
     {
         public const string MainItemDatabaseAssetPath = "Assets/GameRes/Config/MainItem/MainItemDatabase.asset";
         private const string IconFolderPath = "Assets/ArtRes/UI/Item/Icon/";
+        /// <summary>商店三语店招名图 PNG 兜底目录（与 Icon/ 并列）。</summary>
+        private const string ShopNameFolderPath = "Assets/ArtRes/UI/Item/ShopName/";
 
         private static MainItemDatabase _database;
         private static Dictionary<EMainItemName, MainItemDef> _defById;
@@ -124,6 +127,64 @@ namespace Game.DataTable.MainItem
             }
 
             return ResolveIconInternal(null, itemId);
+        }
+
+        /// <summary>
+        /// 商店货架名图解析：当前语槽 → Editor PNG 兜底 → 回退链（英 → 中）→ null。
+        /// 缺图禁止回退写 displayName 文字。日志前缀 [ShopNameSprite]。
+        /// 替代方案（不采用）：单图 + TMP 翻语 —— 违背「名字全是图片」。
+        /// </summary>
+        public static Sprite ResolveShopNameSprite(EMainItemName itemId, LanguageEnumType language)
+        {
+            EnsureLoaded();
+
+            MainItemDefEntry entry = null;
+            if (_entryById != null)
+            {
+                _entryById.TryGetValue(itemId, out entry);
+            }
+
+            // 1) 当前语；2) English；3) Chinese；每步含 Editor PNG 兜底。
+            var cascade = BuildLanguageFallbackCascade(language);
+            Sprite resolved = null;
+            var resolvedLanguage = language;
+            for (var i = 0; i < cascade.Length; i++)
+            {
+                var candidateLanguage = cascade[i];
+                resolved = ResolveShopNameSpriteForLanguage(entry, itemId, candidateLanguage);
+                if (resolved != null)
+                {
+                    resolvedLanguage = candidateLanguage;
+                    break;
+                }
+            }
+
+            if (resolved == null)
+            {
+                Debug.LogWarning(
+                    $"[ShopNameSprite] 三语皆空：{itemId}；Name.Image 将留空，不会回退 displayName。");
+                return null;
+            }
+
+            if (resolvedLanguage != language)
+            {
+                Debug.LogWarning(
+                    $"[ShopNameSprite] {itemId} 缺 {language} 名图，回退使用 {resolvedLanguage}。");
+            }
+
+            return resolved;
+        }
+
+        /// <summary>无参：用 GameManager 当前语言解析（Play 进店 / Bind）。</summary>
+        public static Sprite ResolveShopNameSprite(EMainItemName itemId)
+        {
+            var language = LanguageEnumType.Chinese;
+            if (GameManager.Instance != null)
+            {
+                language = GameManager.Instance.language;
+            }
+
+            return ResolveShopNameSprite(itemId, language);
         }
 
         /// <summary>兼容 PlayerBagData.GetItemRow，内部转 MainItemDef。</summary>
@@ -313,6 +374,9 @@ namespace Game.DataTable.MainItem
                     entry.itemId,
                     entry.displayName,
                     ResolveIconInternal(entry, entry.itemId),
+                    entry.shopNameSprite,
+                    entry.shopNameSpriteEn,
+                    entry.shopNameSpriteJp,
                     entry.buyPrice,
                     entry.sellPrice,
                     entry.itemType,
@@ -355,6 +419,69 @@ namespace Game.DataTable.MainItem
 #endif
 
             return null;
+        }
+
+        /// <summary>回退链：当前语 → English → Chinese（去重后保序；与 §5.2 / Tips 习惯对齐）。</summary>
+        private static LanguageEnumType[] BuildLanguageFallbackCascade(LanguageEnumType language)
+        {
+            switch (language)
+            {
+                case LanguageEnumType.English:
+                    return new[] { LanguageEnumType.English, LanguageEnumType.Chinese };
+                case LanguageEnumType.Japanese:
+                    return new[]
+                    {
+                        LanguageEnumType.Japanese,
+                        LanguageEnumType.English,
+                        LanguageEnumType.Chinese
+                    };
+                default:
+                    // 中文优先；若中文槽与 PNG 皆空，仍可试英文（少见，但避免完全空白）。
+                    return new[] { LanguageEnumType.Chinese, LanguageEnumType.English };
+            }
+        }
+
+        /// <summary>单语种：Database 槽 → Editor PNG（{itemId}{_en|_jp}.png）。</summary>
+        private static Sprite ResolveShopNameSpriteForLanguage(
+            MainItemDefEntry entry,
+            EMainItemName itemId,
+            LanguageEnumType language)
+        {
+            var fromEntry = GetEntryShopNameSprite(entry, language);
+            if (fromEntry != null)
+            {
+                return fromEntry;
+            }
+
+#if UNITY_EDITOR
+            var resTag = LanguageType.GetLanaguageResTag(language);
+            var pngPath = ShopNameFolderPath + itemId + resTag + ".png";
+            var pngSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(pngPath);
+            if (pngSprite != null)
+            {
+                return pngSprite;
+            }
+#endif
+
+            return null;
+        }
+
+        private static Sprite GetEntryShopNameSprite(MainItemDefEntry entry, LanguageEnumType language)
+        {
+            if (entry == null)
+            {
+                return null;
+            }
+
+            switch (language)
+            {
+                case LanguageEnumType.English:
+                    return entry.shopNameSpriteEn;
+                case LanguageEnumType.Japanese:
+                    return entry.shopNameSpriteJp;
+                default:
+                    return entry.shopNameSprite;
+            }
         }
     }
 }

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3f478ef69fbe04fa9ed3664a8a443e, type: 3}
+  m_Name: "Village_\u5546\u5E97\u70B9\u80F8\u4EA4\u4E92"
+  m_EditorClassIdentifier: 
+  _serializedGraph: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"Visible":{},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":200,"y":-140},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1},"Duration":{"_value":1},"Delay":{"_value":0.5},"EndActonOnAnimationEnd":{"_value":true},"PrepareMaskAvatarOnFadeIn":{"_value":true},"MaskAvatarRole":{"_value":1},"MaskAvatarFace":{"_value":3},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":200,"y":-20},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"1"},{"FaceType":{},"UseShopkeeperPortrait":{"_value":true},"ShopBody":{},"ShopFace":{"_value":3},"statement":{"_text":"嗯嗯嗯？？？～"},"_actorName":"老板娘","_actorParameterID":"e2416f45-1f22-4435-93c4-1a1c67561271","_position":{"x":200,"y":100},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"2"},{"FaceType":{},"UseShopkeeperPortrait":{"_value":true},"ShopBody":{},"ShopFace":{"_value":1},"statement":{"_text":"好啊～这么多年敢点我的你是第一个～"},"_actorName":"老板娘","_actorParameterID":"e2416f45-1f22-4435-93c4-1a1c67561271","_position":{"x":200,"y":220},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"3"},{"FaceType":{},"UseShopkeeperPortrait":{"_value":true},"ShopBody":{"_value":1},"ShopFace":{"_value":1},"statement":{"_text":"要我给你特殊服务嘛～"},"_actorName":"老板娘","_actorParameterID":"e2416f45-1f22-4435-93c4-1a1c67561271","_position":{"x":200,"y":340},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"FaceType":{"_value":6},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"statement":{"_text":"特殊服务？好啊～"},"_actorName":"雅尔","_actorParameterID":"aade1eed-13b9-4176-9b9d-fb967de83a22","_position":{"x":200,"y":460},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"FaceType":{},"UseShopkeeperPortrait":{"_value":true},"ShopBody":{"_value":1},"ShopFace":{"_value":1},"statement":{"_text":"呼呼呼～和我来二楼吧～我会好～～～～好～～～的伺候你～～"},"_actorName":"老板娘","_actorParameterID":"e2416f45-1f22-4435-93c4-1a1c67561271","_position":{"x":200,"y":580},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"6"},{"_action":{"canvasGroup":{"_name":"GoOutStoryYaerPainting","_targetVariableID":"5237877d-9acb-417c-b020-973bf007f948"},"StartAlpha":{},"EndAlpha":{"_value":1},"Duration":{"_value":1},"Delay":{},"EndActionOnAnimationEnd":{"_value":true},"$type":"CanvasGroupAlphaActionTask"},"_position":{"x":200,"y":-80},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"13"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"13"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"13"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"老板娘","_id":"e2416f45-1f22-4435-93c4-1a1c67561271","_actorObject":1},{"_keyName":"雅尔","_id":"aade1eed-13b9-4176-9b9d-fb967de83a22","_actorObject":2}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _objectReferences:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _graphSource:
+    _version: 3.31
+    _category: 
+    _comments: 
+    _translation: {x: 0, y: 0}
+    _zoomFactor: 1
+  _haltSerialization: 0
+  _externalSerializationFile: {fileID: 0}
+  actorParameters:
+  - _keyName: "\u8001\u677F\u5A18"
+    _id: e2416f45-1f22-4435-93c4-1a1c67561271
+    _actorObject: {fileID: 0}
+  - _keyName: "\u96C5\u5C14"
+    _id: aade1eed-13b9-4176-9b9d-fb967de83a22
+    _actorObject: {fileID: 0}

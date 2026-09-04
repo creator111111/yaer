@@ -1,0 +1,21 @@
+{
+	"nodes":[
+		{"id":"b9661c66322110da","type":"file","file":"Doc/图片/杂图/Pasted image 20260827194435.png","x":-760,"y":-320,"width":400,"height":200},
+		{"id":"da471893f7995d62","type":"file","file":"Doc/图片/杂图/Pasted image 20260827194446.png","x":-760,"y":-40,"width":400,"height":158},
+		{"id":"c7360c953f02e180","type":"file","file":"Doc/图片/杂图/Pasted image 20260827194454.png","x":-760,"y":160,"width":400,"height":181},
+		{"id":"004d27f9d3889569","type":"file","file":"Doc/图片/杂图/Pasted image 20260827194503.png","x":20,"y":-303,"width":399,"height":167},
+		{"id":"9780c89389c6cc98","type":"file","file":"Doc/图片/杂图/Pasted image 20260827194515.png","x":20,"y":-74,"width":400,"height":192},
+		{"id":"f75241e856e75751","type":"text","text":"Face3","x":-280,"y":217,"width":250,"height":60},
+		{"id":"d6dc93981e9a2365","type":"text","text":"Face4","x":498,"y":-251,"width":250,"height":60},
+		{"id":"50615adc19915a5e","type":"text","text":"Face5","x":498,"y":-8,"width":250,"height":60},
+		{"id":"1c75b5c90c473bf2","type":"text","text":"Face2","x":-280,"y":9,"width":250,"height":60},
+		{"id":"259ade521ab5f423","type":"text","text":"Face1","x":-280,"y":-249,"width":250,"height":60}
+	],
+	"edges":[
+		{"id":"12191f149603f79e","fromNode":"b9661c66322110da","fromSide":"right","toNode":"259ade521ab5f423","toSide":"left"},
+		{"id":"c9f1ed64b8ff0c5a","fromNode":"da471893f7995d62","fromSide":"right","toNode":"1c75b5c90c473bf2","toSide":"left"},
+		{"id":"bd44a83f96bfa298","fromNode":"c7360c953f02e180","fromSide":"right","toNode":"f75241e856e75751","toSide":"left"},
+		{"id":"33e82d1d489851ad","fromNode":"004d27f9d3889569","fromSide":"right","toNode":"d6dc93981e9a2365","toSide":"left"},
+		{"id":"656fab18e19f18db","fromNode":"9780c89389c6cc98","fromSide":"right","toNode":"50615adc19915a5e","toSide":"left"}
+	]
+}

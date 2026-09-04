@@ -10,11 +10,58 @@
     "targetMonster": "WoodWorm",
     "targetCount": "10",
     "rewards": [
-      { "type": "Gold", "amount": "60" }
+      {
+        "type": "Gold",
+        "amount": "60"
+      }
     ],
     "prerequisiteQuestIds": [],
     "autoAccept": "false",
     "repeatable": "true",
     "sortOrder": "1"
+  },
+  {
+    "id": "2",
+    "questId": "Quest_002",
+    "title": "妈妈的藤蔓果",
+    "title_en": "Mom's Vine Fruit",
+    "title_jp": "お母さんのつる果実",
+    "objectiveText": "提交藤蔓果 5 个",
+    "objectiveType": "CollectItem",
+    "targetMonster": "",
+    "targetItem": "TenWangFruit",
+    "targetCount": "5",
+    "rewards": [
+      {
+        "type": "Gold",
+        "amount": "50"
+      }
+    ],
+    "prerequisiteQuestIds": [],
+    "autoAccept": "false",
+    "repeatable": "false",
+    "sortOrder": "2"
+  },
+  {
+    "id": "3",
+    "questId": "Quest_003",
+    "title": "老农的浇地水",
+    "title_en": "Farmer's Water",
+    "title_jp": "老農の水やり",
+    "objectiveText": "提交满桶 4 个",
+    "objectiveType": "CollectItem",
+    "targetMonster": "",
+    "targetItem": "FullWaterBucket",
+    "targetCount": "4",
+    "rewards": [
+      {
+        "type": "Gold",
+        "amount": "500"
+      }
+    ],
+    "prerequisiteQuestIds": [],
+    "autoAccept": "false",
+    "repeatable": "true",
+    "sortOrder": "3"
   }
 ]

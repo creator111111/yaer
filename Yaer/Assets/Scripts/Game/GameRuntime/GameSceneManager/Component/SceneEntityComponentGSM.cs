@@ -24,10 +24,21 @@ namespace Game.GameRuntime.GameSceneManager.Component
         public override void OnInit(IGameSceneManager manager)
         {
             base.OnInit(manager);
-            
+
+            // 运行时按 objRoot 重扫：避免场景 YAML 漏挂 sceneObjs 导致 NPC Start 报「未注册」且永不 OnInit。
+            // OnValidate 仅编辑器刷新；打包/进游戏必须以磁盘子树为准。
+            if (objRoot != null)
+            {
+                sceneObjs = objRoot.GetComponentsInChildren<SceneEntity>(true).ToList();
+            }
+
             foreach (var obj in sceneObjs)
             {
-                obj.OnInit(this);    
+                if (obj == null)
+                {
+                    continue;
+                }
+                obj.OnInit(this);
             }
         }
 

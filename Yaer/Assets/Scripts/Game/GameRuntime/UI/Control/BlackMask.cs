@@ -12,6 +12,9 @@ namespace Game.GameRuntime.UI.Control
         [SerializeField] private float showTime = 1;
         [SerializeField] private float hideTime = 1;
         [SerializeField] private Animator animator;
+
+        private float defaultShowTime;
+        private float defaultHideTime;
         private Image imgMask;
         private bool showing;
         private bool hiding;
@@ -25,6 +28,11 @@ namespace Game.GameRuntime.UI.Control
 
         public bool Showing => showing;
         public bool Hiding => hiding;
+
+        public float DefaultShowTime => defaultShowTime;
+        public float DefaultHideTime => defaultHideTime;
+        public float CurrentShowTime => showTime;
+        public float CurrentHideTime => hideTime;
 
         public void SetHidingState(bool state)
         {
@@ -47,6 +55,9 @@ namespace Game.GameRuntime.UI.Control
 
         public void OnInit()
         {
+            defaultShowTime = showTime;
+            defaultHideTime = hideTime;
+
             imgMask = GetComponent<Image>();
             animator = GetComponent<Animator>();
 
@@ -92,6 +103,27 @@ namespace Game.GameRuntime.UI.Control
                     action.Value?.Invoke(); // Execute the action
                 }
             }
+        }
+
+        /// <summary>临时覆盖淡入/淡出时长（秒）；<see cref="RestoreDefaultFadeDurations"/> 恢复 Prefab 默认。</summary>
+        public void SetFadeDurations(float showSeconds, float hideSeconds)
+        {
+            if (showSeconds > 0f)
+            {
+                showTime = showSeconds;
+            }
+
+            if (hideSeconds > 0f)
+            {
+                hideTime = hideSeconds;
+            }
+        }
+
+        /// <summary>恢复 OnInit 时缓存的默认 show/hide 时长。</summary>
+        public void RestoreDefaultFadeDurations()
+        {
+            showTime = defaultShowTime;
+            hideTime = defaultHideTime;
         }
 
         /// <summary>

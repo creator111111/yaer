@@ -47,6 +47,37 @@ namespace Game.DataTable.MainItem
                 {
                     Debug.LogWarning($"[MainItemDatabase] 价格不能小于 -1：{entry.itemId}", this);
                 }
+
+                // SN-4：仅上架道具（买/卖过滤口径）校验名图；任务道具不强制。
+                // 缺中文 Warning；缺英/日降级 Tip，禁止 Error 挡进 Play。
+                var isShopListed =
+                    (entry.itemType == BagItemType.CostItem && entry.buyPrice >= 0) ||
+                    (entry.itemType == BagItemType.MaterialItem && entry.sellPrice >= 0);
+                if (!isShopListed)
+                {
+                    continue;
+                }
+
+                if (entry.shopNameSprite == null)
+                {
+                    Debug.LogWarning(
+                        $"[ShopNameSprite] 上架道具缺中文店招名图：{entry.itemId}；请拖 shopNameSprite 或补 ArtRes/UI/Item/ShopName/{entry.itemId}.png",
+                        this);
+                }
+
+                if (entry.shopNameSpriteEn == null)
+                {
+                    Debug.Log(
+                        $"[ShopNameSprite] Tip：{entry.itemId} 缺英文名图 shopNameSpriteEn（Play 将按英→中回退）",
+                        this);
+                }
+
+                if (entry.shopNameSpriteJp == null)
+                {
+                    Debug.Log(
+                        $"[ShopNameSprite] Tip：{entry.itemId} 缺日文名图 shopNameSpriteJp（Play 将按英→中回退）",
+                        this);
+                }
             }
         }
 #endif

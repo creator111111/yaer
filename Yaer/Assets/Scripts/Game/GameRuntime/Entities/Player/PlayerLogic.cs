@@ -533,6 +533,11 @@ namespace Game.GameRuntime.Entities.Player
             GameManager.GetGameSceneManager().GetModule<InputComponentGSM>().SetAllowOpenMenu(true);
             // 换场后根据目标场景重绑村庄 2.5D 模式（AC-01 / AC-08）
             RefreshVillageExplorationFromActiveScene();
+            // 0901：若进村后从未权威 Teleport，以当前脚提交，避免 defer 永久跳过夹区 / Loading 打回楼梯
+            var town = componentSystem != null
+                ? componentSystem.TryGetComponent<TownPlayerLocomotion>()
+                : null;
+            town?.EnsureAuthoritativeVillageSpawnCommitted();
         }
 
         private void StoryTriggeredHandle()
@@ -570,17 +575,33 @@ namespace Game.GameRuntime.Entities.Player
         }
 
         /// <summary>
-        /// 仅更新 X/Y，保留当前世界 Z，避免村庄纵深被隐式清零（迁移方案 §10 风险表）。
+        /// 更新世界 X/Y。村模式（Village2_5D）下走权威 Teleport（Transform+Rb+纵深 Y），
+        /// 避免只改 Transform 被 WalkArea/WriteRoot 打回（0901 进场吸楼梯 H2）。
+        /// 非村模式仍只写 Transform，保留 Z。
         /// </summary>
         public void SetPos(Vector2 pos)
         {
+            var town = componentSystem != null
+                ? componentSystem.TryGetComponent<TownPlayerLocomotion>()
+                : null;
+            if (town != null && town.enabled)
+            {
+                var input = componentSystem.GetComponent<PlayerInputComponent>();
+                if (input != null && input.LocomotionMode == PlayerLocomotionMode.Village2_5D)
+                {
+                    town.TeleportAuthoritativeVillagePos(pos, thenFlush: true);
+                    return;
+                }
+            }
+
             Vector3 p = transform.position;
             transform.position = new Vector3(pos.x, pos.y, p.z);
         }
 
         /// <summary>
-        /// 在已激活的 <see cref="SceneName.Village_KenMuNi1"/> 内按对象名查找纵深标尺，将世界 Y 写入 <see cref="TownPlayerLocomotion"/>（须在 <see cref="TownPlayerLocomotion.ApplyVillageMode"/> 之后调用，以便用场景边界二次 Clamp）。
+        /// 在村庄探索白名单场景内按对象名查找纵深标尺，将世界 Y 写入 <see cref="TownPlayerLocomotion"/>（须在 <see cref="TownPlayerLocomotion.ApplyVillageMode"/> 之后调用，以便用场景边界二次 Clamp）。
         /// <para>策划在场景中放置名为 <c>VillageDepthY_Min</c>、<c>VillageDepthY_Max</c> 的空物体即可调可走带；缺失任一物体则保留 Prefab 上序列化默认值（L-02）。</para>
+        /// <para>白名单：<see cref="SceneName.IsVillageExplorationScene"/>（KenMuNi1 + Chief_House，0901）。</para>
         /// </summary>
         private static void TryInjectVillageDepthYBoundsFromSceneMarkers(TownPlayerLocomotion town)
         {
@@ -590,7 +611,7 @@ namespace Game.GameRuntime.Entities.Player
             }
 
             Scene active = SceneManager.GetActiveScene();
-            if (!active.IsValid() || active.name != SceneName.Village_KenMuNi1)
+            if (!active.IsValid() || !SceneName.IsVillageExplorationScene(active.name))
             {
                 return;
             }
@@ -647,9 +668,10 @@ namespace Game.GameRuntime.Entities.Player
         }
 
         /// <summary>
-        /// 村庄探索模式：不关左右走，只关部分战斗向能力与纵深组件；勿用 <see cref="DisablePlayerMove"/> 代替（策划 4.4）。
+        /// 村庄探索模式：不关左右走，只关战斗向能力与纵深组件；勿用 <see cref="DisablePlayerMove"/> 代替（策划 4.4）。
+        /// DNF 式移动下同步关闭跳跃（输入屏蔽 + <see cref="isEnableJump"/>），与《村庄DNF式2.5D移动_迁移方案》§5 一致。
         /// </summary>
-        /// <param name="enable">true 表示当前应处于 Village_KenMuNi1 探索规则</param>
+        /// <param name="enable">true 表示当前应处于村庄探索规则（见 <see cref="SceneName.IsVillageExplorationScene"/>）</param>
         public void SetVillageExplorationMode(bool enable)
         {
             var input = componentSystem.GetComponent<PlayerInputComponent>();
@@ -670,14 +692,18 @@ namespace Game.GameRuntime.Entities.Player
                 town?.FlushAuthoritativeVillageTransformAfterSceneDepthInject();
             }
 
-            // 与战斗状态机中的普攻门闸对齐，防止异常切到 Combat 时仍出手
+            // 与战斗状态机门闸对齐：村内 DNF 禁止跳跃与普攻（输入层已挡 Jump；此处防异常切到 Combat 仍起跳）
             isEnableNorAtk = !enable;
+            isEnableJump = !enable;
         }
 
-        /// <summary>根据当前激活场景名同步村庄模式（单一事实来源：场景名）。</summary>
+        /// <summary>
+        /// 根据当前激活场景名同步村庄模式（单一事实来源：场景名白名单）。
+        /// 原因（0901）：仅 KenMuNi1 时进屋永远 Default；现扩至 <see cref="SceneName.Village_Chief_House"/>。
+        /// </summary>
         public void RefreshVillageExplorationFromActiveScene()
         {
-            bool village = SceneManager.GetActiveScene().name == SceneName.Village_KenMuNi1;
+            bool village = SceneName.IsVillageExplorationScene(SceneManager.GetActiveScene().name);
             SetVillageExplorationMode(village);
         }
 
@@ -686,11 +712,20 @@ namespace Game.GameRuntime.Entities.Player
         /// </summary>
         private void UpdateRuntimeController(RuntimeAnimatorController controllerAsset)
         {
-            if (controllerAsset == null) Debug.LogError("没有找到RuntimeAnimatorController资源");
+            if (controllerAsset == null)
+            {
+                Debug.LogError("没有找到RuntimeAnimatorController资源");
+                return;
+            }
 
+            // 必须先按磁盘资源名分流 Home/Combat。方案 B 会 Clone 一份 Override，
+            // Clone 默认名字不含 "Home"；若先换片再 Contains("Home") 会误走 Combat，IsName 卡死。
             if (controllerAsset.name.Contains("Home"))
             {
-                componentSystem.GetComponent<BaseCsAnimator>().ChangeRuntimeController<PlayerHomeCsRuntimeController>(controllerAsset);
+                RuntimeAnimatorController homeController =
+                    VillageHomeDayLightAnimApplier.ApplyIfVillageHome(controllerAsset);
+                componentSystem.GetComponent<BaseCsAnimator>()
+                    .ChangeRuntimeController<PlayerHomeCsRuntimeController>(homeController);
             }
             else
             {

@@ -8,20 +8,88 @@
         "type": "tabs",
         "children": [
           {
+            "id": "36c2c1a1f716487e",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Doc/执行文档/今日代办.canvas",
+                "viewState": {
+                  "x": 1193.8481987370053,
+                  "y": 20513.413027138777,
+                  "zoom": -0.3333333333333334
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "今日代办"
+            }
+          },
+          {
             "id": "67c71b8441529d45",
             "type": "leaf",
             "state": {
               "type": "canvas",
               "state": {
-                "file": "Doc/执行文档/0713/未命名.canvas",
+                "file": "Doc/图片/村长表情立绘对照.canvas",
                 "viewState": {
-                  "x": 184.38232248948094,
-                  "y": 1250.9799885512589,
+                  "x": 104.76846942990115,
+                  "y": 137.57479013300102,
+                  "zoom": -0.6666666666666666
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "村长表情立绘对照"
+            }
+          },
+          {
+            "id": "3d21fe65ce6b7862",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Doc/图片/古莎立绘表情对照.canvas",
+                "viewState": {
+                  "x": -1145.7279766271956,
+                  "y": 340.61475216013434,
+                  "zoom": -0.3333333333333334
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "古莎立绘表情对照"
+            }
+          },
+          {
+            "id": "602535485c06eaa0",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Doc/图片/雅儿立绘表情对照.canvas",
+                "viewState": {
+                  "x": 492.602177177846,
+                  "y": 356.9244336243906,
+                  "zoom": -0.3333333333333333
+                }
+              },
+              "icon": "lucide-layout-dashboard",
+              "title": "雅儿立绘表情对照"
+            }
+          },
+          {
+            "id": "938f0544bacf7b98",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Doc/图片/商店表情立绘对照.canvas",
+                "viewState": {
+                  "x": -26.5,
+                  "y": 24.5,
                   "zoom": 0
                 }
               },
               "icon": "lucide-layout-dashboard",
-              "title": "未命名"
+              "title": "商店表情立绘对照"
             }
           }
         ]
@@ -44,7 +112,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "文件列表"
@@ -81,7 +151,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 499.5
+    "width": 327.1000061035156
   },
   "right": {
     "id": "ac1b3bc2950b97ab",
@@ -186,56 +256,63 @@
       "bases:新建数据库": false
     }
   },
-  "active": "67c71b8441529d45",
+  "active": "36c2c1a1f716487e",
   "lastOpenFiles": [
-    "Doc/执行文档/0713/Village_Shop_数量总价与贩卖列表不刷新_修复执行说明.md.meta",
-    "Doc/执行文档/0713/Village_Shop_数量总价与贩卖列表不刷新_修复执行说明.md",
-    "Doc/执行文档/0713/商店背包联合_购买入包可见_架构溯源与施工执行说明.md.meta",
-    "Doc/执行文档/0713/商店背包联合_购买入包可见_架构溯源与施工执行说明.md",
-    "Editor/Tool/MainItem/MainItemAddAllBagMenu.cs.meta",
-    "Editor/Tool/MainItem/MainItemAddAllBagMenu.cs",
-    "Doc/执行文档/0713/Village_Shop_进店关闭FightingPanel血条_执行说明.md.meta",
-    "Doc/执行文档/0713/Village_Shop_进店关闭FightingPanel血条_执行说明.md",
-    "GameRes/Prefabs/UI/ShopPanel.prefab.meta",
-    "GameRes/Prefabs/UI/ShopPanel.prefab",
-    "Doc/执行文档/0713/Village_Shop_关FightingPanel与ShopPanel同黑幕节奏_执行说明.md.meta",
-    "Scripts/Game/GameRuntime/UI/FormLogic/Shop/Editor/ShopPanelBuildEditor.cs.meta",
-    "Scripts/Game/GameMgr/Manager/Res/SceneRes/Config/Village_ShopSceneResConfig.cs.meta",
-    "Scripts/Game/GameMgr/Manager/Res/SceneRes/Config/Village_ShopSceneResConfig.cs",
-    "Doc/执行文档/0713/Village_Shop_关FightingPanel与ShopPanel同黑幕节奏_执行说明.md",
-    "Doc/执行文档/0713/Village_Shop_合层不显示_摄像机_短执行说明.md",
-    "Doc/OPEN_QUESTIONS.md",
-    "Doc/执行文档/0713/背包系统对接MainItemDatabase_新道具可查看_架构溯源与施工执行说明.md",
-    "Doc/执行文档/0713/Village_KenMuNi1_Door_Shop换场Village_Shop纯UI_架构溯源与施工执行说明.md",
-    "Doc/执行文档/0713/Shop_货币金币对接_购买扣款闭环_架构溯源与施工执行说明.md",
-    "Doc/执行文档/0713/Village_Shop_ESC呼出菜单_架构溯源与施工执行说明.md",
-    "Pasted image 20260713133009.png",
-    "Pasted image 20260713132402.png",
-    "Doc/执行文档/0713/Shop_Bar_Price_Number_DigitStrip间距负12_施工执行说明.md",
-    "Doc/执行文档/0713/Shop_BuySell列表滚轮边界虚化过渡_架构溯源与施工执行说明.md",
-    "Doc/执行文档/0713/Shop_Bar_Name改TMP描边投影_架构溯源与施工执行说明.md",
-    "ArtRes/UI/Text/月.png",
-    "ArtRes/UI/Text/日.png",
-    "ArtRes/UI/Text/年.png",
-    "ArtRes/UI/Text/9.png",
-    "ArtRes/UI/Text/8.png",
-    "ArtRes/UI/Text/7.png",
-    "ArtRes/UI/Text/6.png",
-    "ArtRes/UI/Text/5.png",
-    "Doc/执行文档/0705/MonsterDataMgr_Quest命名空间缺失_CS0234_架构溯源与修复执行说明.md",
+    "Doc/执行文档/0903/Village_KenMuNi1_巨树2楼仍卡住_WalkArea2嫌疑_验收排查报告.md.meta",
+    "Doc/执行文档/0903/Village_KenMuNi1_巨树2楼_进层对白与开箱Tips_架构溯源报告.md.meta",
+    "Doc/执行文档/0903/Village_KenMuNi1_巨树2楼仍卡住_WalkArea2嫌疑_验收排查报告.md",
+    "Doc/执行文档/0903/Village_KenMuNi1_巨树2楼_进层对白与开箱Tips_架构溯源报告.md",
+    "Doc/提示词/0903/Village_KenMuNi1_巨树2楼仍卡住_WalkArea2嫌疑_验收排查提示词.md.meta",
+    "Doc/提示词/0903/Village_KenMuNi1_巨树2楼仍卡住_WalkArea2嫌疑_验收排查提示词.md",
+    "Doc/提示词/0903/Village_KenMuNi1_巨树2楼_进层对白与开箱Tips_架构侦探提示词.md.meta",
+    "Doc/提示词/0903/Village_KenMuNi1_巨树2楼_进层对白与开箱Tips_架构侦探提示词.md",
+    "Doc/施工说明/0903/Village_KenMuNi1_巨树2楼WalkArea2宝箱看不见未摆放_施工说明.md.meta",
+    "Doc/施工说明/0903/Village_KenMuNi1_巨树2楼WalkArea2宝箱看不见未摆放_施工说明.md",
+    "Doc/提示词/0903/_tmp_parse_dt.py.meta",
+    "Doc/提示词/0903/_tmp_parse_dt.py",
+    "Doc/执行文档/0903/Village_KenMuNi1_巨树2楼WalkArea2宝箱看不见未摆放_验收排查报告.md.meta",
+    "Doc/执行文档/0903/Village_KenMuNi1_巨树2楼WalkArea2宝箱看不见未摆放_验收排查报告.md",
+    "GameRes/DialogueTrees/Generated/Village_玩家上树屋二层触发宝箱.asset.meta",
+    "GameRes/DialogueTrees/Generated/Village_玩家上树屋二层触发宝箱.asset",
+    "Doc/施工说明/0903/Village_KenMuNi1_村长家上楼巨树2楼_WalkArea2卡住不动_施工说明.md.meta",
+    "Doc/施工说明/0903/Village_KenMuNi1_村长家上楼巨树2楼_WalkArea2卡住不动_施工说明.md",
+    "Doc/图片/雅儿立绘表情对照.canvas",
+    "Doc/执行文档/今日代办.canvas",
+    "Doc/提示词/0903/Village_KenMuNi1_巨树2楼WalkArea2宝箱看不见未摆放_验收排查提示词.md",
+    "Doc/执行文档/0903/Village_KenMuNi1_村长家上楼巨树2楼_WalkArea2卡住不动_架构溯源报告.md",
+    "Doc/提示词/0903/Village_KenMuNi1_村长家上楼巨树2楼_WalkArea2卡住不动_架构侦探提示词.md",
+    "ArtRes/Scene/Village/村长家合层/村长家合层 1.png",
+    "Pasted image 20260902231743.png",
+    "Doc/施工说明/0902/Village_村长家继续对话_开场分层淡入对齐门口_施工说明.md",
+    "Doc/施工说明/0902/Village_Chief_House_续聊战斗待机与室内主角显隐_施工说明.md",
+    "Doc/施工说明/0902/Village_Chief_House_自由移动光亮DayLight_施工说明.md",
+    "Doc/执行文档/0902/Village_Chief_House_自由移动光亮DayLight_架构溯源报告.md",
+    "Doc/执行文档/0902/Village_Chief_House_续聊战斗待机与室内主角显隐_架构溯源报告.md",
+    "Doc/执行文档/0902/Village_村长家继续对话_开场分层淡入对齐门口_架构溯源报告.md",
+    "Doc/提示词/0902/Village_Chief_House_自由移动光亮DayLight_架构侦探提示词.md",
+    "Doc/提示词/0902/Village_Chief_House_续聊战斗待机与室内主角显隐_架构侦探提示词.md",
+    "Doc/施工说明/0902/Village_门口进村长家_改黑屏切场_施工说明.md",
+    "Doc/提示词/0902/Village_村长家继续对话_开场分层淡入对齐门口_架构侦探提示词.md",
+    "Doc/施工说明/0902/Village_村长家门口初次对话_框出时空头像_施工说明.md",
+    "Doc/执行文档/0902/Village_门口进村长家_改黑屏切场_架构溯源报告.md",
+    "Doc/提示词/0902/Village_门口进村长家_改黑屏切场_架构侦探提示词.md",
+    "Doc/执行文档/0902/Village_村长家门口初次对话_框出时空头像_架构溯源报告.md",
+    "Doc/提示词/0902/Village_村长家门口初次对话_框出时空头像_架构侦探提示词.md",
+    "Pasted image 20260902220016.png",
+    "Pasted image 20260902215948.png",
+    "9f33cb51-a02d-4e30-b644-cd485aaf26b2.png",
+    "Pasted image 20260902210624.png",
+    "51c0c809-5231-4763-a566-646893131f8c.png",
+    "Pasted image 20260902192706.png",
+    "d9c5ad5f-5416-4b7d-9e88-b6eebc681311.png",
+    "7dd2ecd1-e478-481a-8cb1-23b9ec2deea0.png",
+    "Doc/图片/村长表情立绘对照.canvas",
+    "Doc/图片/古莎立绘表情对照.canvas",
+    "Doc/图片/商店表情立绘对照.canvas",
+    "Doc/执行文档/8月/0804/对话系统.canvas",
+    "Doc/执行文档/0724/规划.canvas",
     "Doc/执行文档/0713/未命名.canvas",
-    "Doc/执行文档/0706/Village_Shop_Play闪退_UiSpriteNumberDisplay栈溢出_架构溯源与施工执行说明.md",
-    "Doc/执行文档/0706/Shop_Bar数字图片化_Price_Number_Total_架构溯源与施工执行说明.md",
-    "Doc/执行文档/0706/Shop_Total2双Tab全行合计与出售数量输入_架构溯源与施工执行说明.md",
-    "Doc/执行文档/0706/Shop_UI三小问题_滚动透明MpBall缺失分辨率缩放_架构溯源与修复执行说明.md",
     "Doc/经典 MMO式的「击杀任务」.canvas",
-    "Doc/策划手册/序章主角配音配置手册.md",
-    "Doc/技术文档/道具展示界面/道具栏位系统.md",
-    "Doc/技术文档/道具展示界面/道具描述框功能.md",
-    "Doc/技术文档/道具展示界面/道具展示界面的道具拖拽功能.md",
-    "Doc/技术文档/演出相关/NewGameCartoonPanel漫画开场策划案.md",
-    "Doc/技术文档/演出相关/MapPanel精灵城入口与黑幕对话_开发文档.md",
-    "Doc/技术文档/演出相关/ForestScene士兵回头国王出场演出系统.md",
-    "Doc/执行文档/0629/未命名.canvas"
+    "Doc/执行文档/6月/0629/未命名.canvas"
   ]
 }

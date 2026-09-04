@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("UI")]
-    [Name("FightingPanel��ʾ����")]
+    [Name("FightingPanel显示控制")]
     public class FightingPanelVisibleActionTask : ActionTask
     {
         public BBParameter<bool> Visible;
@@ -18,7 +18,7 @@ namespace Game.GameRuntime.Story.Node
 
         protected override string OnInit()
         {
-            // DialogDebug ɳ�е�δ��ʼ�� UIComponentGM ʱ���������� OnInit NRE
+            // DialogDebug 沙箱未初始化 UIComponentGM 时跳过，避免 OnInit NRE
             var uiGm = GameManager.GetGMComponent<UIComponentGM>();
             if (uiGm == null)
             {
@@ -29,7 +29,7 @@ namespace Game.GameRuntime.Story.Node
             var uiForm = uiGm.GetUIForm(panelPath);
             if (uiForm == null)
             {
-                Debug.LogError($"FightingPanelδ��");
+                Debug.LogError($"FightingPanel未打开");
             }
             else
             {

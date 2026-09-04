@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("NormalDialoguePanelControll")]
-    [Name("???UI????")]
+    [Name("对话UI黑幕动画")]
     public class NormalDialogueBlackMaskTaskAction : NormalDialoguePanelTaskAction
     {
         public BBParameter<float> StartAlpha;
@@ -49,7 +49,7 @@ namespace Game.GameRuntime.Story.Node
         {
             get
             {
-                return string.Format("<i>' ????: {0} -> {1}, {2}s '</i>", StartAlpha, EndAlpha, Duration);
+                return string.Format("<i>' 黑幕: {0} -> {1}, {2}s '</i>", StartAlpha, EndAlpha, Duration);
             }
         }
     }

@@ -6,6 +6,10 @@ using Game.GameRuntime.Entities.Player;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// 人物状态调试工具（Tools → 人物状态调试工具）。
+/// 源码须以 UTF-8 无 BOM 保存；曾因错误编码另存导致菜单/窗口中文乱码。
+/// </summary>
 public class PlayerStatsEditorWindow : EditorWindow
 {
     private PlayerLogic playerLogic;
@@ -13,10 +17,10 @@ public class PlayerStatsEditorWindow : EditorWindow
     private float HPValue;
     private float StaminaValue;
 
-    /// <summary>�� <see cref="PlayerLogic.EditorInvincible"/> ͬ�������� Find ��Һ�ָ���ѡ״̬��</summary>
+    /// <summary>与 <see cref="PlayerLogic.EditorInvincible"/> 同步；Find 玩家后刷新勾选状态。</summary>
     private bool editorInvincibleToggle;
 
-    [MenuItem("Tools/����״̬���Թ���")]
+    [MenuItem("Tools/人物状态调试工具")]
     public static void Open()
     {
         PlayerStatsEditorWindow window = GetWindow<PlayerStatsEditorWindow>("Player Stats Tool");
@@ -27,7 +31,7 @@ public class PlayerStatsEditorWindow : EditorWindow
     {
         if (playerLogic == null)
         {
-            GUILayout.Label("δ�ҵ�PlayerLogic");
+            GUILayout.Label("未找到PlayerLogic");
         }
         if (GUILayout.Button("Find PlayerLogic"))
         {
@@ -38,15 +42,15 @@ public class PlayerStatsEditorWindow : EditorWindow
             var healthCpnt = playerLogic.componentSystem.GetComponent<HealthComponent>();
             var staminaCpnt = playerLogic.componentSystem.GetComponent<StaminaComponent>();
 
-            // ��ѡ��д�� PlayerLogic.EditorInvincible��Ѫ��/���������Կ��ֶ�����ֵ
-            editorInvincibleToggle = EditorGUILayout.ToggleLeft("����޵п���", editorInvincibleToggle);
+            // 勾选写入 PlayerLogic.EditorInvincible；血量/体力仍可靠滑条改数值
+            editorInvincibleToggle = EditorGUILayout.ToggleLeft("无敌开关", editorInvincibleToggle);
             playerLogic.EditorInvincible = editorInvincibleToggle;
 
-            if (GUILayout.Button("�޸���װ"))
+            if (GUILayout.Button("修复服装"))
             {
                 playerLogic.FixClothes();
             }
-            if (GUILayout.Button("�ܵ�10���˺�"))
+            if (GUILayout.Button("受到10点伤害"))
             {
                 playerLogic.TakeDamage(10);
                 HPValue = healthCpnt.hp;
@@ -57,13 +61,13 @@ public class PlayerStatsEditorWindow : EditorWindow
                 float MaxStamina = staminaCpnt.MaxStamina;
 
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("Ѫ����");
+                GUILayout.Label("血量：");
                 HPValue = GUILayout.HorizontalSlider(HPValue, 0, MaxHP, GUILayout.Width(200));
                 GUILayout.Label($"{HPValue:N2}");
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal();
-                GUILayout.Label("������");
+                GUILayout.Label("体力：");
                 StaminaValue = GUILayout.HorizontalSlider(StaminaValue, 0, MaxStamina, GUILayout.Width(200));
                 GUILayout.Label($"{StaminaValue:N2}");
                 GUILayout.EndHorizontal();

@@ -11,8 +11,12 @@ using UnityEngine.SceneManagement;
 namespace Game.GameRuntime.Entities.Player.Components
 {
     /// <summary>
-    /// 村庄专用「类 DNF」纵深移动：在 2D（<see cref="Rigidbody2D"/>）环境下，W/S 映射到<strong>世界 Y</strong> 惯性 + 摩擦（见《村庄DNF式2.5D移动_迁移方案》v1.3）。
+    /// 村庄专用「类 DNF」纵深移动：在 2D（<see cref="Rigidbody2D"/>）环境下，W/S 映射到<strong>世界 Y</strong>（见《村庄DNF式2.5D移动_迁移方案》v1.3）。
     /// <para>根节点 <b>Z</b> 进村时冻结，纵深只改 <b>Y</b>，与 <see cref="DepthComponent"/> 按 Y 排序一致。</para>
+    /// <para>
+    /// 产品 2026-08-19：村街走路<strong>不要滑行惯性</strong>，松手立刻停（覆盖 0512 AC-02 的纵深摩擦）。
+    /// 按住时仍加速 / 斜向仍 0.707；无意图的轴在 <see cref="OnFixedUpdate"/> 当场清零（方案 A′）。
+    /// </para>
     /// <para><b>替代方案</b>：若与 Home 跳跃叠冲突，可在村庄关跳跃或给 MoveComponent 增加「仅村庄关重力」开关，由策划定稿。</para>
     /// </summary>
     public class TownPlayerLocomotion : BaseGFComponentMono, IPlayerComponent
@@ -26,9 +30,15 @@ namespace Game.GameRuntime.Entities.Player.Components
         [SerializeField]
         private float depthMaxSpeed = 5.5f;
 
-        [Tooltip("无纵深输入时，纵深速度每秒衰减量")]
+        [Tooltip("村庄地面目标走速（世界单位/秒）。纯横、纯纵、斜向的平面欧氏速度都接到这个数。旧 Prefab 序列化为 0 时回退 11.2。不要把 runSpeed 与 depthMaxSpeed 改成同一个数冒充修复（斜向仍会 √2）。")]
         [SerializeField]
+        private float villagePlanarMoveSpeed = 11.2f;
+
+        [Tooltip("旧 0512 摩擦衰减量。产品 2026-08-19 后松键改为当场清零，本字段不再参与松键路径；保留以免 Prefab 丢序列化。禁止把它调极大来冒充立刻停。")]
+        [SerializeField]
+#pragma warning disable 0414 // 仅序列化保留；松键路径已改为当场清零，勿再读取冒充刹车。
         private float depthFriction = 18f;
+#pragma warning restore 0414
 
         [Tooltip("Vertical 轴参与加速度前的系数（如 0.6 可削弱 W/S 纵深过快）")]
         [SerializeField]
@@ -133,6 +143,26 @@ namespace Game.GameRuntime.Entities.Player.Components
         [SerializeField]
         private float villageObstacleFootSeparationInset = 0.003f;
 
+        [Header("穿模保险（0819 方案 A：last-free + Distance 推出）")]
+        [Tooltip(
+            "为 true 时：轴 Cast / 日常 Distance 之后若脚底仍与障碍重叠，则加大法向推出；仍重叠则拉回本帧开始前的墙外点。\n" +
+            "原因：斜围栏会被「纯 X Cast + 纯 Y 射线」拆步钻进去；进去后旧逻辑还会把 vx 锁死。禁止用「重叠就焊死」冒充保险。")]
+        [SerializeField]
+        private bool enableVillageObstaclePenetrationInsurance = true;
+
+        [Tooltip("保险 Distance 推出的迭代次数（日常分离仍用上面的 3 次，避免贴边每帧弹）。建议 8～12。")]
+        [SerializeField]
+        [Range(4, 16)]
+        private int villageObstacleInsuranceSeparationIterations = 10;
+
+        [Tooltip("保险单次法向步长上限（世界单位）。日常分离仍用 0.07，避免正常贴边被推飞。")]
+        [SerializeField]
+        private float villageObstacleInsuranceMaxStep = 0.15f;
+
+        [Tooltip("保险本帧累计推出硬顶（世界单位）。超过则改拉 last-free，防止一帧飞出楼梯。")]
+        [SerializeField]
+        private float villageObstacleInsuranceMaxTotalPush = 0.5f;
+
         [Tooltip("开启后纵深被障碍截断时打印 [VillageBlockerDepth]（用完请关）。")]
         [SerializeField]
         private bool villageObstacleDepthDebugLog;
@@ -152,6 +182,15 @@ namespace Game.GameRuntime.Entities.Player.Components
         [SerializeField]
         private float villageObstaclePostTurnBlockClearance = 0.05f;
 
+        /// <summary>旧 Prefab 缺字段写成 0 时的目标走速回退（与现网 runSpeed 一致）。</summary>
+        private const float VillagePlanarMoveSpeedFallback = 11.2f;
+
+        /// <summary>室内村探索（Chief）planar fallback；与 Player Prefab <c>walkSpeed</c> 对齐。</summary>
+        private const float IndoorVillagePlanarMoveSpeedFallback = 4.2f;
+
+        /// <summary>与现网 Town / Combat 横纵意图死区一致。</summary>
+        private const float VillagePlanarInputDeadZone = 0.01f;
+
         /// <summary>纵深方向速度（沿世界 Y，米/秒）。</summary>
         private float depthVelocity;
 
@@ -163,6 +202,12 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         /// <summary>玩家根上的 2D 刚体（与 PlayerLogic 同物体）。</summary>
         private Rigidbody2D _playerRootRb2D;
+
+        /// <summary>
+        /// 本轮进村是否已做过权威落点 Teleport。
+        /// false 时跳过 WalkArea ClosestPoint，避免 OnInit 在 SetPlayerPos 前把原点吸到楼梯（0901 H1）。
+        /// </summary>
+        private bool _hasAuthoritativeVillageSpawnThisEnable;
 
         /// <summary>进村时从场景解析到的 WalkArea（无 Override 时使用）；离村清空，避免跨场景误引用（验收 P-06）。</summary>
         private PolygonCollider2D _villageWalkPolygonFromScene;
@@ -190,6 +235,15 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         /// <summary>仅检测 <see cref="LayerName.VillageWalkObstacle"/>；<see cref="ContactFilter2D.useTriggers"/> 为 true，与障碍 <c>isTrigger</c> 定稿一致。</summary>
         private ContactFilter2D _villageObstacleContactFilter;
+
+        /// <summary>上一帧（本帧积分前）脚底不与障碍重叠时的根刚体 XY。已重叠时禁止覆盖。</summary>
+        private Vector2 _lastFreeRootPos;
+
+        /// <summary>与 <see cref="_lastFreeRootPos"/> 同时记下的权威纵深 Y。</summary>
+        private float _lastFreeAuthY;
+
+        /// <summary>last-free 是否有效。开局就嵌在墙里时为假，此时只 Distance 推、不焊死、不闪回楼梯中线（OPEN T2）。</summary>
+        private bool _hasLastFreeVillagePose;
 
         /// <summary>父实体逻辑，用于取 Animator、Move、输入等。</summary>
         public PlayerLogic PlayerLogic { get; set; }
@@ -228,6 +282,7 @@ namespace Game.GameRuntime.Entities.Player.Components
         {
             // 默认关闭，避免非村庄场景误跑 FixedUpdate（AC-01）
             enabled = false;
+            EnsureVillagePlanarMoveSpeedConfigured();
         }
 
         public override void OnFixedUpdate()
@@ -249,23 +304,35 @@ namespace Game.GameRuntime.Entities.Player.Components
                 _playerRootRb2D = PlayerLogic.gameObject.GetComponent<Rigidbody2D>();
             }
 
+            // 方案 A（0819 围栏）：必须在积分 / WalkArea / 写根之前记墙外点。
+            // 已重叠时不要覆盖——否则保险会把「栏杆里面」当成合法点，人焊死在墙里。
+            TryCaptureVillageLastFreePose();
+
             // Vertical → 纵深 Y；系数削弱输入，避免「一步跨太大」
             float inputAxis = Input.GetAxisRaw("Vertical");
+            float inputH = Input.GetAxisRaw("Horizontal");
             float inputDepth = inputAxis * verticalInputScale;
             float dt = Time.fixedDeltaTime;
+            float planarSpeed = ResolveVillagePlanarMoveSpeed();
 
-            if (Mathf.Abs(inputDepth) > 0.01f)
+            if (Mathf.Abs(inputDepth) > VillagePlanarInputDeadZone)
             {
                 depthVelocity += inputDepth * depthAcceleration * dt;
-                depthVelocity = Mathf.Clamp(depthVelocity, -depthMaxSpeed, depthMaxSpeed);
+                // 方案 A（0818）：纯 W 满速接到目标走速，不再被 depthMaxSpeed(5.5) 卡住，否则纯纵永远慢于纯横。
+                depthVelocity = Mathf.Clamp(depthVelocity, -planarSpeed, planarSpeed);
             }
             else
             {
-                float sign = Mathf.Sign(depthVelocity);
-                float mag = Mathf.Abs(depthVelocity);
-                mag = Mathf.Max(0f, mag - depthFriction * dt);
-                depthVelocity = mag * sign;
+                // 方案 A′（0819）：无纵深输入当场清零。必须写在这一段，不能塞进 NONE——
+                // 斜着走时只松 W、仍按 D 走 HORIZ_ONLY，若只在 NONE 清纵深，人还会往前后飘。
+                // 原因：村里纵深权威 Y 由本组件积分，Combat Idle 的 StopMove 清不掉 depthVelocity。
+                // 禁止：把 depthFriction 调极大冒充刹车（按住时手感也会怪）；禁止仍按着 W/S 时清零。
+                // 替代（否决）：方案 C 只让 Combat 退 Idle——刚体停了，权威 Y 照样滑。
+                depthVelocity = 0f;
             }
+
+            // 合速度只在这一处缩放：必须在积分 Y 之前，且在 Combat 灌速 / 0818 转向之后。
+            string planarBranch = ApplyVillagePlanarMoveSpeedNormalization(input, planarSpeed);
 
             float yBeforeIntegrate = _villageWorldY;
             _villageWorldY += depthVelocity * dt;
@@ -282,6 +349,8 @@ namespace Game.GameRuntime.Entities.Player.Components
             ApplyVillageWalkObstacleFootPenetrationSeparation();
             // 顺序（方案 1）：脚穿透分离后再夹横移速度，避免分离改位形后仍保留「指向障碍内」的 vx（执行文档 §3.4）。
             ApplyVillageWalkObstacleHorizontalVelocityClamp();
+            // 保险必须在 WalkArea 之后：多边形 ClosestPoint 可能把人推进区内围栏；恢复后再跑 ClosestPoint 会再次推进去。
+            ApplyVillageWalkObstaclePenetrationInsurance();
 
             if (acceptanceDebugLog)
             {
@@ -292,8 +361,13 @@ namespace Game.GameRuntime.Entities.Player.Components
                     : clampedLow && inputAxis < -0.01f
                         ? "CLAMP_AT_YMIN(按S无效时检查 depthYMinWorld)"
                         : "clamp_ok";
+                PlayerMoveComponent moveForLog = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
                 Debug.Log(
-                    $"[TownLocomotion] dt={dt:F4} inputAxis={inputAxis:F3} inputDepth={inputDepth:F3} depthVel={depthVelocity:F3} " +
+                    $"[TownLocomotion] scene={SceneManager.GetActiveScene().name} dt={dt:F4} axisH={inputH:F3} intentH={input.HasVillageExploreHorizontalMoveIntent()} " +
+                    $"axisV={inputAxis:F3} intentV={input.HasVillageExploreVerticalMoveIntent()} branch={planarBranch} " +
+                    $"inputDepth={inputDepth:F3} depthVel={depthVelocity:F3} " +
+                    $"vx={(moveForLog != null ? moveForLog.moveSpeedX : 0f):F3} " +
+                    $"planar={planarSpeed:F2} (legacyDepthMax={depthMaxSpeed:F2}) " +
                     $"authY {yBeforeIntegrate:F4}->{_villageWorldY:F4} (preClamp={yBeforeClamp:F4}) [{clampHint}] " +
                     $"Ybounds=[{depthYMinWorld:F2},{depthYMaxWorld:F2}] frozenZ={_frozenWorldZ:F3} " +
                     $"rb2D=({(_playerRootRb2D != null ? _playerRootRb2D.position.x : 0f):F3},{(_playerRootRb2D != null ? _playerRootRb2D.position.y : 0f):F3}) " +
@@ -338,12 +412,19 @@ namespace Game.GameRuntime.Entities.Player.Components
 
             enabled = active;
             depthVelocity = 0f;
+            if (active)
+            {
+                EnsureVillagePlanarMoveSpeedConfigured();
+            }
             if (!active)
             {
                 UnregisterVillageTurnObstacleGuard();
                 _villageWalkPolygonFromScene = null;
                 _villageDepthFootProbeResolved = null;
                 _villageDepthFootProbeSearchFailed = false;
+                _hasLastFreeVillagePose = false;
+                // 离村清权威落点旗，下次进村重新 defer ClosestPoint
+                _hasAuthoritativeVillageSpawnThisEnable = false;
             }
             else
             {
@@ -358,18 +439,109 @@ namespace Game.GameRuntime.Entities.Player.Components
                     _playerRootRb2D = PlayerLogic.gameObject.GetComponent<Rigidbody2D>();
                 }
 
+                // 冷进村（或旗仍为 false）：尚未 SetPlayerPos/Teleport 前不跑多边形夹区（F2）
+                bool deferWalkPolygon = !_hasAuthoritativeVillageSpawnThisEnable;
+
                 TryBindVillageWalkPolygonFromActiveScene();
                 _frozenWorldZ = PlayerLogic.transform.position.z;
                 _villageWorldY = _playerRootRb2D != null ? _playerRootRb2D.position.y : PlayerLogic.transform.position.y;
                 _villageWorldY = Mathf.Clamp(_villageWorldY, depthYMinWorld, depthYMaxWorld);
                 WriteRootTransformWithAuthoritativeDepthY();
-                Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null ? _playerRootRb2D.position : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
-                ApplyVillageWalkPolygonPostCorrection();
-                ApplyVillageWalkObstacleClampAfterWalkPolygonIfNeeded(rootRbBeforeWalkPolygon);
-                ApplyVillageWalkObstacleHorizontalVelocityClamp();
+
+                if (!deferWalkPolygon)
+                {
+                    Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null
+                        ? _playerRootRb2D.position
+                        : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
+                    ApplyVillageWalkPolygonPostCorrection();
+                    ApplyVillageWalkObstacleClampAfterWalkPolygonIfNeeded(rootRbBeforeWalkPolygon);
+                    ApplyVillageWalkObstacleHorizontalVelocityClamp();
+                    TryCaptureVillageLastFreePose();
+                    ApplyVillageWalkObstaclePenetrationInsurance();
+                }
+                else if (acceptanceDebugLog)
+                {
+                    Debug.Log(
+                        "[VillageEnterFlush] ApplyVillageMode 推迟 WalkArea 夹区（等待权威 Teleport）。"
+                        + " foot=" + PlayerLogic.transform.position
+                        + " rb=" + (_playerRootRb2D != null ? _playerRootRb2D.position.ToString() : "null"),
+                        this);
+                }
+
                 RegisterVillageTurnObstacleGuard();
                 _postPhysicsDepthCoroutine = StartCoroutine(PostPhysicsResyncDepthCoroutine());
             }
+        }
+
+        /// <summary>
+        /// 村模式权威传送：同步 Transform + Rigidbody2D + <c>_villageWorldY</c>，再可选 Flush。
+        /// 原因（0901 H2）：只改 Transform 时多边形/WriteRoot 仍读刚体，Loading 后再 Flush 会把人写回旧点（楼梯）。
+        /// 替代方案：全局改 SetPos——非村场景副作用不明，故抽 Town API 由村模式调用。
+        /// </summary>
+        /// <param name="worldXy">目标世界 X/Y（Z 保持冻结纵深）。</param>
+        /// <param name="thenFlush">为 true 时标记落点完成并套 WalkArea（落点应已在形内）。</param>
+        public void TeleportAuthoritativeVillagePos(Vector2 worldXy, bool thenFlush = true)
+        {
+            if (!enabled || PlayerLogic == null)
+            {
+                return;
+            }
+
+            if (_playerRootRb2D == null)
+            {
+                _playerRootRb2D = PlayerLogic.gameObject.GetComponent<Rigidbody2D>();
+            }
+
+            _frozenWorldZ = PlayerLogic.transform.position.z;
+            _villageWorldY = Mathf.Clamp(worldXy.y, depthYMinWorld, depthYMaxWorld);
+            Vector2 rb = new Vector2(worldXy.x, _villageWorldY);
+
+            if (_playerRootRb2D != null)
+            {
+                _playerRootRb2D.position = rb;
+                _playerRootRb2D.velocity = Vector2.zero;
+            }
+
+            PlayerLogic.transform.position = new Vector3(rb.x, rb.y, _frozenWorldZ);
+
+            var move = PlayerLogic.componentSystem != null
+                ? PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>()
+                : null;
+            if (move != null)
+            {
+                move.moveSpeedY = 0f;
+                move.StopMoveInX();
+            }
+
+            depthVelocity = 0f;
+            _hasAuthoritativeVillageSpawnThisEnable = true;
+
+            if (acceptanceDebugLog)
+            {
+                Debug.Log(
+                    "[VillageEnterFlush] TeleportAuthoritative → " + rb
+                    + " thenFlush=" + thenFlush,
+                    this);
+            }
+
+            if (thenFlush)
+            {
+                FlushAuthoritativeVillageTransformAfterSceneDepthInject();
+            }
+        }
+
+        /// <summary>
+        /// Loading 结束兜底：若进村后从未权威 Teleport，以当前 Transform 提交并 Flush（防 defer 永久跳过夹区）。
+        /// </summary>
+        public void EnsureAuthoritativeVillageSpawnCommitted()
+        {
+            if (!enabled || PlayerLogic == null || _hasAuthoritativeVillageSpawnThisEnable)
+            {
+                return;
+            }
+
+            Vector3 p = PlayerLogic.transform.position;
+            TeleportAuthoritativeVillagePos(new Vector2(p.x, p.y), thenFlush: true);
         }
 
         /// <summary>
@@ -384,10 +556,26 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
 
             WriteRootTransformWithAuthoritativeDepthY();
-            Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null ? _playerRootRb2D.position : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
+
+            // F2：权威落点前不夹区（否则原点→楼梯；随后只摆皮到门口会被写回）
+            if (!_hasAuthoritativeVillageSpawnThisEnable)
+            {
+                if (acceptanceDebugLog)
+                {
+                    Debug.Log("[VillageEnterFlush] Flush 跳过 WalkArea（尚未权威 Teleport）", this);
+                }
+
+                return;
+            }
+
+            Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null
+                ? _playerRootRb2D.position
+                : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
             ApplyVillageWalkPolygonPostCorrection();
             ApplyVillageWalkObstacleClampAfterWalkPolygonIfNeeded(rootRbBeforeWalkPolygon);
             ApplyVillageWalkObstacleHorizontalVelocityClamp();
+            TryCaptureVillageLastFreePose();
+            ApplyVillageWalkObstaclePenetrationInsurance();
         }
 
         /// <summary>运行时调整纵深 Y 边界（场景加载器或空物体标尺对齐后注入）。</summary>
@@ -407,6 +595,137 @@ namespace Game.GameRuntime.Entities.Player.Components
         public void SetZBounds(float minY, float maxY)
         {
             SetDepthYBounds(minY, maxY);
+        }
+
+        /// <summary>旧 Prefab 把新字段序列化成 0 时回退，避免目标走速为 0 导致站桩。</summary>
+        private void EnsureVillagePlanarMoveSpeedConfigured()
+        {
+            if (villagePlanarMoveSpeed <= 0f)
+            {
+                villagePlanarMoveSpeed = VillagePlanarMoveSpeedFallback;
+            }
+        }
+
+        /// <summary>
+        /// 村庄地面目标走速。
+        /// <para>
+        /// 原因（0901）：村长家为楼梯进白名单开 Town 后误吃 <c>villagePlanarMoveSpeed=11.2</c>，
+        /// 其它村民家仍 Default+<c>walkSpeed=4.2</c>。S1：仅室内村探索场景覆写为 WalkSpeed；KenMuNi1 仍 11.2。
+        /// </para>
+        /// <para>替代方案：撤白名单降速——会丢 W/S 楼梯，否决；全局改 11.2→4.2——拖慢村街，否决。</para>
+        /// </summary>
+        private float ResolveVillagePlanarMoveSpeed()
+        {
+            // 每帧按活动场景分支，进/离场无需缓存写回
+            string active = SceneManager.GetActiveScene().name;
+            if (SceneName.IsIndoorVillageExplorationScene(active))
+            {
+                float walk = 0f;
+                if (PlayerLogic != null && PlayerLogic.componentSystem != null)
+                {
+                    var move = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
+                    if (move != null)
+                    {
+                        walk = move.WalkSpeed;
+                    }
+                }
+
+                // fallback 与 Player Prefab walkSpeed 对齐，仅读不到组件时用
+                return walk > 0f ? walk : IndoorVillagePlanarMoveSpeedFallback;
+            }
+
+            return villagePlanarMoveSpeed > 0f ? villagePlanarMoveSpeed : VillagePlanarMoveSpeedFallback;
+        }
+
+        /// <summary>
+        /// 方案 A（0818）：把横、纵接到同一目标走速。斜向判定必须对齐村里走路意图（队列 / GetKey），
+        /// 禁止只认 <c>GetAxisRaw("Horizontal")</c>——本工程轴可能恒为 0，会进不成 DIAGONAL，横向留下 11.2。
+        /// <para>
+        /// 方案 A′（0819）：无横意图时写横向 0（DEPTH_ONLY / NONE）。FixedUpdate 早于 Combat Update，
+        /// 只靠 CombatRun 的 StopMoveInX 会晚 1 物理帧；斜向松 D 仍按 W 会先飘一下。
+        /// 0513 不回归：hasH 为真时进不成这两个分支。禁止用含 |depthVelocity| 的 DepthIntent 每帧清 X。
+        /// </para>
+        /// <para>
+        /// 替代：看速度再 ClampMagnitude（方案 B）在纵深加速期横向仍接近满速；
+        /// Town 末尾无条件写 0.707 若用 DirectionSign 会和 0818 点 A 冲突。
+        /// </para>
+        /// </summary>
+        /// <returns>DIAGONAL / HORIZ_ONLY / DEPTH_ONLY / NONE，供 acceptanceDebugLog。</returns>
+        private string ApplyVillagePlanarMoveSpeedNormalization(PlayerInputComponent input, float planarSpeed)
+        {
+            bool hasH = input != null && input.HasVillageExploreHorizontalMoveIntent();
+            bool hasV = input != null && input.HasVillageExploreVerticalMoveIntent();
+            PlayerMoveComponent move = PlayerLogic != null
+                ? PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>()
+                : null;
+
+            float sx = input != null ? input.GetVillageExploreHorizontalSign() : 0f;
+            float sy = input != null ? input.GetVillageExploreVerticalSign() : 0f;
+
+            // hasH 已真但符号仍 0 的极端帧：才允许用当前 vx，再没有才 DirectionSign（默认朝右，禁止当第一手）。
+            if (hasH && Mathf.Abs(sx) <= VillagePlanarInputDeadZone)
+            {
+                if (move != null && Mathf.Abs(move.moveSpeedX) > VillagePlanarInputDeadZone)
+                {
+                    sx = Mathf.Sign(move.moveSpeedX);
+                }
+                else if (move != null)
+                {
+                    sx = move.DirectionSign;
+                }
+                else
+                {
+                    sx = 1f;
+                }
+            }
+
+            if (hasV && Mathf.Abs(sy) <= VillagePlanarInputDeadZone)
+            {
+                sy = Mathf.Abs(depthVelocity) > VillagePlanarInputDeadZone ? Mathf.Sign(depthVelocity) : 1f;
+            }
+
+            if (hasH && hasV)
+            {
+                Vector2 n = new Vector2(sx, sy).normalized;
+                WriteVillagePlanarHorizontalSpeed(move, n.x * planarSpeed);
+                depthVelocity = n.y * planarSpeed;
+                return "DIAGONAL";
+            }
+
+            if (hasH)
+            {
+                WriteVillagePlanarHorizontalSpeed(move, sx * planarSpeed);
+                return "HORIZ_ONLY";
+            }
+
+            if (hasV)
+            {
+                // 方案 A′：确认无横意图，当帧写横向 0。不要再等 Combat Update 的 StopMoveInX。
+                // 0513 现场是「有横却被当成没横」；0818 后 hasH 已对齐队列/GetKey，按着 D 不会进本分支。
+                // 替代（否决）：继续「纯纵深不写横向」——斜向松 D 仍按 W 时，vx 会在下一物理帧前残留。
+                WriteVillagePlanarHorizontalSpeed(move, 0f);
+                depthVelocity = Mathf.Clamp(depthVelocity, -planarSpeed, planarSpeed);
+                return "DEPTH_ONLY";
+            }
+
+            // 双手空：横向立刻 0。纵深已在 OnFixedUpdate 无 V 输入段清掉，这里不必再写 depthVelocity。
+            WriteVillagePlanarHorizontalSpeed(move, 0f);
+            return "NONE";
+        }
+
+        /// <summary>同步脚本目标速度与刚体 vx。Move 本帧可能已写入未缩放的 runSpeed，WriteRoot 会保留 vx。</summary>
+        private void WriteVillagePlanarHorizontalSpeed(PlayerMoveComponent move, float vx)
+        {
+            if (move != null)
+            {
+                move.moveSpeedX = vx;
+            }
+
+            if (_playerRootRb2D != null)
+            {
+                Vector2 v = _playerRootRb2D.velocity;
+                _playerRootRb2D.velocity = new Vector2(vx, v.y);
+            }
         }
 
         /// <summary>
@@ -468,6 +787,8 @@ namespace Game.GameRuntime.Entities.Player.Components
                 ApplyVillageWalkObstacleClampAfterWalkPolygonIfNeeded(rootRbBeforeWalkPolygon);
                 ApplyVillageWalkObstacleFootPenetrationSeparation();
                 ApplyVillageWalkObstacleHorizontalVelocityClamp();
+                // 物理步 + WalkArea 之后可能再次嵌进围栏；同一套保险必须再跑，否则会出现「FixedUpdate 拉出来、物理后又焊回去」。
+                ApplyVillageWalkObstaclePenetrationInsurance();
             }
 
             _postPhysicsDepthCoroutine = null;
@@ -500,7 +821,7 @@ namespace Game.GameRuntime.Entities.Player.Components
                 return true;
             }
 
-            // 松键后惯性滑行：仅在本组件启用时才有有效的 depthVelocity
+            // 0819 A′ 松键后 depthVelocity 已是 0，本分支通常为假。保留死区判定以免障碍夹紧等残留速度漏驱动 Walk；不要删这段去「假装没惯性」。
             if (!enabled)
             {
                 return false;
@@ -587,7 +908,21 @@ namespace Game.GameRuntime.Entities.Player.Components
         }
 
         /// <summary>
-        /// 在 <see cref="SceneName.Village_KenMuNi1"/> 下按物体名 <c>VillageWalkArea</c> 查找 <see cref="PolygonCollider2D"/>（可挂在同名物体自身或子级）。
+        /// 运行时切换生效 WalkArea（W1：巨树 2 楼绑 <c>VillageWalkArea2</c>）。
+        /// <para>传 null 清除覆盖并重新按名绑 <c>VillageWalkArea</c>。禁止用改多边形尺寸代替切换。</para>
+        /// </summary>
+        public void SetVillageWalkAreaOverride(PolygonCollider2D poly)
+        {
+            villageWalkAreaOverride = poly;
+            if (poly == null && enabled)
+            {
+                TryBindVillageWalkPolygonFromActiveScene();
+            }
+        }
+
+        /// <summary>
+        /// 在村庄探索白名单场景下按物体名 <c>VillageWalkArea</c> 查找 <see cref="PolygonCollider2D"/>（可挂在同名物体自身或子级）。
+        /// <para>白名单：<see cref="SceneName.IsVillageExplorationScene"/>（KenMuNi1 + Chief_House，0901）。</para>
         /// <para><b>替代方案</b>：多块区域时用列表 + 并集判定；首版仅支持单 Polygon（执行说明 §4.1）。</para>
         /// </summary>
         private void TryBindVillageWalkPolygonFromActiveScene()
@@ -599,7 +934,7 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
 
             Scene scene = SceneManager.GetActiveScene();
-            if (!scene.IsValid() || scene.name != SceneName.Village_KenMuNi1)
+            if (!scene.IsValid() || !SceneName.IsVillageExplorationScene(scene.name))
             {
                 return;
             }
@@ -1023,6 +1358,280 @@ namespace Game.GameRuntime.Entities.Player.Components
         }
 
         /// <summary>
+        /// 若当前脚底不与 <see cref="LayerName.VillageWalkObstacle"/> 重叠，记下根刚体 XY 与权威 Y，供穿模后拉回。
+        /// 已重叠时禁止覆盖：否则保险会把栏杆里面当成合法点。
+        /// </summary>
+        private void TryCaptureVillageLastFreePose()
+        {
+            if (!enableVillageDepthObstacleClamp || PlayerLogic == null)
+            {
+                return;
+            }
+
+            if (_playerRootRb2D == null)
+            {
+                _playerRootRb2D = PlayerLogic.gameObject.GetComponent<Rigidbody2D>();
+            }
+
+            if (_playerRootRb2D == null)
+            {
+                return;
+            }
+
+            if (IsVillageFootOverlappingWalkObstaclesNow())
+            {
+                return;
+            }
+
+            _lastFreeRootPos = _playerRootRb2D.position;
+            _lastFreeAuthY = _villageWorldY;
+            _hasLastFreeVillagePose = true;
+        }
+
+        /// <summary>当前位姿下脚底是否与村庄 Walk 障碍重叠（不改 Transform，给 last-free / 保险用）。</summary>
+        private bool IsVillageFootOverlappingWalkObstaclesNow()
+        {
+            int obstacleLayer = LayerMask.NameToLayer(LayerName.VillageWalkObstacle);
+            if (obstacleLayer < 0)
+            {
+                return false;
+            }
+
+            Collider2D foot = ResolveVillageDepthFootProbe();
+            if (foot == null || !foot.enabled)
+            {
+                return false;
+            }
+
+            BuildVillageObstacleContactFilter(obstacleLayer);
+            Physics2D.SyncTransforms();
+            _villageObstacleOverlapBuffer.Clear();
+            return foot.OverlapCollider(_villageObstacleContactFilter, _villageObstacleOverlapBuffer) > 0;
+        }
+
+        /// <summary>
+        /// 0819 方案 A 保险：轴 Cast 与日常 Distance 之后若仍重叠，先加大法向推出；仍重叠则拉回 last-free。
+        /// <para><b>原因</b>：斜围栏没有合成方向扫掠，斜向一步会从「纯 X / 纯 Y」缝里钻进去；进去后纵深只沿 Y 挤、横移曾锁 vx，人焊在栏杆里。</para>
+        /// <para><b>必须在 WalkArea 之后</b>：多边形修正可能把人推进区内围栏；拉回后再 ClosestPoint 会再次推进去。</para>
+        /// <para><b>替代（否决）</b>：方案 E 重叠就锁死速度——现网卡死主因。方案 B 合成 Cast 防穿好，但人已在 Composite 内部时仍可能扫空，不能替代本保险。</para>
+        /// </summary>
+        private void ApplyVillageWalkObstaclePenetrationInsurance()
+        {
+            if (!enableVillageDepthObstacleClamp || !enableVillageObstaclePenetrationInsurance || PlayerLogic == null)
+            {
+                return;
+            }
+
+            var input = PlayerLogic.componentSystem.GetComponent<PlayerInputComponent>();
+            if (input == null || input.LocomotionMode != PlayerLocomotionMode.Village2_5D)
+            {
+                return;
+            }
+
+            if (_playerRootRb2D == null)
+            {
+                _playerRootRb2D = PlayerLogic.gameObject.GetComponent<Rigidbody2D>();
+            }
+
+            if (_playerRootRb2D == null)
+            {
+                return;
+            }
+
+            if (!IsVillageFootOverlappingWalkObstaclesNow())
+            {
+                return;
+            }
+
+            Vector2 totalPush;
+            if (TryVillageObstacleInsuranceDistancePush(out totalPush))
+            {
+                depthVelocity = 0f;
+                // 推出方向指向墙外；vx 与推出 X 反向 = 还在往墙里顶，清掉。切向（同号或推出几乎纯 Y）保留，贴边仍能滑。
+                float vx = _playerRootRb2D.velocity.x;
+                if (totalPush.sqrMagnitude > 1e-10f && vx * totalPush.x < -1e-6f)
+                {
+                    PlayerMoveComponent moveAfterPush = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
+                    WriteVillagePlanarHorizontalSpeed(moveAfterPush, 0f);
+                }
+
+                LogVillageObstacleDepth(
+                    $"insurance overlap→push Δ=({totalPush.x:F4},{totalPush.y:F4}) pos=({_playerRootRb2D.position.x:F3},{_playerRootRb2D.position.y:F3})");
+                return;
+            }
+
+            if (_hasLastFreeVillagePose)
+            {
+                RestoreVillageLastFreePose();
+                LogVillageObstacleDepth(
+                    $"insurance restore last-free pos=({_lastFreeRootPos.x:F3},{_lastFreeAuthY:F3})");
+                return;
+            }
+
+            // OPEN T2：没有 last-free（开局就嵌在墙里）不闪回楼梯中线；上面 Distance 已尽力推，下一帧继续，禁止焊死。
+            LogVillageObstacleDepth(
+                $"insurance overlap no last-free; keep pushing pos=({_playerRootRb2D.position.x:F3},{_playerRootRb2D.position.y:F3})");
+        }
+
+        /// <summary>
+        /// 保险用 Distance 法向推出。比日常分离更狠，但累计位移有硬顶，避免一帧飞出楼梯。
+        /// </summary>
+        /// <returns>推出后脚底不再重叠则为 true。</returns>
+        private bool TryVillageObstacleInsuranceDistancePush(out Vector2 accumulatedWorld)
+        {
+            accumulatedWorld = Vector2.zero;
+            int obstacleLayer = LayerMask.NameToLayer(LayerName.VillageWalkObstacle);
+            if (obstacleLayer < 0)
+            {
+                return false;
+            }
+
+            Collider2D foot = ResolveVillageDepthFootProbe();
+            if (foot == null || !foot.enabled)
+            {
+                return false;
+            }
+
+            BuildVillageObstacleContactFilter(obstacleLayer);
+            float maxTotal = Mathf.Max(0.05f, villageObstacleInsuranceMaxTotalPush);
+            int iters = Mathf.Max(1, villageObstacleInsuranceSeparationIterations);
+            float maxStep = Mathf.Max(0.01f, villageObstacleInsuranceMaxStep);
+
+            for (int iter = 0; iter < iters; iter++)
+            {
+                if (accumulatedWorld.magnitude >= maxTotal - 1e-5f)
+                {
+                    break;
+                }
+
+                Physics2D.SyncTransforms();
+                _villageObstacleOverlapBuffer.Clear();
+                int overlapCount = foot.OverlapCollider(_villageObstacleContactFilter, _villageObstacleOverlapBuffer);
+                if (overlapCount == 0)
+                {
+                    return true;
+                }
+
+                Vector2 step = Vector2.zero;
+                for (int i = 0; i < overlapCount; i++)
+                {
+                    Collider2D obs = _villageObstacleOverlapBuffer[i];
+                    if (obs == null || obs == foot)
+                    {
+                        continue;
+                    }
+
+                    ColliderDistance2D cd = Physics2D.Distance(foot, obs);
+                    if (!cd.isValid)
+                    {
+                        continue;
+                    }
+
+                    if (!cd.isOverlapped && cd.distance > 0.0005f)
+                    {
+                        continue;
+                    }
+
+                    float penetration;
+                    if (cd.distance < -1e-5f)
+                    {
+                        penetration = -cd.distance;
+                    }
+                    else if (cd.isOverlapped || cd.distance <= 0.0005f)
+                    {
+                        penetration = villageObstacleFootSeparationInset;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    Vector2 n = cd.normal;
+                    if (n.sqrMagnitude < 1e-10f)
+                    {
+                        continue;
+                    }
+
+                    float push = Mathf.Min(penetration + villageObstacleFootSeparationInset, maxStep);
+                    step += n * push;
+                }
+
+                if (step.sqrMagnitude < 1e-14f)
+                {
+                    break;
+                }
+
+                if (step.magnitude > maxStep)
+                {
+                    step = step.normalized * maxStep;
+                }
+
+                float remain = maxTotal - accumulatedWorld.magnitude;
+                if (step.magnitude > remain)
+                {
+                    step = step.normalized * Mathf.Max(0f, remain);
+                }
+
+                if (step.sqrMagnitude < 1e-14f)
+                {
+                    break;
+                }
+
+                Vector2 p = _playerRootRb2D.position + step;
+                _playerRootRb2D.position = p;
+                _villageWorldY = p.y;
+                PlayerLogic.transform.position = new Vector3(p.x, p.y, _frozenWorldZ);
+                Vector2 v = _playerRootRb2D.velocity;
+                _playerRootRb2D.velocity = new Vector2(v.x, 0f);
+                var move = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
+                if (move != null)
+                {
+                    move.moveSpeedY = 0f;
+                }
+
+                accumulatedWorld += step;
+            }
+
+            Physics2D.SyncTransforms();
+            return !IsVillageFootOverlappingWalkObstaclesNow();
+        }
+
+        /// <summary>
+        /// 把根刚体 / Transform / 权威 Y 拉回本帧开始前的墙外点，并清掉本帧速度。
+        /// 拉回后不要立刻再跑 WalkArea ClosestPoint：可能再次把人推进围栏。
+        /// </summary>
+        private void RestoreVillageLastFreePose()
+        {
+            if (!_hasLastFreeVillagePose || PlayerLogic == null)
+            {
+                return;
+            }
+
+            Vector2 restored = new Vector2(_lastFreeRootPos.x, _lastFreeAuthY);
+            _villageWorldY = _lastFreeAuthY;
+            depthVelocity = 0f;
+            if (_playerRootRb2D != null)
+            {
+                _playerRootRb2D.position = restored;
+                _playerRootRb2D.velocity = new Vector2(0f, 0f);
+                PlayerLogic.transform.position = new Vector3(restored.x, restored.y, _frozenWorldZ);
+            }
+            else
+            {
+                PlayerLogic.transform.position = new Vector3(restored.x, restored.y, _frozenWorldZ);
+            }
+
+            PlayerMoveComponent move = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
+            WriteVillagePlanarHorizontalSpeed(move, 0f);
+            if (move != null)
+            {
+                move.moveSpeedY = 0f;
+            }
+
+            Physics2D.SyncTransforms();
+        }
+
+        /// <summary>
         /// 使用 <see cref="LayerName.PlayerFoot"/> 上的 <see cref="Collider2D"/> 对 <see cref="LayerName.VillageWalkObstacle"/> 做纵深方向限制，
         /// 在 <see cref="WriteRootTransformWithAuthoritativeDepthY"/> 之前修正 <see cref="_villageWorldY"/> 与 <see cref="depthVelocity"/>。
         /// <para><b>原因</b>：权威 Y 由脚本写回，不经过 Y 向速度物理解算，故必须在积分后显式 Cast/夹紧。</para>
@@ -1122,9 +1731,9 @@ namespace Game.GameRuntime.Entities.Player.Components
         /// <summary>
         /// 方案 1 配套：矩阵不再挡横移，在物理积分前用脚底形状沿水平 Cast，将 <c>velocity.x</c> 与 <see cref="PlayerMoveComponent.moveSpeedX"/> 夹紧。
         /// <para><b>原因</b>：Prefab 中本组件在 <c>componentsList</c> 内排在 <see cref="PlayerMoveComponent"/> 之后，本方法在 <see cref="OnFixedUpdate"/> 末尾调用时 Move 已写入速度。</para>
-        /// <para><b>穿障修复</b>：贴障 / 挤压时 Cast 命中距离常为 0，不得丢弃；脚底已与障碍重叠且本帧正向 Cast 零命中时再强制不允许位移。</para>
+        /// <para><b>穿障</b>：贴障 / 挤压时 Cast 命中距离常为 0，不得丢弃。0819 起「重叠且 Cast 空」不再一律锁 vx——那是斜围栏卡死主因；有 last-free 时交给保险拉回，允许贴边切向滑（OPEN T1）。</para>
         /// <para><b>转身帧缝</b>：Turn 在 Update、本方法在 FixedUpdate，中间易漏拦；由 <see cref="RegisterVillageTurnObstacleGuard"/> 订阅 <see cref="MoveComponent.onTurnAction"/>，经 <see cref="VillageWalkObstacleTurnImmediateBlock"/> 同栈补判（解耦在独立静态类）。</para>
-        /// <para><b>替代方案</b>：改 Move 全局 Turn 或 CCD 子步进；影响面大。</para>
+        /// <para><b>替代方案</b>：改 Move 全局 Turn 或 CCD 子步进；影响面大。重叠就整帧禁止移动（方案 E）会焊死在栏杆里，禁止。</para>
         /// </summary>
         private void ApplyVillageWalkObstacleHorizontalVelocityClamp()
         {
@@ -1203,9 +1812,11 @@ namespace Game.GameRuntime.Entities.Player.Components
                 allowedAlong = Mathf.Min(allowedAlong, Mathf.Max(0f, d - stopSkin));
             }
 
-            // Cast 未缩短位移、且脚底与障碍重叠、且正向 Cast 零命中：典型为从大块 Trigger 内沿切向走时壳体未扫到出口；强制本帧水平位移为 0。
-            // 若 hitCount>0，应已由上面距离循环夹紧；此处不再用「仅重叠」一律清零，以免贴长条障碍切向滑动时误锁死（替代：缩 Foot 或把障碍拆成多段）。
-            if (allowedAlong + 1e-4f >= absDx && footEmbeddedInObstacle && hitCount == 0)
+            // Cast 未缩短位移、且脚底与障碍重叠、且正向 Cast 零命中：
+            // 旧逻辑在此把 vx 锁成 0，本意是防大块 Trigger 内切向穿出；落在斜围栏内部就变成焊死（方案 E，禁止当保险）。
+            // 0819：有 last-free 时不要锁——贴边切向滑交给轴 Cast；重叠由末尾保险 Distance / 拉回处理。
+            // 仅开局就嵌在墙里（没有 last-free）才清本帧水平位移，随后保险仍会拼命推，禁止焊死不管。
+            if (allowedAlong + 1e-4f >= absDx && footEmbeddedInObstacle && hitCount == 0 && !_hasLastFreeVillagePose)
             {
                 allowedAlong = 0f;
             }

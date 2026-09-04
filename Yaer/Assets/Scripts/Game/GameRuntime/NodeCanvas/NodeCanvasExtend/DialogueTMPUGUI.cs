@@ -6,6 +6,10 @@ using System.Text;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Game.GameMgr;
+using Game.GameRuntime.UI.FormLogic.Shop;
+using Game.GameRuntime.UI.FormLogic.Story;
+using Game.GameRuntime.UI.FormLogic.Story.Dialogue;
+using Game.GameRuntime.UI.FormLogic.Story.Painting;
 using Game.GameRuntime.Story;
 using Game.Static.Enum.Dialogue;
 using NodeCanvas.DialogueTrees;
@@ -46,6 +50,12 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
         public TextMeshProUGUI actorSpeech;
         public TextMeshProUGUI actorName;
         public Image actorPortrait;
+        /// <summary>
+        /// true = 字幕头像以 Mask 立绘为真源（DialogueMaskAvatarPresenter）。
+        /// OnGetAvatar 不再激活旧 actorPortrait，避免与 Mask 双影；Loader 仍跑，供历史列表用图集。
+        /// 默认 false：其它未挂 Mask 的对话面板保持旧 Portrait 行为；NormalDialogueNewPanel Prefab 显式开 true。
+        /// </summary>
+        [SerializeField] private bool useMaskAvatar = false;
         public SubtitleDelays subtitleDelays = new SubtitleDelays();
         public List<AudioClip> typingSounds;
         private AudioSource playSource;
@@ -208,15 +218,69 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             subtitlesGroup.anchoredPosition = originalSubsPosition;
             actorSpeech.text = "";
 
+            // 与官方 DialogueUGUI 一致：每句刷新演员名（渐入阶段会先清空，避免 Prefab 残留「雅尔」）
+            if (actorName != null)
+            {
+                actorName.text = actor != null ? actor.name : string.Empty;
+            }
+
             // 旁白「—」等未绑定 DialogueActorEx 的 dummy Actor：仅字幕、不刷立绘，避免 RefreshAvatar 空引用卡死
-            if (actor != null)
+            if (info.UseShopkeeperPortrait)
+            {
+                var shopFaceController = ShopkeeperFaceRegistry.Instance;
+                if (shopFaceController != null)
+                {
+                    shopFaceController.Apply(info.ShopBody, info.ShopFace);
+                }
+                else
+                {
+                    Debug.LogWarning("[DialogueTMPUGUI] 店句但 ShopkeeperFaceController 未注册。", this);
+                }
+
+                if (actorPortrait != null)
+                {
+                    actorPortrait.gameObject.SetActive(false);
+                }
+
+                var maskPresenter = GetComponentInChildren<DialogueMaskAvatarPresenter>(true);
+                if (maskPresenter != null)
+                {
+                    maskPresenter.ApplyShopkeeperPortrait(info.ShopBody, info.ShopFace);
+                }
+
+                OnGetNewStatement?.Invoke(DialogueRoleName.None, DialogueFaceType.None, text);
+            }
+            else if (info.UseChiefPortrait)
+            {
+                // 门口村长：DialogueSceneContainer 下大立绘 + Mask 同帧 Apply；Invoke(None) 写历史勿关刚亮的脸
+                ApplyChiefBigPortrait(info.ChiefFace);
+
+                if (actorPortrait != null)
+                {
+                    actorPortrait.gameObject.SetActive(false);
+                }
+
+                var maskPresenter = GetComponentInChildren<DialogueMaskAvatarPresenter>(true);
+                if (maskPresenter != null)
+                {
+                    maskPresenter.ApplyChiefPortrait(info.ChiefFace);
+                }
+
+                OnGetNewStatement?.Invoke(DialogueRoleName.None, DialogueFaceType.None, text);
+            }
+            else if (actor != null)
             {
                 actor.RefreshAvatar(info.FaceType, (sprite) => OnGetAvatar(sprite, text));
                 OnGetNewStatement?.Invoke(actor.RoleName, info.FaceType, text);
             }
             else
             {
-                actorPortrait.gameObject.SetActive(false);
+                // 旧框保持关；通知 Mask Presenter 清空（role=None），避免残留上一角色立绘
+                if (actorPortrait != null)
+                {
+                    actorPortrait.gameObject.SetActive(false);
+                }
+                OnGetNewStatement?.Invoke(DialogueRoleName.None, DialogueFaceType.None, text);
             }
 
             if ( audio != null ) 
@@ -252,6 +316,33 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
                     Debug.LogWarning("[DialogueTMPUGUI] Continue 时异常（可能对话树已停）：" + e.Message, this);
                 }
             }
+        }
+
+        /// <summary>
+        /// 门口村长大立绘：只在 DialogueSceneContainer 下找 <see cref="ChiefMaskPainting"/>，
+        /// 避免 GetComponentInChildren 误伤 Mask 内同脚本实例。
+        /// 替代方案：对话级 Registry（店式）——多一处全局态，门口单 Prefab 不必。
+        /// </summary>
+        private void ApplyChiefBigPortrait(ChiefFaceType face)
+        {
+            var form = GetComponentInParent<NormalDialogueFormNewLogic>();
+            var bigChief = form != null ? form.FindInDialogueScene<ChiefMaskPainting>() : null;
+            if (bigChief == null)
+            {
+                Debug.LogWarning(
+                    "[DialogueTMPUGUI] 村长门口句但 DialogueSceneContainer 下无 ChiefPainting（ChiefMaskPainting）。",
+                    this);
+                return;
+            }
+
+            bigChief.gameObject.SetActive(true);
+            var cg = bigChief.GetComponent<CanvasGroup>();
+            if (cg != null && cg.alpha < 1f)
+            {
+                cg.alpha = 1f;
+            }
+
+            bigChief.Apply(face);
         }
 
         /// <summary>
@@ -321,6 +412,22 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
 
         private void OnGetAvatar(Sprite sprite, string text)
         {
+            if (actorPortrait == null)
+            {
+                return;
+            }
+
+            // Mask 真源：旧 Image 保持关闭；仍可写入 sprite 供调试查看，但不激活
+            if (useMaskAvatar)
+            {
+                actorPortrait.gameObject.SetActive(false);
+                if (sprite != null)
+                {
+                    actorPortrait.sprite = sprite;
+                }
+                return;
+            }
+
             actorPortrait.gameObject.SetActive(sprite != null);
             actorPortrait.sprite = sprite;
         }

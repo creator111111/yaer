@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Game.GameRuntime.Story.Node;
+using Game.GameRuntime.UI.FormLogic.Shop;
+using Game.GameRuntime.UI.FormLogic.Story.Painting;
 using Game.GameRuntime.Story.NodeCanvasExtend;
 using Game.Static.Enum.Dialogue;
 using NodeCanvas.DialogueTrees;
@@ -40,7 +42,7 @@ namespace EditorC.Tool.Dialogue
             int? startRowId,
             string assetName)
         {
-            return TryBuild(rows, mapping, startRowId, assetName, DialoguePreludeOptions.CreateDefault());
+            return TryBuild(rows, mapping, startRowId, assetName, DialoguePreludeOptions.CreateDefault(), false);
         }
 
         /// <summary>
@@ -52,7 +54,8 @@ namespace EditorC.Tool.Dialogue
             DialogueSpeakerMapping mapping,
             int? startRowId,
             string assetName,
-            DialoguePreludeOptions preludeOptions)
+            DialoguePreludeOptions preludeOptions,
+            bool hasBodyTypeColumn = false)
         {
             preludeOptions ??= DialoguePreludeOptions.CreateDefault();
 
@@ -107,17 +110,54 @@ namespace EditorC.Tool.Dialogue
                 return null;
             }
 
-            // Step4：第一轮 — 创建节点
+            // Step4：店行 Body/Face 继承表（按 CSV 行序）
+            var shopPortraitMap = BuildShopkeeperPortraitMap(
+                rows,
+                mapping,
+                hasBodyTypeColumn || rowsHaveBodyTypeColumn(rows));
+
+            // Step4c：村长行 Face1～3 继承表（门口直通；晚宴 Smile 等不入表）
+            var chiefPortraitMap = BuildChiefPortraitMap(rows, mapping);
+
+            // Step4b：第一轮 — 创建节点
             var nodeMap = new Dictionary<int, Node>();
+            // Anim 行：入边接到 Action，出边从 Statement 接出
+            var animStatementMap = new Dictionary<int, Node>();
             for (var index = 0; index < rows.Count; index++)
             {
                 var row = rows[index];
                 var position = new Vector2(BaseX, BaseY + index * RowSpacing);
                 Node node;
 
+                if (DialogueCsvParser.IsAnimType(row.type))
+                {
+                    // Play → Statement：Extra=动画键（BB 名），Text=字幕
+                    var playNode = CreatePlayUiAnimatorNode(tree, row, position);
+                    if (playNode == null)
+                    {
+                        UnityEngine.Object.DestroyImmediate(tree);
+                        return null;
+                    }
+
+                    var statementPos = position + new Vector2(220f, 0f);
+                    var statementNode = CreateStatementNode(
+                        tree, row, mapping, statementPos, shopPortraitMap, chiefPortraitMap);
+                    if (statementNode == null)
+                    {
+                        UnityEngine.Object.DestroyImmediate(tree);
+                        return null;
+                    }
+
+                    tree.ConnectNodes(playNode, statementNode);
+                    nodeMap[row.id] = playNode;
+                    animStatementMap[row.id] = statementNode;
+                    continue;
+                }
+
                 if (DialogueCsvParser.IsDialogueType(row.type))
                 {
-                    node = CreateStatementNode(tree, row, mapping, position);
+                    node = CreateStatementNode(
+                        tree, row, mapping, position, shopPortraitMap, chiefPortraitMap);
                 }
                 else if (DialogueCsvParser.IsChoiceType(row.type))
                 {
@@ -145,6 +185,12 @@ namespace EditorC.Tool.Dialogue
                 if (!nodeMap.TryGetValue(row.id, out var sourceNode))
                 {
                     continue;
+                }
+
+                // Anim：出边从字幕 Statement 出发，保证先播完动画再点继续
+                if (animStatementMap.TryGetValue(row.id, out var animStatement))
+                {
+                    sourceNode = animStatement;
                 }
 
                 var nextIds = DialogueCsvParser.SplitNextTargets(row.next);
@@ -183,7 +229,7 @@ namespace EditorC.Tool.Dialogue
                     if (nextIds.Count > 1)
                     {
                         Debug.LogWarning(
-                            $"[DialogueCsvGraphBuilder] Dialogue ID {row.id} 的 Next 含多个目标，仅连接第一个：{nextIds[0]}");
+                            $"[DialogueCsvGraphBuilder] ID {row.id} 的 Next 含多个目标，仅连接第一个：{nextIds[0]}");
                     }
 
                     if (nodeMap.TryGetValue(nextIds[0], out var targetNode))
@@ -290,15 +336,13 @@ namespace EditorC.Tool.Dialogue
             return true;
         }
 
-        /// <summary>
-        /// 创建 StatementNodeEx，写入台词与默认表情。
-        /// actorName 的 setter 为 private，故用反射写 _actorName / _actorParameterID。
-        /// </summary>
         private static StatementNodeEx CreateStatementNode(
             DialogueTree tree,
             DialogueRow row,
             DialogueSpeakerMapping mapping,
-            Vector2 position)
+            Vector2 position,
+            Dictionary<int, (ShopkeeperBodyType body, ShopkeeperFaceType face)> shopPortraitMap,
+            Dictionary<int, ChiefFaceType> chiefPortraitMap)
         {
             if (!mapping.TryResolve(row.speaker, out var actorName))
             {
@@ -309,22 +353,244 @@ namespace EditorC.Tool.Dialogue
             var node = tree.AddNode<StatementNodeEx>(position);
             node.statement.text = row.text ?? string.Empty;
 
-            // FaceType：CSV 第 7 列或按 Actor 名默认（雅尔→Smile，其它→Normal）
-            if (!DialogueFaceTypeCsvDefaults.TryResolve(row.faceType, actorName, out var resolvedFace))
+            if (ShopkeeperCsvDefaults.IsShopkeeperActor(actorName))
             {
-                Debug.LogError(
-                    $"[DialogueCsvGraphBuilder] ID {row.id} FaceType「{row.faceType}」无法解析为 DialogueFaceType。");
+                if (!shopPortraitMap.TryGetValue(row.id, out var portrait))
+                {
+                    portrait = (ShopkeeperBodyType.Normal, ShopkeeperFaceType.Face1);
+                }
+
+                if (node.UseShopkeeperPortrait == null)
+                {
+                    node.UseShopkeeperPortrait = new BBParameter<bool>();
+                }
+
+                if (node.ShopBody == null)
+                {
+                    node.ShopBody = new BBParameter<ShopkeeperBodyType>();
+                }
+
+                if (node.ShopFace == null)
+                {
+                    node.ShopFace = new BBParameter<ShopkeeperFaceType>();
+                }
+
+                node.UseShopkeeperPortrait.value = true;
+                node.ShopBody.value = portrait.body;
+                node.ShopFace.value = portrait.face;
+
+                if (node.UseChiefPortrait == null)
+                {
+                    node.UseChiefPortrait = new BBParameter<bool>();
+                }
+
+                node.UseChiefPortrait.value = false;
+
+                if (node.FaceType == null)
+                {
+                    node.FaceType = new BBParameter<DialogueFaceType>();
+                }
+
+                node.FaceType.value = DialogueFaceType.None;
+            }
+            else if (ChiefCsvDefaults.IsChiefActor(actorName)
+                     && chiefPortraitMap != null
+                     && chiefPortraitMap.TryGetValue(row.id, out var chiefFace))
+            {
+                // 门口：CSV Face1～3 → UseChiefPortrait；FaceType 置 None（运行时走 ChiefFace）
+                if (node.UseChiefPortrait == null)
+                {
+                    node.UseChiefPortrait = new BBParameter<bool>();
+                }
+
+                if (node.ChiefFace == null)
+                {
+                    node.ChiefFace = new BBParameter<ChiefFaceType>();
+                }
+
+                node.UseChiefPortrait.value = true;
+                node.ChiefFace.value = chiefFace;
+
+                if (node.UseShopkeeperPortrait == null)
+                {
+                    node.UseShopkeeperPortrait = new BBParameter<bool>();
+                }
+
+                node.UseShopkeeperPortrait.value = false;
+
+                if (node.FaceType == null)
+                {
+                    node.FaceType = new BBParameter<DialogueFaceType>();
+                }
+
+                node.FaceType.value = DialogueFaceType.None;
+            }
+            else
+            {
+                // FaceType：CSV 第 7 列或按 Actor 名默认（雅尔→Smile，其它→Normal）
+                // 村长晚宴 Smile/CloseEyes 也走此分支（不入 chiefPortraitMap）
+                if (!DialogueFaceTypeCsvDefaults.TryResolve(row.faceType, actorName, out var resolvedFace))
+                {
+                    Debug.LogError(
+                        $"[DialogueCsvGraphBuilder] ID {row.id} FaceType「{row.faceType}」无法解析为 DialogueFaceType。");
+                    return null;
+                }
+
+                if (node.FaceType == null)
+                {
+                    node.FaceType = new BBParameter<DialogueFaceType>();
+                }
+
+                node.FaceType.value = resolvedFace;
+
+                if (node.UseShopkeeperPortrait == null)
+                {
+                    node.UseShopkeeperPortrait = new BBParameter<bool>();
+                }
+
+                node.UseShopkeeperPortrait.value = false;
+
+                if (node.UseChiefPortrait == null)
+                {
+                    node.UseChiefPortrait = new BBParameter<bool>();
+                }
+
+                node.UseChiefPortrait.value = false;
+            }
+
+            SetNodeActor(node, tree, actorName);
+            return node;
+        }
+
+        /// <summary>按 CSV 行序累计村长 Face1～3；空列继承上一句；晚宴 DialogueFaceType 行不入表。</summary>
+        private static Dictionary<int, ChiefFaceType> BuildChiefPortraitMap(
+            IReadOnlyList<DialogueRow> rows,
+            DialogueSpeakerMapping mapping)
+        {
+            var result = new Dictionary<int, ChiefFaceType>();
+            ChiefFaceType? current = null;
+
+            foreach (var row in rows)
+            {
+                if (!DialogueCsvParser.IsDialogueType(row.type) && !DialogueCsvParser.IsAnimType(row.type))
+                {
+                    continue;
+                }
+
+                if (!ChiefCsvDefaults.IsChiefRow(row, mapping))
+                {
+                    continue;
+                }
+
+                if (ChiefCsvDefaults.IsChiefFaceToken(row.faceType))
+                {
+                    if (!ChiefCsvDefaults.TryParseFace(row.faceType, out var parsed))
+                    {
+                        Debug.LogWarning(
+                            $"[DialogueCsvGraphBuilder] ID {row.id} 村长 Face 解析失败，跳过入表。");
+                        continue;
+                    }
+
+                    current = parsed;
+                    result[row.id] = parsed;
+                }
+                else if (string.IsNullOrWhiteSpace(row.faceType) && current.HasValue)
+                {
+                    // 空列继承上一张村长 Face1～3
+                    result[row.id] = current.Value;
+                }
+                else
+                {
+                    // Smile/CloseEyes 等晚宴枚举：退出直通模式，后续空列不继承 Face1～3
+                    current = null;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>按 CSV 行序累计店行 Body/Face；空列继承上一句。</summary>
+        private static Dictionary<int, (ShopkeeperBodyType body, ShopkeeperFaceType face)> BuildShopkeeperPortraitMap(
+            IReadOnlyList<DialogueRow> rows,
+            DialogueSpeakerMapping mapping,
+            bool hasBodyTypeColumn)
+        {
+            var result = new Dictionary<int, (ShopkeeperBodyType, ShopkeeperFaceType)>();
+            var body = ShopkeeperBodyType.Normal;
+            var face = ShopkeeperFaceType.Face1;
+
+            foreach (var row in rows)
+            {
+                if (!DialogueCsvParser.IsDialogueType(row.type) && !DialogueCsvParser.IsAnimType(row.type))
+                {
+                    continue;
+                }
+
+                if (!ShopkeeperCsvDefaults.IsShopkeeperRow(row, mapping))
+                {
+                    continue;
+                }
+
+                if (!ShopkeeperCsvDefaults.ApplyFaceInheritance(row.faceType, ref face))
+                {
+                    Debug.LogWarning(
+                        $"[DialogueCsvGraphBuilder] ID {row.id} 店行 Face 继承失败，保持 {face}。");
+                }
+
+                if (hasBodyTypeColumn)
+                {
+                    if (!ShopkeeperCsvDefaults.ApplyBodyInheritance(row.bodyType, ref body))
+                    {
+                        Debug.LogWarning(
+                            $"[DialogueCsvGraphBuilder] ID {row.id} 店行 Body 继承失败，保持 {body}。");
+                    }
+                }
+                else
+                {
+                    body = ShopkeeperBodyType.Normal;
+                }
+
+                result[row.id] = (body, face);
+            }
+
+            return result;
+        }
+
+        private static bool rowsHaveBodyTypeColumn(IReadOnlyList<DialogueRow> rows)
+        {
+            // Import 窗口经 Parser 传出 hasBodyTypeColumn 更准；此处兜底：任一行 bodyType 非空视为有列。
+            foreach (var row in rows)
+            {
+                if (!string.IsNullOrWhiteSpace(row.bodyType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Anim 行：生成 PlayUiAnimator Action。BB 变量名 = Extra（如 Anim_Gusha）；不序列化场景引用。
+        /// </summary>
+        private static ActionNode CreatePlayUiAnimatorNode(DialogueTree tree, DialogueRow row, Vector2 position)
+        {
+            var animKey = row.extra?.Trim();
+            if (string.IsNullOrEmpty(animKey))
+            {
+                Debug.LogError($"[DialogueCsvGraphBuilder] Anim ID {row.id} Extra 为空。");
                 return null;
             }
 
-            if (node.FaceType == null)
-            {
-                node.FaceType = new BBParameter<DialogueFaceType>();
-            }
-
-            node.FaceType.value = resolvedFace;
-
-            SetNodeActor(node, tree, actorName);
+            var node = tree.AddNode<ActionNode>(position);
+            // 与 PreludeBuilder 一致：用 Task.Create 挂到 Graph，保证序列化/Owner 正确。
+            var playTask = (PlayUiAnimatorActionTask)Task.Create(typeof(PlayUiAnimatorActionTask), tree);
+            playTask.animator = new BBParameter<Animator> { name = animKey };
+            playTask.fallbackObjectName = new BBParameter<string> { value = animKey };
+            playTask.stateName = new BBParameter<string> { value = "Play" };
+            playTask.waitUntilFinish = new BBParameter<bool> { value = true };
+            playTask.hideWhenFinished = new BBParameter<bool> { value = true };
+            node.action = playTask;
             return node;
         }
 

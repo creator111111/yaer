@@ -120,6 +120,77 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
             DataChanged(itemName);
         }
 
+        /// <summary>
+        /// 将指定主道具持有量设为恰好 targetCount（非再累加）。
+        /// 供商店调试窗等「设为 N」；走现网 Add/Remove，保证 Icon/Def 与快捷栏索引一致。
+        /// </summary>
+        /// <param name="itemName">道具枚举。</param>
+        /// <param name="targetCount">目标持有；&lt;0 当 0；&gt;<see cref="MaxStackPerItem"/> 钳到上限。</param>
+        /// <returns>是否发生了数量变化。</returns>
+        /// <remarks>
+        /// 原因：现网无 Set API，调试若手改 num 易留幽灵键 / 漏 Icon。
+        /// 替代方案：Remove 全量再 Add N——易打乱 index/快捷栏，次选。
+        /// 调用方负责 SaveSpcData；本方法只改内存。
+        /// </remarks>
+        public bool SetMainItemCount(EMainItemName itemName, int targetCount)
+        {
+            return SetMainItemCount(itemName.ToString(), targetCount);
+        }
+
+        /// <inheritdoc cref="SetMainItemCount(EMainItemName, int)"/>
+        public bool SetMainItemCount(string itemName, int targetCount)
+        {
+            if (string.IsNullOrEmpty(itemName))
+            {
+                return false;
+            }
+
+            // N&lt;0 → 0；N&gt;Max → 钳到 Max（对齐 AddMainItem）
+            if (targetCount < 0)
+            {
+                targetCount = 0;
+            }
+
+            if (targetCount > MaxStackPerItem)
+            {
+                Debug.LogWarning(
+                    $"[PlayerBag] SetMainItemCount({itemName}) target={targetCount} 超 Max={MaxStackPerItem}，已钳顶。");
+                targetCount = MaxStackPerItem;
+            }
+
+            var current = GetMainItemCount(itemName);
+            if (current == targetCount)
+            {
+                return false;
+            }
+
+            if (targetCount == 0)
+            {
+                // 清槽：走 Remove 全量，避免幽灵键
+                return TryRemoveMainItem(itemName, current);
+            }
+
+            if (current == 0)
+            {
+                AddMainItem(itemName, targetCount);
+                return GetMainItemCount(itemName) == targetCount;
+            }
+
+            if (targetCount > current)
+            {
+                AddMainItem(itemName, targetCount - current);
+            }
+            else
+            {
+                if (!TryRemoveMainItem(itemName, current - targetCount))
+                {
+                    return false;
+                }
+            }
+
+            return GetMainItemCount(itemName) == targetCount;
+        }
+
         // 刷新当前道具的数据，和配置表同步
         // 因为道具数据可以回随着时间修改，而部分道具数据存入存档之后还是旧数据，就需要同步数据
         public void RefreshMainItemDataInTest()

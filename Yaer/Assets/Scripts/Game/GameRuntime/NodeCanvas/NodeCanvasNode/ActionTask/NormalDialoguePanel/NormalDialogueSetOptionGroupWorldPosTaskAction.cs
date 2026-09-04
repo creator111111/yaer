@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("NormalDialoguePanelControll")]
-    [Name("�Ի���UI����ѡ���λ�ö�����������")]
+    [Name("对话UI设置选项组位置到世界坐标")]
     public class NormalDialogueSetOptionGroupWorldPosTaskAction : NormalDialoguePanelTaskAction
     {
         public BBParameter<Transform> targetTransform;

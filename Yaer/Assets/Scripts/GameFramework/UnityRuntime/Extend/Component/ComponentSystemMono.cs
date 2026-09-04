@@ -50,6 +50,9 @@ namespace GameFramework.UnityRuntimeExtend.Component
         {
             root = transform.Find("Components");
             componentSystem = new ComponentSystem();
+            // 序列化 List 常含 Inspector「None」空槽；不先清掉会 Sync 进运行时，InitComponents 对 null 调 Init → NRE 黑屏
+            // （Village_HomeScene1 半套施工案例）。RefreshComponents 也会 RemoveAll(null)，但 OnInit 原先不调用它。
+            componentsList.RemoveAll(item => item == null);
             SyncComponentsToSystem();
             onInitBeforeAction?.Invoke();
             componentSystem.InitComponents();
@@ -188,6 +191,12 @@ namespace GameFramework.UnityRuntimeExtend.Component
         {
             foreach (var component in componentsList)
             {
+                // 跳过空槽，避免 AddComponent(null) 后 Init 炸场景
+                if (component == null)
+                {
+                    continue;
+                }
+
                 if (componentSystem != null && !componentSystem.HasComponent(component))
                 {
                     componentSystem.AddComponent(component);

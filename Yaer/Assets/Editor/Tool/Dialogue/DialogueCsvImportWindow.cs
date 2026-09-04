@@ -43,7 +43,9 @@ namespace EditorC.Tool.Dialogue
             EditorGUILayout.HelpBox(
                 "阶段 1：从 CSV 生成 DialogueTree .asset（StatementNodeEx + 选项分支 + 连线）。\n" +
                 "产物需先在 NodeCanvas 编辑器中校对；合并进 Prefab 为阶段 2。\n" +
-                "CSV 支持 7 列：…, Extra, FaceType。FaceType 填枚举英文名（如 Smile）；仅对白行有效。" +
+                "CSV 支持列：…, Extra, FaceType, BodyType（可选）。FaceType：雅/古填 Laugh/Cry 等；" +
+                "店填 Face1～Face5；村（村长）填 Face1～Face3（门口）或 Smile/CloseEyes（晚宴）。" +
+                "BodyType 仅店行可选（Red/YinXian）；旧表无此列照常 Import。Type=Anim 时 Extra 填动画键。" +
                 "旧 6 列仍可用（雅尔默认 Smile，古莎默认 Normal）。" +
                 "策划表含 English / Voice 等额外列时，Next 与 FaceType 按表头列名自动识别。",
                 MessageType.Info);
@@ -61,7 +63,7 @@ namespace EditorC.Tool.Dialogue
             if (speakerMapping == null)
             {
                 EditorGUILayout.HelpBox(
-                    "未指定映射时将使用内置默认：雅→雅尔、古→古莎、艾米→艾米、艾莉→艾莉、村→村长、埃吉尔→埃吉尔、—→旁白。\n" +
+                    "未指定映射时将使用内置默认：雅→雅尔、古→古莎、艾米→艾米、艾莉→艾莉、村→村长、埃吉尔→埃吉尔、—→旁白、1→NPC1、2→NPC2、3→NPC3、4→NPC4、5→NPC5、店→老板娘、老人→老人。\n" +
                     "建议在项目中创建 DialogueSpeakerMapping 资产统一管理（可与内置默认内容一致）。",
                     MessageType.None);
             }
@@ -155,15 +157,15 @@ namespace EditorC.Tool.Dialogue
                 return;
             }
 
-            if (!DialogueCsvParser.TryParse(csvText, out var rows, out var parseError))
+            var mapping = speakerMapping != null
+                ? speakerMapping
+                : DialogueSpeakerMapping.CreateDefaultInstance();
+
+            if (!DialogueCsvParser.TryParse(csvText, out var rows, out var parseError, out var hasBodyTypeColumn, mapping))
             {
                 lastError = parseError;
                 return;
             }
-
-            var mapping = speakerMapping != null
-                ? speakerMapping
-                : DialogueSpeakerMapping.CreateDefaultInstance();
 
             var assetBaseName = Path.GetFileNameWithoutExtension(csvPath);
             var preludeOptions = BuildPreludeOptions();
@@ -178,7 +180,8 @@ namespace EditorC.Tool.Dialogue
                 mapping,
                 startRowId: null,
                 assetName: assetBaseName,
-                preludeOptions);
+                preludeOptions,
+                hasBodyTypeColumn);
             if (tree == null)
             {
                 lastError = "建图失败，详见 Console。";

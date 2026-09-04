@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.GameRuntime.Story.Node;
+using Game.Static.Enum.Dialogue;
 using NodeCanvas.DialogueTrees;
 using NodeCanvas.Framework;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace EditorC.Tool.Dialogue
 {
     /// <summary>
     /// 按 <see cref="DialoguePreludeOptions"/> 在 DialogueTree 上创建开场 Action 链与可选的收尾恢复节点。
-    /// 节点顺序对齐 Village_KenMuNiStart：藏战斗面板 → 立绘淡入 → 对话框 UI 淡入。
+    /// 节点顺序对齐 Village_KenMuNiStart 分层显现：藏战斗面板 → 立绘淡入 → 对话框 UI 淡入。
     /// </summary>
     public static class DialoguePreludeBuilder
     {
@@ -51,7 +52,7 @@ namespace EditorC.Tool.Dialogue
                 LinkPreludeStep(ref entryNode, ref tailNode, ref previous, node);
             }
 
-            // 2. 立绘 CanvasGroup 顺序淡入（ActionList）
+            // 2. 立绘 CanvasGroup 并行淡入（产品：大立绘先于对话框）
             if (options.FadePortraitCanvasGroups)
             {
                 if (!DialoguePortraitReferenceResolver.TryResolveCanvasGroupVariableNames(
@@ -72,12 +73,13 @@ namespace EditorC.Tool.Dialogue
                 LinkPreludeStep(ref entryNode, ref tailNode, ref previous, node);
             }
 
-            // 3. 对话框 UI 淡入
+            // 3. 对话框 UI 淡入（是否预亮 Mask 由 options.PrepareMaskAvatarOnFadeIn 决定）
             if (options.FadeDialogueUI)
             {
                 var node = CreateDialogueUiFadeNode(
                     tree,
                     options.PreludeFadeDuration,
+                    options.PrepareMaskAvatarOnFadeIn,
                     preludeStepCount,
                     ref preludeIndex);
                 LinkPreludeStep(ref entryNode, ref tailNode, ref previous, node);
@@ -180,9 +182,14 @@ namespace EditorC.Tool.Dialogue
             return node;
         }
 
+        /// <param name="prepareMaskAvatarOnFadeIn">
+        /// true：框淡入前 Apply Mask（KenMuNiStart / Shop 同拍）；
+        /// false：空框，等首句 Statement 再出头像（门口三人戏产品）。
+        /// </param>
         private static ActionNode CreateDialogueUiFadeNode(
             DialogueTree tree,
             float duration,
+            bool prepareMaskAvatarOnFadeIn,
             int preludeStepCount,
             ref int preludeIndex)
         {
@@ -202,17 +209,46 @@ namespace EditorC.Tool.Dialogue
                 task.Delay = new BBParameter<float>();
             }
 
+            // 对齐 Village_ShopHead 金样：Delay=0.5 空拍后再出框（立绘先于对话框观感）。
+            task.Delay.value = 0.5f;
+
+            // 须等淡入结束再进后续节点，否则 Statement 会抢跑、分层观感被抹掉
             if (task.EndActonOnAnimationEnd == null)
             {
                 task.EndActonOnAnimationEnd = new BBParameter<bool>();
             }
+
+            task.EndActonOnAnimationEnd.value = true;
+
+            // 是否预亮：默认 true（ShopHead / KenMuNi）；门口须传 false，禁止硬写 true 回潮
+            if (task.PrepareMaskAvatarOnFadeIn == null)
+            {
+                task.PrepareMaskAvatarOnFadeIn = new BBParameter<bool>();
+            }
+
+            task.PrepareMaskAvatarOnFadeIn.value = prepareMaskAvatarOnFadeIn;
+
+            if (task.MaskAvatarRole == null)
+            {
+                task.MaskAvatarRole = new BBParameter<DialogueRoleName>();
+            }
+
+            // Head 金样：Role=Yaer(1)；Face=Smug(3)。未勾预亮时不会 Apply，仅作 BB 占位
+            task.MaskAvatarRole.value = DialogueRoleName.Yaer;
+
+            if (task.MaskAvatarFace == null)
+            {
+                task.MaskAvatarFace = new BBParameter<DialogueFaceType>();
+            }
+
+            task.MaskAvatarFace.value = DialogueFaceType.Smug;
 
             node.action = task;
             return node;
         }
 
         /// <summary>
-        /// 创建立绘 ActionList：按参考 Prefab 变量名顺序，In Sequence 执行 CanvasGroupAlpha。
+        /// 创建立绘 ActionList：按参考 Prefab 变量名，并行 CanvasGroupAlpha，并阻塞至淡入结束。
         /// 方案 A：仅写 canvasGroup.name，不复制 Blackboard 引用。
         /// </summary>
         private static ActionNode CreatePortraitFadeNode(
@@ -227,7 +263,8 @@ namespace EditorC.Tool.Dialogue
 
             var node = tree.AddNode<ActionNode>(position);
             var actionList = (ActionList)Task.Create(typeof(ActionList), tree);
-            actionList.executionMode = ActionList.ActionsExecutionMode.ActionsRunInSequence;
+            // 两立绘同拍并行淡入（与 Village_KenMuNiStart 一致）；若需依次出场可改 Sequence
+            actionList.executionMode = ActionList.ActionsExecutionMode.ActionsRunInParallel;
 
             foreach (var variableName in canvasGroupVariableNames)
             {
@@ -242,10 +279,13 @@ namespace EditorC.Tool.Dialogue
                 EnsureFloatParam(ref fadeTask.StartAlpha, 0f);
                 EnsureFloatParam(ref fadeTask.EndAlpha, 1f);
                 EnsureFloatParam(ref fadeTask.Duration, duration);
+                EnsureFloatParam(ref fadeTask.Delay, 0f);
                 if (fadeTask.EndActionOnAnimationEnd == null)
                 {
                     fadeTask.EndActionOnAnimationEnd = new BBParameter<bool>();
                 }
+
+                fadeTask.EndActionOnAnimationEnd.value = true;
 
                 actionList.AddAction(fadeTask);
             }

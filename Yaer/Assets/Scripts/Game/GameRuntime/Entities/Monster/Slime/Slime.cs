@@ -179,6 +179,16 @@ namespace Game.GameRuntime.Entities.Monster.Slime
         {
             base.OnInit(userData);
 
+            // GroundCld 图层 OnlyMapObj、默认非 Trigger、盒体很大。
+            // PlayerFoot 可能与之发生接触，人被托在史莱姆壳上却又不进 GroundLayerMask → JumpFall/DamageFlyFall 死等 IsGrounded。
+            // 怪落地靠 GroundChecker + GravityScale=0，GroundCld 本意是「只和地图碰」；改为 Trigger 后不再当玩家踏板。
+            // 替代方案：全局 IgnoreLayerCollision(PlayerFoot, OnlyMapObj)（OPEN_QUESTIONS Q2，会影响虫卵/天琬挡板，本期不采用）；
+            // 或恢复 PlayerBodyCollider 挤出订阅（Q5，本期不恢复整套）。
+            if (groundCld != null)
+            {
+                groundCld.isTrigger = true;
+            }
+
             // 组件初始化
             // depthCpn.Init(sr, bodyRg, bodyCld, footCld);
             //knockBackComponent.Init(BodyRg);

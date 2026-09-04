@@ -11,7 +11,7 @@ namespace Game.Static.Enum
         Default = 0,
 
         /// <summary>
-        /// 村庄 KenMuNi1 探索：W/S 走世界 Y 纵深，并屏蔽蹲/普攻/重击/冲刺攻击等（策划验收 AC-04）。
+        /// 村庄 KenMuNi1 探索：W/S 走世界 Y 纵深，并屏蔽蹲/普攻/重击/冲刺攻击/<b>跳跃</b>等（策划验收 AC-04；DNF 式移动禁止跳跃）。
         /// </summary>
         Village2_5D = 1,
     }

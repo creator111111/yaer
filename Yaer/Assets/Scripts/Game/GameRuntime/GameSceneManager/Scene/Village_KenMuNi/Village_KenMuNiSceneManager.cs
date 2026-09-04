@@ -1,17 +1,28 @@
+using System;
+using Game.GameMgr;
 using Game.GameMgr.Component;
+using Game.GameMgr.Component.Archive.ArchiveDataClass;
+using Game.GameMgr.Component.Archive.ArchiveDataClass.Date;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Scene;
+using Game.GameMgr.Component.ChangeScene;
+using Game.GameMgr.Component.UI;
 using Game.GameRuntime.Entities.Base.BaseSceneObj;
 using Game.GameRuntime.Entities.MainNPC;
+using Game.GameRuntime.Entities.Player;
+using Game.GameRuntime.Entities.Player.Components;
 using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.GameSceneManager.Component;
 using Game.GameRuntime.GameSceneManager.Component.CameraGSM;
 using Game.GameRuntime.GameSceneManager.Component.Story;
 using Game.GameRuntime.UI.FormLogic;
+using Game.GameRuntime.UI.FormLogic.Story.Dialogue;
 using Game.Static.Enum.Map;
 using Game.Static.Name.Res;
+using Game.Static.Path;
 using Game.Static.Path.Sound;
 using GameFramework.UnityRuntime.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
 {
@@ -90,6 +101,31 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
             }
         }
 
+        /// <summary>开场对白 Prefab 名；与 Dialogue 路径 / StoryTriggerCount 键一致。</summary>
+        const string VillageStartStoryName = "Village_KenMuNiStart";
+
+        /// <summary>
+        /// 1 楼出门 → 门前 → 古雅送树屋（与 CSV / Prefab / StoryTriggerCount 同名）。
+        /// G1 只认 <see cref="SceneName.Village_Chief_House_Door"/>，禁止裸判 Village_Chief_House（防 2 楼误播）。
+        /// </summary>
+        const string LeaveChiefEscortStoryName = "Village_出村长家送树屋";
+
+        /// <summary>
+        /// 壳 Open + Prefab 实例化（含全屏 BG）所需极短 hold。
+        /// 分层节奏（框→立绘各≈1s）交给 Prefab 亮屏后播放，不再等满前奏。
+        /// <para>替代方案：若偶发 BG 未就绪就淡出，可略增本值或在 Finalize 内再补一帧 hold。</para>
+        /// </summary>
+        const float VillageStartBgReadyHoldSeconds = 0.15f;
+
+        /// <summary>壳/Prefab 失败时防永久卡黑的超时（秒）。</summary>
+        const float VillageStartCoverTimeoutSeconds = 3f;
+
+        /// <summary>防止 onStoryTriggered 与超时双触发 CloseFormFade。</summary>
+        bool villageStartCoverCloseIssued;
+
+        /// <summary>LoadScene 旁路交来的 CloseFormFade + OnBlackFadeEnd。</summary>
+        Action deferredCloseBlackAndNotify;
+
         public override void OnEnterScene()
         {
             base.OnEnterScene();
@@ -103,6 +139,483 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
                 GetModule<CameraComponentGSM>().CancelFollow();
                 GetModule<CameraComponentGSM>().SetLock(true);
             }
+
+            // 正常进村：开场已在黑幕阶段 Trigger（TryDeferBlackFadeForCover）。
+            // 此处仅兜底（例如 blackFade=false）；HasRunningStory / CheckStoryUsed 防双开。
+            TryTriggerVillageStartStoryOnce();
+
+            // G1：1 楼 LeftDoor（enterPosKey=Village_Chief_House_Door）→ 门前自动送树屋戏。
+            // 须在开场兜底之后；开场已用 / 无 Running 时才可能启动。楼梯 2 楼键不进此分支。
+            TryTriggerLeaveChiefEscortOnce();
+        }
+
+        /// <summary>
+        /// 同档首次：从村长家 1 楼门回村落门前时 Trigger「出村长家送树屋」。
+        /// </summary>
+        void TryTriggerLeaveChiefEscortOnce()
+        {
+            if (!ShouldPlayLeaveChiefEscort())
+            {
+                return;
+            }
+
+            var storyGsm = GetModule<StoryComponentGSM>();
+            if (storyGsm == null)
+            {
+                Debug.LogWarning("[LeaveChiefEscort] StoryComponentGSM 缺失，跳过 " + LeaveChiefEscortStoryName);
+                return;
+            }
+
+            if (storyGsm.HasRunningStory)
+            {
+                // 开场等其它戏占场：本档下次再进门前也不会重试（仅 OnEnter）；产品路径上开场应已用完
+                Debug.Log("[LeaveChiefEscort] 已有剧情在跑，跳过本次 Trigger");
+                return;
+            }
+
+            bool started = storyGsm.TriggerStory(LeaveChiefEscortStoryName);
+            Debug.Log(started
+                ? "[LeaveChiefEscort] OnEnterScene TriggerStory " + LeaveChiefEscortStoryName
+                : "[LeaveChiefEscort] TriggerStory 未启动 " + LeaveChiefEscortStoryName);
+        }
+
+        /// <summary>
+        /// 门闩：LastScene 必须是大门键（E3′），且本戏未用。
+        /// 禁止 <c>last == Village_Chief_House</c>（楼梯 2 楼会误播）。
+        /// </summary>
+        bool ShouldPlayLeaveChiefEscort()
+        {
+            var last = GameManager.GetGMComponent<ChangeSceneComponentGM>()?.LastSceneName;
+            if (last != SceneName.Village_Chief_House_Door)
+            {
+                return false;
+            }
+
+            var counts = GetArchiveData<StoryTriggerCountData>();
+            return counts == null || !counts.CheckStoryUsed(LeaveChiefEscortStoryName);
+        }
+
+        /// <summary>
+        /// 楼梯从村长家上楼：先扩纵深 + 绑 <c>VillageWalkArea2</c>，再权威落到 2f ExitFrom（W1 + 0903 F_Order）。
+        /// 1 楼大门键 <see cref="SceneName.Village_Chief_House_Door"/> 不切，走 <see cref="BaseGameSceneManager.SetPlayerPos"/>。
+        /// <para>禁止改 WalkArea2 点集/尺寸。</para>
+        /// <para>
+        /// 原因（0903 DepthGap）：若先 <c>base.SetPos</c>，Prefab <c>depthYMax=8</c> 会削掉 Y≈41；
+        /// 即便场景已摆标尺，Flush 仍可能用 1 楼 WalkArea ClosestPoint 把人往下吸，再与 WalkArea2 撕扯。
+        /// 替代方案：只抬 Prefab max——会放开所有未摆标尺村场景，否决。
+        /// </para>
+        /// </summary>
+        protected override void SetPlayerPos(PlayerLogic playerLogic)
+        {
+            if (TryApplyChiefStairsLandingToTree2f(playerLogic))
+            {
+                return;
+            }
+
+            base.SetPlayerPos(playerLogic);
+        }
+
+        /// <summary>
+        /// 楼梯键路径：F_D2 按 WalkArea2.bounds 抬 Max → Override → Teleport ExitFrom → Flush。
+        /// </summary>
+        /// <returns>true=已处理落点；false=非楼梯键或前置失败（调用方走 base）。</returns>
+        private bool TryApplyChiefStairsLandingToTree2f(PlayerLogic playerLogic)
+        {
+            if (playerLogic == null)
+            {
+                return false;
+            }
+
+            var last = GameManager.GetGMComponent<ChangeSceneComponentGM>()?.LastSceneName;
+            // 仅楼梯路径：真实场景名 Village_Chief_House（EnterPos→2f）；大门键不绑 2
+            if (last != SceneName.Village_Chief_House)
+            {
+                return false;
+            }
+
+            var town = playerLogic.componentSystem != null
+                ? playerLogic.componentSystem.TryGetComponent<TownPlayerLocomotion>()
+                : null;
+            if (town == null)
+            {
+                Debug.LogWarning("[Village2f] 无 TownPlayerLocomotion，无法绑 VillageWalkArea2");
+                return false;
+            }
+
+            PolygonCollider2D poly = FindVillageWalkArea2Polygon();
+            if (poly == null)
+            {
+                return false;
+            }
+
+            // F_D2：按多边形世界包围盒抬 Max（只升不降 Min），防漏摆场景标尺再炸
+            ExpandDepthYMaxForWalkArea2(town, poly);
+
+            // F_Order：先 Override，再权威 Teleport（首帧 Flush 只夹 WalkArea2）
+            town.SetVillageWalkAreaOverride(poly);
+            Debug.Log("[Village2f] 已 SetVillageWalkAreaOverride(VillageWalkArea2)，落点后不应用 1 楼 WalkArea");
+
+            if (!TryTeleportToEnterPosMatchingLastScene(playerLogic, town, last))
+            {
+                // EnterPos 缺失时仍保留 Override，回退 base 落点以免完全不出生
+                Debug.LogWarning("[Village2f] 未命中 EnterPos，Override 已绑，回退 base.SetPlayerPos");
+                base.SetPlayerPos(playerLogic);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// F_D2：用 WalkArea2 世界 bounds 扩展纵深 Max；Min 保持当前（场景标尺或 Prefab）。
+        /// ε 略高于上沿，避免脚贴边被 Clamp 削尖。
+        /// </summary>
+        private static void ExpandDepthYMaxForWalkArea2(TownPlayerLocomotion town, PolygonCollider2D poly)
+        {
+            const float maxYEpsilon = 0.5f;
+            float minY = town.DebugDepthYMinWorld;
+            float polyMaxY = poly.bounds.max.y;
+            float raisedMax = Mathf.Max(town.DebugDepthYMaxWorld, polyMaxY + maxYEpsilon);
+            town.SetDepthYBounds(minY, raisedMax);
+            Debug.Log(
+                "[Village2f] depthYMax→" + raisedMax.ToString("F2")
+                + "（poly.bounds.max.y=" + polyMaxY.ToString("F2")
+                + "，min 保持 " + minY.ToString("F2") + "）");
+        }
+
+        /// <summary>按 LastScene 命中 EnterPos：权威 Teleport + ThroughDate（对齐 base.SetPlayerPos）。</summary>
+        private bool TryTeleportToEnterPosMatchingLastScene(
+            PlayerLogic playerLogic, TownPlayerLocomotion town, string lastSceneName)
+        {
+            if (EnterPosConfig == null || EnterPosConfig.Count == 0)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < EnterPosConfig.Count; i++)
+            {
+                EnterPos enterPos = EnterPosConfig[i];
+                if (enterPos == null || enterPos.lastScene != lastSceneName || enterPos.pos == null)
+                {
+                    continue;
+                }
+
+                Vector3 p = enterPos.pos.position;
+                // thenFlush=true：权威旗置位后按已 Override 的 WalkArea2 夹区
+                town.TeleportAuthoritativeVillagePos(new Vector2(p.x, p.y), thenFlush: true);
+                GetArchiveData<DateData>().ThroughDate(
+                    enterPos.DatePass.x, enterPos.DatePass.y, enterPos.DatePass.z);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>查找现网 <c>VillageWalkArea2</c> 多边形；禁止新建/改形状替代。</summary>
+        private PolygonCollider2D FindVillageWalkArea2Polygon()
+        {
+            UnityEngine.SceneManagement.Scene scene = SceneManager.GetActiveScene();
+            Transform named = FindNamedTransformInScene(scene, "VillageWalkArea2");
+            if (named == null)
+            {
+                Debug.LogError("[Village2f] 未找到 VillageWalkArea2（禁止新建/改形状替代）");
+                return null;
+            }
+
+            var poly = named.GetComponent<PolygonCollider2D>();
+            if (poly == null)
+            {
+                poly = named.GetComponentInChildren<PolygonCollider2D>(true);
+            }
+
+            if (poly == null)
+            {
+                Debug.LogError("[Village2f] VillageWalkArea2 无 PolygonCollider2D");
+            }
+
+            return poly;
+        }
+
+        /// <summary>仅在指定 Scene 根下按名查找（与 PlayerLogic / Town 同源策略）。</summary>
+        /// <remarks>
+        /// 须写全名：本文件命名空间含 <c>...GameSceneManager.Scene...</c>，裸写 <c>Scene</c> 会被当成命名空间（CS0118）。
+        /// </remarks>
+        private static Transform FindNamedTransformInScene(
+            UnityEngine.SceneManagement.Scene scene, string objectName)
+        {
+            if (!scene.IsValid() || string.IsNullOrEmpty(objectName))
+            {
+                return null;
+            }
+
+            foreach (GameObject root in scene.GetRootGameObjects())
+            {
+                Transform found = FindNamedTransformRecursive(root.transform, objectName);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
+        }
+
+        private static Transform FindNamedTransformRecursive(Transform tr, string objectName)
+        {
+            if (tr.name == objectName)
+            {
+                return tr;
+            }
+
+            for (int i = 0; i < tr.childCount; i++)
+            {
+                Transform child = FindNamedTransformRecursive(tr.GetChild(i), objectName);
+                if (child != null)
+                {
+                    return child;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 分层显现（方案 A）：仍全黑时 Trigger → BG 盖满且框/立绘为 0 → 立刻 CloseFormFade；
+        /// 三拍（仅 BG → 框 → 立绘）在亮屏下由 Prefab 播放。仅本档未播过 Start 时接管。
+        /// </summary>
+        public override bool TryDeferBlackFadeForCover(Action closeBlackAndNotify)
+        {
+            if (!ShouldPlayVillageStartStory())
+            {
+                return false;
+            }
+
+            var storyGsm = GetModule<StoryComponentGSM>();
+            if (storyGsm == null)
+            {
+                Debug.LogWarning("[VillageStart] StoryComponentGSM 缺失，放弃延迟淡出");
+                return false;
+            }
+
+            if (storyGsm.HasRunningStory)
+            {
+                Debug.LogWarning("[VillageStart] 已有剧情在跑，放弃延迟淡出");
+                return false;
+            }
+
+            villageStartCoverCloseIssued = false;
+            deferredCloseBlackAndNotify = closeBlackAndNotify;
+            storyGsm.onStoryTriggered += OnVillageStartStoryTriggeredForCover;
+
+            // 锁闸：树里 Wait 须等黑幕淡完才开始「只见 BG」空拍
+            VillageStartLayerRevealGate.ResetForDeferredCover();
+
+            bool started = storyGsm.TriggerStory(VillageStartStoryName);
+            if (!started)
+            {
+                storyGsm.onStoryTriggered -= OnVillageStartStoryTriggeredForCover;
+                deferredCloseBlackAndNotify = null;
+                VillageStartLayerRevealGate.SignalBgFullyVisible();
+                Debug.LogWarning("[VillageStart] TriggerStory 未启动，回退默认淡出");
+                return false;
+            }
+
+            Debug.Log("[VillageStart] 黑幕阶段 TriggerStory " + VillageStartStoryName + "，等待 BG 盖满后分层亮屏");
+            // 超时兜底：壳未起来也不要永久卡黑（超时回调仍走 Prepare，避免裸村）
+            WaitForInvoke(VillageStartCoverTimeoutSeconds, OnVillageStartCoverTimeout);
+            return true;
+        }
+
+        bool ShouldPlayVillageStartStory()
+        {
+            var counts = GetArchiveData<StoryTriggerCountData>();
+            return counts == null || !counts.CheckStoryUsed(VillageStartStoryName);
+        }
+
+        /// <summary>
+        /// 同档首次进入本村时 Trigger 开场（OnEnterScene 兜底）。
+        /// 主路径已改到 <see cref="TryDeferBlackFadeForCover"/>。
+        /// </summary>
+        void TryTriggerVillageStartStoryOnce()
+        {
+            if (!ShouldPlayVillageStartStory())
+            {
+                return;
+            }
+
+            var storyGsm = GetModule<StoryComponentGSM>();
+            if (storyGsm == null)
+            {
+                Debug.LogWarning("[VillageStart] StoryComponentGSM 缺失，跳过 " + VillageStartStoryName);
+                return;
+            }
+
+            if (storyGsm.HasRunningStory)
+            {
+                // 黑幕阶段已启动：静默跳过，避免双开告警刷屏
+                return;
+            }
+
+            bool started = storyGsm.TriggerStory(VillageStartStoryName);
+            Debug.Log(started
+                ? "[VillageStart] OnEnterScene 兜底 TriggerStory " + VillageStartStoryName
+                : "[VillageStart] TriggerStory 未启动 " + VillageStartStoryName);
+        }
+
+        void OnVillageStartStoryTriggeredForCover()
+        {
+            var storyGsm = GetModule<StoryComponentGSM>();
+            if (storyGsm != null)
+            {
+                storyGsm.onStoryTriggered -= OnVillageStartStoryTriggeredForCover;
+            }
+
+            // 壳已回调；再等极短 hold 让 Prefab Instantiate + 全屏 BG 就绪，然后亮屏分层
+            WaitForInvoke(VillageStartBgReadyHoldSeconds, FinalizeVillageStartCoverAndCloseBlack);
+        }
+
+        void OnVillageStartCoverTimeout()
+        {
+            if (villageStartCoverCloseIssued)
+            {
+                return;
+            }
+
+            Debug.LogWarning("[VillageStart] BG Ready 超时，强制按分层准备后淡出黑幕");
+            FinalizeVillageStartCoverAndCloseBlack();
+        }
+
+        void FinalizeVillageStartCoverAndCloseBlack()
+        {
+            if (villageStartCoverCloseIssued)
+            {
+                return;
+            }
+
+            villageStartCoverCloseIssued = true;
+
+            // 淡出前：只保证 BG 盖景、框与立绘为 0（废除旧 Snap 拉满，否则分层必败）
+            PrepareVillageStartLayeredReveal();
+
+            var close = deferredCloseBlackAndNotify;
+            deferredCloseBlackAndNotify = null;
+            if (close != null)
+            {
+                // 黑幕淡完后开闸，Prefab Wait 才开始 Hold→立绘（与黑幕时长解耦）
+                var loadGsm = GetModule<LoadSceneComponentGSM>();
+                if (loadGsm != null)
+                {
+                    void OnBlackFullyGone()
+                    {
+                        loadGsm.onEndLoadingSceneEvent -= OnBlackFullyGone;
+                        VillageStartLayerRevealGate.SignalBgFullyVisible();
+                        Debug.Log("[VillageStart] 黑幕淡完，分层闸门开启（可开始 BG 空拍）");
+                    }
+
+                    loadGsm.onEndLoadingSceneEvent += OnBlackFullyGone;
+                }
+                else
+                {
+                    VillageStartLayerRevealGate.SignalBgFullyVisible();
+                }
+
+                Debug.Log("[VillageStart] BG 盖满且框/立绘已藏，CloseFormFade（拍1）");
+                close.Invoke();
+            }
+            else
+            {
+                VillageStartLayerRevealGate.SignalBgFullyVisible();
+            }
+        }
+
+        /// <summary>
+        /// 分层显现准备（白名单）：只藏字幕条 + DialogueScene 下场景大立绘；BG 保持可见。
+        /// <para>
+        /// 重要原因：禁止 <c>GetComponentsInChildren</c> + 名字 Contains 广扫整棵 Panel——
+        /// 会误伤 <c>Bottom/Mask/...</c> 内同名 Painting（alpha=0），而 Presenter 只 SetActive 无法自愈 → 小头像黑窗。
+        /// </para>
+        /// <para>
+        /// 其它开场复用：照抄本白名单模式，把场景立绘名换成该 Prefab BB 实际节点；
+        /// <b>不要</b>再发明一套名字模糊匹配。名单外 CanvasGroup 一律不碰。
+        /// </para>
+        /// </summary>
+        void PrepareVillageStartLayeredReveal()
+        {
+            var uiPath = UIPrefabPath.GetUIPrefabPath("NormalDialogueNewPanel");
+            var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(uiPath);
+            if (uiForm == null || uiForm.Logic == null)
+            {
+                return;
+            }
+
+            var logicRoot = uiForm.Logic;
+
+            // —— 白名单 1：字幕条（拍2 由 Prefab NormalDialogueUIAlpha 拉回）——
+            if (logicRoot is NormalDialogueFormNewLogic dialogueLogic
+                && dialogueLogic.dialogueUICanvasGroup != null)
+            {
+                dialogueLogic.dialogueUICanvasGroup.alpha = 0f;
+            }
+
+            // 场景实例挂在 DialogueSceneContainer 下；Mask 小头像在 Bottom 下，故意不进此根
+            var sceneRoot = UIUtils.findChild(logicRoot.gameObject, "DialogueSceneContainer", hasDebugLog: false);
+            if (sceneRoot == null)
+            {
+                Debug.LogWarning("[VillageStart][Prepare] 未找到 DialogueSceneContainer，跳过场景立绘白名单");
+                return;
+            }
+
+            // —— 白名单 2：全屏 BG 兜底 Active（无 CanvasGroup，不改 alpha）——
+            var bg = UIUtils.findChild(sceneRoot, "BG", hasDebugLog: false);
+            if (bg != null && !bg.activeSelf)
+            {
+                bg.SetActive(true);
+            }
+
+            // —— 白名单 3：本开场场景大立绘（拍3 由 Prefab CanvasGroupAlpha 拉回）——
+            // KenMuNiStart BB：GoOutStoryYaerPainting / GushaPainting；仅在 sceneRoot 下查找
+            SetScenePaintingCanvasGroupAlpha(sceneRoot, "GoOutStoryYaerPainting", 0f);
+            SetScenePaintingCanvasGroupAlpha(sceneRoot, "GushaPainting", 0f);
+        }
+
+        /// <summary>
+        /// 仅在对话场景根下按精确子物体名藏/显 CanvasGroup；找不到则静默跳过。
+        /// 替代方案：挂 BB 引用列表——需改 FormLogic 序列化，本期用路径名即可。
+        /// </summary>
+        static void SetScenePaintingCanvasGroupAlpha(GameObject sceneRoot, string paintingObjectName, float alpha)
+        {
+            var paintingGo = UIUtils.findChild(sceneRoot, paintingObjectName, hasDebugLog: false);
+            if (paintingGo == null)
+            {
+                return;
+            }
+
+            var cg = paintingGo.GetComponent<CanvasGroup>();
+            if (cg == null)
+            {
+                return;
+            }
+
+            cg.alpha = alpha;
+            Debug.Log("[VillageStart][Prepare] hide " + GetTransformPath(paintingGo.transform));
+        }
+
+        /// <summary>调试用短路径，验收后可随 Log 一并删。</summary>
+        static string GetTransformPath(Transform t)
+        {
+            if (t == null)
+            {
+                return string.Empty;
+            }
+
+            var path = t.name;
+            var p = t.parent;
+            while (p != null)
+            {
+                path = p.name + "/" + path;
+                p = p.parent;
+            }
+
+            return path;
         }
 
         protected override void OnOpenFightingPanel(UIFormLogic uIFormLogic)
