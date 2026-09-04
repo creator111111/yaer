@@ -1,0 +1,28 @@
+{
+	"nodes":[
+		{"id":"4b66dcbb2deb0dcf","x":-549,"y":-520,"width":250,"height":60,"type":"text","text":"先建立四个人人物的新版本立绘"},
+		{"id":"12871fa58c07e81b","x":-260,"y":-180,"width":250,"height":60,"type":"text","text":"第一次对话只能跟椅子上的NPC交互"},
+		{"id":"8754a3b2ef5636a7","x":40,"y":-180,"width":250,"height":60,"type":"text","text":"妈妈，有外人开始\n到 我会给你报酬的"},
+		{"id":"4ca5f1c1cb07eab0","x":346,"y":-273,"width":250,"height":60,"type":"text","text":"我有些忙。"},
+		{"id":"c4f798696cfc9a5f","x":352,"y":-105,"width":250,"height":60,"type":"text","text":"好呀。"},
+		{"id":"0db961825131d5d4","x":660,"y":-273,"width":250,"height":60,"type":"text","text":"没关系我一会自己去吧"},
+		{"id":"3a35e42cf20bb37c","x":660,"y":-105,"width":250,"height":60,"type":"text","text":"太感谢了"},
+		{"id":"0489d4106d4dd46f","x":-560,"y":-180,"width":250,"height":60,"type":"text","text":"椅子上的小孩"},
+		{"id":"47fd86256b235dfa","x":-767,"y":0,"width":207,"height":60,"type":"text","text":"NPC椅子和母女"},
+		{"id":"0907b66453f44849","x":-460,"y":0,"width":250,"height":60,"type":"text","text":"母亲"},
+		{"id":"4ddfb63e09cddbbd","x":-135,"y":0,"width":250,"height":60,"type":"text","text":"第二次才可以交互"},
+		{"id":"271b88d0f5545d89","x":200,"y":0,"width":250,"height":60,"type":"text","text":"欢迎做客开始，到选项"}
+	],
+	"edges":[
+		{"id":"2a19a01f1a248646","fromNode":"47fd86256b235dfa","fromSide":"right","toNode":"0489d4106d4dd46f","toSide":"left"},
+		{"id":"ad518dcaef45d33b","fromNode":"12871fa58c07e81b","fromSide":"right","toNode":"8754a3b2ef5636a7","toSide":"left"},
+		{"id":"d4ef9d3fb407a15b","fromNode":"8754a3b2ef5636a7","fromSide":"right","toNode":"4ca5f1c1cb07eab0","toSide":"left"},
+		{"id":"de4e6b6f0e3a5627","fromNode":"8754a3b2ef5636a7","fromSide":"right","toNode":"c4f798696cfc9a5f","toSide":"left"},
+		{"id":"e611b87c1d5f64d9","fromNode":"4ca5f1c1cb07eab0","fromSide":"right","toNode":"0db961825131d5d4","toSide":"left"},
+		{"id":"d2655e0b514a105d","fromNode":"c4f798696cfc9a5f","fromSide":"right","toNode":"3a35e42cf20bb37c","toSide":"left"},
+		{"id":"357ac45081a112fc","fromNode":"0489d4106d4dd46f","fromSide":"right","toNode":"12871fa58c07e81b","toSide":"left"},
+		{"id":"d12ef93de6cfc52f","fromNode":"47fd86256b235dfa","fromSide":"right","toNode":"0907b66453f44849","toSide":"left"},
+		{"id":"2707c551f2a15d43","fromNode":"0907b66453f44849","fromSide":"right","toNode":"4ddfb63e09cddbbd","toSide":"left"},
+		{"id":"adfe6c52473eab4a","fromNode":"4ddfb63e09cddbbd","fromSide":"right","toNode":"271b88d0f5545d89","toSide":"left"}
+	]
+}
