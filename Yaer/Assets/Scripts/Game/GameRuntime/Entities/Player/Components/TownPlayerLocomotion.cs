@@ -191,11 +191,28 @@ namespace Game.GameRuntime.Entities.Player.Components
         /// <summary>与现网 Town / Combat 横纵意图死区一致。</summary>
         private const float VillagePlanarInputDeadZone = 0.01f;
 
+        /// <summary>
+        /// 权威 Y 和刚体 Y 差小于这个值就当成没变。
+        /// 太小会被浮点噪声每步都写成「变了」，插值又被掐掉；太大则纵深会晚半拍才跟上。
+        /// </summary>
+        private const float VillageDepthYWriteEpsilon = 0.0001f;
+
+        /// <summary>
+        /// 物理步后「这一步 Y 几乎没动」的判定。贴面后刚体常有一点点滑移，不能用 <see cref="VillageDepthYWriteEpsilon"/>，
+        /// 否则会当成还在动，继续全速往下挤（0919 下方发闷）。
+        /// </summary>
+        private const float VillageBlockedDepthMoveEpsilon = 0.005f;
+
         /// <summary>纵深方向速度（沿世界 Y，米/秒）。</summary>
         private float depthVelocity;
 
         /// <summary>与刚体/重力解耦的权威纵深世界 Y；Clamp 与积分只改此字段。</summary>
         private float _villageWorldY;
+
+        /// <summary>
+        /// 本物理步写速度之前的刚体 Y。步后若几乎没动，说明被挡住，权威 Y 要收到刚体现位置。
+        /// </summary>
+        private float _villageRbYBeforePhysics;
 
         /// <summary>进村时锁定的根世界 Z，纵深模式不改 Z（文档 0 节）。</summary>
         private float _frozenWorldZ;
@@ -341,7 +358,8 @@ namespace Game.GameRuntime.Entities.Player.Components
             _villageWorldY = Mathf.Clamp(_villageWorldY, depthYMinWorld, depthYMaxWorld);
             // Walk 区内障碍：在写回刚体前对权威 Y 做几何夹紧，否则仅 Layer 碰撞无法挡住「脚本直接改 rb.position.y」的纵深（见《村庄WalkArea内部阻挡碰撞体》§3.2）。
             ApplyVillageWalkObstacleDepthClamp(yBeforeIntegrate);
-            WriteRootTransformWithAuthoritativeDepthY();
+            // 走路不改坐标。没按上下时不要用速度追权威 Y，否则贴地会把左右速度蹭慢。
+            WriteRootTransformWithAuthoritativeDepthY(snapToAuthoritativeY: false);
             // 记录 WalkArea 修正前根刚体 XY：多边形可能改 X/Y，若不在同一几何前提下再跑障碍 Cast，会与 Collider 线框错位（执行说明 §5 P0）。
             Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null ? _playerRootRb2D.position : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
             ApplyVillageWalkPolygonPostCorrection();
@@ -446,7 +464,8 @@ namespace Game.GameRuntime.Entities.Player.Components
                 _frozenWorldZ = PlayerLogic.transform.position.z;
                 _villageWorldY = _playerRootRb2D != null ? _playerRootRb2D.position.y : PlayerLogic.transform.position.y;
                 _villageWorldY = Mathf.Clamp(_villageWorldY, depthYMinWorld, depthYMaxWorld);
-                WriteRootTransformWithAuthoritativeDepthY();
+                // 进村要对齐一次。走路循环里不能走这条，否则又会穿碰撞、掐插值。
+                WriteRootTransformWithAuthoritativeDepthY(snapToAuthoritativeY: true);
 
                 if (!deferWalkPolygon)
                 {
@@ -555,7 +574,8 @@ namespace Game.GameRuntime.Entities.Player.Components
                 return;
             }
 
-            WriteRootTransformWithAuthoritativeDepthY();
+            // 读档/落点必须当场对齐。不要用走路那条速度，否则人会从旧点滑到新点。
+            WriteRootTransformWithAuthoritativeDepthY(snapToAuthoritativeY: true);
 
             // F2：权威落点前不夹区（否则原点→楼梯；随后只摆皮到门口会被写回）
             if (!_hasAuthoritativeVillageSpawnThisEnable)
@@ -687,6 +707,8 @@ namespace Game.GameRuntime.Entities.Player.Components
             if (hasH && hasV)
             {
                 Vector2 n = new Vector2(sx, sy).normalized;
+                // 先按将要写入的横向符号转身，再写速度。否则速度朝左、根节点仍朝右（倒着走）。
+                SyncVillageFacingToPlanarSign(move, n.x);
                 WriteVillagePlanarHorizontalSpeed(move, n.x * planarSpeed);
                 depthVelocity = n.y * planarSpeed;
                 return "DIAGONAL";
@@ -694,6 +716,7 @@ namespace Game.GameRuntime.Entities.Player.Components
 
             if (hasH)
             {
+                SyncVillageFacingToPlanarSign(move, sx);
                 WriteVillagePlanarHorizontalSpeed(move, sx * planarSpeed);
                 return "HORIZ_ONLY";
             }
@@ -713,6 +736,32 @@ namespace Game.GameRuntime.Entities.Player.Components
             return "NONE";
         }
 
+        /// <summary>
+        /// 横向速度非 0 时，脸必须和速度同一侧。纯 W/S（符号 0）不调用。
+        /// </summary>
+        /// <remarks>
+        /// 原因（0920）：Town 用输入符号写 vx，转身只在 MoveLeft/Right。
+        /// 进门按住 A 没有新的 KeyDown，或队首不是 Left 时，速度已经朝左、脸仍朝右。
+        /// 替代：只在 HomeWalk.Enter 补一次 —— 用户复现仍然倒着走。
+        /// 转身护栏仍会在 onTurnAction 里清 vx；本方法在写速度之前转，后面的障碍夹紧仍生效。
+        /// </remarks>
+        private static void SyncVillageFacingToPlanarSign(PlayerMoveComponent move, float sx)
+        {
+            if (move == null || Mathf.Abs(sx) <= VillagePlanarInputDeadZone)
+            {
+                return;
+            }
+
+            if (sx < 0f && move.Direction != EDirectionType.Left)
+            {
+                move.MoveLeft(true);
+            }
+            else if (sx > 0f && move.Direction != EDirectionType.Right)
+            {
+                move.MoveRight(true);
+            }
+        }
+
         /// <summary>同步脚本目标速度与刚体 vx。Move 本帧可能已写入未缩放的 runSpeed，WriteRoot 会保留 vx。</summary>
         private void WriteVillagePlanarHorizontalSpeed(PlayerMoveComponent move, float vx)
         {
@@ -729,9 +778,23 @@ namespace Game.GameRuntime.Entities.Player.Components
         }
 
         /// <summary>
-        /// 将权威纵深 Y 与冻结 Z 写回根 Transform，并与 Rigidbody2D.position 对齐；清零纵向速度分量，避免与 MoveComponent 重力在同一轴叠加（文档 3.5）。
+        /// 把权威纵深 Y 交给刚体。走路不写 <c>position</c> / <c>transform.position</c>。
+        /// <para>
+        /// 没按上下（<see cref="depthVelocity"/> 接近 0）：权威 Y 收到刚体现位置，纵向速度清 0，左右速度不动。
+        /// 正在按上下：用速度补这一步纵深，左右速度留下，单步不超过平面走速。
+        /// </para>
+        /// <para>
+        /// 三件已经实机否决，不要再换回去：
+        /// 每步写坐标（镜头抽，或人穿出地图）；
+        /// <see cref="Rigidbody2D.MovePosition"/>（左右速度被这一步吃光，人卡住）；
+        /// 没按上下仍用全速去追权威 Y（贴地时动态刚体把纵向速度消掉，左右一起发闷）。
+        /// </para>
         /// </summary>
-        private void WriteRootTransformWithAuthoritativeDepthY()
+        /// <param name="snapToAuthoritativeY">
+        /// true：进村、传送、障碍夹紧。必须当场对齐，允许写坐标。
+        /// false：走路。
+        /// </param>
+        private void WriteRootTransformWithAuthoritativeDepthY(bool snapToAuthoritativeY)
         {
             if (PlayerLogic == null)
             {
@@ -741,19 +804,103 @@ namespace Game.GameRuntime.Entities.Player.Components
             if (_playerRootRb2D != null)
             {
                 Vector2 rbPos = _playerRootRb2D.position;
-                // 纵深只动 Y；X 跟刚体当前模拟位置；Z 保持进村冻结值（不得把 Vertical 误写到 Z）
-                Vector2 newRb = new Vector2(rbPos.x, _villageWorldY);
-                _playerRootRb2D.position = newRb;
                 Vector2 v = _playerRootRb2D.velocity;
-                _playerRootRb2D.velocity = new Vector2(v.x, 0f);
-                PlayerLogic.transform.position = new Vector3(newRb.x, newRb.y, _frozenWorldZ);
+                float dy = _villageWorldY - rbPos.y;
+
+                // 进村 / 传送 / 同帧障碍夹紧：必须立刻到权威 Y，不能等下一物理步。
+                if (snapToAuthoritativeY)
+                {
+                    _playerRootRb2D.velocity = new Vector2(v.x, 0f);
+                    if (Mathf.Abs(dy) > VillageDepthYWriteEpsilon)
+                    {
+                        Vector2 snapped = new Vector2(rbPos.x, _villageWorldY);
+                        _playerRootRb2D.position = snapped;
+                        // 这几处不是走路跟拍，写画面坐标才能和刚体一致。
+                        PlayerLogic.transform.position = new Vector3(snapped.x, snapped.y, _frozenWorldZ);
+                    }
+
+                    ZeroVillageMoveSpeedY();
+                    return;
+                }
+
+                _villageRbYBeforePhysics = rbPos.y;
+
+                // 没按上下：不要用速度追权威 Y。贴地时追会把左右速度蹭慢。
+                if (Mathf.Abs(depthVelocity) <= VillageDepthYWriteEpsilon)
+                {
+                    _villageWorldY = Mathf.Clamp(rbPos.y, depthYMinWorld, depthYMaxWorld);
+                    _playerRootRb2D.velocity = new Vector2(v.x, 0f);
+                    ZeroVillageMoveSpeedY();
+                    return;
+                }
+
+                // 纵深已经到位：只清 vy，别碰坐标。
+                if (Mathf.Abs(dy) <= VillageDepthYWriteEpsilon)
+                {
+                    _playerRootRb2D.velocity = new Vector2(v.x, 0f);
+                    ZeroVillageMoveSpeedY();
+                    return;
+                }
+
+                // 正在按上下：用速度补这一步。不要写坐标，碰撞才能挡住，镜头才顺。
+                float dt = Mathf.Max(Time.fixedDeltaTime, 0.0001f);
+                float maxSpeed = Mathf.Max(ResolveVillagePlanarMoveSpeed(), Mathf.Abs(v.x));
+                float vy = Mathf.Clamp(dy / dt, -maxSpeed, maxSpeed);
+                _playerRootRb2D.velocity = new Vector2(v.x, vy);
+                ZeroVillageMoveSpeedY();
+                return;
             }
-            else
+
+            Vector3 p = PlayerLogic.transform.position;
+            bool yChanged = Mathf.Abs(p.y - _villageWorldY) > VillageDepthYWriteEpsilon;
+            bool zChanged = Mathf.Abs(p.z - _frozenWorldZ) > VillageDepthYWriteEpsilon;
+            if (yChanged || zChanged)
             {
-                Vector3 p = PlayerLogic.transform.position;
                 p.y = _villageWorldY;
                 p.z = _frozenWorldZ;
                 PlayerLogic.transform.position = p;
+            }
+
+            ZeroVillageMoveSpeedY();
+        }
+
+        /// <summary>
+        /// 物理步结束后：禁止再按「差多少就补多少速度」去追权威 Y。那是下方发闷停不下来的原因。
+        /// 没按上下，或这一步 Y 几乎没动（被挡住）：权威 Y 收到刚体现位置，纵向速度清 0，左右不动。
+        /// 正在按上下且真的动了：留给下一帧 FixedUpdate 继续用速度补。
+        /// </summary>
+        private void SettleAuthoritativeYAfterPhysicsWithoutChasing()
+        {
+            if (_playerRootRb2D == null)
+            {
+                return;
+            }
+
+            Vector2 v = _playerRootRb2D.velocity;
+            float rbY = _playerRootRb2D.position.y;
+            bool idleDepth = Mathf.Abs(depthVelocity) <= VillageDepthYWriteEpsilon;
+            bool blocked = Mathf.Abs(rbY - _villageRbYBeforePhysics) <= VillageBlockedDepthMoveEpsilon;
+            if (!idleDepth && !blocked)
+            {
+                return;
+            }
+
+            _villageWorldY = Mathf.Clamp(rbY, depthYMinWorld, depthYMaxWorld);
+            if (blocked)
+            {
+                depthVelocity = 0f;
+            }
+
+            _playerRootRb2D.velocity = new Vector2(v.x, 0f);
+            ZeroVillageMoveSpeedY();
+        }
+
+        /// <summary>纵深不走 Move 的 moveSpeedY，避免和权威 Y 各推一次。</summary>
+        private void ZeroVillageMoveSpeedY()
+        {
+            if (PlayerLogic == null || PlayerLogic.componentSystem == null)
+            {
+                return;
             }
 
             var move = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
@@ -780,7 +927,8 @@ namespace Game.GameRuntime.Entities.Player.Components
                     continue;
                 }
 
-                WriteRootTransformWithAuthoritativeDepthY();
+                // 物理步已经走完。禁止再按差多少就补多少速度去追权威 Y。多边形和障碍收口仍要跑。
+                SettleAuthoritativeYAfterPhysicsWithoutChasing();
                 // MoveComponent 等可能在同一物理帧改 X：在 WaitForFixedUpdate 后再收一次多边形，避免贴边穿出（执行说明 §8）。
                 Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null ? _playerRootRb2D.position : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
                 ApplyVillageWalkPolygonPostCorrection();
@@ -1235,7 +1383,8 @@ namespace Game.GameRuntime.Entities.Player.Components
             Physics2D.SyncTransforms();
             _villageWorldY = y1;
             ApplyVillageWalkObstacleDepthClamp(y0);
-            WriteRootTransformWithAuthoritativeDepthY();
+            // 这里刚把人摆到修正前的 Y 再夹紧，必须当场写回，否则同帧后面的障碍检测还在看旧点。
+            WriteRootTransformWithAuthoritativeDepthY(snapToAuthoritativeY: true);
         }
 
         /// <summary>
@@ -1277,7 +1426,8 @@ namespace Game.GameRuntime.Entities.Player.Components
 
             for (int iter = 0; iter < villageObstacleFootSeparationIterations; iter++)
             {
-                Physics2D.SyncTransforms();
+                // 不要在查询前 SyncTransforms。插值时画面位置比刚体落后，写回去会让左右走一顿一顿。
+                // 上一轮若改过坐标，循环末尾已经 Sync，这里直接查刚体姿势。
                 _villageObstacleOverlapBuffer.Clear();
                 int overlapCount = foot.OverlapCollider(_villageObstacleContactFilter, _villageObstacleOverlapBuffer);
                 if (overlapCount == 0)
@@ -1352,6 +1502,9 @@ namespace Game.GameRuntime.Entities.Player.Components
                     move.moveSpeedY = 0f;
                 }
 
+                // 本轮改了 Transform，下一轮查询前必须让碰撞体跟上。平时走路不要在循环开头 Sync。
+                Physics2D.SyncTransforms();
+
                 LogVillageObstacleDepth(
                     $"foot penetration separation iter={iter} Δ=({accumulated.x:F4},{accumulated.y:F4}) pos=({p.x:F3},{p.y:F3})");
             }
@@ -1404,7 +1557,9 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
 
             BuildVillageObstacleContactFilter(obstacleLayer);
-            Physics2D.SyncTransforms();
+            // 不 SyncTransforms：这个方法每物理步都会跑。插值打开时 Transform 是落后的画面位置，
+            // 写回刚体会把左右移动掐成小台阶，镜头跟着微抖。碰撞体本来就跟刚体，不用从画面再同步一次。
+            // 替代方案：走路关掉 Interpolation——镜头回到原来的抽。
             _villageObstacleOverlapBuffer.Clear();
             return foot.OverlapCollider(_villageObstacleContactFilter, _villageObstacleOverlapBuffer) > 0;
         }
@@ -1680,7 +1835,8 @@ namespace Game.GameRuntime.Entities.Player.Components
             // 快速路径：沿运动方向检测障碍；castDist 仅用较小 Padding 加长扫描，停障距离单独用 villageObstacleContactSkin 扣减，避免「提前挡一大块真空」。
             Vector2 castDir = dy > 0f ? Vector2.up : Vector2.down;
             float castDist = Mathf.Abs(dy) + Mathf.Max(0.0001f, villageObstacleCastPadding);
-            Physics2D.SyncTransforms();
+            // 不 SyncTransforms。本方法在纵深变化时每步都跑；插值中的画面位置写回刚体会把同时进行的左右走抖掉。
+            // 脚底碰撞体跟刚体，Cast 不用从 Transform 再同步。
             float absDy = Mathf.Abs(dy);
             string hitName;
             float allowedAlong = villageObstacleUseFootBottomRayForDepthCast
@@ -1783,7 +1939,8 @@ namespace Game.GameRuntime.Entities.Player.Components
             float absDx = Mathf.Abs(vx * dt);
             float castDist = absDx + Mathf.Max(0.0001f, villageObstacleCastPadding);
 
-            Physics2D.SyncTransforms();
+            // 不在这里 SyncTransforms。左右走时每步都跑本方法；把插值中的画面位置写回刚体，镜头就会微抖。
+            // 脚底碰撞体跟刚体走，Cast 用的就是物理姿势。只有刚改过 Transform 的路径才需要 Sync。
             // 挤压 / 贴 Trigger 时脚底可能已与障碍层重叠：若仅依赖正向 Cast，「命中距离≈0」的旧分支会被丢弃 → allowedAlong 仍为整段位移 → 概率穿障。
             _villageObstacleOverlapBuffer.Clear();
             bool footEmbeddedInObstacle = foot.OverlapCollider(_villageObstacleContactFilter, _villageObstacleOverlapBuffer) > 0;

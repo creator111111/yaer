@@ -25,6 +25,14 @@ namespace Game.GameRuntime.Entities.Monster.WoodWormRoot
         protected internal override void OnInit(object userData)
         {
             base.OnInit(userData);
+
+            // GroundCld：Prefab 实心 + OnlyMapObj + 更大盒（≈9×3），踩巢/击飞落巢顶同样托住 PlayerFoot（0723 同族）。
+            // 非 TenWanSceneObj 砍断挡板；改 Trigger 后不再当玩家踏板。怪/巢自身不靠该盒当「地板」。
+            // 替代：只修 WoodWormLogic 不修 Root（用户要求虫巢一并改）；改全局矩阵（0723 否决）。
+            if (groundCld != null)
+            {
+                groundCld.isTrigger = true;
+            }
             
             if (defaultAwake)
             {

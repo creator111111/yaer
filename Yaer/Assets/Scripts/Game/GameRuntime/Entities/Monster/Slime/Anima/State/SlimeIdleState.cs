@@ -24,8 +24,10 @@ namespace Game.GameRuntime.Entities.Monster.Slime.Anima.State
             attackTarget.Clear();
             moveCpn.IsGrounded = true;
             slime.atkTargetLogic = null;
-            // Õ¾Á¢×´Ì¬ÏÂÉèÖÃ²»ÄÜÒÆ¶¯
-            slime.BodyRg.constraints = RigidbodyConstraints2D.FreezePositionX;
+            // 0912 ï¿½ï¿½ï¿½ï¿½ Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Idle Í³Ò» Snapï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏµÄ¹Ö£ï¿½ï¿½ï¿½ï¿½Ð²î£©
+            SnapToCombatAxisY();
+            // Õ¾ï¿½ï¿½ï¿½ï¿½ X+Yï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Æ«ï¿½ï¿½JumpAtk UpBefore ï¿½ï¿½â¶³Îª FreezeRotation
+            slime.BodyRg.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
         }
 
         public override void Update()
@@ -40,35 +42,35 @@ namespace Game.GameRuntime.Entities.Monster.Slime.Anima.State
                 moveCpn.StopMove();
                 return;
             }
-            // ÌÓÅÜ×´Ì¬ÐèÒªÖ±½Ó×ª»»³ÉÒÆ¶¯×´Ì¬
+            // ??????????????????????
             if (slime.HasMonsterState(MonsterState.Escape))
             {
                 ChangeState<SlimeMoveState>();
                 return;
             }
             //if (slime.FinePlayer() != null) ChangeState<SlimeMoveState>();
-            // ÓÅÏÈÅÐ¶Ï¹¥»÷Âß¼­
+            // ??????????????
             slime.componentSystem.GetComponent<FindTargetComponent>().FindTarget(ref attackTarget, "AttackArea");
             slime.attackCdTimer -= Time.deltaTime;
             if (slime.attackCdTimer <= 0) { slime.attackCdTimer = 0; }
             if (attackTarget.Count > 0)
             {
-                // ÅÐ¶Ï¹¥»÷·½Ïò
+                // ???????????
                 foreach (var logic in attackTarget)
                 {
                     if (slime.atkTargetLogic == null) slime.atkTargetLogic = logic;
                     var targetDir = (logic.transform.position - slime.transform.position).normalized;
 
-                    // »ñÈ¡µ±Ç°·½Ïò
+                    // ??????????
                     if (targetDir.x <= 0 && moveCpn.Direction == EDirectionType.Right)
                     {
-                        // ×ªÏò
+                        // ???
                         moveCpn.StopMove();
                         moveCpn.MoveLeft(false);
                     }
                     else if(targetDir.x > 0 && moveCpn.Direction == EDirectionType.Left)
                     {
-                        // ×ªÏò
+                        // ???
                         moveCpn.StopMove();
                         moveCpn.MoveRight(false);
                     }
@@ -95,7 +97,7 @@ namespace Game.GameRuntime.Entities.Monster.Slime.Anima.State
                 return;
             }
 
-            // Ã»ÕÒµ½Ä¿±êÊ±»áÏÐ¹ä
+            // ??????????????
             timeCount += Time.deltaTime;
             if (monsterLogic.canRandomMove && timeCount > timeDistance)
             {

@@ -111,6 +111,13 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
         const string LeaveChiefEscortStoryName = "Village_出村长家送树屋";
 
         /// <summary>
+        /// 临时总闸（0920）：为 true 时出村长家回村不播送树屋戏，落门前即可走。
+        /// 原因：产品暂只要静默回村。要恢复戏时改回 false（勿删 G1 其它门闩）。
+        /// 替代：改 EnterPos 键让右门绕过 —— 左门仍会播，且键拆开会散落两套落点。
+        /// </summary>
+        const bool DisableLeaveChiefEscortTemporarily = true;
+
+        /// <summary>
         /// 壳 Open + Prefab 实例化（含全屏 BG）所需极短 hold。
         /// 分层节奏（框→立绘各≈1s）交给 Prefab 亮屏后播放，不再等满前奏。
         /// <para>替代方案：若偶发 BG 未就绪就淡出，可略增本值或在 Finalize 内再补一帧 hold。</para>
@@ -185,6 +192,12 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
         /// </summary>
         bool ShouldPlayLeaveChiefEscort()
         {
+            // 临时关戏：左右门出屋都静默回村（仍落 ExitFrom_HomeSceneChief）。
+            if (DisableLeaveChiefEscortTemporarily)
+            {
+                return false;
+            }
+
             var last = GameManager.GetGMComponent<ChangeSceneComponentGM>()?.LastSceneName;
             if (last != SceneName.Village_Chief_House_Door)
             {

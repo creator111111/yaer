@@ -1,11 +1,21 @@
 using Game.GameMgr;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.BaseDataClass;
+using System.Collections.Generic;
+using UnityEngine;
 
-// 史莱姆吸食死羊事件
+// Corridor slime-eat-sheep Mgr2. Archive keys MUST differ from East Mgr1 or corridor progress poisons East eat loops.
 public class SlimeEatSheepStoryMgr2 : BaseSceneStoryMgr
 {
-    bool hasCreateSheepGrave; // 是否为死羊制作坟墓
-    bool hasTriggerSlime; // 是否触发史莱姆
+    bool hasCreateSheepGrave; // grave created
+    bool hasTriggerSlime; // fight started
+
+    // Corridor-only keys (do not reuse East SlimeEatSheepStory_*).
+    const string KeyCreateGrave = "SlimeEatSheepStory2_hasCreateGrave";
+    const string KeyTriggerSlime = "SlimeEatSheepStory2_hasTriggerSlime";
+    // Pre-fix shared East keys; migrate only when corridor story already used.
+    const string LegacyKeyCreateGrave = "SlimeEatSheepStory_hasCreateGrave";
+    const string LegacyKeyTriggerSlime = "SlimeEatSheepStory_hasTriggerSlime";
+    const string CorridorEatSheepStoryName = "VerdantCorridorSlimeEatSheep";
 
     public new static SlimeEatSheepStoryMgr2 instance;
     public new static SlimeEatSheepStoryMgr2 getInstance()
@@ -37,7 +47,6 @@ public class SlimeEatSheepStoryMgr2 : BaseSceneStoryMgr
         }
     }
 
-    // 获取场景故事对象
     public SlimeEatSheepStroy2 GetStoryObj() { return sceneStoryObj as SlimeEatSheepStroy2; }
 
     public override void ParseStoryAcitonArgs(string args)
@@ -74,7 +83,6 @@ public class SlimeEatSheepStoryMgr2 : BaseSceneStoryMgr
                 story.BattleStoryStartOrEnd(false);
             }
         }
-        
     }
 
     public void SetHasCreateGrave(bool hasCreateSheepGrave)
@@ -86,17 +94,52 @@ public class SlimeEatSheepStoryMgr2 : BaseSceneStoryMgr
         this.hasTriggerSlime = hasTriggerSlime;
     }
 
-    // =============================存档和读档Start
     public override void ParseInternal(MasterGameData masterData)
     {
-        getInstance().hasCreateSheepGrave = masterData.GetValue("SlimeEatSheepStory_hasCreateGrave", false);
-        getInstance().hasTriggerSlime = masterData.GetValue("SlimeEatSheepStory_hasTriggerSlime", false);
+        // Missing Story2 keys: migrate from legacy ONLY if corridor dialogue already counted.
+        // Blind migrate would treat East progress as corridor "already started".
+        bool hasStory2Keys = masterData.HasField(KeyCreateGrave) || masterData.HasField(KeyTriggerSlime);
+        if (!hasStory2Keys)
+        {
+            if (IsCorridorEatSheepStoryUsed(masterData))
+            {
+                getInstance().hasCreateSheepGrave = masterData.GetValue(LegacyKeyCreateGrave, false);
+                getInstance().hasTriggerSlime = masterData.GetValue(LegacyKeyTriggerSlime, false);
+                Debug.Log($"[SlimeEatSheep] Mgr2 migrate legacy->Story2 grave={getInstance().hasCreateSheepGrave} trigger={getInstance().hasTriggerSlime}");
+            }
+            else
+            {
+                getInstance().hasCreateSheepGrave = false;
+                getInstance().hasTriggerSlime = false;
+            }
+        }
+        else
+        {
+            getInstance().hasCreateSheepGrave = masterData.GetValue(KeyCreateGrave, false);
+            getInstance().hasTriggerSlime = masterData.GetValue(KeyTriggerSlime, false);
+        }
+    }
+
+    // Parse StoryTriggerCount JSON from Master (CountData singleton order not guaranteed here).
+    static bool IsCorridorEatSheepStoryUsed(MasterGameData masterData)
+    {
+        string dataStr = masterData.GetValue("StoryTriggerCountData_StoryTriggerCount", "");
+        if (string.IsNullOrEmpty(dataStr)) return false;
+        try
+        {
+            var dict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, int>>(dataStr);
+            return dict != null && dict.ContainsKey(CorridorEatSheepStoryName);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning($"[SlimeEatSheep] Mgr2 StoryTriggerCount parse fail: {e.Message}");
+            return false;
+        }
     }
 
     public override void SerializeInternal(MasterGameData masterData)
     {
-        masterData.SetValue("SlimeEatSheepStory_hasCreateGrave", getInstance().hasCreateSheepGrave);
-        masterData.SetValue("SlimeEatSheepStory_hasTriggerSlime", getInstance().hasTriggerSlime);
+        masterData.SetValue(KeyCreateGrave, getInstance().hasCreateSheepGrave);
+        masterData.SetValue(KeyTriggerSlime, getInstance().hasTriggerSlime);
     }
-    //===============================存档和读档End
 }

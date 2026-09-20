@@ -9,13 +9,20 @@ using ParadoxNotion.Design;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("Camera")]
-    [Name("�����������")]
+    [Name("相机跟随主角")]
     public class CameraFollowPlayerActionTask : ActionTask
     {
         private CameraComponentGSM cameraMgr;
         private PlayerLogic player;
 
-        public BBParameter<bool> isFollowPlayer = true; // �Ƿ�������
+        public BBParameter<bool> isFollowPlayer = true; // 是否跟随玩家
+
+        /// <summary>
+        /// 是否用手推（forceSnap）对齐到玩家。
+        /// 默认 false：推镜拉回后相机已在落点附近，再手推会二次屏闪（0913 走廊吃羊等）。
+        /// 需要「远处瞬切/手推收束」的图在 NodeCanvas 勾 true。
+        /// </summary>
+        public BBParameter<bool> forceSnapToTarget = false;
 
         protected override string OnInit()
         {
@@ -30,11 +37,11 @@ namespace Game.GameRuntime.Story.Node
             {
                 if (isFollowPlayer.value)
                 {
-                    return "�����������";
+                    return "相机跟随主角";
                 }
                 else
                 {
-                    return "���������ԭ��";
+                    return "相机锁定在原地";
                 }
             }
         }
@@ -49,7 +56,9 @@ namespace Game.GameRuntime.Story.Node
             await UniTask.WaitUntil(() => !cameraMgr.IsLock);
             if (isFollowPlayer.value)
             {
-                cameraMgr.SetFollow(player.transform);
+                // 0913：默认不 forceSnap，避免拉回后二次手推闪一下；已由 CameraMove 软交接到 EndPos/玩家。
+                // 替代：本节点勾 forceSnapToTarget；或 Forest 式短黑幕掩护手推。
+                cameraMgr.SetFollow(player.transform, onComplete: null, forceSnapToTarget: forceSnapToTarget.value);
             }
             else
             {

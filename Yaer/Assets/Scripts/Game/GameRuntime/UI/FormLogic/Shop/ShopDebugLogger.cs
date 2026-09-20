@@ -79,10 +79,10 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             return sb.ToString();
         }
 
-        /// <summary>数量为 0 或总价为 0 时不打成功 Log，仅警告。</summary>
+        /// <summary>数量为 0 或总价为 0 时不打成功 Log，仅警告（买卖共用）。</summary>
         public static void LogZeroQuantityWarning()
         {
-            Debug.LogWarning($"{LogPrefix} 数量为 0，无法购买");
+            Debug.LogWarning($"{LogPrefix} 数量为 0，无法交易");
         }
 
         /// <summary>金币不足：整单失败，不扣款、不入包。</summary>
@@ -98,7 +98,38 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 $"{LogPrefix} 背包将超堆叠上限：{itemId} 持有 {held} + 购买 {buyQty} > {maxStack}，整单取消");
         }
 
-        /// <summary>出售 Tab 点「决定」：本阶段未接入真实结算。</summary>
+        /// <summary>
+        /// 出售出包成功：明细 + 加币额，便于 Console 对账。
+        /// </summary>
+        /// <param name="itemIds">成交行道具 ID</param>
+        /// <param name="quantities">与 itemIds 等长的数量</param>
+        /// <param name="totalGold">Σ(qty×卖价)，与 Total2 同口径</param>
+        public static void LogSellFromBag(
+            IReadOnlyList<EMainItemName> itemIds,
+            IReadOnlyList<int> quantities,
+            int totalGold)
+        {
+            var summary = BuildItemSummary(itemIds, quantities);
+            Debug.Log($"{LogPrefix} 出售出包成功：{summary}；获得金币 {totalGold}");
+        }
+
+        /// <summary>背包持有不足：整单失败，不扣包、不加币。</summary>
+        public static void LogInsufficientBag(string itemId, int need, int held)
+        {
+            Debug.LogWarning(
+                $"{LogPrefix} 背包不足，无法出售：{itemId} 需要 {need}，当前持有 {held}，整单取消");
+        }
+
+        /// <summary>预检通过后 TryRemove 仍失败（理想不应发生）。</summary>
+        public static void LogSellRemoveFailed(string itemId, int qty)
+        {
+            Debug.LogError($"{LogPrefix} 出售扣包失败：{itemId}×{qty}（预检后仍失败，已中止加币）");
+        }
+
+        /// <summary>
+        /// 历史占位：出售未接入时打这条。接入后正常路径不应再调用。
+        /// 保留方法避免旧联调脚本编译失败。
+        /// </summary>
         public static void LogSellNotImplemented()
         {
             Debug.Log($"{LogPrefix} 出售结算未接入");

@@ -156,6 +156,11 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Dialogue
         /// <param name="blockOtherInteraction"></param>
         public void StartDialogue(string dialogueID, bool blockOtherInteraction = true)
         {
+            // 开场防御：异常结束路径可能未走 Finished，壳上仍残留最后一句 clip
+            if (dialogueUI != null)
+            {
+                dialogueUI.StopDialogueVoiceClean();
+            }
             tgAuto.isOn = false;
             tgSkip.isOn = false;
             ResMgr.LoadAsset<GameObject>(DialoguePath.GetPath(dialogueID), (go) => OnDialogueLoaded(go, blockOtherInteraction).Forget());
@@ -167,6 +172,10 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Dialogue
         /// <param name="blockOtherInteraction"></param>
         public void StartDialogue(GameObject go, bool blockOtherInteraction = true)
         {
+            if (dialogueUI != null)
+            {
+                dialogueUI.StopDialogueVoiceClean();
+            }
             tgAuto.isOn = false;
             tgSkip.isOn = false;
             OnDialogueLoaded(go, blockOtherInteraction).Forget();
@@ -189,9 +198,45 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Dialogue
 
                 historyDialogueData = GameManager.GetGameSceneManager().GetArchiveData<HistoryDialogueData>();
 
+                // 椅子三张图的说话人没有写进图的引用表。不接上的话，雅尔这句不会点亮左下角小头像。
+                // 已接好的图（如村开场）不会重接。替代方案：手改三张 Prefab 的引用表，容易漏，所以在开播前补一次。
+                BindUnlinkedDialogueActors(dialogueTree);
                 dialogueTree.StartDialogue();
 
                 CurrentPaintings = dialogueTree.GetComponentsInChildren<StoryFormPainting>().ToList();
+            }
+        }
+
+        /// <summary>
+        /// 图里有名字、但没拖上 Actor 组件时，NodeCanvas 会用一个假人说话。
+        /// 假人不是 <see cref="DialogueActorEx"/>，对话框就不会换小头像。
+        /// 按子物体上的显示名补上。已经接好的不动。
+        /// </summary>
+        private static void BindUnlinkedDialogueActors(DialogueTreeController controller)
+        {
+            if (controller == null)
+            {
+                return;
+            }
+
+            var actors = controller.GetComponentsInChildren<DialogueActorEx>(true);
+            for (int i = 0; i < actors.Length; i++)
+            {
+                var actor = actors[i];
+                // DialogueActor.name 是台本里的显示名（雅尔 / NPC2），不是物体名
+                var key = actor.name;
+                if (string.IsNullOrEmpty(key))
+                {
+                    continue;
+                }
+
+                var current = controller.GetActorReferenceByName(key);
+                if (current is DialogueActorEx)
+                {
+                    continue;
+                }
+
+                controller.SetActorReference(key, actor);
             }
         }
 
@@ -208,6 +253,11 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Dialogue
 
         private void OnDialogueEnd()
         {
+            // 淡出后再兜一层停 VO（防 Finished 未到 / UniTask 时序漏清）
+            if (dialogueUI != null)
+            {
+                dialogueUI.StopDialogueVoiceClean();
+            }
             // 对话框控制器通知剧情管理器当前对话结束
             if (StoryMgr != null) StoryMgr.OnStoryEnd();
             if (dialogueTree != null) { dialogueTree.PauseDialogue(); }

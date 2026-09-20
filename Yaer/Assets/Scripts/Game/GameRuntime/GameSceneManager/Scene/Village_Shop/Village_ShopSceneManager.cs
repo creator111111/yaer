@@ -206,7 +206,7 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
         /// <summary>
         /// 进店换场黑幕内 Trigger 招呼对白，就绪后一次 CloseFormFade（防闪 Bar）。
         /// 首次 → <see cref="ShopStartStoryName"/>（分层闸门 + 结束慢黑幕）；
-        /// 非首次 → <see cref="ShopRepeatStoryName"/>（无分层；结束对齐特殊对白直接显 UI）。
+        /// 非首次 → <see cref="ShopRepeatStoryName"/>（亮屏闸门后对话框淡入；结束对齐特殊对白直接显 UI）。
         /// </summary>
         /// <remarks>
         /// 0830 R1：同一管线分支故事名。0827「非首次 return false → 静默 Idle」作废。
@@ -272,8 +272,14 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
         }
 
         /// <summary>
-        /// 非首次进店：黑幕内 Trigger Repeat（短招呼）；不做分层 Prepare；结束走特殊对白语义。
+        /// 非首次进店：黑幕内 Trigger Repeat；亮屏闸门与首次同管线，对话框等黑幕淡完再淡入。
+        /// 不做雅/古大立绘 Prepare；结束仍走特殊对白语义。
         /// </summary>
+        /// <remarks>
+        /// 原因：用户要「黑屏渐入渐出完成 → 再出老板娘对话框」。若壳就绪就关黑幕且图内立刻淡入，
+        /// 框会叠在黑幕淡出上。复用 <see cref="ShopStartLayerRevealGate"/> + 图内 Wait，对齐 Start。
+        /// 替代（未采用）：黑幕淡完后再 Trigger —— OnEnterScene 兜底易抢先双开。
+        /// </remarks>
         private bool TryDeferCoverForShopRepeat(Action closeBlackAndNotify)
         {
             var storyGsm = GetModule<StoryComponentGSM>();
@@ -293,6 +299,9 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
             shopStartCoverCloseIssued = false;
             deferredCloseBlackAndNotify = closeBlackAndNotify;
 
+            // 锁闸：图内 Wait 须等换场黑幕淡完才开始对话框淡入（0920 产品时序）。
+            ShopStartLayerRevealGate.ResetForDeferredCover();
+
             HideShopUiRoot();
             SetShopkeeperHotspotsEnabled(false);
             LockShopCameraPipeline();
@@ -305,6 +314,7 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
             {
                 CleanupShopRepeatCoverSubscriptions(storyGsm);
                 deferredCloseBlackAndNotify = null;
+                ShopStartLayerRevealGate.SignalBgFullyVisible();
                 ShowShopUiRoot();
                 SetShopkeeperHotspotsEnabled(true);
                 Debug.LogWarning("[ShopRepeat] TriggerStory 未启动，回退默认淡出");
@@ -314,7 +324,7 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
             // 结束 = Special：ResetDefault + Show UI + 热区；禁止 Start 慢黑幕。
             storyGsm.onStoryEnd += OnShopkeeperSpecialStoryEnd;
             specialStoryEndSubscribed = true;
-            Debug.Log("[ShopRepeat] 黑幕阶段 TriggerStory " + ShopRepeatStoryName + "，等待对话壳就绪后淡出");
+            Debug.Log("[ShopRepeat] 黑幕阶段 TriggerStory " + ShopRepeatStoryName + "，亮屏后再淡入对话框");
             WaitForInvoke(ShopStartCoverTimeoutSeconds, OnShopRepeatCoverTimeout);
             return true;
         }
@@ -407,7 +417,8 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
         }
 
         /// <summary>
-        /// Repeat 黑幕淡出：无雅/古大立绘，跳过 Prepare 与 LayerRevealGate。
+        /// Repeat 黑幕淡出：先藏对话框，CloseFormFade 完成后再开闸，图内 Wait→淡入。
+        /// 无雅/古大立绘，不跑全套 Start Prepare 白名单以外的逻辑；仅复用对话框 alpha=0。
         /// </summary>
         private void FinalizeShopRepeatCoverAndCloseBlack()
         {
@@ -418,12 +429,57 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_Shop
 
             shopStartCoverCloseIssued = true;
 
+            // 亮屏前强制对话框透明，避免黑幕淡出过程中框已经露出来。
+            PrepareShopRepeatDialogueHidden();
+
             var close = deferredCloseBlackAndNotify;
             deferredCloseBlackAndNotify = null;
             if (close != null)
             {
-                Debug.Log("[ShopRepeat] CloseFormFade（无分层闸门）");
+                var loadGsm = GetModule<LoadSceneComponentGSM>();
+                if (loadGsm != null)
+                {
+                    void OnBlackFullyGone()
+                    {
+                        loadGsm.onEndLoadingSceneEvent -= OnBlackFullyGone;
+                        ShopStartLayerRevealGate.SignalBgFullyVisible();
+                        Debug.Log("[ShopRepeat] 黑幕淡完，开闸允许对话框淡入");
+                    }
+
+                    loadGsm.onEndLoadingSceneEvent += OnBlackFullyGone;
+                }
+                else
+                {
+                    ShopStartLayerRevealGate.SignalBgFullyVisible();
+                }
+
+                Debug.Log("[ShopRepeat] 对话框已藏，CloseFormFade");
                 close.Invoke();
+            }
+            else
+            {
+                ShopStartLayerRevealGate.SignalBgFullyVisible();
+            }
+        }
+
+        /// <summary>
+        /// Repeat 专用：只把共用对话框 CanvasGroup 置 0。
+        /// 原因：Repeat 无雅/古大立绘，不必走 <see cref="PrepareShopStartLayeredReveal"/> 全套白名单。
+        /// </summary>
+        private void PrepareShopRepeatDialogueHidden()
+        {
+            var uiPath = UIPrefabPath.GetUIPrefabPath("NormalDialogueNewPanel");
+            var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(uiPath);
+            if (uiForm == null || uiForm.Logic == null)
+            {
+                return;
+            }
+
+            if (uiForm.Logic is NormalDialogueFormNewLogic dialogueLogic
+                && dialogueLogic.dialogueUICanvasGroup != null)
+            {
+                dialogueLogic.dialogueUICanvasGroup.alpha = 0f;
+                Debug.Log("[ShopRepeat][Prepare] dialogueUICanvasGroup alpha=0");
             }
         }
 

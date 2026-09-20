@@ -28,6 +28,14 @@ public class CanNotSomeActionArea : MonoBehaviour
     private bool isCrawling;
     private bool didDisableOpenMenu;
 
+    /// <summary>
+    /// 进/出洞黑幕流程进行中为 true，禁止本组件 Update 再次 StartAutoCrawl。
+    /// 原因：Stop 会 DisablePlayerMove(false)，同一帧稍后进洞脚本再 Disable(true)；
+    /// 若爬区 Update 夹在中间或玩家仍按着 S，会马上重新开爬叠锁。
+    /// 替代方案：缩短 SquatUp 盒（侦探方案 B），本期不改爬区几何。
+    /// </summary>
+    static bool blockAutoCrawl;
+
     private PlayerLogic playerInArea;
     private bool isPlayerInArea;
 
@@ -85,6 +93,7 @@ public class CanNotSomeActionArea : MonoBehaviour
         }
 
         // ???????????????????????????+??????????????????
+        if (blockAutoCrawl) { return; }
         if (curDisableType != DisableAcitonType.SquatUp) { return; }
         if (!isPlayerInArea) { return; }
         if (playerInArea == null) { return; }
@@ -182,6 +191,7 @@ public class CanNotSomeActionArea : MonoBehaviour
 
     private void StartAutoCrawl(PlayerLogic playerLogic)
     {
+        if (blockAutoCrawl) { return; }
         if (isCrawling) { return; }
 
         var input = playerLogic.componentSystem.GetComponent<PlayerInputComponent>();
@@ -222,7 +232,37 @@ public class CanNotSomeActionArea : MonoBehaviour
         }
     }
 
-    private void StopAutoCrawl(PlayerLogic playerLogic)
+    /// <summary>
+    /// 进洞流程开关：true 时 SquatUp 区不再 StartAutoCrawl。由 ForestEastTreeEnterTrigger 成对调用。
+    /// </summary>
+    public static void SetBlockAutoCrawl(bool block)
+    {
+        blockAutoCrawl = block;
+    }
+
+    /// <summary>
+    /// 进/出洞门命中时停掉本场景所有自动爬，避免 AutoMove 与 ForestEastTreeEnterTrigger.Disable 叠锁。
+    /// 原因：SquatUp 盒宽约 80，洞口仍在区内时 Exit 永不发生，Stop 可能永远不跑。
+    /// 调用后由进洞脚本立刻再 DisablePlayerMove，并 SetBlockAutoCrawl(true) 防 Update 再 Start。
+    /// 替代方案：缩短 CanNotSomeActionArea 盒（侦探方案 B）本期不改爬区几何。
+    /// </summary>
+    public static void StopAutoCrawlForPlayer(PlayerLogic playerLogic)
+    {
+        if (playerLogic == null) { return; }
+        var areas = FindObjectsOfType<CanNotSomeActionArea>();
+        if (areas == null || areas.Length == 0) { return; }
+        for (int i = 0; i < areas.Length; i++)
+        {
+            var area = areas[i];
+            if (area == null) { continue; }
+            area.StopAutoCrawl(playerLogic);
+        }
+    }
+
+    /// <summary>
+    /// 解除自动爬锁：清 AutoMove、恢复菜单与站起。未在爬则直接 return。
+    /// </summary>
+    public void StopAutoCrawl(PlayerLogic playerLogic)
     {
         if (!isCrawling || crawlingPlayer != playerLogic) { return; }
 

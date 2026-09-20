@@ -927,7 +927,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 23.331, y: -4.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1987654322}
   m_Father: {fileID: 2038935906}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2860,7 +2861,7 @@ PrefabInstance:
     - target: {fileID: 7229788378054864639, guid: 52e2bd1153c003346b22b8d73ba431db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 352.21
+      value: 326.01
       objectReference: {fileID: 0}
     - target: {fileID: 7229788378054864639, guid: 52e2bd1153c003346b22b8d73ba431db,
         type: 3}
@@ -3226,6 +3227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 255149642}
+  requirePlayerOverlap: 1
 --- !u!61 &255149642
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5504,6 +5506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 437304847}
+  requirePlayerOverlap: 1
 --- !u!114 &437304852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7570,6 +7573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 550946411}
+  requirePlayerOverlap: 1
 --- !u!114 &550946417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8994,6 +8998,7 @@ MonoBehaviour:
   NextSceneName: 
   TriggerWhenMoveIn: 1
   ShowLoadingUI: 0
+  EnterPosKey: 
 --- !u!61 &662452570
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10367,6 +10372,7 @@ MonoBehaviour:
   NextSceneName: ForestEastScene
   TriggerWhenMoveIn: 0
   ShowLoadingUI: 0
+  EnterPosKey: 
 --- !u!114 &724024738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10776,7 +10782,7 @@ PrefabInstance:
     - target: {fileID: 7229788378054864639, guid: 52e2bd1153c003346b22b8d73ba431db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 344.91
+      value: 323.36
       objectReference: {fileID: 0}
     - target: {fileID: 7229788378054864639, guid: 52e2bd1153c003346b22b8d73ba431db,
         type: 3}
@@ -11464,6 +11470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 799799887}
+  requirePlayerOverlap: 1
 --- !u!61 &799799887
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11755,7 +11762,7 @@ PrefabInstance:
     - target: {fileID: 7229788378054864639, guid: 52e2bd1153c003346b22b8d73ba431db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 346.58
+      value: 342.33
       objectReference: {fileID: 0}
     - target: {fileID: 7229788378054864639, guid: 52e2bd1153c003346b22b8d73ba431db,
         type: 3}
@@ -12379,7 +12386,7 @@ PrefabInstance:
     - target: {fileID: 7229788378054864639, guid: 52e2bd1153c003346b22b8d73ba431db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 355.96
+      value: 328.64
       objectReference: {fileID: 0}
     - target: {fileID: 7229788378054864639, guid: 52e2bd1153c003346b22b8d73ba431db,
         type: 3}
@@ -12807,6 +12814,7 @@ MonoBehaviour:
   NextSceneName: ForestEastScene
   TriggerWhenMoveIn: 1
   ShowLoadingUI: 0
+  EnterPosKey: 
 --- !u!61 &891086675
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -25061,7 +25069,7 @@ PrefabInstance:
     - target: {fileID: 7229788378054864639, guid: 52e2bd1153c003346b22b8d73ba431db,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 349.83
+      value: 335.78
       objectReference: {fileID: 0}
     - target: {fileID: 7229788378054864639, guid: 52e2bd1153c003346b22b8d73ba431db,
         type: 3}
@@ -26328,6 +26336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 1942438311}
+  requirePlayerOverlap: 1
 --- !u!61 &1942438311
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -27237,6 +27246,85 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3941b283bf94045b834b5629955c11b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1987654321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1987654322}
+  - component: {fileID: 1987654323}
+  - component: {fileID: 1987654324}
+  m_Layer: 2
+  m_Name: SlimeAirWall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1987654322
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987654321}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.9, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 86408821}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1987654323
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987654321}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.3}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.5, y: 6}
+  m_EdgeRadius: 0
+--- !u!114 &1987654324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987654321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8b17a92d64f0e8a3c5b7d1e9f2460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockDeadSlimes: 0
+  blockSleepingSlimes: 1
+  bidirectional: 1
+  blockNormal: {x: 1, y: 0}
+  stopKnockbackOnHit: 1
+  skin: 0.05
+  nearbyPadding: 12
+  debugLog: 0
+  gizmoColor: {r: 1, g: 0.92, b: 0.02, a: 0.35}
 --- !u!1 &1989475566
 GameObject:
   m_ObjectHideFlags: 0
@@ -29044,6 +29132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 2124813528}
+  requirePlayerOverlap: 1
 --- !u!61 &2124813528
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -29333,6 +29422,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cinemachineBrain: {fileID: 7624418869895906895}
   virtualCamera: {fileID: 7624418868246675496}
+  virtualCameraPart3: {fileID: 0}
+  streetPriority: 10
+  part3PriorityWhenActive: 20
+  part3PriorityWhenStandby: 0
+  smoothTime: 0.3
+  followSnapOffset: {x: 0, y: 0, z: 0}
+  useUnscaledTimeForHandSnap: 1
+  maxHandSnapRealSeconds: 2.5
 --- !u!1 &3011382808765393825
 GameObject:
   m_ObjectHideFlags: 0
@@ -29655,7 +29752,6 @@ MonoBehaviour:
   atkDistance: 0
   attackCdTimer: 0
   baseMoveSpeed: 1
-  angerRate: 20
   weakRate: 40
   sceneMonsterTag: 0
   gameSceneMgr: {fileID: 3011382808765393826}

@@ -74,6 +74,13 @@ namespace Game.Static.Name.Res
         public const string Village_Chief_House_Door = "Village_Chief_House_Door";
 
         /// <summary>
+        /// 巨树 2 楼回程进村长家时的 EnterPos 键（0920）。
+        /// 原因：空 EnterPosKey 会走大门 <c>EnterFrom_Village</c>；须落到楼梯顶。
+        /// 与 <see cref="Village_KenMuNi1"/> 大门进屋键拆开，勿改大门 lastScene。
+        /// </summary>
+        public const string Village_KenMuNi1_Tree2f = "Village_KenMuNi1_Tree2f";
+
+        /// <summary>
         /// 是否启用村庄探索移动（Town / WalkArea / 纵深 Y）。
         /// 原因（0901）：原闸仅认 <see cref="Village_KenMuNi1"/>，进屋无 W/S；
         /// 现白名单仅再加 <see cref="Village_Chief_House"/>，其它 Home 仍 Default。

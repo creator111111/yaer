@@ -177,71 +177,24 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Combat.State.Gr
         }
 
         /// <summary>
-        /// 村庄 Combat 进跑且已有横向意图：按队列里的 Left/Right（从队首往后找第一条）同步 <see cref="MoveLeft"/>/<see cref="MoveRight"/>。
-        /// 队列尚未入队时（Animator 先于 Input）用 GetKey / Raw Horizontal 兜底。左右同时按下跟队列先后，不另定优先级。
+        /// 村庄 Combat 进跑且已有横向意图：按 <see cref="PlayerInputComponent.ResolveVillageEnterHorizontalCommand"/>
+        /// 同步 <see cref="MoveLeft"/>/<see cref="MoveRight"/>。
         /// 不在转向前调用 <see cref="PlayerMoveComponent.SetRunSpeed"/>；MoveLeft/Right 内部会翻面写速，零速仍由 0514 补票。
         /// </summary>
         private void ApplyVillageCombatRunEnterHorizontalFromInput()
         {
-            ControlInputType queued = FindFirstHorizontalCommandInQueue();
-            if (queued == ControlInputType.Left)
+            ControlInputType cmd = inputComponent.ResolveVillageEnterHorizontalCommand();
+            if (cmd == ControlInputType.Left)
             {
                 MoveLeft(true);
                 return;
             }
 
-            if (queued == ControlInputType.Right)
-            {
-                MoveRight(true);
-                return;
-            }
-
-            // 本帧 Input 还没入队，但 Idle 已凭 GetKey(A) 切进 Run：不能用 GetKeyDown（当帧可能已过）。
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-            {
-                MoveLeft(true);
-                return;
-            }
-
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            {
-                MoveRight(true);
-                return;
-            }
-
-            const float horizontalDeadZone = 0.01f;
-            float axisX = Input.GetAxisRaw("Horizontal");
-            if (axisX < -horizontalDeadZone)
-            {
-                MoveLeft(true);
-                return;
-            }
-
-            if (axisX > horizontalDeadZone)
+            if (cmd == ControlInputType.Right)
             {
                 MoveRight(true);
             }
-            // 仍解析不出方向：宁可不灌默认 +X，避免点 A 往右滑一下。
-        }
-
-        /// <summary>与现网 Parse 一样看队列顺序，取第一条 Left/Right（队首可能是 Jump/Interact）。</summary>
-        private ControlInputType FindFirstHorizontalCommandInQueue()
-        {
-            for (int i = 0; i < 16; i++)
-            {
-                ControlInputType cmd = inputComponent.GetPlayerCurInputCmd(i);
-                if (cmd == ControlInputType.None)
-                {
-                    break;
-                }
-
-                if (cmd == ControlInputType.Left || cmd == ControlInputType.Right)
-                {
-                    return cmd;
-                }
-            }
-
-            return ControlInputType.None;
+            // None：宁可不灌默认 +X，避免点 A 往右滑一下。
         }
 
         /// <summary>

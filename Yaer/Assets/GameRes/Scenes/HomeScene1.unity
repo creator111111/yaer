@@ -4403,6 +4403,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cinemachineBrain: {fileID: 1785716848092191322}
   virtualCamera: {fileID: 1785716849665137725}
+  smoothTime: 0
+  followSnapOffset: {x: 0, y: 0, z: 0}
+  useUnscaledTimeForHandSnap: 1
+  maxHandSnapRealSeconds: 2.5
 --- !u!4 &3032810690154912776
 Transform:
   m_ObjectHideFlags: 0

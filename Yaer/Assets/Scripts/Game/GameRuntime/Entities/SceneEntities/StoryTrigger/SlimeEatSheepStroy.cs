@@ -1,4 +1,5 @@
 using Game.GameMgr;
+using Game.GameMgr.Component.Archive.ArchiveDataClass;
 using Game.GameRuntime.Entities.Monster.Slime;
 using Game.GameRuntime.Entities.Monster.Slime.Anima;
 using Game.GameRuntime.Entities.Monster.Slime.Anima.State;
@@ -7,24 +8,27 @@ using GameFramework.CoreExtend.Component;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 史莱姆吸食羊事件
+// ForestEast slime-eat-sheep. Loop clips are Objects/1 and Objects/2; Part3 sheep is static only.
 public class SlimeEatSheepStroy : BaseSceneStoryObj
 {
+    // Must match scene Trigger StoryPrefabName. Only after this story fired may we hide eat loops.
+    public const string EastEatSheepStoryName = "ForestEastSceneSlimeEatSheep";
+
     public GameObject deadSheepStoryTrigger;
-    public GameObject deadSheepBody; // 死羊的尸体
-    public GameObject deadSheepGrave; // 死羊的坟墓
-    public GameObject slimeEatAni_1; // 史莱姆动画
-    public GameObject slimeEatAni_2;
+    public GameObject deadSheepBody; // corpse
+    public GameObject deadSheepGrave; // grave
+    public GameObject slimeEatAni_1; // Objects eat-loop prefab 1
+    public GameObject slimeEatAni_2; // Objects eat-loop prefab 2
     public List<Slime> slimeLogics;
 
-    public int curDeadMonsterCount { get; set; } // 目标怪物的死亡数量
-    // Start is called before the first frame update
+    public int curDeadMonsterCount { get; set; }
+
     public override void Start()
     {
         base.Start();
-        
+
         deadSheepStoryTrigger.SetActive(false);
-        foreach(var slime in slimeLogics)
+        foreach (var slime in slimeLogics)
         {
             //slime.gameObject.SetActive(false);
             slime.OnDeadEventFunc += storyMgr.CheckEventHasEnd;
@@ -32,20 +36,42 @@ public class SlimeEatSheepStroy : BaseSceneStoryObj
         deadSheepBody.SetActive(true);
         deadSheepGrave.SetActive(false);
         curDeadMonsterCount = 0;
-        // 检测事件是否已经结束，事件结束后部分场景对象发生变化
-        if (SlimeEatSheepStoryMgr.getInstance().GetHasCreateGrave())
+
+        // Why: old Mgr2 shared East archive keys; finishing corridor made East Start call TriggerSlime and hide loops.
+        // Gate: only restore grave/fight visuals if THIS East story is already in StoryTriggerCount.
+        bool eastStoryUsed = false;
+        if (sceneMgr != null)
+        {
+            var counts = sceneMgr.GetArchiveData<StoryTriggerCountData>();
+            eastStoryUsed = counts != null && counts.CheckStoryUsed(EastEatSheepStoryName);
+        }
+
+        if (eastStoryUsed && SlimeEatSheepStoryMgr.getInstance().GetHasCreateGrave())
         {
             ShowSheepGrave();
-        }else if (SlimeEatSheepStoryMgr.getInstance().GetHasTriggerSlime())
+        }
+        else if (eastStoryUsed && SlimeEatSheepStoryMgr.getInstance().GetHasTriggerSlime())
         {
             TriggerSlime();
         }
+        else
+        {
+            // East eat-sheep not played yet: force loops ON (heals polluted saves).
+            // Alt: trust scene Active only -- polluted/runtime-off nodes never recover.
+            EnsureSlimeEatAniVisible();
+        }
+    }
+
+    void EnsureSlimeEatAniVisible()
+    {
+        if (slimeEatAni_1 != null) slimeEatAni_1.SetActive(true);
+        if (slimeEatAni_2 != null) slimeEatAni_2.SetActive(true);
     }
 
     public override void InitStoryMgr()
     {
         base.InitStoryMgr();
-        storyMgr = SlimeEatSheepStoryMgr.getInstance(); // 初始设置管理器
+        storyMgr = SlimeEatSheepStoryMgr.getInstance();
         sceneMgr.GetArchiveData<SlimeEatSheepStoryMgr>();
     }
 
@@ -60,7 +86,6 @@ public class SlimeEatSheepStroy : BaseSceneStoryObj
         deadSheepGrave.SetActive(true);
         slimeEatAni_1.SetActive(false);
         slimeEatAni_2.SetActive(false);
-        // 销毁怪物对象
         foreach (var slime in slimeLogics)
         {
             Destroy(slime.gameObject);
@@ -69,13 +94,11 @@ public class SlimeEatSheepStroy : BaseSceneStoryObj
         deadSheepStoryTrigger.SetActive(true);
     }
 
-    // Update is called once per frame
     public override void Update()
     {
         base.Update();
         if (!hasStartStory) { return; }
         if (hasEndStory) { return; }
-        
     }
 
     public override void BattleStoryStartOrEnd(bool isStart)
@@ -83,15 +106,12 @@ public class SlimeEatSheepStroy : BaseSceneStoryObj
         base.BattleStoryStartOrEnd(isStart);
         if (isStart)
         {
-            // 事件开始后激活史莱姆
             TriggerSlime();
         }
         else
         {
             slimeLogics.Clear();
-            // 击败怪物后激活和羊的交互触发器
             deadSheepStoryTrigger.SetActive(true);
-            // 同时提示玩家坐下休息
             PlayerGuideMgr.getInstance().PraseActName("Sit");
         }
     }

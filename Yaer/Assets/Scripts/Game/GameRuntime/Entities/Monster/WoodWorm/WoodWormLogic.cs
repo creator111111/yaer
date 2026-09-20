@@ -26,6 +26,14 @@ namespace Game.GameRuntime.Entities.Monster.WoodWorm
         public bool rootBorn; // 虫巢孵化
         public bool bossMogutBorn; // BOSS产生
 
+        /// <summary>
+        /// 从卵弹出后短时不触发 PlayerBodyCollider.StopMove。
+        /// 原因：ClimbMove Stay 对木虫每帧刹车；碎卵后像卡死。窗口 4s，活虫之后仍可挡路。
+        /// </summary>
+        public bool skipPlayerBodyStopMove;
+        const float SkipPlayerBodyStopMoveSeconds = 4f;
+        float skipPlayerBodyStopMoveUntil;
+
         private KnockBackComponent knockBackComponent;
 
         public WormEggLogic bornEggLogic; // 诞生的虫蛋,可以为null
@@ -50,12 +58,27 @@ namespace Game.GameRuntime.Entities.Monster.WoodWorm
         protected override void FixedUpdate()
         {
             base.FixedUpdate();
+            if (skipPlayerBodyStopMove && Time.time >= skipPlayerBodyStopMoveUntil)
+            {
+                skipPlayerBodyStopMove = false;
+            }
         }
 
         protected internal override void OnInit(object userData)
         {
             
             base.OnInit(userData);
+
+            // GroundCld：Prefab 实心 + OnlyMapObj + 横向大盒，踩上/击飞落到虫顶会托住 PlayerFoot；
+            // 又不进 GroundLayerMask → JumpFall/DamageFlyFall 死等 IsGrounded（0723 史莱姆/藤蔓同族残留）。
+            // 怪落地靠 GroundChecker + GravityScale=0，GroundCld 本意「只和地图碰」；改 Trigger 后不再当玩家踏板。
+            // 替代：改 Physics2D 矩阵 / 把 OnlyMapObj 加进玩家 Mask（0723 否决）；恢复挤出（本期不恢复）。
+            // 覆盖：WoodWorm / WoodWorm_1 Prefab + 走廊及其它场景实例；巢生另在 initComponentData 再写一次。
+            if (groundCld != null)
+            {
+                groundCld.isTrigger = true;
+            }
+
             componentSystem.GetComponent<MoveComponent>().canGravity = true;
             // 注册动画事件
             GetComponent<AnimationEventComponent>().RegisterEvent("Attack", OnAttack);
@@ -106,6 +129,8 @@ namespace Game.GameRuntime.Entities.Monster.WoodWorm
                 groundCld = groundCldObj.GetComponent<Collider2D>();
                 groundCldObj.GetComponent<ColliderResponder>().entityLogic = this;
                 groundCld.gameObject.layer = onlyMapObjLayer;
+                // 巢生 WoodWorm_1 走本路径：与 OnInit 同款，避免漏写实心托脚
+                groundCld.isTrigger = true;
             }
             var footObj = UIUtils.findChild(gameObject, "Foot");
             if (footObj != null) {
@@ -202,6 +227,8 @@ namespace Game.GameRuntime.Entities.Monster.WoodWorm
         {
             eggBorn = true;
             bornEggLogic = wormEggLogic;
+            skipPlayerBodyStopMove = true;
+            skipPlayerBodyStopMoveUntil = Time.time + SkipPlayerBodyStopMoveSeconds;
             componentSystem.GetComponent<WoodWormCsAnimator>().ChangeState<WoodWormBounceState>();
         }
         // 从虫巢诞生

@@ -42,6 +42,9 @@ namespace Game.GameRuntime.Entities.Monster.Slime.Anima.State
 
             attackTarget.Clear();
             slime.atkTargetLogic = null;
+            // 0912 方案 A：进 Move 再 Snap 一次（Idle 转 Move 期间若曾被 MoveLeft 清约束，防 Y 残差）
+            SnapToCombatAxisY();
+            // 只冻旋转，允许左右走；Y 靠 Snap + 落地 IsGrounded 保持（MoveLeft 会写回 FreezeRotation）
             slime.BodyRg.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 

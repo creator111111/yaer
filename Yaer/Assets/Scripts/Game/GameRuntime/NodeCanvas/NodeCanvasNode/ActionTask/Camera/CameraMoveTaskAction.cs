@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Game.GameRuntime.Story.Node
 {
     [Category("Camera")]
-    [Name("ÒÆ¶¯Ïà»ú")]
+    [Name("????")]
     public class CameraMoveTaskAction : ActionTask
     {
         public BBParameter<Transform> StartPos;
@@ -32,13 +32,34 @@ namespace Game.GameRuntime.Story.Node
         private async UniTask Move()
         {
             await UniTask.WaitUntil(() => !cameraMgr.IsLock);
-            GameObject go = new GameObject();
+            GameObject go = new GameObject("CameraMoveTempFollow");
             go.transform.position = StartPos.value.transform.position;
-            cameraMgr.SetFollow(go.transform);
+
+            // 0913 ????????? forceSnap??? smoothTime ??? DOMove ??????/???
+            // ???forceSnap=true????????smoothTime=0 ?????????
+            cameraMgr.SetFollow(go.transform, onComplete: null, forceSnapToTarget: false);
             cameraMgr.SetLock(true);
-            await go.transform.DOMove(EndPos.value.transform.position, Duration.value).AsyncWaitForCompletion();
+
+            // InOutSine??????????? OutQuad ????????
+            await go.transform
+                .DOMove(EndPos.value.transform.position, Duration.value)
+                .SetEase(Ease.InOutSine)
+                .AsyncWaitForCompletion();
+
             cameraMgr.SetLock(false);
-            GameObject.Destroy(go);
+
+            // ??????????????? Destroy ????? CM ? Follow ??????
+            if (EndPos.value != null)
+            {
+                cameraMgr.SetFollow(EndPos.value, onComplete: null, forceSnapToTarget: false);
+            }
+
+            await UniTask.Yield(PlayerLoopTiming.LastPostLateUpdate);
+            if (go != null)
+            {
+                Object.Destroy(go);
+            }
+
             EndAction();
         }
     }

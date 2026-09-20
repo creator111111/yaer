@@ -37,7 +37,7 @@
 |----|------|------|------|
 | Q1 | 点选后直跳村还是先对白？ | **直跳 `Village_KenMuNi1`** | ✅ 已决议 |
 | Q2 | 「二次确认弹窗」= 点关卡后再问「确定去吗？」 | **不要**；点了就进 | ✅ 已决议 |
-| Q3 | `UnlockRoad` = 地图路线贴图点亮（≠ 关卡能否点） | **本期不做**；只 `UnlockPlace` 关卡点 | ✅ 已决议 |
+| Q3 | `UnlockRoad` = 地图路线贴图点亮（≠ 关卡能否点） | **0721 曾决议本期不做** → **0914 正式开做**（见下节） | ⛔ 已撤销 / 见 0914 |
 | Q4 | 地图按钮是否显示「肯姆尼」文案 | 逻辑键仍 JingLingVillage；美术另案 | 可选 |
 
 ---
@@ -212,7 +212,7 @@
 | ID | 问题 | 施工默认建议 | 状态 |
 |----|------|--------------|------|
 | Q1 | Mask 内 GoOut 是否应在无 `DialogueActorEx` 时跳过强制 Smile？ | **是**；表情交给 Presenter，头饰可保留 | ✅ 已施工 |
-| Q2 | 旧 `actorPortrait` / 图集路径是否保持完全关闭？ | **是**；维持 `useMaskAvatar=1` | ✅ 已决议·保持 |
+| Q2 | 旧 `actorPortrait` / 图集路径是否保持完全关闭？ | ~~**是**；维持 `useMaskAvatar=1`~~ → **0911 混合回退已施工**（Mask 角色仍关；King/Lai/Xiaer/LinEn 可亮旧槽） | ✅ 0911-A′ 已取代 |
 | Q3 | 古莎等其它 Mask Painting 是否同有「首次 Start 盖脸」？ | 现网主风险为 GoOut；古莎空 SetDefault，暂不改 | ✅ 已决议·本期仅 GoOut |
 
 ---
@@ -356,13 +356,70 @@
 ## NewGameStory 开场间隔对齐 KenMuNi · 2026-08-07
 
 详见：`Assets/Doc/执行文档/0807/NewGameStory_开场间隔对齐KenMuNi_架构溯源报告.md`  
-**已决议并施工（2026-08-07）**：方案 **D**——Prefab 串行 Wait0.5→YaerPainting Fade0.5→UIAlpha Delay0.5+Dur0.5(+PrepareMask)；`NewGameSceneManager` 成对：漫画全黑 → System `BlackPanel` RawShow → 关漫画 → Gate Reset → Trigger → Prepare 白名单 → HideFade 拍1 → Signal。已去前奏 BlackMask/YaerShow；`Start.anim` 去 alpha 曲线；默认态 Write Defaults=OFF；Prepare 关故事 Animator（淡入后由 CanvasGroupAlpha 落到 YaerShow 末帧）。
+**决议仍为方案 D**；**旁路脚本已落地**。  
+**磁盘漂移曾于 2026-09-11 侦探核实**（Prefab 回 B）；**同日施工员已按方案 A 成对修回**（见 `施工说明/0911/NewGameStory_主角大立绘恢复_施工说明.md`）。验收以完整新游戏链路为准。
 
 | ID | 问题 | 决议 | 状态 |
 |----|------|------|------|
-| Q1 | 是否丢掉前奏 BlackMask / YaerShow？ | **主路径丢掉**；Fade 后落到 YaerShow 末帧供 KingMove | ✅ 已施工 |
-| Q2 | NewGame 是否必须补 Gate 旁路才有「只见 BG」？ | **必须**（方案 D）；拍1 用 System BlackPanel | ✅ 已施工 |
-| Q3 | 0806「已施工」与现网并行是否回退/误标？ | 半施工误标 + B 回退后，本期 D 真正成对落地 | ✅ 已结案 |
+| Q1 | 是否丢掉前奏 BlackMask / YaerShow？ | **主路径丢掉**；Fade 后落到 YaerShow 末帧供 KingMove | ✅ Prefab 已施工（0911-A） |
+| Q2 | NewGame 是否必须补 Gate 旁路才有「只见 BG」？ | **必须**（方案 D）；拍1 用 System BlackPanel | ✅ 旁路已施工 |
+| Q3 | 0806「已施工」与现网并行是否回退/误标？ | 半施工误标 + B 回退后，决议改走 D；0911 已成对修 Prefab | ✅ 已闭环（待 Play 验收） |
+
+---
+
+## NewGameStory 主角大立绘不出现 · Prepare/Prefab 不成对 · 2026-09-11
+
+详见：`Assets/Doc/执行文档/0911/NewGameStory_主角大立绘不出现_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0911/NewGameStory_主角大立绘恢复_施工说明.md`
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 终局修法？ | **方案 A**：Prefab 对齐 D 串行 Wait→YaerPainting Fade→UIAlpha；成对现网 Prepare；禁只强 alpha=1 | ✅ 已施工（待 Play 验收） |
+| Q2 | 是否允许紧急回退 B（去掉 Prepare 藏立绘/关 Animator）？ | **未采用**（已走 A） | ✅ 不需要 |
+| Q3 | DialogDebug 拖同 Prefab 可能「有立绘」是否算通过？ | **否**；验收须完整新游戏漫画链路 | ✅ 已决议（侦探） |
+
+---
+
+## NewGameStory 开局小头像表情闪错 · 2026-09-11
+
+详见：`Assets/Doc/执行文档/0911/NewGameStory_开局小头像表情闪错_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0911/NewGameStory_开局小头像空框取消预亮_施工说明.md`
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 框淡入是否允许预亮小头像？ | **否**；空框 → 首句再出脸（对齐 0902 门口，不对齐 KenMuNi 同拍） | ✅ 已决议 |
+| Q2 | 修法？ | **F1**：仅 `NewGameStory` `PrepareMaskAvatarOnFadeIn=false`；禁 F2 改预亮脸冒充 | ✅ 已施工（待 Play 验收） |
+| Q3 | 是否改 KenMuNiStart / Presenter / 回退大立绘？ | **否** | ✅ 已决议 |
+
+---
+
+## 旧角色图集小头像全空 · Mask 混合回退 · 2026-09-11
+
+详见：`Assets/Doc/执行文档/0911/旧角色图集小头像全空_Mask模式回退_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0911/旧角色图集小头像_Mask混合回退_施工说明.md`
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 通用「Resolve=null 就亮旧槽」（A）还是仅四人白名单（A′）？ | **A′**：仅 **King / Lai / Xiaer / LinEn** | ✅ 已施工（待 Play 验收） |
+| Q2 | 修订 0804「旧 Portrait 完全关闭」？ | **是** → Mask 角色关；白名单旧角色可亮 | ✅ 已施工 |
+| Q3 | 其它未点名 Role 是否顺带回退？ | **本期不扩** | ✅ 已决议 |
+| Q4 | 哥布林小头像？ | **不要求**；不验收；勿进白名单 | ✅ 已决议 |
+| Q5 | 「小孩」是谁？ | **夏尔 Xiaer**（不是哥布林） | ✅ 已钉死 |
+
+---
+
+## 对话结束重复最后一句语音 · 2026-09-11
+
+详见：`Assets/Doc/执行文档/0911/对话结束重复最后一句语音_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0911/对话结束停干净语音_施工说明.md`
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | VO 是否禁止挂 Actor 源、只走 UI localSource / 人声通道？ | 本期先 **A 停干净**；架构倾向只走 UI | 待确认 |
+| Q2 | Finished/Paused 是否都 `clip=null` + `playOnAwake=false`？ | **是** | ✅ 已施工（待 Play 验收） |
+| Q3 | `OnStoryEnd` 是否再兜一层停 VO？ | **在 Form `OnDialogueEnd` 关壳前兜**（等价、更贴 UI 源） | ✅ 已施工 |
+| Q4 | 是否允许在每个 NPC/门入口 Stop？ | **否**（禁止作终局） | ✅ 已决议 |
+
 ---
 
 ## LoadGamePanel 列表遮罩 · 2026-08-06
@@ -439,12 +496,13 @@
 
 详见：`Assets/Doc/执行文档/0804/Village_KenMuNiStart_角翅膀帧动画制作与对话触发_架构溯源与执行说明.md`  
 **已施工（2026-08-04）**：Clip/Controller + `PlayUiAnimatorActionTask` + CSV `Type=Anim` 导入器；Prefab 默认隐藏 Anim_*。  
-**须在 Unity 执行一次**：`Tools/Dialogue/Setup KenMuNiStart Horn Wing Anim`（装 Animator/BB/删多余帧），再 `Tools/Dialogue/Import CSV` 导 Generated，合并进成品 Prefab 图。
+**须在 Unity 执行一次**：`Tools/Dialogue/Setup KenMuNiStart Horn Wing Anim`（装 Animator/BB/删多余帧），再 `Tools/Dialogue/Import CSV` 导 Generated，合并进成品 Prefab 图。  
+**Q2 循环/隐藏已改口（2026-09-18）**：用户只要「这句话还在、没点继续就一直循环；点了再藏」。帧率仍 10fps，等点击再进下一句仍有效。详见 `Assets/Doc/执行文档/0918/Village_KenMuNiStart_角翅膀循环到点击_架构溯源报告.md`。
 
 | ID | 问题 | 施工默认建议 | 状态 |
 |----|------|--------------|------|
 | Q1 | 动画播完是否自动进下一句？ | **否**；等玩家点继续（字幕仍显示） | ✅ 已按此 |
-| Q2 | 帧率 / 循环 / 播完？ | **8～12fps、不循环、播完隐藏 Anim_*** | ✅ 已按此（10fps） |
+| Q2 | 帧率 / 循环 / 播完？ | ~~不循环、播完隐藏~~ → **字幕期间循环，点继续再藏**；帧率仍 10fps | ⛔ 0918 已改口 |
 | Q3 | CSV Type 正式名与 Extra？ | **`Type=Anim`，`Extra=Anim_Gusha` / `Anim_Yaer`** | ✅ 已施工 |
 | Q4 | ID9/17 Text 是否仍作出字幕？ | **是**（Play → Statement） | ✅ 已施工 |
 | Q5 | 本期是否坚持 CSV Type 自动生成（非仅手插）？ | **是**；阶段 2 可选手插先验 | ✅ 已施工 |
@@ -459,8 +517,22 @@
 | Q2 | 堆叠将超 10：整单失败 vs 买到上限？ | **整单失败**（预校验 held+qty ≤ 10） | 待确认 |
 | Q3 | 商店 UI 是否常驻显示持有金币？ | 本阶段不做 | 待确认 |
 | Q4 | 成功后数量是否清零？ | **是**（ResetToDefault + RefreshTotal2） | 待确认 |
-| Q5 | 出售是否同 PR？ | **否**：出售 Tab 点决定仅 Log「出售结算未接入」 | 待确认 |
+| Q5 | 出售是否同 PR？ | ~~否：仅 Log「出售结算未接入」~~ → **0920 改口：出售结算另票要做**（出包+加币+双落盘；见下节） | ♻️ 0920 改口 |
 | Q6 | 假购买「成功购买生命球」文案 | 改为「购买成功，扣除金币 {total}」 | 待确认 |
+
+---
+
+## Village_Shop 贩卖结算从未接入 · 2026-09-20
+
+详见：`Assets/Doc/执行文档/0920/Village_Shop_贩卖无法卖出素材_架构溯源报告.md`
+
+**侦探结论**：主因是设计债，不是回归。`OnConfirmClick` 在 `!_isBuyTabActive` 时只 `LogSellNotImplemented` 后 return。列表 / 卖价 / 合计是次要；修好后购买分支一行语义都不要动。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 出售成败要不要播 `Village_ShopYes` / `ShopNo`？ | **本期默认不播**；产品另定再接线。禁止擅自复用购买 Yes | 待产品 |
+| Q2 | 背包不够时是否播任何对白？ | **否**（与堆叠失败不播 No 同口径）；仅 Console Warning | ✅ 已按此施工 |
+| Q3 | 0713 货币节 Q5「出售不同 PR」？ | **作废为工期边界**；本票起要做真实结算 | ✅ 0920 已施工 |
 
 ---
 
@@ -711,14 +783,14 @@
 | ID | 问题 | 施工默认建议 | 状态 |
 |----|------|--------------|------|
 | Q1 | `House_Chlef` 是否改名？ | **`House_Chief`**（辨认用） | ✅ 已施工 |
-| Q2 | Chief 室内出门用哪扇门？ | **`LeftDoor` → Village_KenMuNi1**；RightDoor 已禁用 | ✅ 已施工 |
+| Q2 | Chief 室内出门用哪扇门？ | ~~LeftDoor；RightDoor 禁用~~ → **2026-09-20：最右也要回村**（开 RightDoor→KenMuNi1，同键 `Village_Chief_House_Door`；左门暂保留） | ✅ **已施工**（见 `施工说明/0920/Village_Chief_House_最右边没法回村_施工说明.md`） |
 | Q3 | NPC2 仍进不去是否改 GSM？ | **否**；先 Play 查 E/Collider | ✅ 已决议 |
 | Q4 | Chief 复用 Stairs 预制体？ | **是**（对齐 Npc1/NPC2） | ✅ 已施工 |
 | Q5 | 村场景是否已保存？ | **House_Chief** 已写入磁盘 YAML | ✅ 已施工 |
 | T1 | House_NPC2 按 E 进屋？ | 进 HomeScene2 | 待验收 |
 | T2 | HouseDoor 出屋回村？ | ExitFrom_HomeScene2 | 待验收 |
 | T3 | 村长门按 E 进屋？ | 进 Chief_House（施工后） | 待验收 |
-| T4 | Chief 出门回村？ | ExitFrom_HomeSceneChief 对称 | 待验收 |
+| T4 | Chief 出门回村？ | ExitFrom_HomeSceneChief 对称；**右门现网仍 Inactive+ForestEast** | ⏳ 见 0920 |
 
 ---
 
@@ -1264,6 +1336,20 @@
 
 ---
 
+## Village_Shop 再进店对话不显示 · 2026-09-20
+
+详见：`Assets/Doc/执行文档/0920/Village_Shop_再次进店对话不显示_架构溯源报告.md`
+
+**侦探结论**：主类型 **B**（有 Trigger，字幕条 alpha 仍为 0）。`Village_ShopRepeat` 无 UI 淡入；上场 `DialogueEnd` 把 `subtitlesCanvasGroup` 淡到 0。0919 HideAll **不是**主因（脸会在第一句 Apply 回来）。推荐只给 Repeat Prefab 补淡入且 `PrepareMaskAvatarOnFadeIn=false`。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 是否改回二进宫静默？ | **否** | ✅ |
+| Q2 | 是否删 0919 HideAll？ | **否** | ✅ |
+| Q3 | 是否在共用 `OnSubtitlesRequest` 一律强制 alpha=1？ | **本票否**；只改 Repeat Prefab。其它无淡入图另开 | ✅ **已施工**（见 `施工说明/0920/Village_Shop_再次进店对话不显示_施工说明.md`） |
+
+---
+
 ## Village_Shop · Chest 热区安装 Village_ShopChest · 2026-08-30
 
 详见：`Assets/Doc/执行文档/0830/Village_Shop_Chest热区安装Village_ShopChest对话_架构溯源报告.md`  
@@ -1735,9 +1821,10 @@
 
 详见：`Assets/Doc/执行文档/0901/Village_Chief_House_楼梯上楼换场巨树2楼_架构溯源报告.md`  
 施工：`Assets/Doc/施工说明/0901/Village_Chief_House_楼梯上楼换场巨树2楼_施工说明.md`  
-**侦探结论**：EnterPos `Village_Chief_House`→`ExitFrom_HomeSceneChief2f` 已配对；缺楼梯顶门 + **W1** 切 `VillageWalkArea2`（禁止改其形状）。1 楼 `LeftDoor` 冲突用 **E3′**（`enterPosKey` + 新建 1f `ExitFrom_HomeSceneChief`）。Trigger 走进即切；黑幕对齐 LeftDoor；回程本期不做。依赖室内划区 A1。  
+**侦探结论**：EnterPos `Village_Chief_House`→`ExitFrom_HomeSceneChief2f` 已配对；缺楼梯顶门 + **W1** 切 `VillageWalkArea2`（禁止改其形状）。1 楼 `LeftDoor` 冲突用 **E3′**（`enterPosKey` + 新建 1f `ExitFrom_HomeSceneChief`）。Trigger 走进即切；黑幕对齐 LeftDoor；回程原「本期不做」。依赖室内划区 A1。  
 **施工状态（2026-09-01）**：enterPosKey / W1 Override / 1f ExitFrom+EnterPos / LeftDoor 键已落地；楼梯门靠 Setup 菜单摆 `StairsDoor_ToTree2f`（须开 Unity 跑一次）。  
-**验收（2026-09-03）**：现网曾卡 2 楼 —— 根因见 **0903 DepthGap**；**已施工补标尺 + F_D2/F_Order**，请重验「2 楼可达+W1」。
+**验收（2026-09-03）**：现网曾卡 2 楼 —— 根因见 **0903 DepthGap**；**已施工补标尺 + F_D2/F_Order**，请重验「2 楼可达+W1」。  
+**回程（2026-09-20）**：产品要做。见 `执行文档/0920/Village_KenMuNi1_树洞上面没法回村长家_架构溯源报告.md`——2 楼树洞旁无换场门；`House_Chief` 在 Y≈1.9 够不着。推荐 2 楼新门 + Chief 楼梯顶新 EnterPos 键。
 
 | ID | 问题 | 决议 / 施工默认 | 状态 |
 |----|------|-----------------|------|
@@ -1745,10 +1832,11 @@
 | Q2 | 1 楼门 vs 2 楼落点？ | **E3′** | ✅ 已施工 |
 | Q3 | WalkArea2 生效？ | **W1**；不改形状 | ✅ 代码已施工；**联调见 0903 重验** |
 | Q4 | 黑幕 / Loading？ | **黑幕** | ✅ |
-| Q5 | 2 楼回程进村长家？ | 本期不做 | ⏳ |
+| Q5 | 2 楼回程进村长家？ | **要做**：2 楼树洞旁新门 + 楼梯顶落点键（0920 报告） | ✅ **已施工**（见 `施工说明/0920/Village_KenMuNi1_树洞上面没法回村长家_施工说明.md`） |
 | Q6 | 同场景下树切回 WalkArea？ | 最小：仅进 2f 绑 2 | ✅ |
 | Q7 | 室内 A1 可玩？ | 依赖前案 | ⏳ 验收 |
 | Q8 | 2 楼可达联调？ | DepthGap 已补 F_D1/D2/Order | ⏳ 待重验 |
+| Q9 | 回程落到大门还是楼梯顶？ | **楼梯顶**（勿复用 `EnterFrom_Village`） | ⏳ 产品默认按 0920 |
 
 ---
 
@@ -1875,7 +1963,7 @@
 | Q1 | 框出是否允许预亮小头像？ | **否**；空框 → 首句再出 | ✅ 产品钉死 |
 | Q2 | 根因？ | **PrepareMaskAvatarOnFadeIn**（非 Portrait / 非 SetDefault Smile） | ✅ 侦探已拍板 |
 | Q3 | 方案？ | **F1** 门口 Prefab 关预亮；F2 仅兜底 | ✅ 已施工 |
-| Q4 | KenMuNiStart 预亮？ | **保留** | ✅ |
+| Q4 | KenMuNiStart 预亮？ | **0902 曾保留** → **0919 作废**，开场也要空框 | ⛔ 见下节 0919 |
 | Q5 | Setup 工具是否会回潮写预亮=true？ | Door Setup 钉 `PrepareMaskAvatarOnFadeIn=false`；Prelude options 默认仍 true | ✅ 已施工核对 |
 
 ---
@@ -1945,3 +2033,543 @@
 | Q2 | 方案？ | **F1** 加 `Village_Chief_House` | ✅ 已施工 |
 | Q3 | 龙宫 / 村街？ | **不加** | ✅ |
 | Q4 | 改状态名 / 方案 E？ | **否** | ✅ |
+
+---
+
+## HomeScene1 ↔ HomeScene2 · Stairs 换场相机闪烁 / 左右滑动 · 2026-09-12
+
+详见：`Assets/Doc/执行文档/0912/HomeScene1_2_Stairs换场相机闪烁与滑动_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0912/HomeScene1_2_Stairs换场相机定格_施工说明.md`  
+**侦探结论**：**同源**——进场 `SetFollow(forceSnap)` + `smoothTime≈0.3` 手推未收束，黑幕 hold **0.3s** 即 `CloseFormFade`。2→1 默认 VCam x≈-19.5 → 落点 x≈0.17（Δx≈20）→左→右滑；1→2 X 已贴齐、主差 Y≈3.2 →偏闪。剧情二次改相机已排除。推荐 **方案 A**：两侧龙宫 `CameraComponent.smoothTime=0`。  
+**已施工（2026-09-12）**：方案 A — HS1/HS2 `smoothTime=0`（场景序列化）；未改换场代码 / Framing。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 是否采用方案 A（两侧 smoothTime=0）？ | **是** | ✅ 已施工（待 Play 验收） |
+| Q2 | Forest→HS1、换装→HS2 是否允许同样瞬切？ | **允许** | ✅ 按默认（抽测回归） |
+
+---
+
+## Village_Shop 出店回村相机闪滑 · 2026-09-20
+
+详见：`Assets/Doc/执行文档/0920/Village_Shop_出店回村相机闪滑_架构溯源报告.md`
+
+**侦探结论**：**与 Stairs 同源**（`SetFollow` 手推 + hold 0.3 早揭幕）。KenMuNi1 磁盘 `smoothTime: 0.3`；默认 `VCam_Street`(32.56,0) → `EnterFrom_Shop`(-29.04,-6.5)，Δx≈−61.6。推荐 **方案 A**：仅 KenMuNi1 `smoothTime=0`。店场景 / 换场契约 / Part3 / EnterPos 不动。日常跟拍仍靠 CM Damping。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 是否采用方案 A（KenMuNi1 smoothTime=0）？ | **是** | 待施工 |
+| Q2 | 其它入口进村（民居/东城郊）是否允许同样瞬切？ | **允许**（与 Stairs Q2 同口径） | ✅ 侦探默认 |
+| Q3 | HS2 Framing DeadZoneH=1 是否本期一并改？ | **否**；A 后仍闪再开 | 待验收决定 |
+| Q4 | 是否上方案 B（对齐再揭幕，全项目）？ | **本期否** | ✅ 本期不做 |
+
+---
+
+## HomeScene1 出门地图 ·「这么远!!!!」VerySurprised 对接 · 2026-09-12
+
+详见：`Assets/Doc/执行文档/0912/HomeScene1出门地图对白_这么远表情丢失_架构溯源报告.md`  
+**侦探结论**：用户已在 `GoOutStoryYaerPainting/Faces` 补 `Armor_NoHeadWear_VerySurprised` 且 **Image 已绑 `震惊.png`**；Resolve 键逐字符一致；小头像四套 atlas 已含 `VerySurprised`。**主路径对接闭合 → 无需改代码**（可选回写 0601）。旁路：`HomeScene1GetMap` 拆包 `YaerPainting` 仍为裸枚举 Faces + GoOut Resolve，磁盘默认未激活——仅当 Play 仍空脸再修该副本。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 是否还需改代码？ | **否** | ✅ 侦探裁定 |
+| Q2 | GetMap 拆包内嵌是否本期对齐 Armor_ 键？ | **否**；Play 失败再开 | 待 Play |
+| Q3 | VerySurprised 与 ZhenJing 同用震惊图是否换独立贴图？ | 可选后续 | 待产品 |
+| Q4 | 是否回写 0601 对照表一行？ | **建议是**（仅文档） | 待确认 |
+
+---
+
+## ForestScene 演出结束 · 相机位置不对 + 屏闪 · 2026-09-12
+
+详见：`Assets/Doc/执行文档/0912/ForestScene_演出结束相机位置与屏闪_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0912/ForestScene_演出结束相机定格去二次snap_施工说明.md`  
+**侦探结论**：门口林恩链收束——`OnDialogueEnd`→`SetFollow(forceSnap)`+场景 **`smoothTime=0.3` 无黑幕手推**（位置错/闪主因）；NodeCanvas **id42 再调 `OnCameraMoveEnd`** → 二次 `forceSnap`（双闪/顿挫）。与龙宫 Stairs 机制同源，勿混场景施工。推荐 **B′（去/幂等二次 OnCameraMoveEnd）+ A′（收束瞬切）**。  
+**已施工（2026-09-12）**：`ForestSceneLinEnStory` — A′ 临时 `smoothTime=0`；B′ `OnCameraMoveEnd` 本轮幂等；未改场景/Prefab 图/黑幕。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 是否采用 B′+A′？ | **是** | ✅ 已施工（待 Play 验收） |
+| Q2 | A′ 仅 LinEn 临时 smoothTime=0，还是整 Forest 场景=0？ | **仅 LinEn** | ✅ 已按优先默认 |
+| Q3 | 是否上黑幕方案 C？ | **本期否** | ✅ 本期不做 |
+| Q4 | 现象是否确认门口林恩链？ | **默认是** | 待 Play |
+
+---
+
+## ForestScene 门口 · 保留相机移动 + 消闪 + 接话中断 · 2026-09-12
+
+详见：`Assets/Doc/执行文档/0912/ForestScene_保留相机移动_消闪与接话中断_架构溯源报告.md`  
+前置施工：`施工说明/0912/ForestScene_演出结束相机定格去二次snap_施工说明.md`（A′+B′，已被本条纠偏）  
+施工：`Assets/Doc/施工说明/0912/ForestScene_保留相机移动_消闪并修复接话_施工说明.md`（M3）  
+迭加：`Assets/Doc/施工说明/0912/ForestScene_M1短黑幕掩护手推消闪_施工说明.md`（M1，验收仍闪后）  
+**侦探结论（产品纠偏）**：**必须保留平滑移动**；否决 A′ 瞬切作终态。接话断因 A′ `smoothTime=0` → `onComplete` **同步** `TryNotify` 早于图 id41 Register，事件丢弃；B′ 幂等又使后续 `OnCameraMoveEnd` SKIP 不再发事件 → 卡死等 `CameraMoveEnd`，`YaerAfterLinEn` 不 Trigger。推荐 **M3**：回滚 A′ +「已注册再 Notify」；B′ 改语义只挡二次 snap；闪重再 **M1 短黑幕**。禁止再套龙宫 Stairs 定格。  
+**已施工（2026-09-12）**：M3 — 回滚 A′；`EnsureNotify` 等 Register；B′ 只挡二次 snap。  
+**已迭加（2026-09-12）**：M1 — 手推前短 BlackPanel，到位揭幕再 Notify。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 产品是否钉死「保留移动」？ | **是** | ✅ 纠偏 |
+| Q2 | 是否回滚 A′ 瞬切默认路径？ | **是** | ✅ 已施工 |
+| Q3 | 首发 M3，闪重再 M1？ | **是** | ✅ M3 已施工；**M1 已迭加**（待 Play） |
+| Q4 | B′ 是否保留？ | **保留但改语义**（不得挡唯一有效 Notify） | ✅ 已施工 |
+| Q5 | 是否删 Prefab id42？ | 可选；非必须 | ✅ 本期不删 |
+
+---
+
+## 三种敌人掉落物消失 · Sprite GUID 断裂 · 2026-09-12
+
+详见：`Assets/Doc/执行文档/0912/三种敌人掉落物消失_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0912/三种敌人掉落物恢复_施工说明.md`  
+**侦探结论**：Slime / TenWan / 常驻 WoodWorm 掉落链仍通；「不见了」因商店提交 `c8d44392` 删除英文 Icon（`SlimeCore`/`TenWangFruit`/`InsectBeak`.png）换中文名新 GUID，**MainItemDatabase 已跟、三怪 Prefab `dropItem` 未跟** → Missing Sprite。推荐 **A 重绑**现网 `史莱姆核/藤蔓果/虫喙.png`；可选一并修 `WoodWorm_1.monsterLogic`。勿给巢生/卵/Boss 开掉落。  
+**已施工（2026-09-12）**：方案 A — 四 Prefab `dropItem` Sprite 重绑中文 Icon；`WoodWorm_1.monsterLogic` 因根上无 `WoodWormLogic` 未绑（巢生不掉，另案）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 世界掉落是否继续共用 UI Item Icon？ | **是**（现网本就共用；重绑中文 Icon） | ✅ 已按此施工 |
+| Q2 | 是否本批修 `WoodWorm_1.monsterLogic=null`？ | **本期否**（Prefab 缺 Logic 组件；巢生不掉） | ✅ 已决议（施工） |
+| Q3 | Tips「获得道具」是否本期恢复？ | **否**（默认以进包为底线） | ✅ 本期不做 |
+| Q4 | 是否改走运行时从 Database 赋 Sprite（方案 C）？ | **本期否**；先 A | ✅ 本期不做 |
+
+---
+
+## 史莱姆 Y 轴同轴对齐（掉树 + 移动）· 2026-09-12
+
+详见：`Assets/Doc/执行文档/0912/史莱姆Y轴同轴对齐_掉树与移动_架构溯源报告.md`  
+施工：`Assets/Doc/施工说明/0912/史莱姆Y轴同轴对齐_施工说明.md`  
+**侦探结论**：掉树偏与移动偏同源。树上实例 Y≈7.41 vs 玩家轴 Y≈−6.61；Born 只靠短距 `IsGrounded`、**不 Snap**；Move 只改 X → 落偏则一直偏。推荐 **A：地面态 Snap 到玩家 y（或场景轴线）**；JumpAtk 升空前解冻 Y。勿套村庄纵深；勿恢复 0723 GroundCld 实心。  
+**已施工（2026-09-12）**：方案 A — `SnapToCombatAxisY` 于 BornDown / JumpAtkDown / Idle / Move Enter；Idle 冻 Y；未改 BornFall。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 权威 Y = 实时玩家 `position.y` 还是场景常量（East≈−6.61）？ | **实时玩家 y**；常量 −6.61 作无玩家兜底 | ✅ 已施工 |
+| Q2 | 已摆在 −6.61 的地面怪是否也进态 Snap？ | **是**（统一地面态） | ✅ 已施工 |
+| Q3 | JumpAtk 空中是否允许不同轴、仅落地后对齐？ | **是** | ✅ 已施工 |
+| Q4 | 是否本批重写 BornFall 去掉 MovePosition 硬降（方案 C）？ | **本期否**；先 A | ✅ 本期不做 |
+---
+
+## 史莱姆死亡掉出屏幕 · 尸体与掉落丢失 · 2026-09-13
+
+详见：`Assets/Doc/执行文档/0913/史莱姆死亡掉出屏幕_尸体与掉落丢失_架构溯源报告.md`  
+**侦探结论**：「无尸体/无掉落」实为 **Dead 未 FreezeAll + canGravity 仍开**，`MoveComponent` Gravity.y=-100 把整只怪（含 `dropItem` 子物体）拽出屏外；非 0912 Sprite 断链。WoodWorm 同样注释关重力却因 Dead 已冻而不掉。0912 Idle 冻 Y / JumpAtk 解冻 **放大概率对比**，非根因。推荐 **方案 A**：`SlimeDeadState` 对齐 TenWan/WoodWorm（FreezeAll + kinematic；建议清速度 + 可选 canGravity=false）。禁止 Dead 调 `SnapToCombatAxisY`；禁止恢复 0723 GroundCld 实心。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 空中击杀尸体停致死点还是落回地面？ | **停致死点**（冻当前 pose；Dead 禁止 Snap 玩家轴） | ✅ 已按默认施工 |
+| Q2 | 是否同时恢复 OnDead `canGravity=false`？ | **建议是**（双保险） | ✅ 已按默认施工 |
+| Q3 | 是否本期修 JumpAtk 死亡 Exit 子 SM 特判（现网误要求 isFallDownAtk）？ | **本期否**；先 A | ✅ 本期不做 |
+| Q4 | kinematic 与尸体期 `isProtect=false` 可砍是否冲突？ | **默认不冲突**；抽测砍尸 | 待 Play |
+
+施工说明：`Assets/Doc/施工说明/0913/史莱姆死亡定格留尸_施工说明.md`
+
+---
+
+## VerdantCorridor · 史莱姆吃羊无对白 · 2026-09-13
+
+详见：`Assets/Doc/执行文档/0913/VerdantCorridor_史莱姆吃羊无对白_架构溯源报告.md`  
+**侦探结论**：对话文件**未丢**；`VerdantCorridorSlimeEatSheep.prefab` 在盘且可加载，但图内 **0× StatementNodeEx**（入库起即空）。触发链仍可镜头/黑幕/`Action2("start")` 刷怪。东城郊对照 6 句。推荐 **方案 A** 只补走廊 Prefab 台词并**保持 Action2**。禁止把 `StoryPrefabName` 改成东城郊名。Mgr 存档键串台另案。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 走廊是否照搬东城郊 6 句原文（含「龙城郊外」）？ | **是**（无新台本则照搬） | ✅ 已按默认施工 |
+| Q2 | 台词插在镜头后、黑幕前？ | **是** | ✅ 已按默认施工 |
+| Q3 | 是否本期补 InitSomeEventState→Mgr2？ | **本期否** | ✅ 本期不做 |
+| Q4 | Mgr1/Mgr2 共用存档键是否拆开？ | **另案** | 待立项 |
+
+施工说明：`Assets/Doc/施工说明/0913/VerdantCorridor_史莱姆吃羊补对白_施工说明.md`
+
+---
+
+## VerdantCorridor · 史莱姆吃羊镜头对白时序错乱 · 2026-09-13
+
+详见：`Assets/Doc/执行文档/0913/VerdantCorridor_史莱姆吃羊_镜头对白时序错乱_架构溯源报告.md`  
+**侦探结论**：台词已有；乱序因走廊 Prefab connections 为 `0→1→2→8…13→3…7`（先推镜再全说完再拉回）。金标准东城郊为「第一句→推镜→Wait→拉回 Follow→其余句→黑幕→start」。来自同日补对白施工（含「定格 Pos2 说话」）。推荐 **方案 A** 只改连线为 `0→8→1→2→3→4→9…13→5→6→7`，**保持 Action2**。禁止改东城郊图 / Action1 / CameraMove 源码。覆盖前案 Q2「镜头后说话」的施工默认。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 是否以东城郊序为唯一金标准（覆盖「定格 Pos2 说话」）？ | **是** | ✅ 已按默认施工 |
+| Q2 | 是否只改 connections、不改 CameraPos2 摆位？ | **是** | ✅ 已按默认施工 |
+| Q3 | 第一句「那是。。。。」是否改省略号？ | **本期否**（与东城郊 Prefab 实际同） | ✅ 本期不做 |
+
+施工说明：`Assets/Doc/施工说明/0913/VerdantCorridor_史莱姆吃羊_镜头对白时序对齐_施工说明.md`
+
+---
+
+## 史莱姆同轴 · 权威 Y 改场景常量 · 2026-09-13
+
+详见：`Assets/Doc/执行文档/0913/史莱姆同轴_权威Y改场景常量_架构溯源报告.md`  
+**侦探结论**：玩家跳史莱姆飞，因 0912 `TryResolveCombatAxisY` 优先实时玩家 y；Idle Snap 后冻 Y 会钉在空中。**推翻** 0912 OPEN Q1。权威改为场景常量 **−6.61f**（ForestEast / VerdantCorridor / WestRapp 地面轴同值）。推荐 **A**：只返回常量，去掉玩家/atkTarget y；建议 **A′** JumpAtk `endPos.y` 用常量、x 仍跟玩家。禁止跟跳、禁止关 JumpAtk、禁止村庄纵深。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 常量取值？ | **−6.61f**（三场共用） | ✅ 已按默认施工 |
+| Q2 | 是否 Config 分场景轴高？ | **本期否** | ✅ 本期不做 |
+| Q3 | JumpAtk endPos.y 是否本期改常量？ | **建议是（A′）** | ✅ 已做 A′ |
+| Q4 | 0912 Q1 是否标推翻？ | **是** | ✅ 已改写 0912 施工说明 |
+
+施工说明：`Assets/Doc/施工说明/0913/史莱姆同轴_权威Y改场景常量_施工说明.md`
+
+---
+
+## VerdantCorridor · 史莱姆吃羊运镜抖闪不丝滑 · 2026-09-13
+
+详见：`Assets/Doc/执行文档/0913/VerdantCorridor_史莱姆吃羊_运镜抖闪不丝滑_架构溯源报告.md`  
+**侦探结论**：时序已对齐；不丝滑因 Duration=1 横推 ≈20u（太急）+ 开推 `SetFollow(go)` 默认 forceSnap 与 DOMove 抢位（抖/闪）+ 无 InOut Ease。推荐 **B+A**：`CameraMoveTaskAction` InOutSine / 开推 forceSnap=false / Destroy 延帧；走廊 Prefab 推拉 **2.2s**；可选跳过重复 FollowPlayer。禁止 `smoothTime=0` 瞬切。黑幕等满再 Action2，非闪主因。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | Duration 2.2 还是 2.5？ | **2.2s** | ✅ 已按默认施工 |
+| Q2 | 东城郊是否一并加长？ | **本期否** | ✅ 本期不做 |
+| Q3 | 是否跳过 id4 FollowPlayer？ | **建议跳过** | ✅ 已跳过（3→9） |
+| Q4 | 开推 false snap 若起点没贴上？ | **仍先 false** | 待 Play |
+
+施工说明：`Assets/Doc/施工说明/0913/VerdantCorridor_史莱姆吃羊_运镜丝滑_施工说明.md`
+
+---
+
+## 史莱姆尸体 · 死亡贴场景常量轴 · 2026-09-13
+
+详见：`Assets/Doc/执行文档/0913/史莱姆尸体_死亡贴场景常量轴_架构溯源报告.md`  
+**侦探结论**：尸体高低错落因定格留尸冻在致死瞬间 Y（击飞 bounce / JumpAtk 空中 / 掉树 Fall），活体已贴 `CombatAxisY=-6.61`。权威已是常量，**推翻**留尸案「Dead 禁止 Snap」（那是防跟玩家实时 y）。推荐 **方案 A**：OnDead 先 `StopKnockBack` + 退出子 SM（JumpAtk/Born 否则 Dead.Enter 可能不跑）→ Dead.Enter **先 Snap 再 FreezeAll**。禁止去掉 FreezeAll、禁止改回玩家 y、禁止改击飞数值。
+
+覆盖：0913 留尸 OPEN Q1「停致死点」→ 改为贴常量轴。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 空中死贴常量轴还是停致死点？ | **贴常量轴**（推翻留尸 Q1） | ✅ 已按默认施工 |
+| Q2 | 是否 OnDead 停击飞？ | **是** | ✅ 已施工 |
+| Q3 | JumpAtk/Born 死是否退出子 SM？ | **是** | ✅ 已施工 |
+| Q4 | 是否改 breakHight？ | **本期否** | ✅ 本期不做 |
+| Q5 | OnDead 是否也 Snap？ | **本期否**（先保证 Enter） | ✅ 本期不做 |
+
+施工说明：`Assets/Doc/施工说明/0913/史莱姆尸体_死亡贴场景常量轴_施工说明.md`
+
+---
+
+## VerdantCorridor · 木虫击飞踩上无法落地 · 2026-09-13
+
+详见：`Assets/Doc/执行文档/0913/VerdantCorridor_木虫击飞踩上无法落地_架构溯源报告.md`  
+**侦探结论**：0723 同族残留。`GroundCld` 设计给怪碰地图，Prefab 实心大盒托住 PlayerFoot，落地 Mask 不认 → JumpFall/DamageFlyFall 死等。碰撞原来就有，挡人是副作用。史莱姆/战斗藤蔓已 Trigger，木虫未跟。推荐 **方案 A**：`WoodWormLogic.OnInit` `groundCld.isTrigger=true`（覆盖 WoodWorm / _1 / 巢生）。禁止改矩阵、禁止 Mask 加 OnlyMapObj、禁止恢复挤出。Root 同族建议同期 Trigger。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | WoodWormRoot GroundCld 是否本期 Trigger？ | **建议是** | ✅ 已施工（用户要求虫巢一并改） |
+| Q2 | 是否同步 Prefab m_IsTrigger=1？ | **建议是**（OnInit 仍权威） | ✅ 已双写三份 Prefab |
+| Q3 | 是否抽到 BaseMonster？ | **本期否** | ✅ 本期不做 |
+| Q4 | 矩阵不对称是否另案？ | **本期否** | ✅ 本期不做 |
+
+施工说明：`Assets/Doc/施工说明/0913/VerdantCorridor_木虫GroundCld不挡落地_施工说明.md`
+
+---
+
+## VerdantCorridor · 底座史莱姆专用空气墙 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/VerdantCorridor_底座_史莱姆专用空气墙_架构溯源报告.md`  
+**侦探结论**：活体史莱姆三个盒运行时全是 Trigger，物理墙挡不住；击退/跳攻走 `MovePosition` 脚本曲线，会穿薄墙。推荐 **方案 C**（Trigger 检测 + FixedUpdate 权威夹紧，身份 `ISlime`/`Slime`）。不改全局矩阵、不复用 `MapLimit`、不写死「底座」。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 死后尸体是否仍挡？ | **否**（`IsDead` 跳过夹紧） | ✅ 已按默认施工 |
+| Q2 | 睡眠史莱姆是否挡？ | **是**（仍是 `ISlime`，避免击退穿过去） | ✅ 已按默认施工 |
+| Q3 | 墙默认单向还是双向？ | **双向**（体积挤出）；走廊若只要「不能往底座内侧过」可改单向法线 | ✅ 已按默认施工 |
+| Q4 | 撞墙是否 `StopKnockBackEffect`？ | **是**（否则击退曲线每帧抢 `MovePosition`，贴墙会抖） | ✅ 已按默认施工 |
+| Q5 | 是否上方案 D（再给史莱姆加实心探测盒）？ | **本期否**；Play 仍穿再开 | ✅ 本期不做 |
+
+施工说明：`Assets/Doc/施工说明/0914/VerdantCorridor_底座_史莱姆专用空气墙_施工说明.md`
+
+---
+
+## ForestEastScene · 倒树换新合层保留图层 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_倒树换新合层保留图层_架构溯源报告.md`  
+**侦探结论**：不要整棵替换。场景 `倒树` 已在用 `SuburbEast/4.5/` **散图**；指定真源是 Prefab `倒树合层` 引用的 **`4.5/倒树合层/` 嵌套图**（另一套 GUID）。推荐 **A**：只换 `内/光/外/遮罩` 的 Sprite，SortingLayer/Order/Z/XY 全留场景值。缝 Prefab 没挂但磁盘有图。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 缝：留旧图 / Disable / 等补层？ | **留节点**；Sprite 换成 `倒树合层/缝.png`（与其它层同一套导出）。若和外层叠缝再 Disable | ✅ 已按默认施工 |
+| Q2 | 遮罩现用 `树洞新遮罩.png`，是否改成合层 `遮罩只影响人物.png`？ | **是**（跟 Prefab 真源）；若人物裁切变差再改回 | ✅ 已按默认施工 |
+| Q3 | 光变高（6.02→9.24）是否微调 LocalXY？ | **先 A 不挪**；Play 对不齐再 B 只动光 | ✅ 已按默认施工（未挪） |
+| Q4 | `Village_OutSide` / `WestRappRoad` 的「倒树」是否同期换？ | **否**（无 `TreeBridgeLogic`，非东郊树桥） | ✅ 本期不做 |
+| Q5 | 是否动旧资源 `ArtRes/Scene/倒树合层.prefab`？ | **否** | ✅ 已决议 |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_倒树换新合层保留图层_施工说明.md`
+
+---
+
+## ForestEast · 倒树进洞相机贴 CameraTreeInArea 底边 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_倒树进洞相机贴边界底边_架构溯源报告.md`  
+**侦探结论**：偏高因 `DeadZoneHeight=1` 不跟 Y + 进洞只换 Confiner/Size、不压 Y，合法带内留在偏上位置。**不改边界**。推荐 **A**：`ChangeCamera(true)` 在切盒+Size 后按 `bounds.min.y + orthoSize` Force 只改 Y。ForestEast **无 Part3**。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | Force 后是否还要每帧夹紧？ | **否**；DeadZoneHeight=1 + Confiner Damping=0，一次够 | ✅ 已按默认施工 |
+| Q2 | 爬行 `CameraAction` 抖完是否再贴底？ | **建议是**（`StopCameraAction` 末若仍 `playerIsInTreeBridge` 再 Force 一次） | ✅ 已按默认施工 |
+| Q3 | `StopCameraAction` 把 MainCamera 拽到 `(0,0)` 是否另修？ | **本期否**（Brain 下帧会盖回；另案） | ✅ 本期不做 |
+| Q4 | 公式是否加 confiner padding？ | **否**；Damping=0、无额外 padding | ✅ 已按默认施工 |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_倒树进洞相机贴边界底边_施工说明.md`
+
+---
+
+## SystemTipsPanel2 · Missing Script · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/SystemTipsPanel2_MissingScript_架构溯源报告.md`  
+**侦探结论**：Missing GUID `8f4e2a1b…` 全库无 `.meta`，是无效占位孤儿 YAML。`imgTipsContent` 空且缺 `ImageContent`，与 Missing 无关但开面板会 NRE。推荐 **A**：删孤儿 + 按 Panel1 补绑 ImageContent。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 是否同期补 `ImageContent` 并绑 `imgTipsContent`？ | **是**（方案 A） | ✅ 已按默认施工 |
+| Q2 | 是否把禁用全屏 `Image` 当文案槽？ | **否** | ✅ 已按默认施工 |
+| Q3 | 是否新建假 GUID 脚本消黄？ | **否** | ✅ 本期不做 |
+| Q4 | 是否用 Panel1 整份覆盖 Panel2？ | **否** | ✅ 本期不做 |
+
+施工说明：`Assets/Doc/施工说明/0914/SystemTipsPanel2_MissingScript_施工说明.md`
+
+---
+
+## ForestEast · 洞口爬完对白不触发卡死 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_洞口爬完对白不触发卡死_架构溯源报告.md`  
+**侦探结论**：截图是左口**外侧、未进黑幕**。缺的对白是进洞后的 `ForestEastSceneEnterTreeBridge`（盒在传送点 x≈264），不是 `PassTreeBridge`。卡死主层 **A**：`CanNotSomeActionArea`（SquatUp）盒宽约 80，洞口仍在区内则可能永不 `StopAutoCrawl`。0914 贴底在黑幕之后，**无关**。洞外地板是 `GroundLeft_1`，不是 `GroundCenter`。推荐 **方案 A**（AutoEnter 先停爬 + Sign 超时 + 修正 Out Right 双写）。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 卡死帧以谁为准：无 `StopAutoCrawl` / `hasFindPlayer` 死等 / `HasRunningStory` 壳卡？ | Play 打日志后以 **A** 为默认修；C 用 2s 超时兜住；H 无证据不改壳 | ✅ 已按默认施工 |
+| Q2 | BeforeEnter / Enter 存档 SingleUse 是否已消耗？ | **不改存档逻辑**；无词但能走则不是本票主修 | ✅ 本期不做 |
+| Q3 | 用户复现是左口还是右口？ | 两边都验；Right 双写 **一并改正** | ✅ 已改正 Right 双写 |
+| Q4 | Sign 超时后强制进洞还是解锁让玩家重试？ | **强制走完进洞黑幕**（避免停在半锁）；仍死等再改为解锁 | ✅ 已按默认施工 |
+| Q5 | 用户改的是 `GroundCenter` 还是 `GroundLeft_1`？ | 洞外只认 **GroundLeft_1**；未证明擦边则 **本期不改地板** | ✅ 本期不改地板 |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_洞口爬完对白不触发卡死_施工说明.md`
+
+---
+
+## ForestEast · 死羊演出被改 · 吸羊动画没了 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_死羊演出被改_吸羊动画没了_架构溯源报告.md`  
+**侦探结论**：`Part3/死羊` 是静图；循环在 `Objects` 两套 Prefab。v1.0 Doc 未改代码；用户反馈仍无循环 → **坐实共用存档键串台**，改走方案 **Key + Start 闸门**（施工说明 v1.1）。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 未播东郊吃羊走到 X≈175 能否看见循环？ | **是**（闸门 + 强制 ON） | 待用户验收 |
+| Q2 | 已播东郊开战/立坟是否关动画？ | **是（设计）**；闸门后仍关 | ✅ |
+| Q3 | 走廊 Mgr2 与东郊是否串档？ | **已拆键** `SlimeEatSheepStory2_*`；走廊剧情已播才迁旧键 | ✅ 已施工 |
+| Q4 | 运镜手感是否要修？ | **另开票** | ✅ 本期不做 |
+| Q5 | 是否改 `Part3/死羊` 静图？ | **否** | ✅ 未改 Part3 |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_死羊演出_吸羊动画_施工说明.md`（v1.1）
+
+---
+
+## ForestEast · 树洞内主角再降 1 单位 Y · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_树洞内主角再降1单位Y_架构溯源报告.md`  
+**侦探结论**：进洞传送只抄 X、Y 保留进洞前脚高；Player `gravityScale=0`，拖 `GroundCenter/Up/Down` 无效。推荐 **方案 A**：进 `oldY-1`、出 `oldY+1`。相机贴底本期不动。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 是否再拖红框三块地板？ | **否**（无重力吸附） | ✅ 未改地板 |
+| Q2 | 是否抄 In/OutPos 完整 XY（方案 B）？ | **否**；OutPos.y=-6.3 ≠ 洞外 ≈-6.6 | ✅ 用 ±offset |
+| Q3 | 人降 1 后头顶空/穿帮是否改贴底或 `CameraTreeInArea`？ | **否**；另开相机案 | ✅ 本期不改相机 |
+| Q4 | 胶囊顶 `GroundUp` / 对白盒不相交？ | Play 抽测；挤出或碰不到再记，**勿先抬地板/Trigger** | 待用户验收 |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_树洞内主角再降1单位Y_施工说明.md`
+
+---
+
+## ForestEast · 树洞第一虫卵打碎后卡住 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_树洞第一虫卵打碎后卡住_架构溯源报告.md`  
+**侦探结论**：第一卵 = Type3/`spcWormEgg`≈276。E=`ViewBrokenEgg` Click，不点不应锁。`OnDead` 已关 `GroundCld`（须卡死帧复核）。**打碎后特有**：孵虫在卵左侧≈273，`PlayerBodyCollider` 对木虫仍 `StopMove`。可叠自动爬锁、人 Y−1 顶板夹。推荐卡死帧三分后最小修；禁止删 E / 无因果回滚贴底。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 卡死主层是 GroundCld / 孵虫 StopMove / 自动爬 / 对白？ | Play 打日志后定；默认优先查 **D 再 A 再 B**，本期 **三件组合** | ✅ 已按默认施工 |
+| Q2 | 不按 E 是否同样卡？ | 期望是；若只有按 E 才卡再修对白解锁 | ✅ 未改成强播；不点 E 应能走 |
+| Q3 | 碎后 `GroundCld.enabled` 是否仍为 false？ | 应为 **false**；死后及碎壳结束再断言 | ✅ 已断言 |
+| Q4 | 人 Y−1 是否夹在 GroundUp？ | **已坐实风险**：Player↔GroundUp 碰撞；offset **从 1 改为 0.35**；仍夹再改 0 | ✅ 已减幅 |
+| Q5 | 孵虫出生是否改到卵右侧 / 短时免 StopMove？ | **禁止 Away（会堵前进）**；改 **Behind（玩家同侧）** + 免刹车 4s | ✅ v1.1 已改 |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_树洞第一虫卵打碎后卡住_施工说明.md`  
+**验收**：用户仍报卡住 → **未过**；见复验票。
+
+---
+
+## ForestEast · 树洞第一卵打碎后仍卡住（复验）· 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_树洞第一卵打碎后仍卡住_复验溯源报告.md`  
+**侦探结论**：**主因 R1** — 现网 `InTreePlayerYOffset=0.35` 时 Body 底仍切入 `GroundUp`（顶≈−6.35）约 **0.69**。v1.1（Behind/关盒/4s skip）源码已在，勿重复当新修。施工默认 offset→**0**；仍夹再只改洞内 `GroundUp` 净空。本机未 Play；须补 Console `[WormEggBreak]` + offset=0 对比（H）。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 主因是否 R1？ | 静态嵌深坐实；**offset→0 + GroundUp 净空** | ✅ 已按 R1 施工 |
+| Q2 | offset=0 后≈0.34 嵌深是否仍卡？ | 同步下移 `GroundUp`（顶≈−6.85）消净空 | ✅ 已做步 2 |
+| Q3 | GroundUp 净空目标 | 脚≈−6.6 时 Body 底≈−6.69；顶 ≤ −6.69−ε → 现顶 **−6.85** | ✅ |
+| Q4 | 是否改判 R3（前方故事虫）？ | 仅本票验收仍卡 | 待命 |
+| Q5 | 是否修爬区盒 R2？ | 本期默认否 | 降级 |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_树洞第一卵打碎后仍卡住_复验施工说明.md`  
+**本机未 Play；须用户本地越过第一碎壳才算过验收。**
+
+---
+
+## ForestEast · 爬出树洞无对白 + Fall 空引用 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_爬出树洞无对白_Fall空引用_架构溯源报告.md`  
+**侦探结论**：主因 **AttachedGameObject[4]=None** → `Fall` L119 抛 Unassigned → Pass 对白链断。遮罩仍在（`遮罩只影响人物` / `1773642872123289953`），旧 `树洞新遮罩`/`399899081` 已删未重绑。推荐 **A 补绑 + B null 守卫**。与洞口停爬施工无关。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | `[4]` 补绑还是删空槽？ | **补绑** `1773642872123289953`（遮罩只影响人物） | ✅ 已补绑 |
+| Q2 | 是否加 Fall/CheckFall null 守卫？ | **是**（A+B） | ✅ 已加 |
+| Q3 | 合层是否弄丢 Attached？ | 旧 ID 删、新遮罩在、槽→0 | ✅ 已坐实 |
+| Q4 | 读档 CheckFall 一并护？ | **是** | ✅ 已护 |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_爬出树洞无对白_Fall空引用_施工说明.md`
+
+---
+
+## ForestEast · 树洞爬行嘎吱音效丢失 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_树洞爬行嘎吱音效丢失_架构溯源报告.md`  
+**侦探结论**：主因 **A** — `PlayTreeBridgeMoveSfx` 资源名编码损坏，对不上磁盘 `木头嘎吱嘎吱声 .mp3`（含空格）。触发链与 `soundSfxCpn` 完好。推荐改回精确字面量；`AfterFallDown` 落水声同乱码，建议同票修。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 嘎吱名改回含空格真名？ | **是** | ✅ 已施工 |
+| Q2 | AfterFallDown 落水声同票修？ | **是** | ✅ 已施工 |
+| Q3 | 改名后仍无声再查音量/引用？ | 待命 | 待命 |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_树洞爬行嘎吱音效补全_施工说明.md`
+
+---
+
+## ForestEast · 倒树遮罩只影响主角 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_倒树遮罩只影响主角_架构溯源报告.md`  
+**侦探结论**：现网是 Effect 假遮罩（普通 SR），盖全场。语义 **S1**；方案 **A**（SpriteMask + 主角 **Visible Outside Mask**）；否决只改 Sorting 的 B。Attached 已绑新遮罩，勿丢。  
+**施工**：场景加真 SpriteMask、关原 SR、Active 开；Player `Animation`/`ShadowAnimator` → Outside。  
+**v1.1 改口**：同屏卵/虫也要被盖 → `WormEggType1/2/3`、`WoodWorm`/`WoodWorm_1` 全部 SR → Outside。  
+**v1.2 再改口**：要的是 **EnvironmentShadow 压暗**（人仍可见），不是裁切不可见 → 撤回 SpriteMask/Outside；遮罩改 Layer12；卵补环境阴影材质+组件。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | S1 裁切还是环境阴影压暗？ | **压暗（EnvironmentShadow）** | ✅ v1.2 |
+| Q2 | Inside / Outside？ | **作废**（不再用 SpriteMask） | ⛔ |
+| Q3 | Prefab 全局 vs 进洞运行时？ | 环境阴影材质/组件 | ✅ |
+| Q4 | 遮罩 Active？ | 未倒下开；Layer12 | ✅ |
+| Q5 | 必须 S2 Stencil？ | 不需要（现网有 EnvShadow） | 降级 |
+| Q6 | 卵/虫是否受阴影影响？ | **是**（压暗，非裁切） | ✅ v1.2 |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_倒树遮罩只影响主角_施工说明.md`（v1.2）
+
+---
+
+## ForestEast · 倒树外壳透明改切镜头后 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/ForestEast_倒树外壳透明改切镜头后_架构溯源报告.md`  
+**侦探结论**：现网 Interactive 靠近即 `OuterSpriteFade`；切镜是 `ChangeCamera`。推荐 **方案 A**：去 Interactive 订阅；`ChangeCamera` 末尾按进/出调 Fade(0)/(1)；读档同源。否决双淡 C。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | A 还是 A+B（揭幕后淡）？ | **A** | ✅ 已施工 |
+| Q2 | 旁路进洞？ | 现网无 | 降级 |
+| Q3 | 「外」Active=0？ | 待 Play 核 | 待核 |
+| Q4 | Fall 后外壳？ | 树销毁，无外壳 | ✅ |
+
+施工说明：`Assets/Doc/施工说明/0914/ForestEast_倒树外壳透明改切镜头后_施工说明.md`
+
+---
+
+## WestRappRoad · 宝箱不能互动 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/WestRappRoad_宝箱不能互动_架构溯源报告.md`  
+**侦探结论**：现象类型 **1**（无键提示）。**主因 F**：Box 在 `Map/Design/Near`，不在 `Objects`（objRoot）→ 永不 OnInit、不进可互列表。**次因 B**：Y≈−3.44 vs 玩家≈−6.61，Body 不相交。推荐挂回 Objects + 降 Y；勿改 Interactive 全局。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 现象是否类型 1？ | 静态判 1；Play 见 OnInit 坐实 | 待 Play |
+| Q2 | 只挪父级不降 Y？ | **否**；F+B 都做 | ✅ 已施工 |
+| Q3 | 目标 Y？ | **−6.61**（对齐 LeftBorn） | ✅ 已施工 |
+| Q4 | 已开档？ | 勿清旗强开 | 文档 |
+
+施工说明：`Assets/Doc/施工说明/0914/WestRappRoad_宝箱不能互动_施工说明.md`
+
+---
+
+## 章末 · ImageHomeToJingLingVillage 未点亮 · 2026-09-14
+
+详见：`Assets/Doc/执行文档/0914/章末_ImageHomeToJingLingVillage未点亮_架构溯源报告.md`  
+**侦探结论**：主因 **A** — 0721 章末只 `UnlockPlace`、故意不做 `UnlockRoad`；`ShowUnlockRoad` 全关后再按存档开 → 无 `HomeToJingLingVillage` 则路线灰。推荐 **R3**（章末补 UnlockRoad + 保留出门 GetMap）。**正式撤销** 0721「本期不做 UnlockRoad」。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 撤销 0721 不做 UnlockRoad？ | **是** | ✅ 已决议 |
+| Q2 | R1 / R2 / R3？ | **R3**（章末 UnlockRoad + 保留 GetMap） | ✅ 已施工 |
+| Q3 | PlayerMapData 空 Serialize？ | 另票；本期章末 R1 兜底 | 待开票 |
+| Q4 | 是否亮 ImageAllRoad？ | **否** | 降级 |
+
+施工说明：`Assets/Doc/施工说明/0914/章末_ImageHomeToJingLingVillage未点亮_施工说明.md`
+
+---
+
+## Village · 对话框出现时不要预亮小头像 · 2026-09-19
+
+详见：`Assets/Doc/执行文档/0919/Village_村庄对话框出现时闪默认小头像_架构溯源报告.md`
+
+**产品改口（作废 0902 Q4 / 开场技术说明里的「框淡入预亮 Mask」）：** 村庄对话（含 `Village_KenMuNiStart`）框刚出现时不要小头像；小头像跟第一句话一起出。不是只修门口。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 开场还要不要「框+头像同拍」？ | **不要** | ✅ 用户已改口 |
+| Q2 | 是改全部村庄 Prefab 还是共用代码？ | **4 张 true 改 false + 淡入/对话开始先藏 Mask**。其余村庄图不用改字段 | ✅ 侦探已定，待施工 |
+| Q3 | 森林 / 新游戏是否跟着删预亮能力？ | **不删字段**。现网没有村庄以外的图勾着 true。`NewGameStory` 保持 false，不要改那张图 | ✅ |
+
+---
+
+## Village_HomeScene23 大立绘 · Npc1 挂错龙宫对话 · 2026-09-20
+
+详见：`Assets/Doc/执行文档/0920/Village_HomeScene23_对话不要大立绘_架构溯源报告.md`
+
+椅子三张任务对话的大立绘已有施工默认（只改那三张 Prefab）。下面这条**不是**立绘票，不要拿去改 `HomeScene1Npc1` 的立绘。
+
+| ID | 问题 | 施工默认 | 状态 |
+|----|------|----------|------|
+| Q1 | 本场 `Npc1` 仍播龙宫 `HomeScene1Npc1`（「被父亲训斥了」）。0601 民居台本 Prefab 磁盘上不存在。要不要另做民居 NPC1 台词并改场景上的 `StoryPrefabName`？ | **本票不改。** 立绘施工不要动这张龙宫 Prefab | 待产品 |
+
+---
+
+## Village · 村庄遮罩层盖顶 · 2026-09-20
+
+详见：`Assets/Doc/执行文档/0920/Village_村庄遮罩层盖顶盖住玩家_架构溯源报告.md`  
+**侦探结论**：民居 1/2/3/4 ↔ HomeScene1/2/45/23；肯姆尼 1/2/3 三段都在 KenMuNi1。遮罩作合层**兄弟**实例，关 `背景`，其余抬 **Effect / Order≥10** 盖住 Player。禁止嵌合层源、禁止 SpriteMask、禁止夜景。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 村长家？ | **本期跳过**（仅 `村长家.psd`，无 Prefab） | ⏳ 待美术出 Prefab |
+| Q2 | 中间层（护头等）是否保留？ | **默认全留**（只关背景）；Play 过亮再关 | ✅ **已按此施工**（场景已挂实例） |
+| Q3 | 夜景？ | **不做** | ✅ |
+
+---
+
+## Village_Chief_House · 大树进屋后向后走不转身 · 2026-09-20
+
+详见：`Assets/Doc/执行文档/0920/Village_Chief_House_大树进屋后向后走不转身_架构溯源报告.md`  
+**侦探结论**：偶发不转身 = Home Idle→Walk 当帧丢 A/D 订阅（与 Combat 进跑同构）；大树落点左侧更易立刻按 A。最小改：`HomeWalkState.Enter` 补横向 Move；禁止 W/S 翻面、禁止拆护栏。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 是否改 EnterFrom_Tree2f 朝向？ | **否**（治标；大门同构仍在） | ✅ 已按报告不改 |
+| Q2 | W/S 是否翻面？ | **否** | ✅ |
+| Q3 | 是否拆转身护栏？ | **否** | ✅ |
+
+---
+
+## Village_HomeScene2 · 右走自动回村 · 2026-09-20
+
+详见：`Assets/Doc/执行文档/0920/Village_HomeScene2_右走自动回村_架构溯源报告.md`  
+**侦探结论**：右门关着且盒在世界 X≈27，室内走不到。挪到右墙（本地 X≈-31.07）、打开走进触发、NextScene=`Village_KenMuNi1`、EnterPosKey 留空。左门保持关。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 是否新 EnterPosKey？ | **否**（空键已对上 `ExitFrom_HomeScene2`） | ✅ 已按此施工 |
+| Q2 | 左门是否也走进触发？ | **否** | ✅ |
