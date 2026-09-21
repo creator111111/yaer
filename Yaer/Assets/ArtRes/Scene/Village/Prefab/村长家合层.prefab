@@ -603,7 +603,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8912268227411047967}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3433574453023692771
 SpriteRenderer:
@@ -862,8 +862,8 @@ Transform:
   - {fileID: 3668258123477204499}
   - {fileID: 4437755672625948388}
   - {fileID: 3996078495648854714}
-  - {fileID: 4535781250714639613}
   - {fileID: 5919855961230973269}
+  - {fileID: 6822914950883605495}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1359,7 +1359,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1001 &1941988947354954813
+--- !u!1001 &8840246467587525431
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1379,7 +1379,7 @@ PrefabInstance:
     - target: {fileID: 2594356700860035264, guid: 4271a266d44937c4a86b6ab325bac585,
         type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2594356700860035264, guid: 4271a266d44937c4a86b6ab325bac585,
         type: 3}
@@ -1453,9 +1453,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4271a266d44937c4a86b6ab325bac585, type: 3}
---- !u!4 &4535781250714639613 stripped
+--- !u!4 &6822914950883605495 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2594356700860035264, guid: 4271a266d44937c4a86b6ab325bac585,
     type: 3}
-  m_PrefabInstance: {fileID: 1941988947354954813}
+  m_PrefabInstance: {fileID: 8840246467587525431}
   m_PrefabAsset: {fileID: 0}
