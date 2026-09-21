@@ -1,4 +1,4 @@
-﻿using Game.GameRuntime.Entities.Component.Anima.interf;
+using Game.GameRuntime.Entities.Component.Anima.interf;
 using Game.Static.Utility;
 using UnityEngine;
 
@@ -23,7 +23,7 @@ namespace Game.GameRuntime.Entities.Monster.Slime.Anima.State.JumpAtkSubState
 
             rg = slime.BodyRg;
             startPosition = rg.position;
-            if (sm.endPos == null) sm.endPos = slime.atkTargetLogic.gameObject.transform.position;
+            // endPos 由 UpBefore 写入（X=目标，Y=CombatAxisY）；此处不再抄玩家实时 y
             //slime.FootCld.isTrigger = true;
             // 记录当前为跳跃状态
             slime.componentSystem.GetComponent<SlimeCsAnimator>().SetSign("IsJump", true);
@@ -52,7 +52,7 @@ namespace Game.GameRuntime.Entities.Monster.Slime.Anima.State.JumpAtkSubState
             if (monsterLogic.IsDead) { return; }
             if (IsExit) return;
 
-            // 计算抛物线位置（仅限上升）
+            // 顶点 = 战斗轴 +3（endPos.y 已是 CombatAxisY，不再叠玩家空中高度）
             var maxHeightPos = new Vector2(sm.endPos.x, sm.endPos.y + 3);
             var targetPosition = Physics2DUtility.CalculateParabolicPositionUp(startPosition, maxHeightPos, NormalizedTime);
 

@@ -297,8 +297,11 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
         }
 
         /// <summary>
-        /// 序章结束解锁本章地图关卡点。ButtonJingLingVillage → PlaceName.JingLingVillage（肯姆尼）。
-        /// 本期不做 UnlockRoad；点选后进村由 MapFormLogic 保留 LoadScene。
+        /// 序章结束解锁本章地图关卡点与家→村路线贴图。
+        /// ButtonJingLingVillage → PlaceName.JingLingVillage（关卡可点）；
+        /// ImageHomeToJingLingVillage → PlaceName.HomeToJingLingVillage（路线亮，经 UnlockRoad）。
+        /// 两套数据分开：UnlockPlace ≠ UnlockRoad。出门 GetMap 仍会写路；章末补写兜底（0914 撤销 0721「本期不做 UnlockRoad」）。
+        /// 点选后进村由 MapFormLogic 保留 LoadScene；本方法不自动进村。
         /// </summary>
         void UnlockChapterEndMapPlace()
         {
@@ -323,7 +326,7 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
             var playerData = GameManager.GetGMComponent<PlayerDataComponentGM>();
             if (playerData == null)
             {
-                Debug.LogWarning("[MapSelect] PlayerDataComponentGM 不可用，无法 UnlockPlace。");
+                Debug.LogWarning("[MapSelect] PlayerDataComponentGM 不可用，无法 UnlockPlace/UnlockRoad。");
                 return;
             }
 
@@ -337,6 +340,12 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
 
             Debug.Log(
                 $"[MapSelect] 序章/章末解锁关卡 place={placeKey}（按钮={buttonName}），newlyAdded={newlyAdded}，chapter={curChapterId}");
+
+            // R1：开图前写入路线，MapFormLogic.OnOpen → ShowUnlockRoad 才能打开 ImageHomeToJingLingVillage。
+            // 替代方案：只靠出门 OnHomeScene1_GetMap（R2）——跳过出门剧情或落盘不稳时章末仍灰。
+            var roadNewlyAdded = playerData.UnlockRoad(PlaceName.HomeToJingLingVillage);
+            Debug.Log(
+                $"[MapSelect] 章末 UnlockRoad={PlaceName.HomeToJingLingVillage} newlyAdded={roadNewlyAdded}，chapter={curChapterId}");
         }
 
         /// <summary>

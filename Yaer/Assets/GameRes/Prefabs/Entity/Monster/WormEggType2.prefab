@@ -823,6 +823,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7766146914041044057}
   - component: {fileID: 7766146914041044056}
+  - component: {fileID: 9100000000000000002}
   m_Layer: 17
   m_Name: Animation
   m_TagString: Untagged
@@ -863,7 +864,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 116367c711be3e943abd040b2747a464, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -895,6 +896,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &9100000000000000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7766146914041044058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea7cf1db877af0242bca8ebdf3110dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7766146915142340237
 GameObject:
   m_ObjectHideFlags: 0

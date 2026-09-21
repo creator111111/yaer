@@ -35,12 +35,12 @@ namespace EditorC.Tool.Dialogue
         /// <summary>
         /// 对话框 UI 淡入时是否预先 Apply Mask 小头像（与框同拍）。
         /// <para>
-        /// 默认 <c>true</c>：对齐 ShopHead / KenMuNiStart「框+头像同拍」。
-        /// 门口三人戏等产品要「空框 → 首句再出头像」时须显式设为 <c>false</c>，
-        /// 否则 Setup 重跑会把 Prefab 预亮写回（0902 框出时空头像回潮风险）。
+        /// 默认 <c>false</c>：村庄产品是空框，第一句才出小头像。
+        /// 要「框和头像一起出」必须显式设为 <c>true</c>。
+        /// 否则 Setup 重跑会把预亮写回 Prefab（0919 框出现时闪默认小头像）。
         /// </para>
         /// </summary>
-        public bool PrepareMaskAvatarOnFadeIn { get; set; } = true;
+        public bool PrepareMaskAvatarOnFadeIn { get; set; } = false;
 
         /// <summary>
         /// 是否未启用任何前奏/收尾选项。为 true 时 <see cref="DialogueCsvGraphBuilder"/> 不得进入前奏分支。

@@ -288,6 +288,50 @@ namespace Game.GameRuntime.Entities.Player.Components
             return ControlInputType.None;
         }
 
+        /// <summary>
+        /// Idle→Walk/Run 当帧补横向命令：队列 Left/Right → GetKey A/D → Raw Horizontal。
+        /// 给 <c>HomeWalkState</c> / <c>CombatRunState</c> Enter 共用，避免 Idle 切走/跑时
+        /// 本帧 Left/Right 回调已空跑导致丢 <c>Turn*</c>（0920 大树进屋立刻按 A 不转身）。
+        /// </summary>
+        /// <remarks>
+        /// 原因：订阅挂在 Enter 之后，KeyDown 当帧 Parse 打空；须按住态同步补一次 Move。
+        /// 替代：改默认朝左 / 只改 EnterFrom_Tree2f 朝向——治标且大门同构仍在。
+        /// 禁止用默认朝右灌速；解析不出返回 <see cref="ControlInputType.None"/>。
+        /// </remarks>
+        public ControlInputType ResolveVillageEnterHorizontalCommand()
+        {
+            ControlInputType queued = FindFirstHorizontalCommandInQueue();
+            if (queued == ControlInputType.Left || queued == ControlInputType.Right)
+            {
+                return queued;
+            }
+
+            // 本帧 Input 可能尚未入队，但 Idle 已凭 GetKey(A) 切态：不能用 GetKeyDown（当帧可能已过）
+            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                return ControlInputType.Left;
+            }
+
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                return ControlInputType.Right;
+            }
+
+            const float horizontalDeadZone = 0.01f;
+            float axisX = Input.GetAxisRaw("Horizontal");
+            if (axisX < -horizontalDeadZone)
+            {
+                return ControlInputType.Left;
+            }
+
+            if (axisX > horizontalDeadZone)
+            {
+                return ControlInputType.Right;
+            }
+
+            return ControlInputType.None;
+        }
+
         /// <param name="sign">-1 查左，+1 查右。</param>
         private bool IsVillageHorizontalKeyHeld(int sign)
         {

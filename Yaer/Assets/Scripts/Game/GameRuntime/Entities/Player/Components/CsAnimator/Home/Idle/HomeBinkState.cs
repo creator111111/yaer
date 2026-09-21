@@ -29,8 +29,10 @@ namespace Game.GameRuntime.Entities.Player.Components.CsAnimator.Home.IdleSubSta
                 return;
             }
 
-            // 与 HomeIdleState 一致：村庄纯纵深远也切 Walk，保证 SetWalkSpeed / 脚步与 Animator 对齐
-            if (inputComponent.HasMoveInput() || HasVillageExploreDepthMoveIntent())
+            // 与 HomeIdleState 一致：按住横键或纵深都进 Walk
+            if (inputComponent.HasMoveInput()
+                || inputComponent.HasVillageExploreHorizontalMoveIntent()
+                || HasVillageExploreDepthMoveIntent())
             {
                 ExitCurrentStateMachine().ChangeState<HomeWalkState>();
             }

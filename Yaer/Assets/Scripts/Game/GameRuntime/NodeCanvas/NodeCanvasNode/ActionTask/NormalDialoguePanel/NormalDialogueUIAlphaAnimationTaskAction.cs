@@ -19,8 +19,9 @@ namespace Game.GameRuntime.Story.Node
         public BBParameter<bool> EndActonOnAnimationEnd;
 
         /// <summary>
-        /// 渐入时预先 Apply Mask 小头像（Active + 脸），使头像随字幕条 CanvasGroup 同次从 0→1 显现。
-        /// 不勾选则保持旧行为（首句 Statement 才 Apply）。
+        /// 渐入时是否预先 Apply Mask 小头像（与框同拍）。
+        /// 村庄产品是空框：默认不勾，第一句才出脸。只有显式 true 才允许在出字之前亮脸。
+        /// 不要在淡入里无条件 Apply。
         /// </summary>
         public BBParameter<bool> PrepareMaskAvatarOnFadeIn;
 
@@ -60,13 +61,19 @@ namespace Game.GameRuntime.Story.Node
                 canvasGroup.gameObject.SetActive(true);
             }
 
-            // 方案 A：渐入只出框+头像，清空 Prefab 残留名/正文（如默认「雅尔」），首句 OnSubtitlesRequest 再填字
+            // 方案 A：渐入只出空框，清空 Prefab 残留名/正文（如默认「雅尔」），首句 OnSubtitlesRequest 再填字
             if (isFadeIn)
             {
                 ClearSubtitleTextsForEmptyFrame();
+                // 字幕条重新打开时，子物体保持上次的亮/灭。先藏光上一场留下的小头像。
+                // 预亮分支仍保留：以后真要「框和头像一起出」的图，显式把开关设为 true。
+                // 替代方案：只在 OnDialogueStarted 藏一次——没有淡入节点的图靠它；
+                // 有淡入的图在 SetActive 之后仍可能把旧脸带出来，所以这里必须再藏一次。
+                HideMaskAvatarsForEmptyFrame();
             }
 
-            // 小头像在 Bottom/Mask 下，随 subtitlesCanvasGroup alpha 乘算；须在淡入前 Active，否则框出了头像空窗
+            // 小头像在 Bottom/Mask 下，随 subtitlesCanvasGroup alpha 乘算。
+            // 只有显式预亮才在淡入前 Active；村庄产品不能在这里无条件 Apply。
             if (isFadeIn && PrepareMaskAvatarOnFadeIn != null && PrepareMaskAvatarOnFadeIn.value)
             {
                 PrepareMaskAvatarForFadeIn();
@@ -114,7 +121,23 @@ namespace Game.GameRuntime.Story.Node
         }
 
         /// <summary>
+        /// 淡入前藏掉 Mask 小头像。村庄产品是空框，不能在这里无条件 Apply。
+        /// 预亮开关为 true 时，紧接着的 <see cref="PrepareMaskAvatarForFadeIn"/> 会再亮指定脸。
+        /// </summary>
+        void HideMaskAvatarsForEmptyFrame()
+        {
+            var presenter = canvasGroup.GetComponentInChildren<DialogueMaskAvatarPresenter>(true);
+            if (presenter == null)
+            {
+                return;
+            }
+
+            presenter.HideAllMaskAvatars();
+        }
+
+        /// <summary>
         /// 在字幕条仍透明时把 Mask Painting 摆好；淡入过程中与对话框一起显现。
+        /// 仅当 <see cref="PrepareMaskAvatarOnFadeIn"/> 为 true 时调用。
         /// </summary>
         void PrepareMaskAvatarForFadeIn()
         {

@@ -631,6 +631,36 @@ Transform:
   m_Father: {fileID: 5601461776061432031}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &880006001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 880006002}
+  m_Layer: 8
+  m_Name: EnterFrom_Tree2f
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &880006002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 880006001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.8, y: 4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5601461776061432031}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &880091001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1607,6 +1637,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2594356700860035264, guid: 4271a266d44937c4a86b6ab325bac585,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2594356700860035264, guid: 4271a266d44937c4a86b6ab325bac585,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2594356700860035264, guid: 4271a266d44937c4a86b6ab325bac585,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2594356700860035264, guid: 4271a266d44937c4a86b6ab325bac585,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 28.01
       objectReference: {fileID: 0}
@@ -2257,6 +2302,9 @@ MonoBehaviour:
   - lastScene: Village_KenMuNi1
     pos: {fileID: 880003002}
     DatePass: {x: 0, y: 0, z: 0}
+  - lastScene: Village_KenMuNi1_Tree2f
+    pos: {fileID: 880006002}
+    DatePass: {x: 0, y: 0, z: 0}
   gushaStandby: {fileID: 5202753595310342429}
   gushaAnimComposite: {fileID: 1721713879}
   yaerCombatStandby: {fileID: 1901549283}
@@ -2562,7 +2610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1132163533838781009}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0007982254, y: -2.3997977, z: -10}
+  m_LocalPosition: {x: -0.0009713173, y: -2.2952774, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4425017523823135756}
@@ -2890,10 +2938,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 26.035744, y: 3.012035}
-      - {x: -13.908114, y: 2.9987717}
-      - {x: -14, y: -7.9}
-      - {x: 26.026611, y: -7.8048773}
+    - - {x: 25.994682, y: 3.094159}
+      - {x: -13.870712, y: 3.1109762}
+      - {x: -13.907688, y: -7.69145}
+      - {x: 26.026611, y: -7.69312}
 --- !u!1 &1868230988004266325
 GameObject:
   m_ObjectHideFlags: 0
@@ -3639,6 +3687,7 @@ Transform:
   - {fileID: 644822588}
   - {fileID: 8405436600410313560}
   - {fileID: 880003002}
+  - {fileID: 880006002}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3708,7 +3757,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!61 &5601461776566566100
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3755,10 +3804,10 @@ MonoBehaviour:
   isNoBreakState: 0
   componentSystem: {fileID: 5601461776566566102}
   bornPos: {fileID: 5601461776152013248}
-  NextSceneName: ForestEastScene
+  NextSceneName: Village_KenMuNi1
   TriggerWhenMoveIn: 1
-  ShowLoadingUI: 1
-  EnterPosKey: 
+  ShowLoadingUI: 0
+  EnterPosKey: Village_Chief_House_Door
 --- !u!114 &5601461776566566102
 MonoBehaviour:
   m_ObjectHideFlags: 0

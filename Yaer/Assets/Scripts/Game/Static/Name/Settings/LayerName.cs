@@ -8,6 +8,12 @@
         /// <summary>村庄 WalkArea 内障碍碰撞体所在 Layer；Collider 建议 <c>isTrigger=true</c> 作语义标注。2D 矩阵由 <see cref="Game.GameRuntime.Entities.Component.Physics.VillageWalkObstacleCollisionBootstrap"/> 设为与所有层 Ignore（方案 1）。</summary>
         public const string VillageWalkObstacle = "VillageWalkObstacle";
 
+        /// <summary>
+        /// Unity 内置层。史莱姆专用空气墙建议挂此层：Overlap 靠身份过滤、不靠矩阵，减少与射线/互动误交。
+        /// 禁止用本层去改全局 Physics2D 矩阵。
+        /// </summary>
+        public const string IgnoreRaycast = "Ignore Raycast";
+
         public const string SceneObject = "SceneObject";
         public const string SceneObjectOther = "SceneObject_Other";
         public const string SceneObjectDepth = "SceneObject_Depth";

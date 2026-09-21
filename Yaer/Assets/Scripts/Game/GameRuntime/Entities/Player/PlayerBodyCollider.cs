@@ -2,6 +2,7 @@ using Game.GameRuntime.Entities.Component.Anima;
 using Game.GameRuntime.Entities.Component.Interactive;
 using Game.GameRuntime.Entities.Component.PhysicsDetect;
 using Game.GameRuntime.Entities.Monster;
+using Game.GameRuntime.Entities.Monster.WoodWorm;
 using Game.GameRuntime.Entities.Monster.WormEgg;
 using Game.GameRuntime.Entities.Player;
 using Game.GameRuntime.Entities.Player.Components;
@@ -64,6 +65,13 @@ public class PlayerBodyCollider : MonoBehaviour
         // Living egg blocks via GroundCld; BaseMonster.OnDead disables GroundCld. Skip WormEgg here.
         // Alt: allow atk in ClimbMove (OPEN_QUESTIONS Q3) or HUD tip.
         if (enetityLogic is WormEggLogic) { return; }
+        // 卵孵虫弹出窗口：Stay 会对木虫 StopMove（只跳过了卵）。跳过并还回 canInStateSetPos，否则碎卵当帧假死。
+        var woodWorm = enetityLogic as WoodWormLogic;
+        if (woodWorm != null && woodWorm.skipPlayerBodyStopMove)
+        {
+            playerLogic.canInStateSetPos = true;
+            return;
+        }
 
         var csAnimator = playerLogic.componentSystem.GetComponent<PlayerCsAnimator>();
         if (!csAnimator.GetSign("IsRunning") && !csAnimator.GetSign("IsNormalAtk")

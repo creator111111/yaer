@@ -362,6 +362,51 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
             SetConfinerOnBoth(newColliderArea);
         }
 
+        /// <summary>
+        /// Ortho + Confine Screen Edges：把主 VCam 的 Y 贴到 Confiner 盒底边（最低合法中心）。
+        /// 公式：<c>cameraY = bounds.min.y + OrthographicSize</c>（画面下沿 = 盒底）。
+        /// <para>
+        /// 用途：ForestEast 进倒树后镜头偏高（DeadZoneHeight=1 不跟玩家 Y，进洞只换盒/Size、不压 Y）。
+        /// 禁止挪/压矮 <c>CameraTreeInArea</c>；禁止裸写魔法数 -2.9。
+        /// ForestEast <c>virtualCameraPart3=null</c>，只 Force 主 VCam。
+        /// </para>
+        /// <para>
+        /// 替代：临时改 ScreenY/TrackedObjectOffset（DeadZone=1 时语义绕，出洞易漏还原）；
+        /// 洞内第二 VCam；改边界几何——侦探否决。
+        /// </para>
+        /// </summary>
+        /// <param name="confinerShape">当前已挂到 Confiner 的边界 Collider（如 CameraTreeInArea）。</param>
+        public void SnapLiveOrthoYToConfinerFloor(Collider2D confinerShape)
+        {
+            if (virtualCamera == null || confinerShape == null)
+            {
+                Debug.LogWarning(
+                    $"[TreeBridgeCam] SnapLiveOrthoYToConfinerFloor 跳过：vcam={(virtualCamera != null)} shape={(confinerShape != null)}");
+                return;
+            }
+
+            float orthoSize = virtualCamera.m_Lens.OrthographicSize;
+            float floorY = confinerShape.bounds.min.y + orthoSize;
+            var p = virtualCamera.transform.position;
+            var rot = virtualCamera.transform.rotation;
+
+            // 只改 Y：左右仍由 Framing X + Confiner 管；Damping=0 时可立即落到公式值。
+            virtualCamera.ForceCameraPosition(new Vector3(p.x, floorY, p.z), rot);
+            virtualCamera.PreviousStateIsValid = false;
+
+            var confiner = virtualCamera.GetComponent<CinemachineConfiner>();
+            if (confiner != null)
+            {
+                // Cinemachine 2.6 API 为 InvalidatePathCache（3.x 才叫 InvalidateCache）。
+                confiner.InvalidatePathCache();
+            }
+
+            Debug.Log(
+                $"[TreeBridgeCam] snap floor minY={confinerShape.bounds.min.y:F3} size={orthoSize:F3} " +
+                $"floorY={floorY:F3} beforeY={p.y:F3} afterY={virtualCamera.transform.position.y:F3}",
+                this);
+        }
+
         private void SetConfinerOnBoth(Collider2D shape)
         {
             SetConfiner(virtualCamera, shape);
@@ -383,6 +428,8 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
             }
 
             confiner.m_BoundingShape2D = shape;
+            // 换盒后清 path 缓存，避免下一拍仍用旧多边形（Cinemachine 2.6：InvalidatePathCache）。
+            confiner.InvalidatePathCache();
         }
 
         /// <summary>

@@ -8,6 +8,8 @@ namespace Game.GameRuntime.Entities.Monster.Slime.Anima.State.JumpAtkSubState
         public override void Enter()
         {
             base.Enter();
+            // 0912 方案 A：跳攻落地后再对齐轴线；升空过程允许不同轴（OPEN Q3）
+            SnapToCombatAxisY();
         }
 
         public override void Update()

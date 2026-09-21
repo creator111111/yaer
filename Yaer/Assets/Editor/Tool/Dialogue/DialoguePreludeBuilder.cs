@@ -220,7 +220,7 @@ namespace EditorC.Tool.Dialogue
 
             task.EndActonOnAnimationEnd.value = true;
 
-            // 是否预亮：默认 true（ShopHead / KenMuNi）；门口须传 false，禁止硬写 true 回潮
+            // 是否预亮由调用方传入。村庄默认 false（空框）；要同拍必须显式 true，禁止在这里硬写 true
             if (task.PrepareMaskAvatarOnFadeIn == null)
             {
                 task.PrepareMaskAvatarOnFadeIn = new BBParameter<bool>();

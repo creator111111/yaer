@@ -82,6 +82,19 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         }
 
         /// <summary>
+        /// 透传：Ortho 主 VCam 贴 Confiner 盒底（<c>min.y + OrthoSize</c>）。见 <see cref="CameraComponent.SnapLiveOrthoYToConfinerFloor"/>。
+        /// </summary>
+        public void SnapLiveOrthoYToConfinerFloor(Collider2D confinerShape)
+        {
+            if (cameraComponent == null)
+            {
+                return;
+            }
+
+            cameraComponent.SnapLiveOrthoYToConfinerFloor(confinerShape);
+        }
+
+        /// <summary>
         /// 透传旧 Framing API（单机改参）；KenMuNi Part3 Zone 主路径已改 Priority，一般勿用。
         /// 不受 <see cref="isLock"/> 限制。
         /// </summary>

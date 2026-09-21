@@ -232,23 +232,28 @@ namespace Game.GameRuntime.Entities.Monster.Slime
         public override void OnDead()
         {
             base.OnDead();
-            // 死亡后取消重力影响并设置为不阻挡类型
-            //componentSystem.GetComponent<MoveComponent>().canGravity = false;
+            // 0913 尸体贴轴（方案 A）：先停击飞，否则 Snap 后下一拍 KnockBack.MovePosition 仍会顶歪 Y。
+            // 不改 breakHight 手感数值；只停残局曲线。
+            if (knockBackComponent != null)
+            {
+                knockBackComponent.StopKnockBackEffect();
+            }
+
+            // 死后立刻关自研重力，与 SlimeDeadState.Enter 双保险（留尸案保留）。
+            componentSystem.GetComponent<MoveComponent>().canGravity = false;
+            // 死亡后设置为不阻挡类型（Trigger；GroundCld 已在 base.OnDead 关掉，勿恢复实心）
             bodyCld.isTrigger = true;
             footCld.isTrigger = true;
-            
+
             var csAnimator = componentSystem.GetComponent<SlimeCsAnimator>();
-            if (isJumpAttacking && isFallDownAtk)
-            {
-                isJumpAttacking = false;
-                isFallDownAtk = false;
-                var stateMachine = csAnimator.CurrentCsRuntimeController.ExitCurrentSubStateMachine();
-                stateMachine.ChangeState<SlimeDeadState>();
-            }
-            else
-            {
-                csAnimator.ChangeState<SlimeDeadState>();
-            }
+            // 0913：JumpAtk / Born 子 SM 在时，主 SM Update 只跑 sub → Dead.Enter 可能永不执行。
+            // 旧条件误绑 isFallDownAtk，普通跳杀/掉树死会走漏；改为凡在子机都先 Exit 再进 Dead。
+            // ExitCurrentSubStateMachine 在 Sub==null 时是安全空操作。
+            isJumpAttacking = false;
+            isFallDownAtk = false;
+            var stateMachine = csAnimator.CurrentCsRuntimeController.ExitCurrentSubStateMachine();
+            stateMachine.ChangeState<SlimeDeadState>();
+
             componentSystem.GetComponent<CldControllerComponent>().SetActiveAll(false);
 
             // 记录成就数据

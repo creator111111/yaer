@@ -331,6 +331,10 @@ namespace Game.GameRuntime.Entities.SceneEntities
                 case "ForestEastSceneSlimeEatSheep":
                     SlimeEatSheepStoryMgr.getInstance().InitBattleData(SingleUseInArchive, enabled);
                     break;
+                // 走廊吃羊：须走 Mgr2，否则 enabled 时清的是东郊键/或根本未清走廊态（0914 串档修复）
+                case "VerdantCorridorSlimeEatSheep":
+                    SlimeEatSheepStoryMgr2.getInstance().InitBattleData(SingleUseInArchive, enabled);
+                    break;
                 default:
                     break;
             }

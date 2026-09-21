@@ -967,7 +967,6 @@ Transform:
   - {fileID: 815803718}
   - {fileID: 705811805}
   - {fileID: 2141522799}
-  - {fileID: 1573113652}
   m_Father: {fileID: 2561633635720329340}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4359,6 +4358,8 @@ Transform:
   - {fileID: 755336424}
   - {fileID: 999952485}
   - {fileID: 1555389022}
+  - {fileID: 1573113652}
+  - {fileID: 1103443361}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4427,6 +4428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 651280447}
+  requirePlayerOverlap: 1
 --- !u!61 &651280447
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4733,6 +4735,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 709509731}
+  requirePlayerOverlap: 1
 --- !u!61 &709509731
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4907,6 +4910,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 720719815}
+  requirePlayerOverlap: 1
 --- !u!61 &720719815
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5836,6 +5840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 778446750}
+  requirePlayerOverlap: 1
 --- !u!61 &778446750
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7820,6 +7825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 999952488}
+  requirePlayerOverlap: 1
 --- !u!61 &999952488
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8461,6 +8467,7 @@ MonoBehaviour:
   - {fileID: 142995875}
   - {fileID: 755336427}
   - {fileID: 999952489}
+  - {fileID: 1573113628}
 --- !u!1 &1096478235
 GameObject:
   m_ObjectHideFlags: 0
@@ -8523,6 +8530,85 @@ Transform:
   m_Father: {fileID: 1938819484}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1103443360
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1103443361}
+  - component: {fileID: 1103443363}
+  - component: {fileID: 1103443362}
+  m_Layer: 2
+  m_Name: SlimeAirWall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1103443361
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103443360}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 65.83, y: -4.52, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 627450016}
+  m_RootOrder: 23
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1103443362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103443360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4e8b17a92d64f0e8a3c5b7d1e9f2460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blockDeadSlimes: 0
+  blockSleepingSlimes: 1
+  bidirectional: 1
+  blockNormal: {x: 1, y: 0}
+  stopKnockbackOnHit: 1
+  skin: 0.05
+  nearbyPadding: 12
+  debugLog: 0
+  gizmoColor: {r: 1, g: 0.92, b: 0.02, a: 0.35}
+--- !u!61 &1103443363
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103443360}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 4.899911}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.5, y: 17.958288}
+  m_EdgeRadius: 0
 --- !u!1 &1125523929
 GameObject:
   m_ObjectHideFlags: 0
@@ -9216,6 +9302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 1216280196}
+  requirePlayerOverlap: 1
 --- !u!114 &1216280202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9768,6 +9855,7 @@ MonoBehaviour:
   NextSceneName: ForestEastScene
   TriggerWhenMoveIn: 1
   ShowLoadingUI: 0
+  EnterPosKey: 
 --- !u!61 &1270139844
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10010,6 +10098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 1303658643}
+  requirePlayerOverlap: 1
 --- !u!61 &1303658643
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11105,6 +11194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 1483315168}
+  requirePlayerOverlap: 1
 --- !u!61 &1483315168
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11470,7 +11560,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 135556672}
+    m_TransformParent: {fileID: 627450016}
     m_Modifications:
     - target: {fileID: 6983132279513824222, guid: 3d24231045a0614438f37d7cba4b5649,
         type: 3}
@@ -11495,17 +11585,17 @@ PrefabInstance:
     - target: {fileID: 6983132279513824225, guid: 3d24231045a0614438f37d7cba4b5649,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 6983132279513824225, guid: 3d24231045a0614438f37d7cba4b5649,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 66.582
+      value: 67.67
       objectReference: {fileID: 0}
     - target: {fileID: 6983132279513824225, guid: 3d24231045a0614438f37d7cba4b5649,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.4398346
+      value: -3.26
       objectReference: {fileID: 0}
     - target: {fileID: 6983132279513824225, guid: 3d24231045a0614438f37d7cba4b5649,
         type: 3}
@@ -11565,6 +11655,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2406b46fa5f5f3842a88cdd0224d492a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1573113628 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6983132279513824229, guid: 3d24231045a0614438f37d7cba4b5649,
+    type: 3}
+  m_PrefabInstance: {fileID: 1573113626}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573113629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3941b283bf94045b834b5629955c11b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1573113629 stripped
@@ -12060,6 +12162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 1620500167}
+  requirePlayerOverlap: 1
 --- !u!61 &1620500167
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12473,6 +12576,7 @@ MonoBehaviour:
   NextSceneName: 
   TriggerWhenMoveIn: 1
   ShowLoadingUI: 0
+  EnterPosKey: 
 --- !u!61 &1725863446
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -13824,6 +13928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listenerCollider: {fileID: 2049780293}
+  requirePlayerOverlap: 1
 --- !u!61 &2049780293
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -15121,7 +15226,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3998281887549019688}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.012209892, y: 0, z: -10}
+  m_LocalPosition: {x: 0.014445305, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 405976472616636533}
@@ -15355,6 +15460,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cinemachineBrain: {fileID: 3998281887549019687}
   virtualCamera: {fileID: 3998281885908439104}
+  virtualCameraPart3: {fileID: 0}
+  streetPriority: 10
+  part3PriorityWhenActive: 20
+  part3PriorityWhenStandby: 0
   smoothTime: 0.3
   followSnapOffset: {x: 0, y: 0, z: 0}
   useUnscaledTimeForHandSnap: 1

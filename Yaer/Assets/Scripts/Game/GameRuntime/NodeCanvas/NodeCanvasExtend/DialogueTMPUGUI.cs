@@ -52,14 +52,41 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
         public Image actorPortrait;
         /// <summary>
         /// true = 字幕头像以 Mask 立绘为真源（DialogueMaskAvatarPresenter）。
-        /// OnGetAvatar 不再激活旧 actorPortrait，避免与 Mask 双影；Loader 仍跑，供历史列表用图集。
+        /// Mask 已支持角色：旧 actorPortrait 保持关，避免双影；Loader 仍跑，供历史列表用图集。
+        /// 白名单旧角色（King/Lai/Xiaer/LinEn）：Mask 无 Painting 时按 A′ 回亮图集 Portrait（0911）。
         /// 默认 false：其它未挂 Mask 的对话面板保持旧 Portrait 行为；NormalDialogueNewPanel Prefab 显式开 true。
         /// </summary>
         [SerializeField] private bool useMaskAvatar = false;
+
+        /// <summary>
+        /// 本句字幕正在等待的 Avatar 角色。异步 Loader 晚到时若已切句，则禁止再抢 actorPortrait Active（防串脸）。
+        /// 旁白 / 店 / 村长专用口写 None。
+        /// </summary>
+        DialogueRoleName _subtitleAvatarRole = DialogueRoleName.None;
+
         public SubtitleDelays subtitleDelays = new SubtitleDelays();
         public List<AudioClip> typingSounds;
         private AudioSource playSource;
         public CanvasGroup subtitlesCanvasGroup { get; private set; }
+
+        /// <summary>
+        /// Mask 模式下仍走旧图集 Portrait 的角色白名单（方案 A′）。
+        /// 不含 Goblin*（产品不要求）；不含 Yaer/Gusha/Amy/Aliy/Chief（走 Mask）。
+        /// 替代方案 A（凡 Resolve=null 就亮）会把哥布林也亮出来，本期不用。
+        /// </summary>
+        static bool IsAtlasPortraitFallbackRole(DialogueRoleName role)
+        {
+            switch (role)
+            {
+                case DialogueRoleName.King:
+                case DialogueRoleName.Lai:
+                case DialogueRoleName.Xiaer:
+                case DialogueRoleName.LinEn:
+                    return true;
+                default:
+                    return false;
+            }
+        }
 
         //Group...
         [Header("Multiple Choice")]
@@ -71,9 +98,30 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
         private bool isWaitingChoice;
 
         private AudioSource _localSource;
-        private AudioSource localSource {
-            get { return _localSource != null ? _localSource : _localSource = gameObject.AddComponent<AudioSource>(); }
+        /// <summary>
+        /// 对话框自带人声源。惰性 AddComponent 时必须关 playOnAwake：
+        /// Unity 默认 true，对白结束若只 Stop 不清 clip，关壳再开会自动复读最后一句（0911 H1）。
+        /// </summary>
+        private AudioSource localSource
+        {
+            get
+            {
+                if (_localSource == null)
+                {
+                    _localSource = gameObject.AddComponent<AudioSource>();
+                    _localSource.playOnAwake = false;
+                }
+                return _localSource;
+            }
         }
+
+        /// <summary>
+        /// 本场对白实际播过人声的 AudioSource（含 Actor 源与 localSource）。
+        /// 结束时按名单 Stop+清 clip，避免只清当前 playSource 漏掉早期 Actor 源。
+        /// 禁止全局 FindObjectsOfType 乱停。
+        /// </summary>
+        readonly List<AudioSource> _voiceSourcesThisDialogue = new List<AudioSource>();
+
         /// <summary>
         /// 是否为跳过当前剧情状态
         /// </summary>
@@ -150,13 +198,35 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
         void OnDialogueStarted(DialogueTree dlg) {
             subtitlesCanvasGroup.DOKill();
             DialogueOptionsGroup.gameObject.SetActive(false);
+            // 没有淡入节点的图（如 Village_ShopRepeat）走不到淡入里的藏起。
+            // 面板复用时 Presenter.Awake 不再跑，必须在对话一开始藏掉上一场的脸。
+            // 第一句仍在 OnSubtitlesRequest 里 Apply，换脸顺序不变。
+            HideLeftoverMaskAvatars();
+        }
+
+        /// <summary>
+        /// 新一场对话开始时藏 Mask 小头像。
+        /// Presenter 挂在本组件子层级（GetComponentInParent 能找到本组件）。
+        /// 旧面板没有 Presenter 就跳过，不影响旧头像图。
+        /// 替代方案：等第一句再藏——框已经打开时会先闪上一张脸。
+        /// </summary>
+        void HideLeftoverMaskAvatars()
+        {
+            var presenter = GetComponentInChildren<DialogueMaskAvatarPresenter>(true);
+            if (presenter == null)
+            {
+                return;
+            }
+
+            presenter.HideAllMaskAvatars();
         }
 
         void OnDialoguePaused(DialogueTree dlg) {
             subtitlesGroup.gameObject.SetActive(false);
             ClearOptionBtn();
             StopAllCoroutines();
-            if ( playSource != null ) playSource.Stop();
+            // 暂停也须清 clip：PauseDialogue 后关壳再开同样会 PlayOnAwake 复读
+            StopDialogueVoiceClean();
         }
         /// <summary>
         /// 对话树组件通知对话框UI对话结束事件
@@ -173,7 +243,52 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
                 cachedButtons = null;
             }
             StopAllCoroutines();
-            if ( playSource != null ) playSource.Stop();
+            // 真源清理：须在 CloseForm/SetActive(false) 之前清掉残留 clip
+            StopDialogueVoiceClean();
+        }
+
+        /// <summary>
+        /// 对白人声停干净：Stop + clip=null + playOnAwake=false。
+        /// 根因修复（0911）：残留 clip + 默认 PlayOnAwake，关壳再 Open 会复读最后一句 VO。
+        /// 在 Finished/Paused、StartDialogue 防御、以及 Form 的 OnDialogueEnd 兜底调用。
+        /// 替代方案 B（二期）：VO 只走独立人声通道，不写 Actor/UI 默认源。
+        /// </summary>
+        public void StopDialogueVoiceClean()
+        {
+            for (int i = 0; i < _voiceSourcesThisDialogue.Count; i++)
+            {
+                CleanVoiceSource(_voiceSourcesThisDialogue[i]);
+            }
+            _voiceSourcesThisDialogue.Clear();
+
+            CleanVoiceSource(playSource);
+            CleanVoiceSource(_localSource);
+            playSource = null;
+        }
+
+        void RegisterVoiceSource(AudioSource source)
+        {
+            if (source == null)
+            {
+                return;
+            }
+
+            if (!_voiceSourcesThisDialogue.Contains(source))
+            {
+                _voiceSourcesThisDialogue.Add(source);
+            }
+        }
+
+        static void CleanVoiceSource(AudioSource source)
+        {
+            if (source == null)
+            {
+                return;
+            }
+
+            source.Stop();
+            source.clip = null;
+            source.playOnAwake = false;
         }
         /// <summary>
         /// 对话结束后subtitlesCanvasGroup淡出
@@ -227,6 +342,8 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             // 旁白「—」等未绑定 DialogueActorEx 的 dummy Actor：仅字幕、不刷立绘，避免 RefreshAvatar 空引用卡死
             if (info.UseShopkeeperPortrait)
             {
+                // 店旗走 Mask：作废任何在途图集回调，并关旧 Portrait，防与 Merchant 双影
+                _subtitleAvatarRole = DialogueRoleName.None;
                 var shopFaceController = ShopkeeperFaceRegistry.Instance;
                 if (shopFaceController != null)
                 {
@@ -253,6 +370,7 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             else if (info.UseChiefPortrait)
             {
                 // 门口村长：DialogueSceneContainer 下大立绘 + Mask 同帧 Apply；Invoke(None) 写历史勿关刚亮的脸
+                _subtitleAvatarRole = DialogueRoleName.None;
                 ApplyChiefBigPortrait(info.ChiefFace);
 
                 if (actorPortrait != null)
@@ -270,12 +388,26 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             }
             else if (actor != null)
             {
-                actor.RefreshAvatar(info.FaceType, (sprite) => OnGetAvatar(sprite, text));
-                OnGetNewStatement?.Invoke(actor.RoleName, info.FaceType, text);
+                // 记录本句 Role：异步 OnGetAvatar 晚到时与此比对，避免串脸抢槽
+                var roleForAvatar = actor.RoleName;
+                _subtitleAvatarRole = roleForAvatar;
+
+                // Mask 句（雅儿等）：本帧立刻关旧 Portrait，勿等 Loader，否则上一句父亲脸会与 Mask 叠一帧
+                // 白名单句：等 sprite 再亮；上一句若也是白名单可短暂留旧脸直到新图到
+                if (useMaskAvatar
+                    && actorPortrait != null
+                    && !IsAtlasPortraitFallbackRole(roleForAvatar))
+                {
+                    actorPortrait.gameObject.SetActive(false);
+                }
+
+                actor.RefreshAvatar(info.FaceType, (sprite) => OnGetAvatar(sprite, text, roleForAvatar));
+                OnGetNewStatement?.Invoke(roleForAvatar, info.FaceType, text);
             }
             else
             {
-                // 旧框保持关；通知 Mask Presenter 清空（role=None），避免残留上一角色立绘
+                // 旁白 / 无 Actor：关旧槽 + 作废在途回调；通知 Mask Presenter 清空
+                _subtitleAvatarRole = DialogueRoleName.None;
                 if (actorPortrait != null)
                 {
                     actorPortrait.gameObject.SetActive(false);
@@ -289,6 +421,9 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
                     ? actor.transform.GetComponent<AudioSource>()
                     : null;
                 playSource = actorSource != null ? actorSource : localSource;
+                // 登记本场源，结束按名单清；播前关 playOnAwake，防中途关开壳误触
+                RegisterVoiceSource(playSource);
+                playSource.playOnAwake = false;
                 playSource.clip = audio;
                 playSource.Play();
                 actorSpeech.text = text;
@@ -410,19 +545,39 @@ namespace Game.GameRuntime.Story.NodeCanvasExtend
             await UniTask.Yield();
         }
 
-        private void OnGetAvatar(Sprite sprite, string text)
+        /// <summary>
+        /// Loader 回调。useMaskAvatar 时：
+        /// - 白名单四人（A′）且 sprite≠null → 亮旧 Portrait（Mask 无对应 Painting）；
+        /// - 其余角色 → Portrait 保持关（Mask / 旁白 / 哥布林等）。
+        /// role 用于异步防串：已切到别句则不再 SetActive。
+        /// </summary>
+        private void OnGetAvatar(Sprite sprite, string text, DialogueRoleName role)
         {
             if (actorPortrait == null)
             {
                 return;
             }
 
-            // Mask 真源：旧 Image 保持关闭；仍可写入 sprite 供调试查看，但不激活
+            // 句已切换（含切到旁白/店/村长）：丢弃过期回调，禁止残留抢亮
+            if (role != _subtitleAvatarRole)
+            {
+                return;
+            }
+
             if (useMaskAvatar)
             {
+                // A′：仅 King/Lai/Xiaer/LinEn 在有图时回亮旧槽；Mask 角色与哥布林等保持关
+                if (IsAtlasPortraitFallbackRole(role) && sprite != null)
+                {
+                    actorPortrait.sprite = sprite;
+                    actorPortrait.gameObject.SetActive(true);
+                    return;
+                }
+
                 actorPortrait.gameObject.SetActive(false);
                 if (sprite != null)
                 {
+                    // 仍写入，便于 Hierarchy 调试 / 与历史图集同源
                     actorPortrait.sprite = sprite;
                 }
                 return;

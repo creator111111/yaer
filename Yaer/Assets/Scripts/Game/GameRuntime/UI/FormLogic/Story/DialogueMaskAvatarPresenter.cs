@@ -80,6 +80,21 @@ namespace Game.GameRuntime.UI.FormLogic.Story
         }
 
         /// <summary>
+        /// 藏掉 Mask 下全部小头像，并清掉店/村长占用标记。
+        /// 原因：对话面板会留下来复用。上一场谁在说话，那张脸的开关还开着；
+        /// 下一场框一打开就会把旧脸带出来。第一句才走 Apply 换上正确的脸。
+        /// 必须清 <see cref="shopkeeperMaskActive"/> / <see cref="chiefMaskActive"/>：
+        /// 否则下一句 Invoke(None) 会以为店或村长还亮着，空框仍残留。
+        /// 替代方案：只在 Awake 里 HideAll——面板第二次打开不会再跑 Awake，藏不住。
+        /// </summary>
+        public void HideAllMaskAvatars()
+        {
+            shopkeeperMaskActive = false;
+            chiefMaskActive = false;
+            HideAllPaintings();
+        }
+
+        /// <summary>
         /// 对外入口：全关 → 开当前角色 Painting → UpdateFace。
         /// 未支持角色（King/Lai…）保持 Mask 空，不残留上一句立绘。
         /// </summary>
@@ -275,8 +290,9 @@ namespace Game.GameRuntime.UI.FormLogic.Story
                 return GoOutStoryYaerPainting.ResolveGoOutFaceKey(faceType);
             }
 
-            // Dress 路径：与 Prefab Faces 子物体名对齐；Normal 无独立键 → Smile
-            if (faceType == DialogueFaceType.Normal)
+            // Dress 路径：与 Prefab Faces 子物体名对齐；Normal 无独立键 → Smile。
+            // 室内 Dress 也没有 Awkward / GanGa，同样回 Smile，避免小窗全空。
+            if (faceType == DialogueFaceType.Normal || faceType == DialogueFaceType.Awkward)
             {
                 return "Dress_Crown_Smile";
             }

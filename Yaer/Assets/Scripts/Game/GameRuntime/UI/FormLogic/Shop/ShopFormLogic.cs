@@ -18,7 +18,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
     /// <summary>
     /// 商店 UI 逻辑（EB 烘焙 + ST Total2 + IMG 图片数字）：
     /// Total2 按 Tab 显示 Σ(Number×单价) 的图片数字；Number 为隐形输入 + DigitStrip。
-    /// 阶段五：点「决定」按购买合计真实扣款入包（与 Total2 同公式）。
+    /// 阶段五：点「决定」购买真实扣款入包；0920：出售真实出包加币（买卖分叉，不混结算）。
     /// 双轨入口：场景常驻 UI_Shop（正规进店，走 Awake）与将来 OpenUIForm(ShopPanel)（走 OnInit）
     /// 共用 <see cref="EnsureShopRuntimeBound"/>，避免只信 OnInit 导致 Total2/贩卖全断。
     /// </summary>
@@ -26,6 +26,17 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
     {
         /// <summary>单笔购买成交行（qty&gt;0），供预校验与入包循环共用，避免扫两遍时数量不一致。</summary>
         private struct BuyLine
+        {
+            public EMainItemName ItemId;
+            public int Quantity;
+            public int UnitPrice;
+        }
+
+        /// <summary>
+        /// 单笔出售成交行（qty&gt;0）。与 BuyLine 字段相同，故意拆开：
+        /// 避免 CollectBuy / CollectSell 混用同一列表，误把卖行塞进购买结算。
+        /// </summary>
+        private struct SellLine
         {
             public EMainItemName ItemId;
             public int Quantity;
@@ -344,19 +355,21 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         }
 
         /// <summary>
-        /// 点「决定」：购买 Tab 入包并落盘；出售 Tab 本阶段未接入。
+        /// 点「决定」：购买 Tab 入包并落盘；出售 Tab 出包加币并双落盘。
         /// 合计公式与 Total2 一致：Σ(QuantityForTotal × Price)，仅 qty&gt;0 行。
-        /// 整单失败：数量为 0 / 堆叠将超；（旁路关闭时）金币不足 → 不入包。
-        /// 顺序：堆叠预检 →（可选）扣款 → AddMainItem → SavePlayerBag → 成败对白。
-        /// 货币旁路见 <see cref="bypassGoldCheckForBagJoint"/>：正式默认关；手开时跳过扣款（验不出 ShopNo）。
-        /// 对白：入包成功 → Village_ShopYes；仅金币不足 → Village_ShopNo（经 GSM 特殊对白管线）。
+        /// 购买整单失败：数量为 0 / 堆叠将超；（旁路关闭时）金币不足 → 不入包。
+        /// 出售整单失败：数量为 0 / 任一行背包不够 → 不扣包、不加币。
+        /// 购买顺序：堆叠预检 →（可选）扣款 → AddMainItem → SavePlayerBag → 成败对白。
+        /// 出售顺序：背包预检 → TryRemoveMainItem×N → AddGold + SaveGold → SaveBag → 清零（本期不播对白）。
+        /// 货币旁路见 <see cref="bypassGoldCheckForBagJoint"/>：只影响购买，出售不走旁路。
+        /// 对白：购买成功 → Village_ShopYes；仅金币不足 → Village_ShopNo。出售成败对白见 OPEN，本期不接。
         /// </summary>
         public void OnConfirmClick()
         {
-            // 出售为 P1：工期紧时仅提示，不改存档、不播 No。
+            // 出售与购买分叉：禁止把卖行塞进购买结算（会按买价扣钱并往包里加素材）。
             if (!_isBuyTabActive)
             {
-                ShopDebugLogger.LogSellNotImplemented();
+                OnConfirmSellClick();
                 return;
             }
 
@@ -431,6 +444,81 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
             // 入包成功（含旁路未扣款）再播 Yes；禁止先对白后扣款。
             TryNotifyPurchaseDialogue(purchaseSucceeded: true);
+        }
+
+        /// <summary>
+        /// 出售 Tab「决定」：整单出包加币并双落盘。
+        /// 原因：此前仅 Log「出售结算未接入」就 return，属设计债占位，非回归。
+        /// 对称购买：先整单预检 held≥qty，再逐行 TryRemove，再 AddGold+SaveGold+SaveBag。
+        /// 禁止：先加钱不扣包（读档白嫖）；任一行不够仍扣半单；擅自播 ShopYes/ShopNo（OPEN 未拍板）。
+        /// 替代方案：改 TryAddPlayerGold 门面 —— 现网无此 API，任务发奖已用 AddGold+SavePlayerGold，直接对齐即可。
+        /// </summary>
+        private void OnConfirmSellClick()
+        {
+            var lines = CollectSellLinesWithQuantity();
+            var total = 0;
+            for (var i = 0; i < lines.Count; i++)
+            {
+                total += lines[i].Quantity * lines[i].UnitPrice;
+            }
+
+            // 与购买一致：全 0 拒绝，不碰存档。
+            if (lines.Count == 0 || total <= 0)
+            {
+                ShopDebugLogger.LogZeroQuantityWarning();
+                return;
+            }
+
+            var bag = ResolvePlayerBagData();
+            if (bag == null)
+            {
+                ShopDebugLogger.LogArchiveUnavailable("背包存档不可用（请从 InitScene 正规进游戏）");
+                return;
+            }
+
+            var questMgr = QuestManager.getInstance();
+            var goldData = questMgr != null ? questMgr.GetPlayerGoldData() : null;
+            if (goldData == null)
+            {
+                ShopDebugLogger.LogArchiveUnavailable("游戏币存档不可用（请从 InitScene 正规进游戏）");
+                return;
+            }
+
+            // 整单预检：任一行不够 → 一行都不扣、不加币。
+            if (!TryValidateSellBagCounts(bag, lines))
+            {
+                return;
+            }
+
+            // 预检通过后再扣；理想情况不应失败。若仍失败则中止，不再加币（避免「包没扣完却给钱」）。
+            for (var i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i];
+                if (!bag.TryRemoveMainItem(line.ItemId, line.Quantity))
+                {
+                    ShopDebugLogger.LogSellRemoveFailed(line.ItemId.ToString(), line.Quantity);
+                    return;
+                }
+            }
+
+            // 先加币并落盘，再存包：读档后钱与素材应对得上。
+            goldData.AddGold(total);
+            questMgr.SavePlayerGold();
+            SavePlayerBag();
+
+            var logIds = new List<EMainItemName>(lines.Count);
+            var logQtys = new List<int>(lines.Count);
+            for (var i = 0; i < lines.Count; i++)
+            {
+                logIds.Add(lines[i].ItemId);
+                logQtys.Add(lines[i].Quantity);
+            }
+
+            ShopDebugLogger.LogSellFromBag(logIds, logQtys, total);
+
+            // 清零数量，避免连点重复卖。本期不播出售对白（OPEN Q1）。
+            ResetAllSellQuantityInputs();
+            RefreshTotal2();
         }
 
         /// <summary>
@@ -515,6 +603,38 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         }
 
         /// <summary>
+        /// 收集出售行中 qty&gt;0 的成交行（与 GetCurrentSellTotal 扫行规则一致）。
+        /// 故意独立于 CollectBuyLinesWithQuantity：购买代码路径保持独立，不把卖行塞进买列表。
+        /// </summary>
+        private List<SellLine> CollectSellLinesWithQuantity()
+        {
+            var lines = new List<SellLine>();
+            foreach (var rowView in _sellRowViews)
+            {
+                if (rowView == null)
+                {
+                    continue;
+                }
+
+                var input = rowView.GetComponent<ShopBuyRowQuantityInput>();
+                var quantity = input != null ? input.QuantityForTotal : 0;
+                if (quantity <= 0)
+                {
+                    continue;
+                }
+
+                lines.Add(new SellLine
+                {
+                    ItemId = rowView.ItemId,
+                    Quantity = quantity,
+                    UnitPrice = rowView.Price
+                });
+            }
+
+            return lines;
+        }
+
+        /// <summary>
         /// 预校验每行 held+qty ≤ MaxStackPerItem；失败打 Log 并返回 false。
         /// 原因：AddMainItem 内部会钳到 10，若不预检会出现「钱已扣、道具少到账」。
         /// </summary>
@@ -531,6 +651,26 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                         held,
                         line.Quantity,
                         PlayerBagData.MaxStackPerItem);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 预校验每行 held ≥ qty；任一行不够则整单失败、不改存档。
+        /// 原因：禁止「卖到没有」半单扣包；须先整单预检再逐行 TryRemove。
+        /// </summary>
+        private static bool TryValidateSellBagCounts(PlayerBagData bag, List<SellLine> lines)
+        {
+            for (var i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i];
+                var held = bag.GetMainItemCount(line.ItemId);
+                if (held < line.Quantity)
+                {
+                    ShopDebugLogger.LogInsufficientBag(line.ItemId.ToString(), line.Quantity, held);
                     return false;
                 }
             }

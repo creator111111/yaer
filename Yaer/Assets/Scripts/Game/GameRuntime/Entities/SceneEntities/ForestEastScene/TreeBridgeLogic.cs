@@ -3,7 +3,6 @@ using Game.GameMgr.Component;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Scene;
 using Game.GameRuntime.Entities.Base.BaseSceneObj;
 using Game.GameRuntime.Entities.Component.Anima;
-using Game.GameRuntime.Entities.Component.Interactive;
 using Game.GameRuntime.Entities.Monster.WoodWorm;
 using Game.GameRuntime.Entities.Monster.WormEgg;
 using Game.GameRuntime.Entities.SceneEntities.HomeScene2;
@@ -71,8 +70,8 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestEastScene
             {
                 ForestEastTreeBridgeStoryMgr.getInstance().storyLogic = this;
                 animator = GetComponent<Animator>();
-                componentSystem.GetComponent<InteractiveComponent>().onEnterInteractiveEvent += (x) => OuterSpriteFade(0);
-                componentSystem.GetComponent<InteractiveComponent>().onExitInteractiveEvent += (x) => OuterSpriteFade(1);
+                // 外壳「外」淡出改绑 ChangeCamera（切镜完成后），不再在 Interactive 靠近时 Fade。
+                // 原因：产品要求走近倒树保持不透明；进洞/出洞/读档洞内统一走 ChangeCamera 末尾 Fade。
                 aniEventCpn.RegisterEvent("AfterFallDown", AfterFallDown);
             }
             else
@@ -105,21 +104,48 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestEastScene
             }
         }
 
-        private void OuterSpriteFade(float endvalue)
+        /// <summary>
+        /// 淡出/淡入倒树外壳「外」。由 <c>ChangeCamera</c> 在切镜写完后调用：进洞 endvalue=0，出洞=1。
+        /// 替代方案：揭黑幕后再淡（方案 A+B）——读档无黑幕须仍在 ChangeCamera 调一次。
+        /// </summary>
+        public void OuterSpriteFade(float endvalue)
         {
+            if (OuterSprite == null)
+            {
+                Debug.LogWarning("[TreeBridgeOuter] OuterSprite is null, skip fade");
+                return;
+            }
             OuterSprite.DOKill();
             OuterSprite.DOFade(endvalue, OuterSpriteFadeTime);
         }
 
+        /// <summary>
+        /// Pass 对白图调用：播倒下动画并关掉挂件。
+        /// 必须跳过 null：合层换遮罩后 Attached 槽曾变 Missing，对 null SetActive 会 Unassigned，
+        /// 掐断 Pass 链（「好险…」等台词播不到）。遮罩应绑 <c>遮罩只影响人物</c>，勿只靠跳过不绑。
+        /// </summary>
         public void Fall()
         {
             animator.SetTrigger("Fall");
+            int skipped = 0;
             foreach (GameObject go in AttachedGameObject)
             {
+                if (go == null)
+                {
+                    skipped++;
+                    continue;
+                }
                 go.SetActive(false);
+            }
+            if (skipped > 0)
+            {
+                Debug.LogWarning($"[TreeBridgeFall] Fall skipped {skipped} null AttachedGameObject entry(ies)");
             }
         }
 
+        /// <summary>
+        /// 读档已倒下：销毁倒树与挂件。同样必须跳过 null，否则读档也会在 Destroy(null) 处炸。
+        /// </summary>
         public bool CheckFall()
         {
             bool TreeBridgeFall = SceneManager.GetArchiveData<ForestEastSceneData>().TreeBridgeFall;
@@ -129,9 +155,19 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestEastScene
             if (TreeBridgeFall)
             {
                 Destroy(this.gameObject);
+                int skipped = 0;
                 foreach (GameObject go in AttachedGameObject)
                 {
+                    if (go == null)
+                    {
+                        skipped++;
+                        continue;
+                    }
                     Destroy(go);
+                }
+                if (skipped > 0)
+                {
+                    Debug.LogWarning($"[TreeBridgeFall] CheckFall skipped {skipped} null AttachedGameObject entry(ies)");
                 }
                 return true;
             }
@@ -140,15 +176,16 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestEastScene
 
         public void PlayTreeBridgeMoveSfx()
         {
-            var moveSfxName = "ľͷ��֨��֨�� .mp3";
+            // Exact SFX file name (space before .mp3). See ForestEastScene music/SFX tech doc §5.
+            var moveSfxName = "木头嘎吱嘎吱声 .mp3";
             soundSfxCpn.ChangeSoundRes(moveSfxName);
             soundSfxCpn.PlaySound();
         }
 
         void AfterFallDown(string arg)
         {
-            // ����������ˮ�е���Ч
-            var moveSfxName = "������ˮ�������.mp3";
+            // Tree fall into water SFX; delayed ~3s per tech doc §5.
+            var moveSfxName = "树掉进水里的声音.mp3";
             soundSfxCpn.ChangeSoundRes(moveSfxName);
             GameActionMgr.runDelayTimeAction(3f, () =>
             {
@@ -156,6 +193,7 @@ namespace Game.GameRuntime.Entities.SceneEntities.ForestEastScene
             });
 
         }
+
     }
 }
 

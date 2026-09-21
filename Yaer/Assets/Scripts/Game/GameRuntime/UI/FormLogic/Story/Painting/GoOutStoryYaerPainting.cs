@@ -89,6 +89,9 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Painting
 
         /// <summary>
         /// GoOut 立绘集文件名形如 Armor_NoHeadWear_Smile；CSV/图里常用 Normal，但集内无 Normal 键，回退 Smile 避免说话时全隐藏。
+        /// Awkward 同理：古莎的键是 Awkward，雅儿 GoOut 没有这张，尴尬脸是 GanGa。对不上时 UpdateFace 会把脸全关掉，Mask 小窗就是空的。
+        /// 不改枚举、不改古莎：Awkward 仍给古莎用。只在雅儿 GoOut 这里改键。
+        /// 替代方案：改这三张 Prefab 的 FaceType 整数。重导 CSV 会写回 Awkward，所以改解析，不改图。
         /// 公开供 Mask Presenter 等 UI 壳复用同一键规则，避免复制字符串。
         /// </summary>
         public static string ResolveGoOutFaceKey(DialogueFaceType faceType)
@@ -96,6 +99,12 @@ namespace Game.GameRuntime.UI.FormLogic.Story.Painting
             if (faceType == DialogueFaceType.Normal)
             {
                 return "Armor_NoHeadWear_Smile";
+            }
+
+            // 台本写 Awkward，Prefab 子物体是 Armor_NoHeadWear_GanGa
+            if (faceType == DialogueFaceType.Awkward)
+            {
+                return "Armor_NoHeadWear_GanGa";
             }
 
             return $"Armor_NoHeadWear_{faceType}";
