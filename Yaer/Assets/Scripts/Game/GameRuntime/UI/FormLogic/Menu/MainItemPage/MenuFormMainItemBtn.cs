@@ -64,7 +64,21 @@ namespace Game.GameRuntime.UI.FormLogic.Menu.MainItemPage
                 imgIcon.gameObject.SetActive(false);
             }
 
-            num.text = $"{item.num}";
+            // 0922 方案 D：唯一家当隐藏角标（对拍剑/地图金样）；空桶等非白名单仍显示数量。
+            // 替代：仅当 num≤1 隐藏——会误藏「药水剩 1」；白名单更准。
+            if (num != null)
+            {
+                if (PlayerBagData.IsUniqueMainItem(item.name))
+                {
+                    num.gameObject.SetActive(false);
+                }
+                else
+                {
+                    num.gameObject.SetActive(true);
+                    num.text = $"{item.num}";
+                }
+            }
+
             GetComponent<Button>().onClick.AddListener(() =>
             {
                 UIUtils.PlayBtnAudio(menuFormLogic);

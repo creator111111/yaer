@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Game.GameMgr.Component.Base;
+using Game.Static.Path;
 using GameFramework.Event;
 using GameFramework.UnityRuntime.Event;
 using GameFramework.UnityRuntime.UI;
@@ -118,20 +119,49 @@ namespace Game.GameMgr.Component.UI
         }
 
         /// <summary>
+        /// 幂等打开左下角版本号（0922）。已加载则不再 Open，避免叠多份。
+        /// </summary>
+        public void EnsureVersionForm()
+        {
+            string path = UIPrefabPath.VersionPanel;
+            if (GetUIForm(path) != null)
+            {
+                return;
+            }
+
+            OpenUIForm(path, EUIGroup.System, new OpenFormArgs());
+        }
+
+        /// <summary>
         ///  关闭所有界面
         /// </summary>
         /// <param name="filter"> 过滤不关闭的界面</param>
+        /// <remarks>
+        /// 0922：永久不过滤失败时仍 Ensure——VersionPanel 不随换场/读档 CloseAll 消失。
+        /// 调用方 filter 的 BlackPanel 等仍优先保留。
+        /// </remarks>
         public void CloseAllUIForm(params UIForm[] filter)
         {
            var forms =  uiComponent.GetAllLoadedUIForms();
+           UIForm versionForm = GetUIForm(UIPrefabPath.VersionPanel);
            foreach (var form in forms)
            {
-               if (filter.Contains(form))
+               if (filter != null && filter.Contains(form))
                {
                    continue;
                }
+
+               // 常驻版本号：勿被「只留黑幕」清掉
+               if (versionForm != null && ReferenceEquals(form, versionForm))
+               {
+                   continue;
+               }
+
                uiComponent.CloseUIForm(form);
            }
+
+           // 若此前尚未打开（或被其它路径关掉），清屏后补开一份
+           EnsureVersionForm();
         }
 
         /// <summary>

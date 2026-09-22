@@ -28,7 +28,9 @@ namespace Game.GameRuntime.UI.FormLogic.Settings
 				configData.KeyboardMouseInputConfig.Add(controlInputType, keyCode);
 			}
 			// 保存配置
-			GameManager.GetManager<SettingManager>().SaveSetting(configData);	
+			GameManager.GetManager<SettingManager>().SaveSetting(configData);
+			// 0922：改键后立刻重建玩家键表与村庄键族，避免回村仍用旧表
+			Game.GameRuntime.Entities.Player.Components.PlayerInputComponent.RebuildKeyBindingsOnAllPlayers();
 			
 			Debug.Log($"按键绑定已保存: {controlInputType} -> {keyCode}");
 		}
@@ -50,7 +52,8 @@ namespace Game.GameRuntime.UI.FormLogic.Settings
                 currentConfig.KeyboardMouseInputConfig.Add(kvp.Key, kvp.Value);
 			}
 			
-			settingManager.SaveSetting(currentConfig);			
+			settingManager.SaveSetting(currentConfig);
+			Game.GameRuntime.Entities.Player.Components.PlayerInputComponent.RebuildKeyBindingsOnAllPlayers();
 			
 			Debug.Log("按键绑定已重置为默认配置");
 		}

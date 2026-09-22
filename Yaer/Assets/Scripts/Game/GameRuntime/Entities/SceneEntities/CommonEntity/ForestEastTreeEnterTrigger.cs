@@ -167,6 +167,9 @@ namespace Game.GameRuntime.Entities.SceneEntities
                         var sceneMgr = GameManager.GetGameSceneManager();
                         var cameraMgr = sceneMgr.GetModule<CameraComponentGSM>();
                         ForestEastTreeBridgeStoryMgr.getInstance().ChangeCamera(isEnterTree, cameraMgr);
+                        // 策略 T：揭幕前全轴对齐（东郊已 smoothTime=0 → 当帧）；进洞再贴底
+                        ForestEastTreeBridgeStoryMgr.getInstance().AlignCameraAfterTreeBridgeChange(
+                            isEnterTree, cameraMgr, playerLogic.gameObject.transform);
                         if (isEnterTree)
                         {
                             var csAnimator = playerLogic.componentSystem.GetComponent<PlayerCsAnimator>();

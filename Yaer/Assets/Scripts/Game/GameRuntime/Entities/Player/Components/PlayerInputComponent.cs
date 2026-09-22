@@ -23,6 +23,22 @@ namespace Game.GameRuntime.Entities.Player.Components
         public PlayerLogic PlayerLogic { get; set; }
 
         /// <summary>
+        /// 村庄探索移动键族：由设置 Left/Right 推导；纵深不另开设置槽（0922）。
+        /// </summary>
+        public enum VillageMoveKeyFamily
+        {
+            /// <summary>Left=A、Right=D → 纵深 W/S。</summary>
+            Wasd = 0,
+            /// <summary>Left=←、Right=→ → 纵深 ↑/↓。</summary>
+            ArrowKeys = 1,
+            /// <summary>其它绑定：仅认表内 Left/Right，纵深 0。</summary>
+            Custom = 2,
+        }
+
+        /// <summary>当前缓存的键族；改键后须 <see cref="RebuildKeyBindingsFromSettings"/>。</summary>
+        private VillageMoveKeyFamily _cachedVillageMoveKeyFamily = VillageMoveKeyFamily.Wasd;
+
+        /// <summary>
         /// 当前移动/输入语义（村庄 2.5D 时丢弃部分战斗指令，见策划文档 AC-04）。
         /// </summary>
         public PlayerLocomotionMode LocomotionMode { get; private set; } = PlayerLocomotionMode.Default;
@@ -164,11 +180,10 @@ namespace Game.GameRuntime.Entities.Player.Components
         }
 
         /// <summary>
-        /// 村庄 2.5D 下「横向位移意图」：与 <see cref="TownPlayerLocomotion.HasVillageDepthMoveForHomeStateMachine"/> 使用 Raw Vertical 对称，
-        /// 综合队首、整队左/右、以及 <c>Input.GetAxisRaw("Horizontal")</c>，避免仅凭 <see cref="HasMoveInput"/> 队首语义误伤横移。
-        /// 非村庄模式时退化为 <see cref="HasMoveInput"/>，供状态机分支外调用不致行为分叉。
+        /// 村庄 2.5D「横向位移意图」：队首/队列 Left·Right，或当前键族绑定的左右键按住。
+        /// <para>0922：去掉 <c>GetAxisRaw(Horizontal)</c> 与 WASD∪箭头双族硬编码，避免设置 A/D 时方向键仍能动。</para>
+        /// 非村庄模式退化为 <see cref="HasMoveInput"/>。
         /// </summary>
-        /// <returns>判定为仍有横向探索意图则 true。</returns>
         public bool HasVillageExploreHorizontalMoveIntent()
         {
             if (LocomotionMode != PlayerLocomotionMode.Village2_5D)
@@ -186,52 +201,26 @@ namespace Game.GameRuntime.Entities.Player.Components
                 return true;
             }
 
-            // 与纵深意图一致走 Raw 轴，覆盖键位表与队列短暂不一致的帧
-            const float horizontalDeadZone = 0.01f;
-            if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) > horizontalDeadZone)
-            {
-                return true;
-            }
-
-            // 兜底：部分工程里 Horizontal 轴未绑或双机位下 Raw 恒为 0，但物理键仍有效；避免 CombatRun 误判为「无横向」而每帧 StopMoveInX（0513/0514 现场：能上下不能左右）
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)
-                                        || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
-            {
-                return true;
-            }
-
-            return false;
+            // 仅认设置绑定的 Left/Right 键（键族单通道）
+            return IsVillageHorizontalKeyHeld(-1) || IsVillageHorizontalKeyHeld(1);
         }
 
         /// <summary>
-        /// 村庄纵深键位意图：Raw Vertical + W/S/方向键。不含松键后的纵深惯性（惯性清 X 会误伤 0513）。
+        /// 村庄纵深意图：由 Left/Right 键族推导（WASD→W/S，箭头→↑↓；Custom→无）。
+        /// 不含松键后纵深惯性。0922 去掉裸 Vertical 轴与双族硬编码。
         /// </summary>
         public bool HasVillageExploreVerticalMoveIntent()
         {
-            const float deadZone = 0.01f;
-            if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > deadZone)
-            {
-                return true;
-            }
-
-            return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)
-                   || Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow);
+            return Mathf.Abs(GetVillageExploreVerticalSign()) > 0.01f;
         }
 
         /// <summary>
-        /// 村庄横向符号：轴 → 物理键/键位表 → 队列第一条 Left/Right。禁止用默认朝右当第一手（0818）。
-        /// 左右同时按下跟队列先后。轴恒为 0 时仍能给出 ±1（本工程 Horizontal 可能未绑）。
+        /// 村庄横向符号：绑定左右键按住 → 队列第一条 Left/Right。
+        /// 禁止 Axis / 另一族硬编码；禁止默认朝右当第一手。
         /// </summary>
         /// <returns>-1 左、+1 右、0 解析不出。</returns>
         public float GetVillageExploreHorizontalSign()
         {
-            const float deadZone = 0.01f;
-            float axis = Input.GetAxisRaw("Horizontal");
-            if (Mathf.Abs(axis) > deadZone)
-            {
-                return Mathf.Sign(axis);
-            }
-
             bool leftHeld = IsVillageHorizontalKeyHeld(-1);
             bool rightHeld = IsVillageHorizontalKeyHeld(1);
             if (leftHeld != rightHeld)
@@ -253,18 +242,27 @@ namespace Game.GameRuntime.Entities.Player.Components
             return 0f;
         }
 
-        /// <summary>村庄纵深符号：轴优先，否则 W/↑=+1、S/↓=-1。</summary>
+        /// <summary>
+        /// 村庄纵深符号：键族推导。WASD：W=+1、S=-1；箭头：↑=+1、↓=-1；Custom：0。
+        /// </summary>
         public float GetVillageExploreVerticalSign()
         {
-            const float deadZone = 0.01f;
-            float axis = Input.GetAxisRaw("Vertical");
-            if (Mathf.Abs(axis) > deadZone)
+            bool upHeld;
+            bool downHeld;
+            switch (ResolveVillageMoveKeyFamily())
             {
-                return Mathf.Sign(axis);
+                case VillageMoveKeyFamily.Wasd:
+                    upHeld = Input.GetKey(KeyCode.W);
+                    downHeld = Input.GetKey(KeyCode.S);
+                    break;
+                case VillageMoveKeyFamily.ArrowKeys:
+                    upHeld = Input.GetKey(KeyCode.UpArrow);
+                    downHeld = Input.GetKey(KeyCode.DownArrow);
+                    break;
+                default:
+                    return 0f;
             }
 
-            bool upHeld = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
-            bool downHeld = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
             if (upHeld != downHeld)
             {
                 return upHeld ? 1f : -1f;
@@ -289,15 +287,17 @@ namespace Game.GameRuntime.Entities.Player.Components
         }
 
         /// <summary>
-        /// Idle→Walk/Run 当帧补横向命令：队列 Left/Right → GetKey A/D → Raw Horizontal。
-        /// 给 <c>HomeWalkState</c> / <c>CombatRunState</c> Enter 共用，避免 Idle 切走/跑时
-        /// 本帧 Left/Right 回调已空跑导致丢 <c>Turn*</c>（0920 大树进屋立刻按 A 不转身）。
+        /// 当前村庄移动键族（缓存）。改键后须 Rebuild。
         /// </summary>
-        /// <remarks>
-        /// 原因：订阅挂在 Enter 之后，KeyDown 当帧 Parse 打空；须按住态同步补一次 Move。
-        /// 替代：改默认朝左 / 只改 EnterFrom_Tree2f 朝向——治标且大门同构仍在。
-        /// 禁止用默认朝右灌速；解析不出返回 <see cref="ControlInputType.None"/>。
-        /// </remarks>
+        public VillageMoveKeyFamily ResolveVillageMoveKeyFamily()
+        {
+            return _cachedVillageMoveKeyFamily;
+        }
+
+        /// <summary>
+        /// Idle→Walk/Run 当帧补横向：队列 → 绑定 Left/Right 按住。
+        /// 0922：不再 GetKey(A/D/箭头) 与 Axis，避免另一族漏进来。
+        /// </summary>
         public ControlInputType ResolveVillageEnterHorizontalCommand()
         {
             ControlInputType queued = FindFirstHorizontalCommandInQueue();
@@ -306,25 +306,12 @@ namespace Game.GameRuntime.Entities.Player.Components
                 return queued;
             }
 
-            // 本帧 Input 可能尚未入队，但 Idle 已凭 GetKey(A) 切态：不能用 GetKeyDown（当帧可能已过）
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            if (IsVillageHorizontalKeyHeld(-1))
             {
                 return ControlInputType.Left;
             }
 
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            {
-                return ControlInputType.Right;
-            }
-
-            const float horizontalDeadZone = 0.01f;
-            float axisX = Input.GetAxisRaw("Horizontal");
-            if (axisX < -horizontalDeadZone)
-            {
-                return ControlInputType.Left;
-            }
-
-            if (axisX > horizontalDeadZone)
+            if (IsVillageHorizontalKeyHeld(1))
             {
                 return ControlInputType.Right;
             }
@@ -333,21 +320,12 @@ namespace Game.GameRuntime.Entities.Player.Components
         }
 
         /// <param name="sign">-1 查左，+1 查右。</param>
+        /// <remarks>0922：只认设置表绑定键，不再硬编码 A/D∪箭头双通道。</remarks>
         private bool IsVillageHorizontalKeyHeld(int sign)
         {
             if (sign < 0)
             {
-                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-                {
-                    return true;
-                }
-
                 return IsBoundCommandKeyHeld(ControlInputType.Left);
-            }
-
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            {
-                return true;
             }
 
             return IsBoundCommandKeyHeld(ControlInputType.Right);
@@ -386,20 +364,72 @@ namespace Game.GameRuntime.Entities.Player.Components
             inputActions = new InputActions();
             inputActions.Player.Enable();
             AutoMoveState = AutoInputMove.None;
-            // 设置当前按键对应的指令
+            RebuildKeyBindingsFromSettings();
+        }
+
+        /// <summary>
+        /// 从设置重建 <c>keyCodeToCmdDict</c> 并刷新村庄键族缓存。
+        /// 进场 OnInit 与设置改键/重置后都必须调用（验收项 7）。
+        /// </summary>
+        public void RebuildKeyBindingsFromSettings()
+        {
             var configData = GameManager.GetManager<SettingManager>().LoadSetting<SettingsConfigData>();
             keyCodeToCmdDict.Clear();
-            var ingoreKeyList = new List<ControlInputType>() { 
+            var ignoreKeyList = new List<ControlInputType>()
+            {
                 ControlInputType.NextSentence, ControlInputType.SkipDialogue,
             };
             foreach (var data in configData.KeyboardMouseInputConfig)
             {
                 var key = data.Value;
                 var cmd = data.Key;
-                if (ingoreKeyList.Contains(cmd)) { continue; }
+                if (ignoreKeyList.Contains(cmd)) { continue; }
                 keyCodeToCmdDict[key] = cmd;
             }
-            
+
+            RefreshCachedVillageMoveKeyFamily(configData);
+        }
+
+        /// <summary>
+        /// 按设置 Left/Right 判定键族。A+D→Wasd；←+→→ArrowKeys；其余 Custom（纵深 0）。
+        /// </summary>
+        private void RefreshCachedVillageMoveKeyFamily(SettingsConfigData configData)
+        {
+            KeyCode left = KeyCode.None;
+            KeyCode right = KeyCode.None;
+            if (configData != null && configData.KeyboardMouseInputConfig != null)
+            {
+                configData.KeyboardMouseInputConfig.TryGetValue(ControlInputType.Left, out left);
+                configData.KeyboardMouseInputConfig.TryGetValue(ControlInputType.Right, out right);
+            }
+
+            if (left == KeyCode.A && right == KeyCode.D)
+            {
+                _cachedVillageMoveKeyFamily = VillageMoveKeyFamily.Wasd;
+            }
+            else if (left == KeyCode.LeftArrow && right == KeyCode.RightArrow)
+            {
+                _cachedVillageMoveKeyFamily = VillageMoveKeyFamily.ArrowKeys;
+            }
+            else
+            {
+                _cachedVillageMoveKeyFamily = VillageMoveKeyFamily.Custom;
+            }
+        }
+
+        /// <summary>
+        /// 设置改键后通知场景中所有玩家输入组件重建键表（局外改键时可能尚无玩家，安全空操作）。
+        /// </summary>
+        public static void RebuildKeyBindingsOnAllPlayers()
+        {
+            var inputs = UnityEngine.Object.FindObjectsOfType<PlayerInputComponent>();
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                if (inputs[i] != null)
+                {
+                    inputs[i].RebuildKeyBindingsFromSettings();
+                }
+            }
         }
 
         public override void OnUpdate()

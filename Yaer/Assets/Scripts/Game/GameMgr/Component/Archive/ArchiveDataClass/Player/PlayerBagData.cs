@@ -26,6 +26,38 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
         /// <summary> 每种主道具的最大堆叠数量（策划约定与文档一致）。 </summary>
         public const int MaxStackPerItem = 10;
 
+        /// <summary>
+        /// 唯一家当白名单（0922）：持有量永久钳 1，禁止叠数。
+        /// <para>
+        /// <b>必须排除</b> <see cref="EMainItemName.EmptyWaterBucket"/> /
+        /// <see cref="EMainItemName.FullWaterBucket"/>——空桶用 1～4 表达打水进度，误入会毁老农任务。
+        /// </para>
+        /// <para>
+        /// <b>禁止</b>「全体 TaskItem 上限 1」或改 <see cref="MaxStackPerItem"/>——会误伤药/球/素材。
+        /// 替代：若产品只钉 SewingKit，可缩本表；剑/地图等同属一件家当，侦探建议同表。
+        /// </para>
+        /// </summary>
+        private static readonly HashSet<string> UniqueMainItemNames = new HashSet<string>
+        {
+            EMainItemName.SewingKit.ToString(),
+            EMainItemName.AiLinSword.ToString(),
+            EMainItemName.Map.ToString(),
+            EMainItemName.GushaNacklace.ToString(),
+            EMainItemName.XiaerPower.ToString(),
+        };
+
+        /// <summary>是否为「一件家当」唯一道具（角标隐藏 / 入包不叠共用）。</summary>
+        public static bool IsUniqueMainItem(string itemName)
+        {
+            return !string.IsNullOrEmpty(itemName) && UniqueMainItemNames.Contains(itemName);
+        }
+
+        /// <summary>枚举重载，避免调用方手拼字符串。</summary>
+        public static bool IsUniqueMainItem(EMainItemName itemName)
+        {
+            return IsUniqueMainItem(itemName.ToString());
+        }
+
         #region 属性
 
         public static event Action<PlayerBagData> OnDataChange;
@@ -95,6 +127,23 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
         public void AddMainItem(string itemName, int count = 1)
         {
             if (count <= 0) { return; }
+
+            // 0922 方案 B：唯一家当已有则不再累加；首次入包也强制 1（GetItem 误传 Num>1 不叠）。
+            if (IsUniqueMainItem(itemName))
+            {
+                if (mainItemDic.ContainsKey(itemName))
+                {
+                    if (mainItemDic[itemName].num != 1)
+                    {
+                        mainItemDic[itemName].num = 1;
+                        DataChanged(itemName);
+                    }
+                    return;
+                }
+
+                count = 1;
+            }
+
             if (mainItemDic.ContainsKey(itemName))
             {
                 mainItemDic[itemName].num += count;
@@ -158,6 +207,12 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
                 targetCount = MaxStackPerItem;
             }
 
+            // 唯一家当：调试「设为 N」也不能写成 2+，与 AddMainItem 门控一致。
+            if (IsUniqueMainItem(itemName) && targetCount > 1)
+            {
+                targetCount = 1;
+            }
+
             var current = GetMainItemCount(itemName);
             if (current == targetCount)
             {
@@ -209,6 +264,11 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
             foreach (var itemName in itemNames)
             {
                 var count = Math.Min(mainItemDic[itemName].num, MaxStackPerItem);
+                // 与 ClampAllItemStacks 一致：唯一件 Refresh 后仍为 1
+                if (IsUniqueMainItem(itemName) && count > 1)
+                {
+                    count = 1;
+                }
                 var def = MainItemDefProvider.GetDef(itemName);
                 var itemType = def?.ItemType ?? GuessItemType(itemName);
                 var newItemData = new MenuFormMainItemInfo
@@ -663,9 +723,15 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
                     item.itemType = GuessItemType(item.name);
                 }
             }
+
+            // 0922 C：进包/Def 重建时也修旧档唯一件叠数（不只依赖 ParseInternal）
+            ClampAllItemStacks();
         }
 
-        /// <summary> 读档等场景：将旧存档中超过上限的数量钳制到 MaxStackPerItem。 </summary>
+        /// <summary>
+        /// 读档等场景：堆叠钳到 <see cref="MaxStackPerItem"/>；
+        /// 唯一家当（0922 方案 C）另钳到 1，修旧档「针线包×3」。
+        /// </summary>
         private void ClampAllItemStacks()
         {
             if (mainItemDic == null) { return; }
@@ -675,6 +741,12 @@ namespace Game.GameMgr.Component.Archive.ArchiveDataClass.Player
                 if (pair.Value.num > MaxStackPerItem)
                 {
                     pair.Value.num = MaxStackPerItem;
+                }
+
+                // 空桶/满桶不在 UniqueMainItemNames，数量玩法不受影响
+                if (IsUniqueMainItem(pair.Key) && pair.Value.num > 1)
+                {
+                    pair.Value.num = 1;
                 }
             }
         }
