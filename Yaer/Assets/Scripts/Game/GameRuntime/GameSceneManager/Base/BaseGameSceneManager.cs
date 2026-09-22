@@ -25,6 +25,7 @@ using Game.GameRuntime.GameSceneManager.Config;
 using Game.GameRuntime.GameSceneManager.SubManager;
 using Game.GameRuntime.UI.FormLogic;
 using Game.GameRuntime.UI.FormLogic.Tips;
+using Game.Static.Name.Res;
 using Game.Static.Path;
 using GameFramework.UnityRuntime.Entity;
 using GameFramework.UnityRuntime.UI;
@@ -334,12 +335,17 @@ namespace Game.GameRuntime.GameSceneManager.Base
                 }
 
                 // 设置摄像机跟随
-                // 读档：无 blackFade hold，强制当帧定格（0922 A2）；门换场仍读场景 smoothTime
+                // 读档：无 blackFade hold，强制当帧定格（0922 A2）
+                // 序章链进 Forest（来自城堡/东郊）：临时 instantSnap，禁止改 Forest 磁盘 smoothTime=0.3（林恩）
                 var cameraGsm = GetModule<CameraComponentGSM>();
                 var procedure = GameManager.GetGMComponent<ProcedureComponentGM>();
                 if (procedure != null && procedure.archiveStart)
                 {
                     cameraGsm.SetFollowInstantForArchiveStart(logic.gameObject.transform);
+                }
+                else if (ShouldInstantSnapFollowOnSceneEnter())
+                {
+                    cameraGsm.SetFollowInstantForSceneEnter(logic.gameObject.transform);
                 }
                 else
                 {
@@ -359,6 +365,32 @@ namespace Game.GameRuntime.GameSceneManager.Base
 
                 initAsyncCounter.Done();
             });
+        }
+
+        /// <summary>
+        /// 0922 序章郊区链 P0：进 <see cref="SceneName.ForestScene"/> 且上一关为城堡/东郊时，
+        /// InitPlayer 走瞬时定格（临时 smoothTime=0），不改磁盘 0.3（林恩可见手推仍要）。
+        /// </summary>
+        /// <remarks>
+        /// 替代：Forest 永久 smoothTime→0——否决（毁林恩）；只拉长 black hold——否决主修。
+        /// East→Forest 大 Δ 同路径一并受益。
+        /// </remarks>
+        private bool ShouldInstantSnapFollowOnSceneEnter()
+        {
+            string active = SceneManager.GetActiveScene().name;
+            if (active != SceneName.ForestScene)
+            {
+                return false;
+            }
+
+            var change = GameManager.GetGMComponent<ChangeSceneComponentGM>();
+            if (change == null)
+            {
+                return false;
+            }
+
+            string last = change.LastSceneName;
+            return last == SceneName.HomeScene1 || last == SceneName.ForestEastScene;
         }
 
         private void CheckPlayerHasInSpcArea(PlayerSceneData playerSceneData, PlayerLogic logic)

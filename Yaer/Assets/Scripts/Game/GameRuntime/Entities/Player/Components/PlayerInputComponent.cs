@@ -244,9 +244,15 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         /// <summary>
         /// 村庄纵深符号：键族推导。WASD：W=+1、S=-1；箭头：↑=+1、↓=-1；Custom：0。
+        /// 0922 进对话禁移 C：禁移时强制 0，禁止裸 GetKey 绕过 cantMove 灌进 Town。
         /// </summary>
         public float GetVillageExploreVerticalSign()
         {
+            if (cantMove)
+            {
+                return 0f;
+            }
+
             bool upHeld;
             bool downHeld;
             switch (ResolveVillageMoveKeyFamily())
@@ -333,6 +339,12 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         private bool IsBoundCommandKeyHeld(ControlInputType cmd)
         {
+            // 0922 进对话禁移 C：绑定键按住也须认 cantMove（键族单通道不回退）
+            if (cantMove)
+            {
+                return false;
+            }
+
             foreach (var kv in keyCodeToCmdDict)
             {
                 if (kv.Value == cmd && Input.GetKey(kv.Key))
@@ -504,6 +516,12 @@ namespace Game.GameRuntime.Entities.Player.Components
                 curPlayerAllCmds.Clear();// 不能移动时清除所有指令
             }
         }
+
+        /// <summary>
+        /// 是否允许位移意图。故事/锁区 <c>SetAllowMove(false)</c> 后为 false。
+        /// Town FixedUpdate 门闩读此属性（0922 进对话禁移 B）。
+        /// </summary>
+        public bool AllowMoveIntent => !cantMove;
 
         public void SetAllowFlip(bool value) => cantFlip = value;
 

@@ -555,6 +555,9 @@ namespace Game.GameRuntime.Entities.Player
                 ChangeStateToIdle();
             }
             componentSystem.GetComponent<PlayerMoveComponent>().StopMove();
+            // 0922 进对话禁移 A：Combat StopMove 清不掉 Town.depthVelocity；村场景当帧刹死
+            var town = componentSystem.TryGetComponent<TownPlayerLocomotion>();
+            town?.HaltVillageLocomotionForStory();
             canInStateSetPos = false;// 取消位移事件
         }
 
@@ -690,6 +693,8 @@ namespace Game.GameRuntime.Entities.Player
                 TryInjectVillageDepthYBoundsFromSceneMarkers(town);
                 // SetDepthYBounds 只改权威标量，须立刻写回刚体并套 WalkArea，避免首帧与标尺/多边形脱节（第三阶段执行说明 §5.1、P-06）。
                 town?.FlushAuthoritativeVillageTransformAfterSceneDepthInject();
+                // 0922 纵深影子 A：进村立刻显示脚底 Blob（可能曾被 Unground 关掉）
+                EnsureFootBlobShadowVisible();
             }
 
             // 与战斗状态机门闸对齐：村内 DNF 禁止跳跃与普攻（输入层已挡 Jump；此处防异常切到 Combat 仍起跳）
@@ -949,6 +954,40 @@ namespace Game.GameRuntime.Entities.Player
             if (knockBackComponent != null)
             {
                 knockBackComponent.StopKnockBackEffect();
+            }
+        }
+
+        /// <summary>
+        /// 0922 纵深影子 A：Village2_5D 下 Town 用 <c>velocity.y</c> 追权威 Y，GroundCheck 易抖成「空中」误关脚底 Blob。
+        /// 村内禁跳，纵深模式强制保持影子显示；非村仍走基类藏影子。
+        /// 替代（否决）：改 EnvironmentShadow；关掉整段纵深。
+        /// </summary>
+        public override void OnUnIsGround()
+        {
+            if (IsVillage25DLocomotionActive())
+            {
+                EnsureFootBlobShadowVisible();
+                return;
+            }
+
+            base.OnUnIsGround();
+        }
+
+        /// <summary>当前是否村庄 2.5D 探索（脚底影子显隐与落地解耦）。</summary>
+        private bool IsVillage25DLocomotionActive()
+        {
+            var input = componentSystem != null
+                ? componentSystem.GetComponent<PlayerInputComponent>()
+                : null;
+            return input != null && input.LocomotionMode == PlayerLocomotionMode.Village2_5D;
+        }
+
+        /// <summary>进村/纵深误 Unground 时把脚底 Blob 拉回可见。</summary>
+        public void EnsureFootBlobShadowVisible()
+        {
+            if (showdowArea != null && !showdowArea.activeSelf)
+            {
+                showdowArea.SetActive(true);
             }
         }
 

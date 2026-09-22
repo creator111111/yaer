@@ -12,9 +12,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Date;
 using Game.GameMgr.Component;
+using Game.GameMgr.Component.PureMVC;
 using Game.GameMgr.Component.UI;
 using Game.GameRuntime.Entities.Player.Components;
 using Game.GameRuntime.Entities.Player;
+using Game.GameRuntime.UI.FormLogic.Menu;
 using UnityEngine.U2D;
 
 namespace Game.GameRuntime.UI.FormLogic.Map
@@ -154,22 +156,41 @@ namespace Game.GameRuntime.UI.FormLogic.Map
             // 精灵村换场在 stayAction 里会主动关地图；此处复位防连点，避免下次打开 Map 仍不可点
             jingLingVillageBlackTransitionInProgress = false;
             homeRestartInProgress = false;
+
+            // 0922 P0-A：关图必恢复可 ESC 开菜单（与 OnOpen AllowOpenMenu(false) 成对）
             AllowOpenMenu(true);
+            // 兜底清 isOpenMenu：背包开图路径已关 Menu，若 OnMenuActive(false) 未落地，ESC 会被门闩挡住
+            ForceClearMenuActiveFlag();
+
             base.OnClose(isShutdown, userData);
 
             if (tween != null) { tween.Kill(); }
+
+            // 0922 P1-D：Resume 与 OnOpen Pause 对称；勿再要求 commonSfxCpn!=null（音效未绑时移动永久锁）
             var entityCpn = GameManager.GetGMComponent<EntityComponentGM>();
             if (entityCpn != null)
             {
                 var playerLogic = entityCpn.GetEntityLogic<PlayerLogic>();
-                if (playerLogic != null && playerLogic.commonSfxCpn != null)
-                {
-                    playerLogic.ResumeGameHandle();
-                }
+                playerLogic?.ResumeGameHandle();
             }
-            //GameManager.GetGMComponent<EntityComponentGM>().GetEntityLogic<PlayerLogic>().componentSystem.GetComponent<PlayerInputComponent>().SetAllowMove(true);
 
             PlayerOpenAudio();
+        }
+
+        /// <summary>
+        /// 清 <c>InputComponentGSM.isOpenMenu</c>，避免关图后 ESC ignored。
+        /// 店内离店语义由 Shop 自己的 <c>SetAllowOpenMenu(false)</c> 管，本方法只清菜单 Active 位。
+        /// </summary>
+        private static void ForceClearMenuActiveFlag()
+        {
+            var mvc = GameManager.GetGMComponent<MVCComponentGM>();
+            if (mvc == null)
+            {
+                return;
+            }
+
+            var proxy = mvc.GetProxy<MenuFormProxy>();
+            proxy?.OnMenuActive(false);
         }
 
         public void SetSign(string place)

@@ -2695,3 +2695,91 @@
 | Q1 | 每次进场景重掷 vs 存档只掷一次？ | **每次重掷**；不写 Archive | ✅ 已施工 |
 | Q2 | 中途读档？ | 场景重载则再掷 | ✅ |
 | Q3 | 改 ArtRes 合层 Prefab？ | **否**（场景已展开；旧 Prefab 无彩蛋对） | ✅ |
+
+---
+
+## ForestEast · 树洞行走镜头上漂 · 2026-09-22
+
+详见：`Assets/Doc/执行文档/0922/ForestEast_树洞行走镜头上漂_架构溯源报告.md`  
+**侦探结论**：0914 贴底仍在；上漂主因是 `CameraAction` DOMove **Camera 根 rig**（含 Confiner），0922 去掉 Stop→(0,0) 后 Y 残留，Snap 只 Force VCam 拉不回父节点。推荐 **B** 改晃动目标 + **A** Stop 仅复位 rig Y。禁止恢复全轴 (0,0)、禁止挪盒子。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 纯走路不上爬也会上漂？ | **推演否**；Play 复核 | ⏳ 待 Play |
+| Q2 | Stop 是否允许只复位 rig Y？ | **是**（勿全轴 0,0） | ✅ 已施工 |
+| Q3 | 是否回退 0922 Align / 去掉 (0,0)？ | **否**（闪滑会回潮） | ✅ |
+| Q4 | 挪 CameraTreeInArea？ | **否** | ✅ |
+| Q5 | 晃动实现？ | **B**：抖 Framing TrackedObjectOffset.y；禁抖 Camera 根 | ✅ 已施工 |
+
+---
+
+## 序章郊区链 · 城堡到东郊换场屏闪 · 2026-09-22
+
+详见：`Assets/Doc/执行文档/0922/序章郊区链_城堡到东郊_换场屏闪_架构溯源报告.md`  
+**侦探结论**：段① HS1→Forest = Stairs 同源（Forest 仍 0.3）；**禁止**整景改 0。段② Forest→East 磁盘已 0，残差查 Loading + FirstEnter AutoMove/Alpha。推荐 P0=进场 instantSnap（不改 Forest 字段）；P1=FirstEnter/Alpha。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | Forest 整景 smoothTime→0？ | **否** | ✅ |
+| Q2 | 东郊再改一遍 smoothTime？ | **否**（已 0） | ✅ |
+| Q3 | P0 用 A2 式进门 instant（LastScene 条件）？ | **是** | ✅ 已施工 |
+| Q4 | 截图半透明是否另票 Alpha？ | Play 分裁后定 | ⏳ 待 Play |
+
+---
+
+## 背包点地图后系统 UI 不显示 · 2026-09-22
+
+详见：`Assets/Doc/执行文档/0922/背包点地图后系统UI不显示_架构溯源报告.md`  
+**侦探结论**：系统 UI=MenuPanel。ESC 门闩=`isOpenMenu\|\|cantOpenMenu`。附图 35% 优先证伪 Loading+CantResponse（C）；纯关图查 flag 未清（A）与 ItemMap 二次点击只关菜单（B）。Resume 不对称为次因（D）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 用户路径是纯关图还是点了关卡/Home？ | Play 看有无 Loading / ESC 日志 | ⏳ 待 Play |
+| Q2 | P0 是否先做 A+B（清 flag + ItemMap）？ | **是**（+P1 Resume 对称） | ✅ 已施工 |
+| Q3 | 店内 ESC 语义？ | **保持离店** | ✅ |
+| Q4 | 章末地图链？ | **不动** | ✅ |
+| Q5 | 附图 35% Loading 残留（方案 C）？ | 仅当关图后仍卡进度再票 | ⏳ 待 Play |
+
+---
+
+## 进对话禁止玩家移动 · 2026-09-22
+
+详见：`Assets/Doc/执行文档/0922/进对话禁止玩家移动_架构溯源报告.md`  
+**侦探结论**：门口对白会走 `StoryTriggeredHandle`，但 Town 只认 `AllowControl`；村意图裸 `Input.GetKey` 绕过 `cantMove`；`StopMove` 不清 `depthVelocity`。推荐 **B+A+C**（Town 门闩 + 进故事 Halt + 意图认 cantMove）。否决只改门口 Trigger / 减速。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 是否只修门口 Trigger？ | **否**（公共路径） | ✅ |
+| Q2 | 黑幕阶段是否也要停？ | **默认可仅 onStoryTriggered**；产品要更早另补 | ⏳ 待产品 |
+| Q3 | 键族是否回退？ | **否**；只加 cantMove | ✅ |
+| Q4 | 方案 E 摩擦停？ | **否** | ✅ |
+| Q5 | P0 做 B+A+C？ | **是** | ✅ 已施工 |
+
+---
+
+## 纵深区主角影子消失 · 2026-09-22
+
+详见：`Assets/Doc/执行文档/0922/纵深区主角影子消失_架构溯源报告.md`  
+**侦探结论**：脚底 Blob，非 EnvironmentShadow。主因：纵深 `vy` 易触发 `OnUnIsGround` 关影子；且深度排序只写身体、影子 Order 钉 -1 易被地片盖。推荐 **A+B**。截图古莎像须分表。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 截图是雅尔还是古莎贴纸？ | Play Hierarchy 钉死 | ⏳ 待 Play |
+| Q2 | P0 是否 A+B 同做？ | **是** | ✅ 已施工 |
+| Q3 | 改 EnvironmentShadow？ | **否** | ✅ |
+| Q4 | 影子 Order 用 body−2？ | **是**（对拍怪物） | ✅ 已施工 |
+
+---
+
+## 门口剧情后隐藏村长并可进屋 · 2026-09-22
+
+详见：`Assets/Doc/执行文档/0922/门口剧情后隐藏村长并可进屋_架构溯源报告.md`  
+**侦探结论**：从未藏村长；`OnStoryFinished` 只自动进屋。须关 `Npc_Chief`+合层`村长`（结束+进村）。保留自动进屋（A+B）。`House_Chief` 未锁；`TriggerWhenMoveIn` 默认 0 可能造成「走进进不去」。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 是否关掉自动进屋？ | **否**（保留 B） | ✅ |
+| Q2 | 藏谁？ | **Npc_Chief + 合层村长** | ✅ 已施工 |
+| Q3 | House_Chief 是否改 TriggerWhenMoveIn=1？ | Play 证实走进无反应再做 F | ⏳ 待 Play |
+| Q4 | 只关侧面古莎充数？ | **否** | ✅ |
+| Q5 | P0 做 A+B？ | **是** | ✅ 已施工 |

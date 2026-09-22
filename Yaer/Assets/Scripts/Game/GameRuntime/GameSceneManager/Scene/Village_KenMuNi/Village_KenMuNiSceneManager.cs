@@ -10,6 +10,7 @@ using Game.GameRuntime.Entities.Base.BaseSceneObj;
 using Game.GameRuntime.Entities.MainNPC;
 using Game.GameRuntime.Entities.Player;
 using Game.GameRuntime.Entities.Player.Components;
+using Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi;
 using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.GameSceneManager.Component;
 using Game.GameRuntime.GameSceneManager.Component.CameraGSM;
@@ -73,6 +74,9 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
             TrySetSceneEntityActive<ForestSceneKingLogic>(false);
             TrySetSceneEntityActive<ForestSceneLaiLogic>(!sceneData.homeDoorStoryComplete);
             TrySetSceneEntityActive<ForestSceneLinEnLogic>(false);
+
+            // 0922 门口戏已用 → 藏 Npc_Chief + 合层「村长」（回村/读档与 OnStoryFinished 同构）
+            ApplyChiefNearDoorVisibilityFromArchive();
 
             var bgmNode = UIUtils.findChild(gameObject, "BGM");
             bgmSoundCpn = bgmNode.GetComponent<SoundToggleComponent>();
@@ -154,6 +158,83 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
             // G1：1 楼 LeftDoor（enterPosKey=Village_Chief_House_Door）→ 门前自动送树屋戏。
             // 须在开场兜底之后；开场已用 / 无 Running 时才可能启动。楼梯 2 楼键不进此分支。
             TryTriggerLeaveChiefEscortOnce();
+
+            // 出屋回门前再套一次藏人（防 OnInit 时序/引用未就绪）
+            ApplyChiefNearDoorVisibilityFromArchive();
+        }
+
+        /// <summary>
+        /// 0922 A：门口初次对话已用则关 <c>Npc_Chief</c> + 合层「村长」；未用则保持场景默认可见。
+        /// 严格认 <see cref="ChiefNearDoorStoryTrigger.DoorStoryPrefabName"/>，勿用 homeDoorStoryComplete 顶替。
+        /// </summary>
+        void ApplyChiefNearDoorVisibilityFromArchive()
+        {
+            var counts = GetArchiveData<StoryTriggerCountData>();
+            bool doorStoryUsed = counts != null
+                && counts.CheckStoryUsed(ChiefNearDoorStoryTrigger.DoorStoryPrefabName);
+            if (!doorStoryUsed)
+            {
+                return;
+            }
+
+            SetChiefNearDoorVisualsActive(false);
+        }
+
+        /// <summary>双关/双开门口村长视觉；合层无 Logic，不能走 TrySetSceneEntityActive。</summary>
+        void SetChiefNearDoorVisualsActive(bool active)
+        {
+            var npc = FindSceneObjectByName("Npc_Chief");
+            if (npc != null && npc.activeSelf != active)
+            {
+                npc.SetActive(active);
+            }
+
+            var portrait = FindSceneObjectByName(ChiefNearDoorStoryTrigger.CompositeChiefPortraitName);
+            if (portrait != null && portrait.activeSelf != active)
+            {
+                portrait.SetActive(active);
+            }
+        }
+
+        /// <summary>活动场景根下深度按名（含未激活子物体）。</summary>
+        static GameObject FindSceneObjectByName(string objectName)
+        {
+            var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            if (!scene.IsValid())
+            {
+                return null;
+            }
+
+            var roots = scene.GetRootGameObjects();
+            for (int i = 0; i < roots.Length; i++)
+            {
+                var found = FindDeepChildByName(roots[i].transform, objectName);
+                if (found != null)
+                {
+                    return found.gameObject;
+                }
+            }
+
+            return null;
+        }
+
+        static Transform FindDeepChildByName(Transform parent, string objectName)
+        {
+            if (parent.name == objectName)
+            {
+                return parent;
+            }
+
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var found = FindDeepChildByName(parent.GetChild(i), objectName);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

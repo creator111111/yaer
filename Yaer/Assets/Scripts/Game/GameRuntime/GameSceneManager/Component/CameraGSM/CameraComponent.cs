@@ -363,6 +363,26 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         }
 
         /// <summary>
+        /// 0922 树洞上漂：仅复位 Camera 根的 <b>local Y</b>（默认 0）。
+        /// <para>
+        /// 原因：旧爬行晃动误 DOMove 整棵 Camera 根（含 Confiner），Kill 后 Y 残留；
+        /// Snap 只 Force VCam、按已偏移盒底算 floor → 越走越高。
+        /// </para>
+        /// <para>禁止把 X/Z 拽成 0（会回潮 0922 出洞闪滑）。晃动应改抖 Framing 偏移，勿再抖根节点。</para>
+        /// </summary>
+        /// <param name="localY">场景设计锚点；ForestEast Camera 根为 0。</param>
+        public void ResetCameraRigLocalY(float localY = 0f)
+        {
+            var lp = transform.localPosition;
+            if (Mathf.Abs(lp.y - localY) <= 1e-5f)
+            {
+                return;
+            }
+
+            transform.localPosition = new Vector3(lp.x, localY, lp.z);
+        }
+
+        /// <summary>
         /// Ortho + Confine Screen Edges：把主 VCam 的 Y 贴到 Confiner 盒底边（最低合法中心）。
         /// 公式：<c>cameraY = bounds.min.y + OrthographicSize</c>（画面下沿 = 盒底）。
         /// <para>
@@ -371,8 +391,8 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         /// ForestEast <c>virtualCameraPart3=null</c>，只 Force 主 VCam。
         /// </para>
         /// <para>
-        /// 替代：临时改 ScreenY/TrackedObjectOffset（DeadZone=1 时语义绕，出洞易漏还原）；
-        /// 洞内第二 VCam；改边界几何——侦探否决。
+        /// 替代：洞内永久改 ScreenY/DeadZone（出洞易漏还原）；洞内第二 VCam；改边界几何——侦探否决。
+        /// 爬行晃动可临时改 TrackedObjectOffset.y，但必须在 Stop 时还原（见 TreeBridgeStoryMgr）。
         /// </para>
         /// </summary>
         /// <param name="confinerShape">当前已挂到 Confiner 的边界 Collider（如 CameraTreeInArea）。</param>

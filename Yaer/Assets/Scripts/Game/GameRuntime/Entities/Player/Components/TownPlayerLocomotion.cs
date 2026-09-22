@@ -88,6 +88,15 @@ namespace Game.GameRuntime.Entities.Player.Components
         [SerializeField]
         private float depthSortingFactorY = 100f;
 
+        /// <summary>脚底 Blob SR 缓存；离村还原 Prefab 默认 Order。</summary>
+        private SpriteRenderer _footBlobShadowSr;
+
+        /// <summary>Player.prefab 影子默认 sortingOrder（钉死 -1）。</summary>
+        private const int DefaultFootBlobShadowSortingOrder = -1;
+
+        /// <summary>影子相对身体 Order 偏移；对拍怪物尸体链 body−2（报告 B）。</summary>
+        private const int FootBlobShadowOrderBelowBody = 2;
+
         [Header("纵深：VillageWalkObstacle 阻挡（PlayerFoot）")]
         [Tooltip("为 true 时，在权威 Y 积分后对「PlayerFoot 探针」与 Layer=VillageWalkObstacle 做 Cast/夹紧，使 W/S 纵深可被区内障碍挡住（与纯 velocity 横移不同，须写回前几何限制）。")]
         [SerializeField]
@@ -316,6 +325,14 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
 
             var input = PlayerLogic.componentSystem.GetComponent<PlayerInputComponent>();
+            // 0922 进对话禁移 B：Town 只认 AllowControl 会漏故事/锁区；对话中按住键仍积分。
+            // 当帧清零并 return，禁止摩擦减速冒充停步。
+            if (ShouldBlockVillageLocomotion(input))
+            {
+                HaltVillageLocomotionForStory();
+                return;
+            }
+
             if (input == null || input.LocomotionMode != PlayerLocomotionMode.Village2_5D)
             {
                 return;
@@ -436,6 +453,59 @@ namespace Game.GameRuntime.Entities.Player.Components
         }
 
         /// <summary>
+        /// 0922 进对话禁移 B：故事中或输入层已禁移时，Town 不得再积分。
+        /// </summary>
+        private bool ShouldBlockVillageLocomotion(PlayerInputComponent input)
+        {
+            if (PlayerLogic != null && PlayerLogic.hasInStoryEventState)
+            {
+                return true;
+            }
+
+            return input != null && !input.AllowMoveIntent;
+        }
+
+        /// <summary>
+        /// 0922 进对话禁移 A：当帧清 <c>depthVelocity</c>、横移与刚体平面速。
+        /// Combat <c>StopMove</c> 清不掉村权威纵深；须由进故事路径显式调用。
+        /// 替代（否决）：加大摩擦慢慢停；只改门口 Trigger。
+        /// </summary>
+        public void HaltVillageLocomotionForStory()
+        {
+            depthVelocity = 0f;
+
+            if (PlayerLogic == null)
+            {
+                return;
+            }
+
+            if (_playerRootRb2D == null)
+            {
+                _playerRootRb2D = PlayerLogic.gameObject.GetComponent<Rigidbody2D>();
+            }
+
+            if (_playerRootRb2D != null)
+            {
+                _playerRootRb2D.velocity = Vector2.zero;
+            }
+
+            var move = PlayerLogic.componentSystem != null
+                ? PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>()
+                : null;
+            if (move != null)
+            {
+                move.moveSpeedY = 0f;
+                move.StopMoveInX();
+            }
+
+            // 立刻把 Walk 意图压掉，避免对话首帧还播走
+            if (enabled)
+            {
+                SyncWalkAnimatorParameter();
+            }
+        }
+
+        /// <summary>
         /// 由 <see cref="PlayerLogic.SetVillageExplorationMode"/> 调用：开关村庄逻辑并复位速度，避免离村残留惯性。
         /// </summary>
         public void ApplyVillageMode(bool active)
@@ -461,6 +531,8 @@ namespace Game.GameRuntime.Entities.Player.Components
                 _hasLastFreeVillagePose = false;
                 // 离村清权威落点旗，下次进村重新 defer ClosestPoint
                 _hasAuthoritativeVillageSpawnThisEnable = false;
+                // 0922 纵深影子 B：离村还原影子 Order，避免森林等横版残留村深度序
+                RestoreDefaultFootBlobShadowSortingOrder();
             }
             else
             {
@@ -1106,6 +1178,54 @@ namespace Game.GameRuntime.Entities.Player.Components
             // 与 DepthComponent「Y 越低越靠前」一致（文档 3.6）
             int order = Mathf.RoundToInt(-(w.y * depthSortingFactorY));
             spriteForDepthSort.sortingOrder = order;
+
+            // 0922 纵深影子 B：身体 Order 随 Y 变，影子若钉 Prefab -1 会被草地/合层盖住 =「消失」
+            // 对拍怪物：影子 = 身体 − 2（勿盖过人脚）
+            ApplyFootBlobShadowSortingOrder(order);
+        }
+
+        /// <summary>写脚底 Blob sortingOrder = bodyOrder − <see cref="FootBlobShadowOrderBelowBody"/>。</summary>
+        private void ApplyFootBlobShadowSortingOrder(int bodyOrder)
+        {
+            var shadowSr = ResolveFootBlobShadowSpriteRenderer();
+            if (shadowSr == null)
+            {
+                return;
+            }
+
+            shadowSr.sortingOrder = bodyOrder - FootBlobShadowOrderBelowBody;
+        }
+
+        private void RestoreDefaultFootBlobShadowSortingOrder()
+        {
+            var shadowSr = ResolveFootBlobShadowSpriteRenderer();
+            if (shadowSr == null)
+            {
+                return;
+            }
+
+            shadowSr.sortingOrder = DefaultFootBlobShadowSortingOrder;
+        }
+
+        private SpriteRenderer ResolveFootBlobShadowSpriteRenderer()
+        {
+            if (_footBlobShadowSr != null)
+            {
+                return _footBlobShadowSr;
+            }
+
+            if (PlayerLogic == null || PlayerLogic.showdowArea == null)
+            {
+                return null;
+            }
+
+            _footBlobShadowSr = PlayerLogic.showdowArea.GetComponent<SpriteRenderer>();
+            if (_footBlobShadowSr == null)
+            {
+                _footBlobShadowSr = PlayerLogic.showdowArea.GetComponentInChildren<SpriteRenderer>(true);
+            }
+
+            return _footBlobShadowSr;
         }
 
         /// <summary>与 <see cref="WriteRootTransformWithAuthoritativeDepthY"/> 一致：用刚体 XY 作为 WalkArea 判定参考点（执行说明 §5.2）。</summary>

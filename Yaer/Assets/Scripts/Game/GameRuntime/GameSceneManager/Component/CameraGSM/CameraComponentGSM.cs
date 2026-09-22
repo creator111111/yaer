@@ -56,6 +56,24 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         /// </remarks>
         public void SetFollowInstantForArchiveStart(Transform target, Action onComplete = null)
         {
+            SetFollowInstantSnapInternal(target, onComplete);
+        }
+
+        /// <summary>
+        /// 序章链等门换场进场定格（0922）：临时 smoothTime=0，当帧对齐后还原场景字段。
+        /// <para>
+        /// 用于进 <c>ForestScene</c>（来自城堡/东郊）等「磁盘必须保留 0.3」的场景；
+        /// <b>禁止</b>改 Forest 磁盘字段；<b>禁止</b>林恩 <c>OnDialogueEnd</c> 调用本 API。
+        /// </para>
+        /// </summary>
+        public void SetFollowInstantForSceneEnter(Transform target, Action onComplete = null)
+        {
+            SetFollowInstantSnapInternal(target, onComplete);
+        }
+
+        /// <summary>临时 smoothTime=0 → SetFollow(forceSnap) → 回调里还原。</summary>
+        private void SetFollowInstantSnapInternal(Transform target, Action onComplete)
+        {
             if (target is null)
             {
                 Log.Error("target为空");

@@ -10558,6 +10558,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1948841490}
     m_Modifications:
+    - target: {fileID: 6983132278727507417, guid: 3d24231045a0614438f37d7cba4b5649,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 5.0357666
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983132278727507417, guid: 3d24231045a0614438f37d7cba4b5649,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.7296481
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983132278727507417, guid: 3d24231045a0614438f37d7cba4b5649,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: -0.072891235
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983132278727507417, guid: 3d24231045a0614438f37d7cba4b5649,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.21123338
+      objectReference: {fileID: 0}
     - target: {fileID: 6983132279513824222, guid: 3d24231045a0614438f37d7cba4b5649,
         type: 3}
       propertyPath: m_SortingOrder
@@ -19872,7 +19892,7 @@ PolygonCollider2D:
       - {x: -4.218141, y: -2.6928635}
       - {x: 5.714157, y: -3.0850716}
       - {x: 17.767807, y: 5.183071}
-      - {x: 26.811615, y: 7.2344627}
+      - {x: 23.973106, y: 6.7167473}
       - {x: 23.388504, y: 7.423794}
       - {x: 15.3367, y: 6.775181}
       - {x: 8.632163, y: 2.6005936}
@@ -20859,7 +20879,7 @@ MonoBehaviour:
   anchorOverride: {fileID: 4137765881751695108}
   playerLogicOverride: {fileID: 0}
   invertPlayerVersusAnchorComparison: 0
-  sortingOrderWhenDefaultLayer: 9
+  sortingOrderWhenDefaultLayer: 18
   sortingOrderWhenSceneObjectLayer: 3
   updateEveryNthFrame: 1
   debugLogOnLayerChange: 0

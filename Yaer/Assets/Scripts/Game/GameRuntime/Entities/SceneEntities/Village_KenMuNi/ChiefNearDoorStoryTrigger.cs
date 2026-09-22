@@ -64,6 +64,14 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
         [SerializeField]
         private bool loadChiefHouseOnStoryEnd = true;
 
+        [Header("对白结束 → 藏村长（0922）")]
+        [Tooltip("合层装饰贴画「村长」；留空则按名在场景树深度查找。")]
+        [SerializeField]
+        private GameObject compositeChiefPortrait;
+
+        /// <summary>合层装饰 SR 物体名（与场景 Unicode 名一致）。</summary>
+        public const string CompositeChiefPortraitName = "村长";
+
         /// <summary>正在开黑 / 等壳 / 等超时；防 Enter 连打。</summary>
         private bool _orchestrating;
 
@@ -226,6 +234,7 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
 
         /// <summary>
         /// 0902 F1：对白结束 → 日常黑幕 <c>LoadScene(Village_Chief_House)</c>（默认 blackFade:true）。
+        /// 0922 A：进屋前藏 <c>Npc_Chief</c> + 合层「村长」，避免切场前/回村仍见人。
         /// 仅当本 Trigger 播的是门口初次对话，且开关开启。
         /// 原因：产品日常进屋不要 LoadingPanel；API <c>LoadSceneWithLoadingPanel</c> 留给时间跳转，勿删。
         /// 续聊遮罩由村长家 GSM 的 <c>TryDeferBlackFadeForCover</c>（F1′）接手，勿挂 stayAction。
@@ -234,17 +243,20 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
         {
             base.OnStoryFinished();
 
-            if (!loadChiefHouseOnStoryEnd)
-            {
-                return;
-            }
-
-            // 防误伤：Story 名须钉死门口初次对话（场景改绑其它剧情时不进屋）
+            // 防误伤：Story 名须钉死门口初次对话（场景改绑其它剧情时不藏人/不进屋）
             if (ResolveStoryPrefabName() != DoorStoryPrefabName)
             {
                 Debug.LogWarning(
-                    $"[ChiefNearDoor] 跳过自动进屋：Story={ResolveStoryPrefabName()} ≠ {DoorStoryPrefabName}",
+                    $"[ChiefNearDoor] 跳过藏人/自动进屋：Story={ResolveStoryPrefabName()} ≠ {DoorStoryPrefabName}",
                     this);
+                return;
+            }
+
+            // 0922 A：必须双关；只关 Npc 合层仍见贴画。自动进屋失败/回村由 GSM 再套一次。
+            HideChiefNearDoorVisuals();
+
+            if (!loadChiefHouseOnStoryEnd)
+            {
                 return;
             }
 
@@ -260,6 +272,76 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
                 this);
             // 默认 blackFade:true → BlackPanel；禁止再走 LoadSceneWithLoadingPanel
             loadGsm.LoadScene(SceneName.Village_Chief_House);
+        }
+
+        /// <summary>
+        /// 藏门口交互体 + 合层贴画。Npc_Chief 挂在本 GO 上；合层「村长」无 Logic，只能 SetActive。
+        /// </summary>
+        public void HideChiefNearDoorVisuals()
+        {
+            if (gameObject.activeSelf)
+            {
+                gameObject.SetActive(false);
+            }
+
+            var portrait = ResolveCompositeChiefPortrait();
+            if (portrait != null && portrait.activeSelf)
+            {
+                portrait.SetActive(false);
+            }
+        }
+
+        /// <summary>解析合层「村长」；优先序列化引用，再深度按名（含未激活父节点下的 Find）。</summary>
+        private GameObject ResolveCompositeChiefPortrait()
+        {
+            if (compositeChiefPortrait != null)
+            {
+                return compositeChiefPortrait;
+            }
+
+            compositeChiefPortrait = FindSceneObjectByName(CompositeChiefPortraitName);
+            return compositeChiefPortrait;
+        }
+
+        /// <summary>活动场景根下深度按名查找（可找到未激活子物体）。</summary>
+        private static GameObject FindSceneObjectByName(string objectName)
+        {
+            var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            if (!scene.IsValid())
+            {
+                return null;
+            }
+
+            var roots = scene.GetRootGameObjects();
+            for (int i = 0; i < roots.Length; i++)
+            {
+                var found = FindDeepChildByName(roots[i].transform, objectName);
+                if (found != null)
+                {
+                    return found.gameObject;
+                }
+            }
+
+            return null;
+        }
+
+        private static Transform FindDeepChildByName(Transform parent, string objectName)
+        {
+            if (parent.name == objectName)
+            {
+                return parent;
+            }
+
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var found = FindDeepChildByName(parent.GetChild(i), objectName);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+
+            return null;
         }
 
         private void OnStoryShellReady()
