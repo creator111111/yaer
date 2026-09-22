@@ -198,6 +198,11 @@ namespace Game.GameRuntime.Entities.Player.Components
         private const float VillageDepthYWriteEpsilon = 0.0001f;
 
         /// <summary>
+        /// 有纵深时 WalkArea 微修正平方阈值：小于此视为 inset/浮点噪声，不硬 snap（0922 方案 A）。
+        /// </summary>
+        private const float VillageDepthPolygonMicroCorrectSqr = 0.0004f; // 0.02²，对齐默认 inset
+
+        /// <summary>
         /// 物理步后「这一步 Y 几乎没动」的判定。贴面后刚体常有一点点滑移，不能用 <see cref="VillageDepthYWriteEpsilon"/>，
         /// 否则会当成还在动，继续全速往下挤（0919 下方发闷）。
         /// </summary>
@@ -325,18 +330,30 @@ namespace Game.GameRuntime.Entities.Player.Components
             // 已重叠时不要覆盖——否则保险会把「栏杆里面」当成合法点，人焊死在墙里。
             TryCaptureVillageLastFreePose();
 
-            // Vertical → 纵深 Y；系数削弱输入，避免「一步跨太大」
-            float inputAxis = Input.GetAxisRaw("Vertical");
-            float inputH = Input.GetAxisRaw("Horizontal");
-            float inputDepth = inputAxis * verticalInputScale;
+            // 纵深：键族推导符号（0922）；禁止裸 GetAxisRaw("Vertical") 双开另一族
+            float depthSign = input.GetVillageExploreVerticalSign();
+            bool indoorVillage = SceneName.IsIndoorVillageExplorationScene(SceneManager.GetActiveScene().name);
+            // 0922 速票：室内对齐其它 Home 手感——村街 Prefab 的 0.6 会让 W/S 起速发闷；室内按满量输入。
+            // 替代：全局改 Prefab verticalInputScale=1——会加快 KenMuNi1 纵深，否决。
+            float depthInputScale = indoorVillage ? 1f : verticalInputScale;
+            float inputDepth = depthSign * depthInputScale;
             float dt = Time.fixedDeltaTime;
             float planarSpeed = ResolveVillagePlanarMoveSpeed();
 
             if (Mathf.Abs(inputDepth) > VillagePlanarInputDeadZone)
             {
-                depthVelocity += inputDepth * depthAcceleration * dt;
-                // 方案 A（0818）：纯 W 满速接到目标走速，不再被 depthMaxSpeed(5.5) 卡住，否则纯纵永远慢于纯横。
-                depthVelocity = Mathf.Clamp(depthVelocity, -planarSpeed, planarSpeed);
+                // 室内：其它 Home 是 SetWalkSpeed 瞬时满速；Town 加速度爬坡会显得「拖」。有意图直接接到 ±planar。
+                // 村街仍走加速度（保留 0818 斜向/纵深手感）。
+                if (indoorVillage)
+                {
+                    depthVelocity = Mathf.Sign(inputDepth) * planarSpeed;
+                }
+                else
+                {
+                    depthVelocity += inputDepth * depthAcceleration * dt;
+                    // 方案 A（0818）：纯 W 满速接到目标走速，不再被 depthMaxSpeed(5.5) 卡住，否则纯纵永远慢于纯横。
+                    depthVelocity = Mathf.Clamp(depthVelocity, -planarSpeed, planarSpeed);
+                }
             }
             else
             {
@@ -374,15 +391,16 @@ namespace Game.GameRuntime.Entities.Player.Components
             {
                 bool clampedLow = yBeforeClamp < depthYMinWorld - 1e-4f;
                 bool clampedHigh = yBeforeClamp > depthYMaxWorld + 1e-4f;
-                string clampHint = clampedHigh && inputAxis > 0.01f
+                string clampHint = clampedHigh && depthSign > 0.01f
                     ? "CLAMP_AT_YMAX(按W无效时检查 depthYMaxWorld)"
-                    : clampedLow && inputAxis < -0.01f
+                    : clampedLow && depthSign < -0.01f
                         ? "CLAMP_AT_YMIN(按S无效时检查 depthYMinWorld)"
                         : "clamp_ok";
                 PlayerMoveComponent moveForLog = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
                 Debug.Log(
-                    $"[TownLocomotion] scene={SceneManager.GetActiveScene().name} dt={dt:F4} axisH={inputH:F3} intentH={input.HasVillageExploreHorizontalMoveIntent()} " +
-                    $"axisV={inputAxis:F3} intentV={input.HasVillageExploreVerticalMoveIntent()} branch={planarBranch} " +
+                    $"[TownLocomotion] scene={SceneManager.GetActiveScene().name} dt={dt:F4} " +
+                    $"intentH={input.HasVillageExploreHorizontalMoveIntent()} signH={input.GetVillageExploreHorizontalSign():F0} " +
+                    $"intentV={input.HasVillageExploreVerticalMoveIntent()} signV={depthSign:F0} family={input.ResolveVillageMoveKeyFamily()} branch={planarBranch} " +
                     $"inputDepth={inputDepth:F3} depthVel={depthVelocity:F3} " +
                     $"vx={(moveForLog != null ? moveForLog.moveSpeedX : 0f):F3} " +
                     $"planar={planarSpeed:F2} (legacyDepthMax={depthMaxSpeed:F2}) " +
@@ -631,6 +649,10 @@ namespace Game.GameRuntime.Entities.Player.Components
         /// <para>
         /// 原因（0901）：村长家为楼梯进白名单开 Town 后误吃 <c>villagePlanarMoveSpeed=11.2</c>，
         /// 其它村民家仍 Default+<c>walkSpeed=4.2</c>。S1：仅室内村探索场景覆写为 WalkSpeed；KenMuNi1 仍 11.2。
+        /// </para>
+        /// <para>
+        /// 0922 产品复测「仍偏慢、要对齐其它室内」：目标数仍是 WalkSpeed（与 Home 同源），
+        /// 勿改回 11.2（会比村民家快 ~2.7×）。发闷手感改室内纵深瞬时满速 / 输入 scale（见 OnFixedUpdate）。
         /// </para>
         /// <para>替代方案：撤白名单降速——会丢 W/S 楼梯，否决；全局改 11.2→4.2——拖慢村街，否决。</para>
         /// </summary>
@@ -910,6 +932,65 @@ namespace Game.GameRuntime.Entities.Player.Components
             }
         }
 
+        /// <summary>
+        /// 当前是否应按「有纵深」保护插值（0922 方案 A）。
+        /// </summary>
+        private bool ShouldPreserveInterpolationDuringDepthLocomotion()
+        {
+            if (Mathf.Abs(depthVelocity) > VillageDepthYWriteEpsilon)
+            {
+                return true;
+            }
+
+            if (PlayerLogic == null || PlayerLogic.componentSystem == null)
+            {
+                return false;
+            }
+
+            var input = PlayerLogic.componentSystem.GetComponent<PlayerInputComponent>();
+            return input != null && input.HasVillageExploreVerticalMoveIntent();
+        }
+
+        /// <summary>
+        /// 日常走路位姿收口（WalkArea / 脚分离）。
+        /// <para>
+        /// 0922 方案 A：有纵深时只写 <see cref="Rigidbody2D.position"/> 与权威 Y，
+        /// <b>不写</b> <c>transform.position</c>、<b>不清</b> <c>vy</c>——避免每物理步掐插值导致人台阶 + CM 追抽。
+        /// 纯左右（无纵深）仍写 transform 并清 vy，与 0919 一致。
+        /// </para>
+        /// <para>进村/传送/保险拉回仍走全量硬写路径，勿经本方法。</para>
+        /// <para>替代（否决）：关掉全部 WalkArea 夹紧——会穿出可走区；先动 CM 阻尼——治标。</para>
+        /// </summary>
+        private void CommitVillageLocomotionPoseCorrection(Vector2 worldXy)
+        {
+            if (_playerRootRb2D == null)
+            {
+                return;
+            }
+
+            float clampedY = Mathf.Clamp(worldXy.y, depthYMinWorld, depthYMaxWorld);
+            Vector2 pose = new Vector2(worldXy.x, clampedY);
+            bool preserveDepth = ShouldPreserveInterpolationDuringDepthLocomotion();
+
+            _villageWorldY = clampedY;
+            _playerRootRb2D.position = pose;
+
+            if (preserveDepth)
+            {
+                // 只动刚体：Interpolation 继续；vy 留给 WriteRoot 追权威 Y。
+                // 禁止此处 SyncTransforms：会把落后的画面 Transform 写回刚体，抵消本次修正。
+                return;
+            }
+
+            Vector2 v = _playerRootRb2D.velocity;
+            _playerRootRb2D.velocity = new Vector2(v.x, 0f);
+            ZeroVillageMoveSpeedY();
+            if (PlayerLogic != null)
+            {
+                PlayerLogic.transform.position = new Vector3(pose.x, pose.y, _frozenWorldZ);
+            }
+        }
+
         private IEnumerator PostPhysicsResyncDepthCoroutine()
         {
             var wait = new WaitForFixedUpdate();
@@ -927,7 +1008,8 @@ namespace Game.GameRuntime.Entities.Player.Components
                     continue;
                 }
 
-                // 物理步已经走完。禁止再按差多少就补多少速度去追权威 Y。多边形和障碍收口仍要跑。
+                // 物理步已经走完。禁止再按差多少就补多少速度去追权威 Y。
+                // 多边形/障碍收口：有纵深时 Commit 少写 transform（0922 A）；越界仍 snap 刚体。
                 SettleAuthoritativeYAfterPhysicsWithoutChasing();
                 // MoveComponent 等可能在同一物理帧改 X：在 WaitForFixedUpdate 后再收一次多边形，避免贴边穿出（执行说明 §8）。
                 Vector2 rootRbBeforeWalkPolygon = _playerRootRb2D != null ? _playerRootRb2D.position : new Vector2(PlayerLogic.transform.position.x, PlayerLogic.transform.position.y);
@@ -944,11 +1026,8 @@ namespace Game.GameRuntime.Entities.Player.Components
 
         /// <summary>
         /// 供 Home 子状态机（Idle/Bink/Walk）使用：村庄模式下是否应视为「纵深在移动」。
-        /// <para>优先用 <see cref="depthVelocity"/> 与 <see cref="walkAnimatorDeadZone"/> 对齐 Animator；若首帧尚未积分，则用 <c>Vertical</c> 轴门控，避免纯 W/S 卡在 Idle（执行说明 §5.2，不改 <c>HasMoveInput</c>）。</para>
-        /// <para><b>替代方案</b>：扩展 <c>PlayerInputComponent.HasMoveInput</c> 含纵轴可能与「禁止改输入系统」冲突，故集中在本组件判定。</para>
-        /// <para><b>判定顺序说明</b>：必须先校验 <see cref="PlayerLocomotionMode.Village2_5D"/> 与竖轴，再校验本脚本 <c>enabled</c>。
-        /// 若先判 <c>!enabled</c>，在 <see cref="ApplyVillageMode"/> 将 <c>enabled=true</c> 之前、或同一帧内状态机早于本组件逻辑时，
-        /// 会出现「已切村庄模式且按住 W/S，但 Idle 仍不进 <see cref="Game.GameRuntime.Entities.Player.Components.CsAnimator.Home.HomeWalkState"/>」的断层（Animator 子状态 Idle 仅响应 <c>IdleSubState</c> 退出，单靠 <c>Walk</c> 参数无法从 Idle 子态直接切到 Walk，必须靠 C# 先退出子状态机）。</para>
+        /// <para>优先用 <see cref="depthVelocity"/> 与 <see cref="walkAnimatorDeadZone"/> 对齐 Animator；若首帧尚未积分，则用键族纵深意图门控，避免纯 W/S 卡在 Idle（执行说明 §5.2，不改 <c>HasMoveInput</c>）。</para>
+        /// <para>0922：纵深意图改走 <see cref="PlayerInputComponent.HasVillageExploreVerticalMoveIntent"/>，禁止裸 Vertical 轴。</para>
         /// </summary>
         public bool HasVillageDepthMoveForHomeStateMachine()
         {
@@ -963,8 +1042,8 @@ namespace Game.GameRuntime.Entities.Player.Components
                 return false;
             }
 
-            // 与 OnFixedUpdate 同源：按住 W/S 即视为有纵深意图，不依赖本帧是否已执行过 FixedUpdate 积分
-            if (Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f)
+            // 与 OnFixedUpdate 同源：键族纵深按住即视为有意图，不依赖本帧是否已 FixedUpdate 积分
+            if (input.HasVillageExploreVerticalMoveIntent())
             {
                 return true;
             }
@@ -982,12 +1061,14 @@ namespace Game.GameRuntime.Entities.Player.Components
         {
             var move = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
             float horizontalSpeed = move != null ? Mathf.Abs(move.moveSpeedX) : 0f;
-            // 未启用时 depthVelocity 不再积分，但横移与竖轴仍应能驱动 Walk，避免纯 A/D 或「仅竖轴」时 Animator 与 Home 子状态机脱节
+            // 未启用时 depthVelocity 不再积分，但横移与纵深意图仍应能驱动 Walk
             float depthSpeed = enabled ? Mathf.Abs(depthVelocity) : 0f;
-            // 与 HasVillageDepthMoveForHomeStateMachine 一致：首帧 depth 尚未积分时仍推 Walk，避免 Animator 与 HomeWalkState 脱节
+            var input = PlayerLogic.componentSystem.GetComponent<PlayerInputComponent>();
+            bool depthIntent = input != null && input.HasVillageExploreVerticalMoveIntent();
+            // 与 HasVillageDepthMoveForHomeStateMachine 一致：首帧 depth 尚未积分时仍推 Walk
             bool walk =
                 horizontalSpeed + depthSpeed > walkAnimatorDeadZone
-                || Mathf.Abs(Input.GetAxisRaw("Vertical")) > 0.01f;
+                || depthIntent;
             // 仅同步 Walk：Run 由战斗子状态机（CombatIdle/CombatRun）独占，若在此写 Run 会与 SetAnimatorEnter/Exit 打架，
             // 出现「C# 已在 Idle、Animator 仍停在 Run」→ BaseStateMachine 等不到 IsName(Idle)，整卡死（先 AD 再 WS 典型复现）。
             SyncWalkMotionBoolIfPresent(PlayerLogic.animator, walk);
@@ -1320,21 +1401,20 @@ namespace Game.GameRuntime.Entities.Player.Components
 
             Vector2 p = _playerRootRb2D.position;
             Vector2 corrected = ClampWorldPointToPolygonInterior(poly, p, walkPolygonInsetEpsilon);
-            if ((corrected - p).sqrMagnitude <= 1e-10f)
+            float deltaSqr = (corrected - p).sqrMagnitude;
+            if (deltaSqr <= 1e-10f)
             {
                 return;
             }
 
-            _villageWorldY = corrected.y;
-            _playerRootRb2D.position = corrected;
-            Vector2 v = _playerRootRb2D.velocity;
-            _playerRootRb2D.velocity = new Vector2(v.x, 0f);
-            PlayerLogic.transform.position = new Vector3(corrected.x, corrected.y, _frozenWorldZ);
-            var move = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
-            if (move != null)
+            // 有纵深时：inset/浮点级微修正不硬 snap，否则每步掐插值（0922 方案 A）
+            if (ShouldPreserveInterpolationDuringDepthLocomotion()
+                && deltaSqr < VillageDepthPolygonMicroCorrectSqr)
             {
-                move.moveSpeedY = 0f;
+                return;
             }
+
+            CommitVillageLocomotionPoseCorrection(corrected);
         }
 
         /// <summary>
@@ -1491,19 +1571,14 @@ namespace Game.GameRuntime.Entities.Player.Components
                 }
 
                 Vector2 p = _playerRootRb2D.position + accumulated;
-                _playerRootRb2D.position = p;
-                _villageWorldY = p.y;
-                PlayerLogic.transform.position = new Vector3(p.x, p.y, _frozenWorldZ);
-                Vector2 v = _playerRootRb2D.velocity;
-                _playerRootRb2D.velocity = new Vector2(v.x, 0f);
-                var move = PlayerLogic.componentSystem.GetComponent<PlayerMoveComponent>();
-                if (move != null)
-                {
-                    move.moveSpeedY = 0f;
-                }
+                CommitVillageLocomotionPoseCorrection(p);
 
-                // 本轮改了 Transform，下一轮查询前必须让碰撞体跟上。平时走路不要在循环开头 Sync。
-                Physics2D.SyncTransforms();
+                // 有纵深时未写 transform：不要 SyncTransforms（会把落后画面位写回刚体）。
+                // 无纵深时 Commit 已对齐 transform，Sync 供下一轮 Overlap 查询。
+                if (!ShouldPreserveInterpolationDuringDepthLocomotion())
+                {
+                    Physics2D.SyncTransforms();
+                }
 
                 LogVillageObstacleDepth(
                     $"foot penetration separation iter={iter} Δ=({accumulated.x:F4},{accumulated.y:F4}) pos=({p.x:F3},{p.y:F3})");

@@ -86,10 +86,11 @@ public class ForestEastTreeBridgeStoryMgr : BaseSceneStoryMgr
     }
 
     /// <summary>
-    /// 锟斤拷/锟斤拷锟斤拷锟斤拷锟叫伙拷锟斤拷锟斤拷锟斤拷呓锟斤拷锟�? OrthoSize锟斤拷
-    /// 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷 A锟斤拷锟斤拷锟叫猴拷 + Size=5 锟襟，帮拷 <c>bounds.min.y + orthoSize</c> Force 只锟斤拷 Y锟斤拷锟斤拷 <c>CameraTreeInArea</c> 锟阶边★拷
-    /// 锟斤拷锟侥边斤拷锟绞诧拷锟斤拷锟斤拷锟斤拷锟斤拷 false锟斤拷锟斤拷 CameraArea + Size 7.9锟斤拷锟斤拷锟斤拷 ScreenY/Offset 锟斤拷锟斤拷锟斤拷
-    /// 锟斤拷锟斤拷锟斤拷锟节讹拷锟斤拷锟斤拷同一 API锟斤拷<c>CheckPlayerHasInSpcArea</c>锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷路锟斤拷
+    /// 进/出洞：切换边界与 OrthoSize。
+    /// 进洞：Size=5 后按 bounds.min.y + orthoSize Force 只改 Y，贴 CameraTreeInArea 底边。
+    /// 出洞：Reset Size 7.9，还原 CameraArea。
+    /// 读档洞内同一 API（CheckPlayerHasInSpcArea）。
+    /// 揭幕前须再调 <see cref="AlignCameraAfterTreeBridgeChange"/>（策略 T）。
     /// </summary>
     public void ChangeCamera(bool isEnterTree, CameraComponentGSM cameraMgr)
     {
@@ -98,11 +99,10 @@ public class ForestEastTreeBridgeStoryMgr : BaseSceneStoryMgr
         var targetColliderArea = isEnterTree ? storyLogic.newCameraBoundingArea : storyLogic.oldCameraBoundingArea;
         var colliderArea = targetColliderArea.GetComponent<PolygonCollider2D>();
         cameraMgr.ChangeCameraBoundingArea(colliderArea);
-        // 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟绞撅拷锟斤拷锟�?
         if (isEnterTree)
         {
             cameraMgr.ChangeVirtualCameraShowSize(5);
-            // 锟斤拷锟斤拷锟斤拷锟阶ｏ拷DeadZoneHeight=1 锟斤拷锟斤拷 Y锟斤拷锟斤拷锟斤拷锟斤拷锟酵ｏ拷诤戏锟斤拷锟斤拷?锟斤拷 锟斤拷 头锟斤拷锟秸★拷锟斤拷止魔锟斤拷锟斤拷 -2.9锟斤拷
+            // 进洞贴底：DeadZoneHeight=1 不跟 Y；禁止魔法数 -2.9
             cameraMgr.SnapLiveOrthoYToConfinerFloor(colliderArea);
         }
         else
@@ -114,6 +114,37 @@ public class ForestEastTreeBridgeStoryMgr : BaseSceneStoryMgr
         // 时序：黑幕仍盖着时开始 DOFade（方案 A）；若要揭幕后才淡改 A+B。
         storyLogic.OuterSpriteFade(isEnterTree ? 0f : 1f);
     }
+
+    /// <summary>
+    /// 策略 T（0922）：ChangeCamera 后、揭幕前全轴贴玩家。
+    /// 东郊已 smoothTime=0，SetFollow(forceSnap) 当帧对齐；进洞再 Snap Y 保留 0914 贴底。
+    /// 不关洞内 CameraAction 爬行晃动；不挪 CameraTreeInArea。
+    /// </summary>
+    /// <remarks>
+    /// 原因：只 Snap Y + 立刻 CloseFormFade 时，CM Framing 多帧追 X → 闪/滑；与进场 smoothTime 无关。
+    /// 替代：拉长黑幕 hold —— 契约面大，否决作主修。
+    /// </remarks>
+    public void AlignCameraAfterTreeBridgeChange(
+        bool isEnterTree,
+        CameraComponentGSM cameraMgr,
+        Transform playerRoot)
+    {
+        if (cameraMgr == null || playerRoot == null)
+        {
+            return;
+        }
+
+        cameraMgr.SetFollow(playerRoot);
+        if (isEnterTree && storyLogic != null && storyLogic.newCameraBoundingArea != null)
+        {
+            var treeIn = storyLogic.newCameraBoundingArea.GetComponent<PolygonCollider2D>();
+            if (treeIn != null)
+            {
+                cameraMgr.SnapLiveOrthoYToConfinerFloor(treeIn);
+            }
+        }
+    }
+
     public void CameraAction()
     {
         var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
@@ -128,8 +159,6 @@ public class ForestEastTreeBridgeStoryMgr : BaseSceneStoryMgr
                 {
                     PlayTreeBridgeMoveSfx();
                 }),
-                //GameActionMgr.runMoveToWorldPosAction(mainCamera, new Vector2(basePos.x, basePos.y-0.3f), 0.2f).SetEase(Ease.Linear),
-                //GameActionMgr.runMoveToWorldPosAction(mainCamera, new Vector2(basePos.x, basePos.y), 0.2f).SetEase(Ease.Linear),
             };
         cameraTween?.Kill(true);
         cameraTween = GameActionMgr.runSequenceAction(mainCamera, moveTweens).SetLoops(-1);
@@ -141,14 +170,12 @@ public class ForestEastTreeBridgeStoryMgr : BaseSceneStoryMgr
         var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
         var cameraMgr = sceneMgr.GetModule<CameraComponentGSM>();
         var mainCamera = cameraMgr.CameraComponent.gameObject;
-        //DOTween.Kill(mainCamera.transform, true);
-        //DOTween.Kill(cameraTween, true);
         cameraTween.Kill(true);
         mainCamera.transform.DOKill(true);
-        // 锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟截癸拷原锟姐（OPEN Q3锟斤拷拽 MainCamera 锟斤拷 (0,0) 锟斤拷锟斤拷锟斤拷Brain 锟斤拷帧锟斤拷腔兀锟斤拷锟斤拷诓锟斤拷模锟�?
-        GameActionMgr.runMoveToWorldPosAction(mainCamera, Vector2.zero, 0.1f).SetEase(Ease.Linear);
+        // 0922：禁止拽 MainCamera→(0,0)。旧写法与 Cinemachine Brain 抢位，出洞揭幕加重闪滑。
+        // 替代：只 Kill 爬行晃动 Tween，机位留给后续 ChangeCamera + Align。
 
-        // OPEN Q2锟斤拷锟斤拷锟斤拷 CameraAction 锟斤拷锟斤拷锟斤拷 MainCamera锟斤拷锟斤拷锟斤拷锟矫革拷 VCam锟斤拷停锟斤拷锟斤拷锟斤拷锟斤拷锟节讹拷锟斤拷锟斤拷锟斤拷一锟轿底边★拷
+        // 停晃后若仍在洞内，再贴一次底边（OPEN Q2）
         if (playerIsInTreeBridge && storyLogic != null && storyLogic.newCameraBoundingArea != null)
         {
             var treeIn = storyLogic.newCameraBoundingArea.GetComponent<PolygonCollider2D>();

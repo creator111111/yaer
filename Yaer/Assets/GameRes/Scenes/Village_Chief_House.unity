@@ -3118,12 +3118,12 @@ GameObject:
   - component: {fileID: 3996078496726022887}
   - component: {fileID: 3741143007752481009}
   m_Layer: 0
-  m_Name: "\u5149"
+  m_Name: "\u5DE6\u5149"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3446033328515111869
 Transform:
   m_ObjectHideFlags: 0
@@ -3231,15 +3231,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 694918277
+  m_SortingLayer: 8
   m_SortingOrder: 14
-  m_Sprite: {fileID: 21300000, guid: 072e30d52be25184c9862c7c8fa781c8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5f88e2b11c8cd884ba4ecfebc677a18b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 43.88571, y: 10.799999}
+  m_Size: {x: 39.94, y: 10.804082}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -3336,7 +3336,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 6c0e33912c49dca42ad57191585d8173, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2efa6fd26ce7eb8449c5c060a4ad6c25, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3355,7 +3355,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3212343797716102535}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 21.7, y: 5.44, z: 0.6666668}
+  m_LocalPosition: {x: 19.97, y: 5.41, z: 0.6666668}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8912268226331786818}
@@ -4264,7 +4264,7 @@ MonoBehaviour:
   streetPriority: 10
   part3PriorityWhenActive: 20
   part3PriorityWhenStandby: 0
-  smoothTime: 0.3
+  smoothTime: 0
   followSnapOffset: {x: 0, y: 0, z: 0}
   useUnscaledTimeForHandSnap: 1
   maxHandSnapRealSeconds: 2.5

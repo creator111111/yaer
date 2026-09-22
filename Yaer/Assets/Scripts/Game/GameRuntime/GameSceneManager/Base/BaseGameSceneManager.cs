@@ -334,9 +334,19 @@ namespace Game.GameRuntime.GameSceneManager.Base
                 }
 
                 // 设置摄像机跟随
-                GetModule<CameraComponentGSM>().SetFollow(logic.gameObject.transform);
+                // 读档：无 blackFade hold，强制当帧定格（0922 A2）；门换场仍读场景 smoothTime
+                var cameraGsm = GetModule<CameraComponentGSM>();
+                var procedure = GameManager.GetGMComponent<ProcedureComponentGM>();
+                if (procedure != null && procedure.archiveStart)
+                {
+                    cameraGsm.SetFollowInstantForArchiveStart(logic.gameObject.transform);
+                }
+                else
+                {
+                    cameraGsm.SetFollow(logic.gameObject.transform);
+                }
                 // 检测人物是否处于某些特殊区域
-                CheckPlayerHasInSpcArea(playerSceneData);
+                CheckPlayerHasInSpcArea(playerSceneData, logic);
 
                 OpenFightingPanel();
 
@@ -351,13 +361,19 @@ namespace Game.GameRuntime.GameSceneManager.Base
             });
         }
 
-        private void CheckPlayerHasInSpcArea(PlayerSceneData playerSceneData)
+        private void CheckPlayerHasInSpcArea(PlayerSceneData playerSceneData, PlayerLogic logic)
         {
             if (playerSceneData.isInTreeBridge)
             {
                 // 在树洞中需要调整摄像机数据
                 var cameraMgr = GetModule<CameraComponentGSM>();
                 ForestEastTreeBridgeStoryMgr.getInstance().ChangeCamera(true, cameraMgr);
+                // 策略 T：ChangeCamera 后全轴贴玩家再贴底，避免读档洞内只 Snap Y 即揭幕闪滑
+                if (logic != null)
+                {
+                    ForestEastTreeBridgeStoryMgr.getInstance().AlignCameraAfterTreeBridgeChange(
+                        true, cameraMgr, logic.gameObject.transform);
+                }
             }
         }
 

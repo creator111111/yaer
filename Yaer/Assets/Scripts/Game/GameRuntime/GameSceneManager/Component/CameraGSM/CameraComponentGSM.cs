@@ -44,6 +44,45 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
             cameraComponent.SetFollow(target, onComplete, forceSnapToTarget);
         }
 
+        /// <summary>
+        /// 读档进场：临时把 <c>smoothTime</c> 置 0，当帧定格后再还原。
+        /// 原因（0922）：<c>LoadGame</c> 无 <c>mapTransitionBlackHoldSeconds</c>，
+        /// 仍为 0.3 的场景揭幕比门换场更早，手推未收束即露景。
+        /// 仅限 <c>archiveStart</c> 窗口调用，勿用于林恩等故意软推路径。
+        /// </summary>
+        /// <remarks>
+        /// 替代：只批改场景字段——漏网 0.3 / 未序列化默认 0.3 仍会闪。
+        /// 禁止全局改所有 SetFollow；禁止用拉长读档黑幕当主修。
+        /// </remarks>
+        public void SetFollowInstantForArchiveStart(Transform target, Action onComplete = null)
+        {
+            if (target is null)
+            {
+                Log.Error("target为空");
+                return;
+            }
+
+            if (cameraComponent == null)
+            {
+                Log.Error("CameraComponentGSM未挂载CameraComponent组件");
+                return;
+            }
+
+            if (isLock)
+            {
+                Log.Debug("CameraComponentGSM被锁定");
+                return;
+            }
+
+            float savedSmooth = cameraComponent.smoothTime;
+            cameraComponent.smoothTime = 0f;
+            cameraComponent.SetFollow(target, () =>
+            {
+                cameraComponent.smoothTime = savedSmooth;
+                onComplete?.Invoke();
+            }, true);
+        }
+
         public void CancelFollow()
         {
             // 商店等未绑 CameraComponent 的场景：避免进场空引用直接炸
