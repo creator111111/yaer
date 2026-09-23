@@ -9,6 +9,7 @@ using Game.GameRuntime.Entities.Component;
 using Game.GameRuntime.Entities.Component.Health;
 using Game.GameRuntime.Entities.Player;
 using Game.GameRuntime.UI.FormLogic.Base;
+using Game.GameRuntime.UI.FormLogic.ChapterEndPanel;
 using Game.GameRuntime.UI.FormLogic.Fighting;
 using Game.Static.Name.Clothes;
 using System.Collections;
@@ -353,6 +354,14 @@ namespace Game.GameRuntime.UI.FormLogic
                 // 【核心】从隐藏切到显示：非「剧情刚结束补显」则立即应用；若来自 OnStoryEnd，则必须走协程延迟，见 _storyEndBattleImageDelay 注释说明。
                 if (fromStoryEndRestore)
                 {
+                    // 0924：章末面板已开则不要排程延迟恢复（否则 ~0.4s 后立绘回潮透出）。
+                    if (ChapterEndFormLogic.IsChapterEndPanelBlockingBattleImage)
+                    {
+                        CancelPendingStoryEndBattleImageShow();
+                        Debug.Log("[ChapterEnd] OnStoryEnd 恢复被拦截：章末面板打开中，不排程延迟显立绘");
+                        return;
+                    }
+
                     _lastStoryEndRestoreScheduleTime = Time.unscaledTime;
                     CancelPendingStoryEndBattleImageShow();
                     // 此处不调用 ApplyBattleImageShowNow，避免与紧接 OnStoryEnd 后立刻开启的教学/自言自语对话抢同一帧的显示权导致闪屏。
@@ -371,8 +380,9 @@ namespace Game.GameRuntime.UI.FormLogic
 
         /// <summary>
         /// 取消「OnStoryEnd 后延迟再显」的协程。典型触发：下一段对话 OnStoryPrefabLoad 里会先把战斗立绘关为不可见，此处必须停掉，否则延迟结束仍会再打开立绘并闪烁。
+        /// 0924：章末 <c>ChapterEndPanel</c> OnOpen 也会调，避免延迟恢复在标题/地图下透出立绘。
         /// </summary>
-        private void CancelPendingStoryEndBattleImageShow()
+        public void CancelPendingStoryEndBattleImageShow()
         {
             if (_deferredShowBattleImageRoutine == null) { return; }
             StopCoroutine(_deferredShowBattleImageRoutine);
@@ -381,6 +391,13 @@ namespace Game.GameRuntime.UI.FormLogic
 
         private void ApplyBattleImageShowNow()
         {
+            // 章末面板存活期间禁止点亮 Illustration（Bottom 会透出 Top 章末/地图）。
+            if (ChapterEndFormLogic.IsChapterEndPanelBlockingBattleImage)
+            {
+                Debug.Log("[ChapterEnd] ApplyBattleImageShowNow 被拦截：章末面板打开中");
+                return;
+            }
+
             illustration.gameObject.SetActive(true);
 
             float hpPercent = HPSlider.value;
@@ -397,6 +414,7 @@ namespace Game.GameRuntime.UI.FormLogic
         /// 与「国王演出结束 → 立刻教学对话」类流程配合：用 Realtime 等待错开一帧/数帧，使紧接其后的对话已调用关闭战斗立绘时，上文的 <see cref="CancelPendingStoryEndBattleImageShow"/> 已停掉本协程，从而不再误显。<br/>
         /// <b>勿删除此协程与延迟</b>，否则 <c>OnStoryEnd</c> 与下一段对话的立绘显隐会再次打架，易复现闪烁。
         /// </para>
+        /// <para>0924：等待结束后若章末面板仍开着，直接 abort，不 Apply（保留 delay 秒数，禁改为 0）。</para>
         /// </summary>
         private IEnumerator CoDeferredShowBattleImageAfterStory()
         {
@@ -407,6 +425,11 @@ namespace Game.GameRuntime.UI.FormLogic
             if (configData == null) { yield break; }
             if (!configData.showBattleImage || !ForestSceneData.homeDoorStoryComplete) { yield break; }
             if (isBattleImageVisible) { yield break; }
+            if (ChapterEndFormLogic.IsChapterEndPanelBlockingBattleImage)
+            {
+                Debug.Log("[ChapterEnd] CoDeferredShow 中止：章末面板仍打开，不恢复战斗立绘");
+                yield break;
+            }
             ApplyBattleImageShowNow();
         }
 

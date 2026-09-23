@@ -2689,13 +2689,30 @@
 ## 游戏左下角版本号 1.0.5 · 2026-09-22
 
 详见：`Assets/Doc/执行文档/0922/游戏左下角版本号1.0.5_架构溯源报告.md`  
-**侦探结论**：方案 A — 新 `VersionPanel` @ System，文案=`Application.version`，`bundleVersion`→`1.0.5`；须抗 `CloseAllUIForm`。否决只挂主菜单。
+**侦探结论（0922）**：方案 A — `VersionPanel` @ System，常驻抗 CloseAll。  
+**产品覆盖（0924）**：仅主界面显示 → 见下节；**撤销**局内常驻。
 
 | ID | 问题 | 决议 / 施工默认 | 状态 |
 |----|------|-----------------|------|
-| Q1 | 文案是否带 `v` 前缀？ | **否**（纯 `1.0.5`） | ✅ 侦探已定 |
-| Q2 | CloseAll 后 Ensure 还是 filter？ | **均可**；施工选一，勿叠多份 | ⏳ 待施工 |
-| Q3 | 战斗左下与血条重叠？ | 极小字贴角 + 关 Raycast | ✅ 侦探已定 |
+| Q1 | 文案是否带 `v` 前缀？ | **否**（纯 `1.0.5`） | ✅ |
+| Q2 | CloseAll 后 Ensure / filter？ | 0922 已施工；**0924 撤销** | ♻️ **见 0924** |
+| Q3 | 战斗左下与血条重叠？ | 极小字 + 关 Raycast | ✅ |
+
+---
+
+## 版本号仅主界面显示 · 2026-09-24
+
+详见：`Assets/Doc/执行文档/0924/版本号仅主界面显示_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0924/版本号仅主界面显示_施工说明.md`  
+**侦探结论**：**P1** — `CloseAllUIForm` 跳过 Version + 末尾 Ensure → 进局仍有。拍板 **M1**：CloseAll 不再保活；仅 `OpenMainMenu` Ensure；文案仍 `Application.version`。禁改 bundleVersion、禁继续常驻。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 局内为何仍有版本号？ | CloseAll filter + Ensure | ✅ **已施工** |
+| Q2 | 方案？ | **M1**（主菜单开 / 进局随 CloseAll 关） | ✅ **已施工** |
+| Q3 | 回主菜单？ | `OpenMainMenu` Ensure | ✅ |
+| Q4 | 改 1.0.5 数值？ | **否** | ✅ |
+| Q5 | M2 SetActive？ | **否** | ✅ |
 
 ---
 
@@ -2965,3 +2982,19 @@
 | Q3 | F1 是读数错还是设计门？ | **(b) 读数正确**；验收先 held&lt;10；公式不改 | ✅ **已施工确认** |
 | Q4 | 改卖端？ | **否** | ✅ |
 | Q5 | 关 stackRoom 门？ | **否** | ✅ |
+
+---
+
+## 章末不要显示战斗立绘 · 2026-09-24
+
+详见：`Assets/Doc/执行文档/0924/章末不要显示战斗立绘_架构溯源报告.md`  
+施工说明：`Assets/Doc/施工说明/0924/章末不要显示战斗立绘_施工说明.md`  
+**侦探结论**：**H1** — `OnStoryEnd` 延迟恢复 FightingPanel `Illustration`；`ChapterEndPanel` 不关不拦。Bottom 立绘在 Top 章末/地图下透出（H2）。上游 `ChapterEndStory_0`。修：OnOpen 强制关 + 章末存活期拦截 restore；保留 delay。禁改设置默认。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 章末为何露战斗立绘？ | **H1** OnStoryEnd 延迟恢复 | ✅ **已施工** |
+| Q2 | 改 delay=0 / 关设置默认？ | **否** | ✅ |
+| Q3 | 只抬 sorting？ | **否**（不消 H1） | ✅ |
+| Q4 | 章末期间拦截 restore？ | **是** + OnOpen 强制关 | ✅ **已施工** |
+| Q5 | OnClose 恢复规则？ | 跟设置 + `homeDoorStoryComplete` | ✅ **已施工** |

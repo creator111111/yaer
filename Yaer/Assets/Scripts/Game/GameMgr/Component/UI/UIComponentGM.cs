@@ -119,7 +119,7 @@ namespace Game.GameMgr.Component.UI
         }
 
         /// <summary>
-        /// 幂等打开左下角版本号（0922）。已加载则不再 Open，避免叠多份。
+        /// 幂等打开左下角版本号。0924：仅主菜单调用；进局后随 CloseAll 关掉，不再补开。
         /// </summary>
         public void EnsureVersionForm()
         {
@@ -133,17 +133,17 @@ namespace Game.GameMgr.Component.UI
         }
 
         /// <summary>
-        ///  关闭所有界面
+        /// 关闭所有界面
         /// </summary>
-        /// <param name="filter"> 过滤不关闭的界面</param>
+        /// <param name="filter">过滤不关闭的界面（如换场黑幕）</param>
         /// <remarks>
-        /// 0922：永久不过滤失败时仍 Ensure——VersionPanel 不随换场/读档 CloseAll 消失。
-        /// 调用方 filter 的 BlackPanel 等仍优先保留。
+        /// 0924：版本号仅主界面显示——CloseAll <strong>不再</strong>跳过/末尾 Ensure VersionPanel；
+        /// 进局、换场、读档清屏后左下不应再有版本号。回主菜单由 <c>OpenMainMenu</c>→Ensure 再开。
+        /// 替代（否决）：0922 常驻保活；M2 进局 SetActive(false)。
         /// </remarks>
         public void CloseAllUIForm(params UIForm[] filter)
         {
            var forms =  uiComponent.GetAllLoadedUIForms();
-           UIForm versionForm = GetUIForm(UIPrefabPath.VersionPanel);
            foreach (var form in forms)
            {
                if (filter != null && filter.Contains(form))
@@ -151,17 +151,8 @@ namespace Game.GameMgr.Component.UI
                    continue;
                }
 
-               // 常驻版本号：勿被「只留黑幕」清掉
-               if (versionForm != null && ReferenceEquals(form, versionForm))
-               {
-                   continue;
-               }
-
                uiComponent.CloseUIForm(form);
            }
-
-           // 若此前尚未打开（或被其它路径关掉），清屏后补开一份
-           EnsureVersionForm();
         }
 
         /// <summary>

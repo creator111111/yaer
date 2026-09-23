@@ -3,6 +3,8 @@ using Game.GameMgr;
 using Game.GameMgr.Component;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
 using Game.GameMgr.Component.UI;
+using Game.GameMgr.Manager.Settings;
+using Game.GameMgr.Manager.Settings.Helper;
 using Game.GameRuntime.Entities.Player;
 using Game.GameRuntime.Entities.Player.Components;
 using Game.GameRuntime.GameSceneManager.Base;
@@ -21,6 +23,12 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
     // 章节结束界面
     public class ChapterEndFormLogic : BaseUIFormLogic
     {
+        /// <summary>
+        /// 0924：章末面板存活期间为 true，供 FightingFormLogic / StoryComponentGSM
+        /// 拦截 OnStoryEnd 延迟恢复战斗立绘（设置「显示战斗立绘」开时也不露）。
+        /// </summary>
+        public static bool IsChapterEndPanelBlockingBattleImage { get; private set; }
+
         public GameObject maskBg;
         public GameObject imgTitle;
         public GameObject imgTextTalk_1;
@@ -172,11 +180,67 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
         {
             AllowOpenMenu(false);
             base.OnOpen(userData);
+            // 0924 H1：章末开时立刻关立绘并拦截后续 OnStoryEnd 延迟恢复（保留 Fighting 侧 delay 秒数）。
+            SuppressBattleIllustrationForChapterEnd();
             DisablePlayerLogic();
             if (mapLogic != null)
             {
                 mapLogic.SetAllowEscapeClose(false);
             }
+        }
+
+        /// <summary>
+        /// 强制关 Illustration + Cancel 延迟恢复协程，并升起静态拦截旗。
+        /// 只关立绘，不 Close FightingPanel（避免误伤血条 HUD）。
+        /// </summary>
+        private void SuppressBattleIllustrationForChapterEnd()
+        {
+            IsChapterEndPanelBlockingBattleImage = true;
+            var fighting = TryGetFightingFormLogic();
+            if (fighting == null)
+            {
+                Debug.Log("[ChapterEnd] SuppressBattleIllustration：FightingPanel 未打开，仅升起拦截旗");
+                return;
+            }
+
+            fighting.CancelPendingStoryEndBattleImageShow();
+            fighting.UpdateBattleImageVisiable(false);
+            Debug.Log("[ChapterEnd] SuppressBattleIllustration：已 CancelPending + UpdateBattleImageVisiable(false)");
+        }
+
+        /// <summary>
+        /// 章末关闭后按设置 + homeDoorStoryComplete 规则恢复（与现 UpdateBattleImageVisiable 对齐）。
+        /// 村内未完成出门剧情时仍保持关。
+        /// </summary>
+        private void RestoreBattleIllustrationAfterChapterEnd()
+        {
+            IsChapterEndPanelBlockingBattleImage = false;
+            var fighting = TryGetFightingFormLogic();
+            if (fighting == null)
+            {
+                return;
+            }
+
+            var settingManager = GameManager.GetManager<SettingManager>();
+            var configData = settingManager != null
+                ? settingManager.LoadSetting<SettingsConfigData>()
+                : null;
+            var show = configData != null && configData.showBattleImage;
+            fighting.UpdateBattleImageVisiable(show);
+            Debug.Log($"[ChapterEnd] RestoreBattleIllustration：showBattleImage={show}（仍受 homeDoorStoryComplete 门控）");
+        }
+
+        private static FightingFormLogic TryGetFightingFormLogic()
+        {
+            var ui = GameManager.GetGMComponent<UIComponentGM>();
+            if (ui == null)
+            {
+                return null;
+            }
+
+            var path = UIPrefabPath.GetUIPrefabPath("FightingPanel");
+            var form = ui.GetUIForm(path);
+            return form != null ? form.Logic as FightingFormLogic : null;
         }
 
         void DisablePlayerLogic()
@@ -697,8 +761,13 @@ namespace Game.GameRuntime.UI.FormLogic.ChapterEndPanel
         {
             KillChapterEndTalkTweensOnClose();
             AllowOpenMenu(true);
+            // 0924：放下拦截旗，再按设置/场景规则恢复立绘。
+            RestoreBattleIllustrationAfterChapterEnd();
             base.OnClose(isShutdown, userData);
-            mapLogic.SetAllowEscapeClose(true);
+            if (mapLogic != null)
+            {
+                mapLogic.SetAllowEscapeClose(true);
+            }
             if (playerLogic != null) { playerLogic.DisablePlayerMove(false); }
             if (sceneManager != null)
             {
