@@ -138,6 +138,8 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         /// <summary>
         /// 失焦或提交时把字符串规整为非负整数；空串回退默认值。
         /// IntegerNumber 会挡大部分非法键，此处兜底粘贴/脚本写入。
+        /// <para>注意：本方法<strong>不含</strong>持有/购买力上限；业务上限见
+        /// <see cref="ClampQuantityToCap"/>，由行组件在失焦/变更时调用。</para>
         /// </summary>
         public static int ParseAndClampQuantity(string rawText, int fallback = DefaultQuantity)
         {
@@ -167,6 +169,16 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             }
 
             return Mathf.Max(0, value);
+        }
+
+        /// <summary>
+        /// 把已解析数量钳到 [0, maxInclusive]。
+        /// maxInclusive &lt; 0 时按 0（无购买力/无持有时输任何数都回 0）。
+        /// </summary>
+        public static int ClampQuantityToCap(int quantity, int maxInclusive)
+        {
+            var safeMax = Mathf.Max(0, maxInclusive);
+            return Mathf.Clamp(quantity, 0, safeMax);
         }
 
         /// <summary>

@@ -368,7 +368,7 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         /// 原因：旧爬行晃动误 DOMove 整棵 Camera 根（含 Confiner），Kill 后 Y 残留；
         /// Snap 只 Force VCam、按已偏移盒底算 floor → 越走越高。
         /// </para>
-        /// <para>禁止把 X/Z 拽成 0（会回潮 0922 出洞闪滑）。晃动应改抖 Framing 偏移，勿再抖根节点。</para>
+        /// <para>禁止把 X/Z 拽成 0（会回潮 0922 出洞闪滑）。爬行仍可抖根节点；Stop 后必须调本方法清 Y。</para>
         /// </summary>
         /// <param name="localY">场景设计锚点；ForestEast Camera 根为 0。</param>
         public void ResetCameraRigLocalY(float localY = 0f)
@@ -392,7 +392,7 @@ namespace Game.GameRuntime.GameSceneManager.Component.CameraGSM
         /// </para>
         /// <para>
         /// 替代：洞内永久改 ScreenY/DeadZone（出洞易漏还原）；洞内第二 VCam；改边界几何——侦探否决。
-        /// 爬行晃动可临时改 TrackedObjectOffset.y，但必须在 Stop 时还原（见 TreeBridgeStoryMgr）。
+        /// 爬行晃动仍 DOMove Camera 根（产品要看得见抖）；Stop 必须先本方法清 local Y 再 Snap，禁止全轴 (0,0)。
         /// </para>
         /// </summary>
         /// <param name="confinerShape">当前已挂到 Confiner 的边界 Collider（如 CameraTreeInArea）。</param>

@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using DG.Tweening;
-using Cinemachine;
 using Game.GameMgr;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.BaseDataClass;
 using Game.GameRuntime.Entities.Player;
@@ -24,13 +24,7 @@ public class ForestEastTreeBridgeStoryMgr : BaseSceneStoryMgr
         return instance;
     }
 
-    /// <summary>爬行晃动改抖 Framing TrackedObjectOffset.y 时记录的基线，Stop 必须还原。</summary>
-    private float _climbShakeOffsetBaseY;
-
-    /// <summary>当前参与晃动的 Framing；Stop / 缺引用时清空。</summary>
-    private CinemachineFramingTransposer _climbShakeFraming;
-
-    /// <summary>晃动幅度（世界单位）；与旧 DOMove ±0.3 手感对齐。</summary>
+    /// <summary>爬行晃动单程抬升（世界 Y）；与历史 DOMove ±0.3 一致。</summary>
     private const float ClimbCameraShakeAmplitude = 0.3f;
 
     /// <summary>单程晃动时长（秒）。</summary>
@@ -155,6 +149,13 @@ public class ForestEastTreeBridgeStoryMgr : BaseSceneStoryMgr
         }
     }
 
+    /// <summary>
+    /// 洞内爬行镜头晃动：恢复原版 DOMove Camera 根 Y±0.3 循环（产品要的抖动手感）。
+    /// <para>
+    /// 0922 上漂根因是 Stop 后根 Y 残留；治上漂靠 Stop 的 <c>ResetCameraRigLocalY</c>，
+    /// 不要改成抖 Framing（DeadZoneHeight=1 时几乎看不见）。禁止 Stop 全轴→(0,0)。
+    /// </para>
+    /// </summary>
     public void CameraAction()
     {
         var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
@@ -169,54 +170,40 @@ public class ForestEastTreeBridgeStoryMgr : BaseSceneStoryMgr
             return;
         }
 
-        // 0922 上漂：禁止再 DOMove Camera 根（会连带 Confiner 上移）。
-        // 改抖 FramingTransposer.TrackedObjectOffset.y —— 只抬构图，不动盒几何。
-        // 替代（否决）：抖 MainCamera 本地 —— Brain 每帧覆盖；恢复 Stop→(0,0) —— 出洞闪滑回潮。
-        var vcam = cameraMgr.CameraComponent.VirtualCamera;
-        var framing = vcam != null
-            ? vcam.GetCinemachineComponent<CinemachineFramingTransposer>()
-            : null;
-        if (framing == null)
-        {
-            Debug.LogWarning("[TreeBridgeCam] CameraAction：无 FramingTransposer，跳过爬行晃动（避免误抖 Camera 根）。");
-            return;
-        }
+        var camRoot = cameraMgr.CameraComponent.gameObject;
 
-        // 若历史残留把根抬高了，开晃前先清 Y（只 local Y）
+        // 开晃前先清历史残留 Y，避免在已抬高的基线上再抖 → 越走越高
         cameraMgr.CameraComponent.ResetCameraRigLocalY();
-
         cameraTween?.Kill(true);
-        RestoreClimbShakeFramingOffset();
+        camRoot.transform.DOKill(true);
 
-        _climbShakeFraming = framing;
-        _climbShakeOffsetBaseY = framing.m_TrackedObjectOffset.y;
-        float baseY = _climbShakeOffsetBaseY;
-        float peakY = baseY + ClimbCameraShakeAmplitude;
-
+        var basePos = camRoot.transform.position;
         PlayTreeBridgeMoveSfx();
 
-        var up = DOTween.To(
-                () => _climbShakeFraming != null ? _climbShakeFraming.m_TrackedObjectOffset.y : baseY,
-                y => SetClimbShakeOffsetY(y),
-                peakY,
-                ClimbCameraShakeHalfDuration)
-            .SetEase(Ease.Linear);
+        // 与历史实现同构：世界坐标 Y 抬 0.3 → 回基线，循环；保留爬行音效节奏
+        List<Tween> moveTweens = new List<Tween>
+        {
+            GameActionMgr.runMoveToWorldPosAction(
+                    camRoot,
+                    new Vector2(basePos.x, basePos.y + ClimbCameraShakeAmplitude),
+                    ClimbCameraShakeHalfDuration)
+                .SetEase(Ease.Linear),
+            GameActionMgr.runMoveToWorldPosAction(
+                    camRoot,
+                    new Vector2(basePos.x, basePos.y),
+                    ClimbCameraShakeHalfDuration)
+                .SetEase(Ease.Linear)
+                .OnComplete(() => { PlayTreeBridgeMoveSfx(); }),
+        };
 
-        var down = DOTween.To(
-                () => _climbShakeFraming != null ? _climbShakeFraming.m_TrackedObjectOffset.y : baseY,
-                y => SetClimbShakeOffsetY(y),
-                baseY,
-                ClimbCameraShakeHalfDuration)
-            .SetEase(Ease.Linear)
-            .OnComplete(() => { PlayTreeBridgeMoveSfx(); });
-
-        cameraTween = DOTween.Sequence()
-            .Append(up)
-            .Append(down)
-            .SetLoops(-1)
-            .SetAutoKill(false);
+        cameraTween = GameActionMgr.runSequenceAction(camRoot, moveTweens).SetLoops(-1);
+        cameraTween.SetAutoKill(false);
     }
 
+    /// <summary>
+    /// 停爬：Kill 晃动 → 仅复位 Camera 根 local Y → 洞内再贴底。
+    /// 禁止 <c>DOMove → (0,0)</c>（0922 出洞闪滑）。
+    /// </summary>
     public void StopCameraAction()
     {
         var sceneMgr = GameManager.GetGameSceneManager() as BaseGameSceneManager;
@@ -231,15 +218,13 @@ public class ForestEastTreeBridgeStoryMgr : BaseSceneStoryMgr
             return;
         }
 
+        var camRoot = cameraMgr.CameraComponent.gameObject;
         cameraTween?.Kill(true);
         cameraTween = null;
+        camRoot.transform.DOKill(true);
 
-        // 还原 Framing 晃动偏移（方案 B）
-        RestoreClimbShakeFramingOffset();
-
-        // 方案 A：仅清 Camera 根 local Y；禁止全轴 →(0,0)
+        // 方案 A：只清 local Y；世界 X/Z 留给 Brain / Align
         cameraMgr.CameraComponent.ResetCameraRigLocalY();
-        cameraMgr.CameraComponent.transform.DOKill(true);
 
         // 停晃后若仍在洞内，再贴一次底边（OPEN Q2 / 0914）
         if (playerIsInTreeBridge && storyLogic != null && storyLogic.newCameraBoundingArea != null)
@@ -250,31 +235,6 @@ public class ForestEastTreeBridgeStoryMgr : BaseSceneStoryMgr
                 cameraMgr.SnapLiveOrthoYToConfinerFloor(treeIn);
             }
         }
-    }
-
-    /// <summary>写入 Framing TrackedObjectOffset.y（仅 Y）。</summary>
-    private void SetClimbShakeOffsetY(float y)
-    {
-        if (_climbShakeFraming == null)
-        {
-            return;
-        }
-
-        var o = _climbShakeFraming.m_TrackedObjectOffset;
-        o.y = y;
-        _climbShakeFraming.m_TrackedObjectOffset = o;
-    }
-
-    /// <summary>Stop / 重开晃动前：把 Offset.y 收回归档基线。</summary>
-    private void RestoreClimbShakeFramingOffset()
-    {
-        if (_climbShakeFraming == null)
-        {
-            return;
-        }
-
-        SetClimbShakeOffsetY(_climbShakeOffsetBaseY);
-        _climbShakeFraming = null;
     }
 
     public void PlayTreeBridgeMoveSfx()

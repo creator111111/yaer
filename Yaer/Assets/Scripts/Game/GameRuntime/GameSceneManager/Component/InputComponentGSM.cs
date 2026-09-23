@@ -96,6 +96,16 @@ namespace Game.GameRuntime.GameSceneManager.Component
             });
         }
 
+        /// <summary>
+        /// 0922 关地图等路径：强制恢复「可 ESC 开菜单」两旗。
+        /// 不代替店内 <c>SetAllowOpenMenu(false)</c>；仅在明确结束禁菜单 UI 后调用。
+        /// </summary>
+        public void ForceClearMenuEscGate()
+        {
+            isOpenMenu = false;
+            cantOpenMenu = false;
+        }
+
         public override void OnShutdown()
         {
             base.OnShutdown();

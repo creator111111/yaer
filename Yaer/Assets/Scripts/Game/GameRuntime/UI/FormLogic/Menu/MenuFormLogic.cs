@@ -215,12 +215,45 @@ namespace Game.GameRuntime.UI.FormLogic.Menu
             btnLoad.gameObject.SetActive(sceneMgr.canShowLoadGame);
             btnItem.gameObject.SetActive(sceneMgr.canShowItemBag);
 
+            // 0922：池化重开时若 Center 曾被 ItemShow 藏成 alpha=0 且错过恢复，OnEnable 会纠正；
+            // 这里再兜底一次，避免只剩金币、按钮全无。
+            EnsureMenuCenterVisibleIfItemShowClosed();
+
             // 打开菜单时刷新一次日历数字图片，确保与存档日期一致
             var dayNumDisplay = GetComponentInChildren<MenuCalendarDayNumDisplay>(true);
             dayNumDisplay?.RefreshFromArchive();
 
             // 0829：Money 区读真实金币 → 商店同款图片数字（自然位数，无前导零）
             RefreshMoneyFromArchive();
+        }
+
+        /// <summary>
+        /// ItemShow 未开时强制 Center CanvasGroup 可见（对齐 MenuCenterHideWhenItemShowPanel）。
+        /// </summary>
+        private void EnsureMenuCenterVisibleIfItemShowClosed()
+        {
+            string itemShowPath = UIPrefabPath.GetUIPrefabPath("ItemShowPanel");
+            var uiGm = GameManager.GetGMComponent<UIComponentGM>();
+            if (uiGm != null && uiGm.GetUIForm(itemShowPath) != null)
+            {
+                return;
+            }
+
+            var center = FindDeepChild(transform, "Center");
+            if (center == null)
+            {
+                return;
+            }
+
+            var cg = center.GetComponent<CanvasGroup>();
+            if (cg == null)
+            {
+                return;
+            }
+
+            cg.alpha = 1f;
+            cg.interactable = true;
+            cg.blocksRaycasts = true;
         }
 
         protected internal override void OnReveal()

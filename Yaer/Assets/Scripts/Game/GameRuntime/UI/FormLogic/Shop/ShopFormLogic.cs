@@ -98,6 +98,11 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         private bool _isBuyTabActive = true;
 
         /// <summary>
+        /// 购买行联合钳制中：改一行后回扫其它行时置位，避免 OnQuantityValueChanged 递归。
+        /// </summary>
+        private bool _isReclampingBuyCart;
+
+        /// <summary>
         /// 是否已完成运行时绑定。幂等守卫：Awake（场景 UI_Shop）与 OnInit（GF Prefab）都会调 Ensure。
         /// </summary>
         private bool _shopRuntimeBound;
@@ -880,15 +885,19 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             }
         }
 
-        /// <summary>Buy + Sell 所有行数量变化时刷新 Total2。</summary>
+        /// <summary>Buy + Sell 所有行数量变化时刷新 Total2；并注入买卖数量上限回调。</summary>
         private void WireAllRowQuantityRefresh()
         {
             UnwireAllRowQuantityRefresh();
-            WireRowListQuantityRefresh(_buyRowViews);
-            WireRowListQuantityRefresh(_sellRowViews);
+            WireRowListQuantityRefresh(_buyRowViews, isBuyRow: true);
+            WireRowListQuantityRefresh(_sellRowViews, isBuyRow: false);
         }
 
-        private void WireRowListQuantityRefresh(IReadOnlyList<ShopBarRowView> rows)
+        /// <summary>
+        /// 绑数量变更 → Total2；并按行注入 max 回调。
+        /// 买：联合总价（本行 max 扣掉其它行已填金额后再÷单价）；卖：持有。
+        /// </summary>
+        private void WireRowListQuantityRefresh(IReadOnlyList<ShopBarRowView> rows, bool isBuyRow)
         {
             foreach (var rowView in rows)
             {
@@ -903,9 +912,145 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                     continue;
                 }
 
-                input.OnQuantityValueChanged += RefreshTotal2;
+                // 捕获本行引用：闭包在失焦/输入时再读最新金币与持有，勿缓存成打开店时的快照。
+                var capturedRow = rowView;
+                if (isBuyRow)
+                {
+                    input.SetMaxQuantityResolver(() => ResolveBuyMaxQuantity(capturedRow));
+                    // 买：先联合回扫整车再刷合计（改 A 可能迫使 B 下调）
+                    input.OnQuantityValueChanged += OnBuyQuantityChangedForJointCart;
+                }
+                else
+                {
+                    input.SetMaxQuantityResolver(() => ResolveSellMaxQuantity(capturedRow));
+                    input.OnQuantityValueChanged += RefreshTotal2;
+                }
+
                 _wiredQuantityInputs.Add(input);
             }
+        }
+
+        /// <summary>
+        /// 购买数量变更：按联合总价回扫所有买行再刷 Total2。
+        /// 原因：各行独立 floor(gold/price) 会让多行合计超钱包；须 gold−其它行金额 再算本行。
+        /// </summary>
+        private void OnBuyQuantityChangedForJointCart()
+        {
+            if (!_isReclampingBuyCart)
+            {
+                ReclampAllBuyRowsForJointGold();
+            }
+
+            RefreshTotal2();
+        }
+
+        /// <summary>
+        /// 静默回扫购买列表：每行用「金币−其它行合计」再钳一次。
+        /// 替代：只钳当前行——其它行可能仍超联合预算，点决定才整单失败，已否决。
+        /// </summary>
+        private void ReclampAllBuyRowsForJointGold()
+        {
+            _isReclampingBuyCart = true;
+            try
+            {
+                for (var i = 0; i < _buyRowViews.Count; i++)
+                {
+                    var row = _buyRowViews[i];
+                    if (row == null)
+                    {
+                        continue;
+                    }
+
+                    var input = row.GetComponent<ShopBuyRowQuantityInput>();
+                    input?.ApplyBusinessMaxClampSilent();
+                }
+            }
+            finally
+            {
+                _isReclampingBuyCart = false;
+            }
+        }
+
+        /// <summary>
+        /// 购买行最大可填数量（联合总价）：
+        /// remainingGold = 当前金币 − Σ(其它行 qty×price)，再 min(remaining/price, 堆叠空位)。
+        /// 旁路开：只钳堆叠空位。单价 ≤0 → 0。
+        /// </summary>
+        private int ResolveBuyMaxQuantity(ShopBarRowView row)
+        {
+            if (row == null)
+            {
+                return 0;
+            }
+
+            var bag = ResolvePlayerBagData();
+            var held = bag != null ? bag.GetMainItemCount(row.ItemId) : 0;
+            var stackRoom = Mathf.Max(0, PlayerBagData.MaxStackPerItem - held);
+
+            // 旁路跳过金币门：数量仍受堆叠约束，与结算 TryValidateBuyStackLimits 同构。
+            if (bypassGoldCheckForBagJoint)
+            {
+                return stackRoom;
+            }
+
+            var price = row.Price;
+            if (price <= 0)
+            {
+                return 0;
+            }
+
+            var goldData = QuestManager.getInstance()?.GetPlayerGoldData();
+            var gold = goldData != null ? goldData.gold : 0;
+            // 联合：先扣掉其它购买行已填金额，剩余才给本行
+            var otherRowsCost = SumBuyRowsCostExcluding(row);
+            var remainingGold = gold - otherRowsCost;
+            if (remainingGold < 0)
+            {
+                remainingGold = 0;
+            }
+
+            var affordByGold = remainingGold / price;
+            return Mathf.Min(affordByGold, stackRoom);
+        }
+
+        /// <summary>
+        /// Σ(其它购买行 QuantityForTotal × Price)；不含 <paramref name="excludeRow"/>。
+        /// 与 Total2 / 决定扣款同口径，供联合购买力计算。
+        /// </summary>
+        private int SumBuyRowsCostExcluding(ShopBarRowView excludeRow)
+        {
+            var sum = 0;
+            for (var i = 0; i < _buyRowViews.Count; i++)
+            {
+                var rowView = _buyRowViews[i];
+                if (rowView == null || rowView == excludeRow)
+                {
+                    continue;
+                }
+
+                var input = rowView.GetComponent<ShopBuyRowQuantityInput>();
+                var quantity = input != null ? input.QuantityForTotal : 0;
+                if (quantity <= 0)
+                {
+                    continue;
+                }
+
+                sum += quantity * rowView.Price;
+            }
+
+            return sum;
+        }
+
+        /// <summary>出售行最大可填数量 = 当前背包持有（按道具独立，无共享钱包）。</summary>
+        private static int ResolveSellMaxQuantity(ShopBarRowView row)
+        {
+            if (row == null)
+            {
+                return 0;
+            }
+
+            var bag = ResolvePlayerBagData();
+            return bag != null ? bag.GetMainItemCount(row.ItemId) : 0;
         }
 
         private void UnwireAllRowQuantityRefresh()
@@ -915,6 +1060,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 if (input != null)
                 {
                     input.OnQuantityValueChanged -= RefreshTotal2;
+                    input.OnQuantityValueChanged -= OnBuyQuantityChangedForJointCart;
                 }
             }
 

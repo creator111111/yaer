@@ -1321,6 +1321,20 @@
 
 ---
 
+## Village_Shop · 买卖数量输入自动钳上限 · 2026-09-23
+
+施工说明：`Assets/Doc/施工说明/0922/商店买卖数量输入自动钳上限_施工说明.md`  
+**结论**：输入层原先只 ≥0；现按行钳——卖=持有，买=`min(gold/price, 堆叠空位)`（读 `PlayerGoldData.gold`）。
+
+| ID | 问题 | 决议 / 施工默认 | 状态 |
+|----|------|-----------------|------|
+| Q1 | 是否读当前金币？ | **是**（`GetPlayerGoldData().gold`） | ✅ 已施工 |
+| Q2 | 旁路开时买 max？ | **只钳堆叠空位** | ✅ 已施工 |
+| Q3 | 整单预检保留？ | **是**（双保险） | ✅ |
+| Q4 | 多行联合总价？ | **是**：`remaining=gold−Σ其它行`；改一行回扫全部买行 | ✅ 2026-09-23 |
+
+---
+
 ## Village_Shop · 非首次进店 Village_ShopRepeat · 2026-08-30
 
 详见：`Assets/Doc/执行文档/0830/Village_Shop_非首次进店Village_ShopRepeat_架构溯源报告.md`  
@@ -2701,15 +2715,16 @@
 ## ForestEast · 树洞行走镜头上漂 · 2026-09-22
 
 详见：`Assets/Doc/执行文档/0922/ForestEast_树洞行走镜头上漂_架构溯源报告.md`  
-**侦探结论**：0914 贴底仍在；上漂主因是 `CameraAction` DOMove **Camera 根 rig**（含 Confiner），0922 去掉 Stop→(0,0) 后 Y 残留，Snap 只 Force VCam 拉不回父节点。推荐 **B** 改晃动目标 + **A** Stop 仅复位 rig Y。禁止恢复全轴 (0,0)、禁止挪盒子。
+**侦探结论**：0914 贴底仍在；上漂主因是 `CameraAction` DOMove **Camera 根 rig**（含 Confiner），0922 去掉 Stop→(0,0) 后 Y 残留，Snap 只 Force VCam 拉不回父节点。  
+**产品口径（2026-09-23）**：**要原版抖动，不要上漂**。Framing 方案几乎看不见 → 已回退。现网 = **原版 DOMove 根抖动** + Stop 仅 `ResetCameraRigLocalY`（方案 A）。禁止恢复全轴 (0,0)、禁止挪盒子。
 
 | ID | 问题 | 决议 / 施工默认 | 状态 |
 |----|------|-----------------|------|
-| Q1 | 纯走路不上爬也会上漂？ | **推演否**；Play 复核 | ⏳ 待 Play |
+| Q1 | 纯走路不上爬也会上漂？ | **推演否** | ✅ |
 | Q2 | Stop 是否允许只复位 rig Y？ | **是**（勿全轴 0,0） | ✅ 已施工 |
 | Q3 | 是否回退 0922 Align / 去掉 (0,0)？ | **否**（闪滑会回潮） | ✅ |
 | Q4 | 挪 CameraTreeInArea？ | **否** | ✅ |
-| Q5 | 晃动实现？ | **B**：抖 Framing TrackedObjectOffset.y；禁抖 Camera 根 | ✅ 已施工 |
+| Q5 | 晃动实现？ | **原版 DOMove 根**（产品要抖）+ Stop 清 Y；Framing 方案已回退 | ✅ 2026-09-23 改回 |
 
 ---
 
@@ -2735,10 +2750,12 @@
 | ID | 问题 | 决议 / 施工默认 | 状态 |
 |----|------|-----------------|------|
 | Q1 | 用户路径是纯关图还是点了关卡/Home？ | Play 看有无 Loading / ESC 日志 | ⏳ 待 Play |
-| Q2 | P0 是否先做 A+B（清 flag + ItemMap）？ | **是**（+P1 Resume 对称） | ✅ 已施工 |
+| Q2 | P0 是否先做 A+B（清 flag + ItemMap）？ | **是**（+P1 Resume）；**2026-09-23 复验失败** | ✅ 已施工 → 回修 |
 | Q3 | 店内 ESC 语义？ | **保持离店** | ✅ |
 | Q4 | 章末地图链？ | **不动** | ✅ |
 | Q5 | 附图 35% Loading 残留（方案 C）？ | 仅当关图后仍卡进度再票 | ⏳ 待 Play |
+| Q6 | 复验失败根因？ | **OnClose 未退订 CloseFormOnEsc** → 池化同步 Open 后同 ESC 立刻关菜单 | ✅ 2026-09-23 已修 |
+| Q7 | 再 ESC 只剩金币、按钮全无？ | **Center CanvasGroup alpha=0 残留**（ItemMap 先关 Menu 错过 OnPanelClosed） | ✅ 2026-09-23 已修 |
 
 ---
 
@@ -2783,3 +2800,5 @@
 | Q3 | House_Chief 是否改 TriggerWhenMoveIn=1？ | Play 证实走进无反应再做 F | ⏳ 待 Play |
 | Q4 | 只关侧面古莎充数？ | **否** | ✅ |
 | Q5 | P0 做 A+B？ | **是** | ✅ 已施工 |
+| Q6 | 藏人时机穿帮？ | **黑幕全黑后再藏人/露门**（stayAction） | ✅ 2026-09-23 |
+| Q7 | 出屋回村仍见消失？ | **TryDefer 开头（亮屏前）再 Apply；Find 绑本场景** | ✅ 2026-09-23 |

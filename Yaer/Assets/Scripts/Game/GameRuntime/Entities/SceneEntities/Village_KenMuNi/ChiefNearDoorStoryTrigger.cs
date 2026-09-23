@@ -72,6 +72,15 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
         /// <summary>合层装饰 SR 物体名（与场景 Unicode 名一致）。</summary>
         public const string CompositeChiefPortraitName = "村长";
 
+        /// <summary>合层门贴画名；藏村长后应露门。磁盘默认可已亮，全黑内再确保 Active。</summary>
+        public const string CompositeChiefDoorName = "村长家门";
+
+        /// <summary>
+        /// 0922 穿帮修复：对白结束布置（藏人/露门/关侧面）须在黑幕全黑后执行。
+        /// true 时 <see cref="OnDoorStoryEndHideSide"/> 不再亮屏关侧面（改由 stayAction 做）。
+        /// </summary>
+        private bool _stageDoorEndUnderBlack;
+
         /// <summary>正在开黑 / 等壳 / 等超时；防 Enter 连打。</summary>
         private bool _orchestrating;
 
@@ -229,15 +238,19 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
             }
 
             _sideEndSubscribed = false;
+
+            // 0922：进屋/黑幕布置路径会在全黑后关侧面；此处亮屏关会穿帮
+            if (_stageDoorEndUnderBlack || !hideSideOnStoryEnd)
+            {
+                return;
+            }
+
             SetGushaSidePortraitActive(false);
         }
 
         /// <summary>
-        /// 0902 F1：对白结束 → 日常黑幕 <c>LoadScene(Village_Chief_House)</c>（默认 blackFade:true）。
-        /// 0922 A：进屋前藏 <c>Npc_Chief</c> + 合层「村长」，避免切场前/回村仍见人。
-        /// 仅当本 Trigger 播的是门口初次对话，且开关开启。
-        /// 原因：产品日常进屋不要 LoadingPanel；API <c>LoadSceneWithLoadingPanel</c> 留给时间跳转，勿删。
-        /// 续聊遮罩由村长家 GSM 的 <c>TryDeferBlackFadeForCover</c>（F1′）接手，勿挂 stayAction。
+        /// 0902 F1：对白结束 → 日常黑幕进屋。
+        /// 0922：<b>禁止</b>在亮屏当帧藏村长/关侧面（穿帮）；布置一律进黑幕全黑后的 stayAction。
         /// </summary>
         protected override void OnStoryFinished()
         {
@@ -252,26 +265,62 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
                 return;
             }
 
-            // 0922 A：必须双关；只关 Npc 合层仍见贴画。自动进屋失败/回村由 GSM 再套一次。
-            HideChiefNearDoorVisuals();
+            _stageDoorEndUnderBlack = true;
 
             if (!loadChiefHouseOnStoryEnd)
             {
+                // 不进屋：仍开一拍黑幕做布置，再淡出回村（避免露景看到人消失）
+                StageDoorEndUnderBlackThenReveal();
                 return;
             }
 
             var loadGsm = SceneManager?.GetModule<LoadSceneComponentGSM>();
             if (loadGsm == null)
             {
-                Debug.LogError("[ChiefNearDoor] LoadSceneComponentGSM 缺失，无法黑幕进屋。", this);
+                Debug.LogError("[ChiefNearDoor] LoadSceneComponentGSM 缺失，无法黑幕进屋；回退亮屏布置。", this);
+                ApplyDoorEndStagingUnderBlack();
+                _stageDoorEndUnderBlack = false;
                 return;
             }
 
             Debug.Log(
-                $"[ChiefNearDoor] 对白结束 → LoadScene({SceneName.Village_Chief_House}) blackFade=true",
+                $"[ChiefNearDoor] 对白结束 → LoadScene({SceneName.Village_Chief_House})；布置延后到黑幕全黑",
                 this);
-            // 默认 blackFade:true → BlackPanel；禁止再走 LoadSceneWithLoadingPanel
-            loadGsm.LoadScene(SceneName.Village_Chief_House);
+            // stayAction：黑幕 FadeShow 完成时调用（仍在本场景卸载前）→ 藏人/露门/关侧面，玩家看不见
+            loadGsm.LoadScene(
+                SceneName.Village_Chief_House,
+                stayAction: ApplyDoorEndStagingUnderBlack);
+        }
+
+        /// <summary>
+        /// 黑幕全黑后布置门口：藏 Npc+合层村长、确保门贴画亮、关侧面涂层。
+        /// 由 LoadScene stayAction 或「不进屋」黑幕路径调用。
+        /// </summary>
+        private void ApplyDoorEndStagingUnderBlack()
+        {
+            HideChiefNearDoorVisuals();
+            EnsureChiefDoorVisible();
+            if (hideSideOnStoryEnd)
+            {
+                SetGushaSidePortraitActive(false);
+            }
+
+            _stageDoorEndUnderBlack = false;
+        }
+
+        /// <summary>
+        /// 不自动进屋时：开黑 → 全黑布置 → 淡出。与进剧情黑幕同 API。
+        /// </summary>
+        private void StageDoorEndUnderBlackThenReveal()
+        {
+            OpenSystemBlackFade(black =>
+            {
+                ApplyDoorEndStagingUnderBlack();
+                if (black != null)
+                {
+                    black.CloseFormFade(null);
+                }
+            });
         }
 
         /// <summary>
@@ -291,6 +340,16 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
             }
         }
 
+        /// <summary>全黑内确保合层「村长家门」亮着（藏人后露门；已亮则无操作）。</summary>
+        private void EnsureChiefDoorVisible()
+        {
+            var door = FindSceneObjectByName(CompositeChiefDoorName);
+            if (door != null && !door.activeSelf)
+            {
+                door.SetActive(true);
+            }
+        }
+
         /// <summary>解析合层「村长」；优先序列化引用，再深度按名（含未激活父节点下的 Find）。</summary>
         private GameObject ResolveCompositeChiefPortrait()
         {
@@ -303,10 +362,18 @@ namespace Game.GameRuntime.Entities.SceneEntities.Village_KenMuNi
             return compositeChiefPortrait;
         }
 
-        /// <summary>活动场景根下深度按名查找（可找到未激活子物体）。</summary>
-        private static GameObject FindSceneObjectByName(string objectName)
+        /// <summary>
+        /// 本 Trigger 所在场景根下深度按名查找（可找到未激活子物体）。
+        /// 优先 gameObject.scene，避免 Awake/换场时 GetActiveScene 指错场。
+        /// </summary>
+        private GameObject FindSceneObjectByName(string objectName)
         {
-            var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            var scene = gameObject.scene;
+            if (!scene.IsValid())
+            {
+                scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            }
+
             if (!scene.IsValid())
             {
                 return null;

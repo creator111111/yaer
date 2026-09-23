@@ -8,6 +8,10 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
     /// <summary>
     /// 商店列表单行数量输入（购买 / 出售共用）：隐形 TMP_InputField + DigitStrip 图片数字。
     /// 挂在 Shop_Bar 根节点；合计通过 <see cref="QuantityForTotal"/> 参与 Total2 Σ 计算。
+    /// <para>
+    /// 0922：失焦/输入超限时按 <see cref="SetMaxQuantityResolver"/> 钳回上限
+    /// （卖=持有，买=金币购买力∩堆叠空位），并同步 DigitStrip + 合计。
+    /// </para>
     /// </summary>
     [DisallowMultipleComponent]
     public class ShopBuyRowQuantityInput : MonoBehaviour
@@ -15,6 +19,15 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         [SerializeField] private TMP_InputField quantityInput;
 
         private Transform _quantityNode;
+
+        /// <summary>
+        /// 当前行可填最大数量（由 <see cref="ShopFormLogic"/> 按买/卖公式注入）。
+        /// 未绑定时不钳业务上限（仅 ≥0），避免孤立 Prefab 预览误砍。
+        /// </summary>
+        private Func<int> _resolveMaxQuantity;
+
+        /// <summary>防钳制写回触发 onValueChanged 重入。</summary>
+        private bool _isClampingQuantity;
 
         /// <summary>失焦后的购买数量（空串回退默认值，供阶段四交易用）。</summary>
         public int Quantity => ShopQuantityInputHelper.ParseAndClampQuantity(
@@ -26,6 +39,15 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
         /// <summary>数量输入框每次变化时触发（含 onValueChanged）。</summary>
         public event Action OnQuantityValueChanged;
+
+        /// <summary>
+        /// 注入本行上限回调（买=金币/堆叠，卖=持有）。
+        /// 原因：行组件不直读存档，公式集中在 Form，切 Tab/旁路语义由 Form 定。
+        /// </summary>
+        public void SetMaxQuantityResolver(Func<int> resolver)
+        {
+            _resolveMaxQuantity = resolver;
+        }
 
         private void Awake()
         {
@@ -137,6 +159,19 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
         private void OnQuantityValueChangedInternal(string text)
         {
+            if (_isClampingQuantity)
+            {
+                return;
+            }
+
+            // 边输边钳：超持有/超购买力立刻写回，DigitStrip 与 Total2 同步变。
+            if (TryClampQuantityToBusinessMax(invokeChanged: false))
+            {
+                RefreshDigitDisplay();
+                OnQuantityValueChanged?.Invoke();
+                return;
+            }
+
             ShopQuantityInputHelper.SyncNumberDigitDisplay(_quantityNode, text);
             OnQuantityValueChanged?.Invoke();
         }
@@ -148,10 +183,67 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 return;
             }
 
+            // 失焦：先规整非负整数，再按业务上限钳（空串→0）。
             var sanitized = ShopQuantityInputHelper.ParseQuantityForTotal(quantityInput.text);
             ShopQuantityInputHelper.ApplyQuantityText(quantityInput, sanitized);
+            TryClampQuantityToBusinessMax(invokeChanged: false);
             RefreshDigitDisplay();
             OnQuantityValueChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// 按 Form 注入的 max 钳 TMP；超限则写回并刷图。
+        /// </summary>
+        /// <returns>是否发生了写回（调用方可据此决定是否再 Sync）。</returns>
+        private bool TryClampQuantityToBusinessMax(bool invokeChanged)
+        {
+            if (quantityInput == null || _resolveMaxQuantity == null)
+            {
+                return false;
+            }
+
+            var parsed = ShopQuantityInputHelper.ParseQuantityForTotal(quantityInput.text);
+            int maxQty;
+            try
+            {
+                maxQty = _resolveMaxQuantity.Invoke();
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[ShopBuyRowQuantityInput] max 回调异常，跳过钳制：{e.Message}", this);
+                return false;
+            }
+
+            var clamped = ShopQuantityInputHelper.ClampQuantityToCap(parsed, maxQty);
+            if (clamped == parsed)
+            {
+                return false;
+            }
+
+            _isClampingQuantity = true;
+            try
+            {
+                ShopQuantityInputHelper.ApplyQuantityText(quantityInput, clamped);
+                RefreshDigitDisplay();
+                if (invokeChanged)
+                {
+                    OnQuantityValueChanged?.Invoke();
+                }
+            }
+            finally
+            {
+                _isClampingQuantity = false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Form 在其它行改数量后回扫本行：按最新联合总价再钳一次，不触发 OnQuantityValueChanged（防循环）。
+        /// </summary>
+        public bool ApplyBusinessMaxClampSilent()
+        {
+            return TryClampQuantityToBusinessMax(invokeChanged: false);
         }
 
         private static string GetHierarchyPath(Transform node)

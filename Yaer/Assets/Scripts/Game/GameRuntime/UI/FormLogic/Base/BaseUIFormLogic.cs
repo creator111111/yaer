@@ -27,11 +27,11 @@ namespace Game.GameRuntime.UI.FormLogic.Base
             allowEscapeClose = canClose; 
             if (allowEscapeClose)
             {
-                GameManager.GetGMComponent<InputComponentGM>().onEscPressed += CloseFormOnEsc;
+                SubscribeEscapeClose();
             }
             else
             {
-                GameManager.GetGMComponent<InputComponentGM>().onEscPressed -= CloseFormOnEsc;
+                UnsubscribeEscapeClose();
             }
         }
         public Canvas GetCanvas() { return canvas; }
@@ -126,6 +126,10 @@ namespace Game.GameRuntime.UI.FormLogic.Base
 
         protected internal override void OnClose(bool isShutdown, object userData)
         {
+            // 0922 背包→地图→再 ESC：OnClose 必须退订 ESC。
+            // 原因：仅 OnCover 退订时，CloseUIForm 关菜单/地图不会走 OnCover，CloseFormOnEsc 残留。
+            // 池化同步 Open 后同一次 ESC 多播会打到已重新激活的实例 → 刚 Open 又被 Close（菜单「打不开」）。
+            UnsubscribeEscapeClose();
             base.OnClose(isShutdown, userData);
             hasUpdateUI = false;
         }
@@ -147,21 +151,42 @@ namespace Game.GameRuntime.UI.FormLogic.Base
         {
             base.OnReveal();
 
-            // esc事件绑定
+            // esc 事件绑定：先 -= 再 +=，避免重复订阅（池化重开 / 漏 OnClose 退订时）
             if (allowEscapeClose)
             {
-                GameManager.GetGMComponent<InputComponentGM>().onEscPressed += CloseFormOnEsc;
+                SubscribeEscapeClose();
             }
         }
 
         protected internal override void OnCover()
         {
             base.OnCover();
+            UnsubscribeEscapeClose();
+        }
 
-            if (allowEscapeClose)
+        /// <summary>订阅 ESC 关本界面（幂等）。</summary>
+        private void SubscribeEscapeClose()
+        {
+            var input = GameManager.GetGMComponent<InputComponentGM>();
+            if (input == null)
             {
-                GameManager.GetGMComponent<InputComponentGM>().onEscPressed -= CloseFormOnEsc;
+                return;
             }
+
+            input.onEscPressed -= CloseFormOnEsc;
+            input.onEscPressed += CloseFormOnEsc;
+        }
+
+        /// <summary>退订 ESC 关本界面（幂等）。OnClose / OnCover 必须成对调用。</summary>
+        private void UnsubscribeEscapeClose()
+        {
+            var input = GameManager.GetGMComponent<InputComponentGM>();
+            if (input == null)
+            {
+                return;
+            }
+
+            input.onEscPressed -= CloseFormOnEsc;
         }
 
         protected internal override void OnUpdate(float elapseSeconds, float realElapseSeconds)

@@ -159,13 +159,14 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
             // 须在开场兜底之后；开场已用 / 无 Running 时才可能启动。楼梯 2 楼键不进此分支。
             TryTriggerLeaveChiefEscortOnce();
 
-            // 出屋回门前再套一次藏人（防 OnInit 时序/引用未就绪）
+            // 兜底：无黑幕进村（LoadingPanel 等）时 Ready 不经过 TryDefer；亮屏后补藏（已藏则无操作）
             ApplyChiefNearDoorVisibilityFromArchive();
         }
 
         /// <summary>
         /// 0922 A：门口初次对话已用则关 <c>Npc_Chief</c> + 合层「村长」；未用则保持场景默认可见。
         /// 严格认 <see cref="ChiefNearDoorStoryTrigger.DoorStoryPrefabName"/>，勿用 homeDoorStoryComplete 顶替。
+        /// <para>0923：主路径改在 <see cref="TryDeferBlackFadeForCover"/> 全黑期调用，避免出屋亮屏穿帮。</para>
         /// </summary>
         void ApplyChiefNearDoorVisibilityFromArchive()
         {
@@ -194,12 +195,30 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
             {
                 portrait.SetActive(active);
             }
+
+            // 戏已用回村：门贴画保持亮（藏人后要能看见门）
+            if (!active)
+            {
+                var door = FindSceneObjectByName(ChiefNearDoorStoryTrigger.CompositeChiefDoorName);
+                if (door != null && !door.activeSelf)
+                {
+                    door.SetActive(true);
+                }
+            }
         }
 
-        /// <summary>活动场景根下深度按名（含未激活子物体）。</summary>
-        static GameObject FindSceneObjectByName(string objectName)
+        /// <summary>
+        /// 本场景根下深度按名（含未激活子物体）。
+        /// 原因：Awake 时 GetActiveScene 可能仍非本村 → Find 失败 → 亮屏后 OnEnterScene 才藏成功穿帮。
+        /// </summary>
+        GameObject FindSceneObjectByName(string objectName)
         {
-            var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            var scene = gameObject.scene;
+            if (!scene.IsValid())
+            {
+                scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+            }
+
             if (!scene.IsValid())
             {
                 return null;
@@ -475,9 +494,17 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_KenMuNi
         /// <summary>
         /// 分层显现（方案 A）：仍全黑时 Trigger → BG 盖满且框/立绘为 0 → 立刻 CloseFormFade；
         /// 三拍（仅 BG → 框 → 立绘）在亮屏下由 Prefab 播放。仅本档未播过 Start 时接管。
+        /// <para>
+        /// 0923：任意黑幕进村（含出村长家回门前）在本回调开头先布置门口——
+        /// 此时已全黑、场景已 Ready、尚未 CloseFormFade，藏村长/露门玩家看不见。
+        /// 原因：仅 OnInit 藏人会被进村后逻辑盖掉或亮屏后 OnEnterScene 才藏成功 → 穿帮。
+        /// </para>
         /// </summary>
         public override bool TryDeferBlackFadeForCover(Action closeBlackAndNotify)
         {
+            // 亮屏前最后一道：门口戏已用则藏人+露门（出屋回村主修点）
+            ApplyChiefNearDoorVisibilityFromArchive();
+
             if (!ShouldPlayVillageStartStory())
             {
                 return false;

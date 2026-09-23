@@ -10561,7 +10561,7 @@ PrefabInstance:
     - target: {fileID: 6983132278727507417, guid: 3d24231045a0614438f37d7cba4b5649,
         type: 3}
       propertyPath: m_Size.x
-      value: 5.0357666
+      value: 6.1039276
       objectReference: {fileID: 0}
     - target: {fileID: 6983132278727507417, guid: 3d24231045a0614438f37d7cba4b5649,
         type: 3}
@@ -10571,7 +10571,7 @@ PrefabInstance:
     - target: {fileID: 6983132278727507417, guid: 3d24231045a0614438f37d7cba4b5649,
         type: 3}
       propertyPath: m_Offset.x
-      value: -0.072891235
+      value: -0.60697174
       objectReference: {fileID: 0}
     - target: {fileID: 6983132278727507417, guid: 3d24231045a0614438f37d7cba4b5649,
         type: 3}
@@ -19892,8 +19892,8 @@ PolygonCollider2D:
       - {x: -4.218141, y: -2.6928635}
       - {x: 5.714157, y: -3.0850716}
       - {x: 17.767807, y: 5.183071}
-      - {x: 23.973106, y: 6.7167473}
-      - {x: 23.388504, y: 7.423794}
+      - {x: 22.313347, y: 6.289482}
+      - {x: 22.18888, y: 7.292328}
       - {x: 15.3367, y: 6.775181}
       - {x: 8.632163, y: 2.6005936}
 --- !u!1 &2084907094
@@ -21516,6 +21516,7 @@ MonoBehaviour:
   sidePortraitSortingOrder: 0
   hideSideOnStoryEnd: 1
   loadChiefHouseOnStoryEnd: 1
+  compositeChiefPortrait: {fileID: 0}
 --- !u!114 &8828600009
 MonoBehaviour:
   m_ObjectHideFlags: 0

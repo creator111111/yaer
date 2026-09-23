@@ -5,6 +5,7 @@ using Game.GameMgr;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
 using Game.GameRuntime.GameSceneManager.Component;
 using Game.GameRuntime.UI.FormLogic.Base;
+using Game.Static.Enum.Map;
 using Game.Static.Name.Res;
 using Game.Static.Path;
 using TMPro;
@@ -159,7 +160,9 @@ namespace Game.GameRuntime.UI.FormLogic.Map
 
             // 0922 P0-A：关图必恢复可 ESC 开菜单（与 OnOpen AllowOpenMenu(false) 成对）
             AllowOpenMenu(true);
-            // 兜底清 isOpenMenu：背包开图路径已关 Menu，若 OnMenuActive(false) 未落地，ESC 会被门闩挡住
+            // 兜底：直接清 InputGSM 两旗，避免仅靠事件/代理漏清
+            ForceClearEscGateOnInputGsm();
+            // 兜底清 isOpenMenu 事件位（与上互补）
             ForceClearMenuActiveFlag();
 
             base.OnClose(isShutdown, userData);
@@ -191,6 +194,14 @@ namespace Game.GameRuntime.UI.FormLogic.Map
 
             var proxy = mvc.GetProxy<MenuFormProxy>();
             proxy?.OnMenuActive(false);
+        }
+
+        /// <summary>关图时强制清 ESC 门闩两旗（isOpenMenu + cantOpenMenu）。</summary>
+        private static void ForceClearEscGateOnInputGsm()
+        {
+            var sceneMgr = GameManager.GetGameSceneManager();
+            var input = sceneMgr != null ? sceneMgr.GetModule<InputComponentGSM>() : null;
+            input?.ForceClearMenuEscGate();
         }
 
         public void SetSign(string place)
@@ -225,9 +236,35 @@ namespace Game.GameRuntime.UI.FormLogic.Map
             foreach (var image in roadImageDic.Values) image.gameObject.SetActive(false);
 
             // 根据数据激活已经解锁的路线
-            foreach (var unlockRoad in playerMapData.GetUnlockRoad())
-                if (roadImageDic.ContainsKey($"Image{unlockRoad}"))
-                    roadImageDic[$"Image{unlockRoad}"].gameObject.SetActive(true);
+            if (playerMapData != null)
+            {
+                foreach (var unlockRoad in playerMapData.GetUnlockRoad())
+                    if (roadImageDic.ContainsKey($"Image{unlockRoad}"))
+                        roadImageDic[$"Image{unlockRoad}"].gameObject.SetActive(true);
+            }
+
+            // 0922 产品：背包开地图时家→精灵村红条 ImageHomeToJingLingVillage 常驻亮着。
+            // 原因：未写 UnlockRoad 的档（或仅出门未章末）开图红条是灭的，观感像「路线没开」。
+            // 仅强制显示贴图，不改存档 UnlockRoad；关卡点仍走 ShowUnlockPlace。
+            // 替代：开图时 UnlockRoad 写入存档——会永久改档，本期不需要。
+            ForceShowResidentRoad(PlaceName.HomeToJingLingVillage);
+        }
+
+        /// <summary>
+        /// 强制点亮指定路线 Image（名 = Image + roadKey）。缺引用则跳过。
+        /// </summary>
+        private void ForceShowResidentRoad(string roadKey)
+        {
+            if (string.IsNullOrEmpty(roadKey))
+            {
+                return;
+            }
+
+            string imageName = $"Image{roadKey}";
+            if (roadImageDic.TryGetValue(imageName, out var roadImage) && roadImage != null)
+            {
+                roadImage.gameObject.SetActive(true);
+            }
         }
 
         private void ShowUnlockPlace()

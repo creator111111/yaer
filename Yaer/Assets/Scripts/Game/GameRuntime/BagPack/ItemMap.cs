@@ -13,6 +13,7 @@ namespace Game.GameRuntime.BagPack
     /// <remarks>
     /// 0922 背包点地图后 ESC 不开菜单：关菜单须显式清 <c>isOpenMenu</c>；
     /// 地图已在栈上时禁止「只关菜单、不开图」留下 <c>cantOpenMenu</c> 体感「系统没了」。
+    /// 关序必须先 ItemShow 再 Menu：否则 Center 的 CanvasGroup 会残留 alpha=0（重开只剩金币）。
     /// </remarks>
     public class ItemMap : ItemBase
     {
@@ -24,7 +25,10 @@ namespace Game.GameRuntime.BagPack
                 return;
             }
 
-            // 关菜单：依赖 OnClose→OnMenuActive(false)；再显式清一次，防 Close 异步/漏回调导致 isOpenMenu 残留
+            // ① 先关道具页：MenuCenterHide 仍订阅着，能收到 OnPanelClosed 把 Center 恢复成可见
+            UIUtils.ClosePanel("ItemShowPanel");
+
+            // ② 再关菜单：依赖 OnClose→OnMenuActive(false)；再显式清一次，防 Close 异步/漏回调导致 isOpenMenu 残留
             MenuFormLogic menuFormLogic = data as MenuFormLogic;
             if (menuFormLogic != null && menuFormLogic.UIForm != null)
             {
@@ -32,9 +36,6 @@ namespace Game.GameRuntime.BagPack
             }
 
             ForceClearMenuActiveFlag();
-
-            // 打开地图前先关闭道具界面
-            UIUtils.ClosePanel("ItemShowPanel");
 
             string uiPrefabPath = UIPrefabPath.GetUIPrefabPath("MapPanel");
             var existingMap = uiGm.GetUIForm(uiPrefabPath);
@@ -51,7 +52,6 @@ namespace Game.GameRuntime.BagPack
 
             // 二次点击：地图仍在栈上。旧逻辑直接 return → 菜单没了、Map 仍锁 cantOpenMenu。
             // 关后再开，走完整 OnOpen（AllowOpenMenu(false)+Pause），保证地图可见可关。
-            // 替代：只 Refocus 不重建——若 Form 半关闭态仍不可见，故选关开。
             uiGm.CloseUIForm(uiPrefabPath);
             uiGm.OpenUIForm(uiPrefabPath, EUIGroup.Middle, mapArgs);
         }
