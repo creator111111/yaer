@@ -160,13 +160,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serializedExposedParameters: []
-  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"Visible":{},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":200.0,"y":-260.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"18"},{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":1.0},"Delay":{},"EndActonOnAnimationEnd":{"_value":true},"PrepareMaskAvatarOnFadeIn":{},"MaskAvatarRole":{},"MaskAvatarFace":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":200.0,"y":-20.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"1"},{"FaceType":{"_value":12},"statement":{"_text":"\u5988\u5988\uff0c\u6709\u5916\u4eba\uff01"},"_actorName":"NPC2","_actorParameterID":"e123c05b-5a92-4535-8929-f9960bc49ec2","_position":{"x":200.0,"y":100.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"2"},{"FaceType":{"_value":12},"statement":{"_text":"\u662f\u8c01\u5440\uff1f"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":220.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"3"},{"FaceType":{"_value":12},"statement":{"_text":"\u662f\u602a\u4eba\uff01\u5979\u8fd8\u957f\u89d2\uff01\uff01"},"_actorName":"NPC2","_actorParameterID":"e123c05b-5a92-4535-8929-f9960bc49ec2","_position":{"x":200.0,"y":340.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"FaceType":{"_value":12},"statement":{"_text":"\u4e0d\u80fd\u8fd9\u4e48\u8bf4\u8bdd\uff01\u592a\u6ca1\u793c\u8c8c\u4e86\uff01"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":460.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"FaceType":{"_value":12},"statement":{"_text":"\u4e0d\u597d\u610f\u601d\u6709\u4ec0\u4e48\u4e8b\u5417\uff1f"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":580.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"6"},{"FaceType":{"_value":23},"statement":{"_text":"\u554a\u554a\u3002\u3002\u3002\u3002\u6211\u53ea\u662f\u968f\u4fbf\u8f6c\u8f6c\u3002\u3002\u3002\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"db315802-9d72-49b7-9447-6bcf7d072f3d","_position":{"x":200.0,"y":700.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"7"},{"FaceType":{"_value":12},"statement":{"_text":"\u6b22\u8fce\u505a\u5ba2,\u6709\u4ef6\u4e8b\u6211\u60f3\u8bf7\u4f60\u5e2e\u5fd9\uff0c"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":820.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"8"},{"FaceType":{"_value":5},"statement":{"_text":"\u55ef?"},"_actorName":"\u96c5\u5c14","_actorParameterID":"db315802-9d72-49b7-9447-6bcf7d072f3d","_position":{"x":200.0,"y":940.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"9"},{"FaceType":{"_value":12},"statement":{"_text":"\u867d\u7136\u5192\u6627\u4f46\u770b\u4f60\u7684\u6837\u5b50\u5e94\u8be5\u6bd4\u6211\u4eec\u8fd9\u4e9b\u6751\u6c11\u5389\u5bb3\u591a\u4e86\uff0c\u6700\u8fd1\u6751\u5916\u602a\u7269\u8d8a\u6765\u8d8a\u591a\uff0c"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":1060.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"10"},{"FaceType":{"_value":12},"statement":{"_text":"\u98df\u6750\u5f00\u59cb\u4e0d\u597d\u51c6\u5907\u4e86\uff0c\u4f60\u80fd\u5e2e\u6211\u4eec\u5916\u51fa\u6536\u96c6\u70b9\u85e4\u8513\u679c\u5417\uff0c\u4e94\u4e2a\u5c31\u597d\u3002"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":1180.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"11"},{"FaceType":{"_value":12},"statement":{"_text":"\u6211\u4f1a\u7ed9\u4f60\u62a5\u916c\u7684\u3002"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":1300.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"12"},{"availableChoices":[{"statement":{"_text":"\u6211\u6709\u4e9b\u5fd9"}},{"statement":{"_text":"\u597d\u5440"}}],"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":1420.0},"$type":"NodeCanvas.DialogueTrees.MultipleChoiceNode","$id":"13"},{"FaceType":{"_value":12},"statement":{"_text":"\u6ca1\u5173\u7cfb\u6211\u4e00\u4f1a\u81ea\u5df1\u53bb\u5427"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":40.0,"y":1540.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"14"},{"_action":{"Visible":{"_value":true},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":200.0,"y":1660.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"15"},{"FaceType":{"_value":12},"statement":{"_text":"\u592a\u611f\u8c22\u4e86"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":1540.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"16"},{"_action":{"questId":{"_value":"Quest_002"},"$type":"Game.GameRuntime.Story.Node.QuestAcceptAction"},"_position":{"x":200.0,"y":1600.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"17"}],"connections":[{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"6"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"9"},"_targetNode":{"$ref":"10"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"10"},"_targetNode":{"$ref":"11"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"11"},"_targetNode":{"$ref":"12"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"12"},"_targetNode":{"$ref":"13"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"13"},"_targetNode":{"$ref":"14"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"13"},"_targetNode":{"$ref":"16"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"14"},"_targetNode":{"$ref":"15"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"16"},"_targetNode":{"$ref":"17"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"17"},"_targetNode":{"$ref":"15"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"18"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"NPC2","_id":"e123c05b-5a92-4535-8929-f9960bc49ec2"},{"_keyName":"NPC3","_id":"d3223ff5-7c08-4bb9-ab22-07cae31192e6"},{"_keyName":"\u96c5\u5c14","_id":"db315802-9d72-49b7-9447-6bcf7d072f3d"}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"Visible":{},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":200.0,"y":-260.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":1.0},"Delay":{},"EndActonOnAnimationEnd":{"_value":true},"PrepareMaskAvatarOnFadeIn":{},"MaskAvatarRole":{},"MaskAvatarFace":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":200.0,"y":-20.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"1"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u5988\u5988\uff0c\u6709\u5916\u4eba\uff01","_text_en":"Mom,
+    there''s someone outside!","_text_jp":"\u30de\u30de\u3001\u5916\u306b\u4eba\u304c\u3044\u308b\uff01"},"_actorName":"NPC2","_actorParameterID":"e123c05b-5a92-4535-8929-f9960bc49ec2","_position":{"x":200.0,"y":100.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"2"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u662f\u8c01\u5440\uff1f","_text_en":"Who
+    is it?","_text_jp":"\u8ab0\u3067\u3059\u304b\uff1f"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":220.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"3"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u662f\u602a\u4eba\uff01\u5979\u8fd8\u957f\u89d2\uff01\uff01","_text_en":"It''s
+    a strange person! She even has horns!!","_text_jp":"\u5909\u306a\u4eba\uff01\u89d2\u307e\u3067\u751f\u3048\u3066\u308b\uff01\uff01"},"_actorName":"NPC2","_actorParameterID":"e123c05b-5a92-4535-8929-f9960bc49ec2","_position":{"x":200.0,"y":340.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"4"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u4e0d\u80fd\u8fd9\u4e48\u8bf4\u8bdd\uff01\u592a\u6ca1\u793c\u8c8c\u4e86\uff01","_text_en":"Don''t
+    speak like that! It''s very rude!","_text_jp":"\u305d\u3093\u306a\u8a00\u3044\u65b9\u306f\u30c0\u30e1\u3088\uff01"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":199.0,"y":460.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"5"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u4e0d\u597d\u610f\u601d\u6709\u4ec0\u4e48\u4e8b\u5417\uff1f","_text_en":"Sorry,
+    is there something I can help you with?","_text_jp":"\u3059\u307f\u307e\u305b\u3093\u3001\u4f55\u304b\u3054\u7528\u3067\u3059\u304b\uff1f"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":580.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"6"},{"FaceType":{"_value":23},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u554a\u554a\u3002\u3002\u3002\u3002\u6211\u53ea\u662f\u968f\u4fbf\u8f6c\u8f6c\u3002\u3002\u3002\u3002","_text_en":"Ah...
+    I was just wandering around...","_text_jp":"\u3042\u3001\u3042\u306e\u2026\u3061\u3087\u3063\u3068\u898b\u56de\u3057\u3066\u3044\u305f\u3060\u3051\u3067\u3059..."},"_actorName":"\u96c5\u5c14","_actorParameterID":"db315802-9d72-49b7-9447-6bcf7d072f3d","_position":{"x":200.0,"y":700.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"7"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u6b22\u8fce\u505a\u5ba2,\u6709\u4ef6\u4e8b\u6211\u60f3\u8bf7\u4f60\u5e2e\u5fd9\uff0c","_text_en":"Welcome.
+    There''s something I''d like to ask you to help with.","_text_jp":"\u3088\u3046\u3053\u305d\u3001\u5b9f\u306f\u304a\u9858\u3044\u304c\u3042\u308b\u3093\u3067\u3059\u3002"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":820.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"8"},{"FaceType":{"_value":5},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u55ef?","_text_en":"Hmm?","_text_jp":"\u3046\u3093\uff1f"},"_actorName":"\u96c5\u5c14","_actorParameterID":"db315802-9d72-49b7-9447-6bcf7d072f3d","_position":{"x":200.0,"y":940.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"9"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u867d\u7136\u5192\u6627\u4f46\u770b\u4f60\u7684\u6837\u5b50\u5e94\u8be5\u6bd4\u6211\u4eec\u8fd9\u4e9b\u6751\u6c11\u5389\u5bb3\u591a\u4e86\uff0c\u6700\u8fd1\u6751\u5916\u602a\u7269\u8d8a\u6765\u8d8a\u591a\uff0c","_text_en":"I
+    know this is sudden, but you look much stronger than the villagers. Recently,
+    there have been more monsters outside.","_text_jp":"\u7a81\u7136\u304a\u9858\u3044\u3059\u308b\u306e\u306f\u5931\u793c\u304b\u3082\u3057\u308c\u307e\u305b\u3093\u304c\u3001\u3042\u306a\u305f\u306e\u898b\u305f\u76ee\u304b\u3089\u3059\u308b\u3068\u3001\u6751\u306e\u4eba\u3005\u3088\u308a\u305a\u3063\u3068\u5f37\u3044\u3088\u3046\u306b\u898b\u3048\u307e\u3059\u3001\u6700\u8fd1\u3001\u6751\u306e\u5916\u306e\u30e2\u30f3\u30b9\u30bf\u30fc\u304c\u5897\u3048\u3066\u304d\u3066\u3002"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":1060.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"10"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u98df\u6750\u5f00\u59cb\u4e0d\u597d\u51c6\u5907\u4e86\uff0c\u4f60\u80fd\u5e2e\u6211\u4eec\u5916\u51fa\u6536\u96c6\u70b9\u85e4\u8513\u679c\u5417\uff0c\u4e94\u4e2a\u5c31\u597d\u3002","_text_en":"Food
+    is getting harder to find. Could you help us collect some vine fruits, five should
+    be enough.","_text_jp":"\u98df\u6750\u304c\u6e96\u5099\u3057\u3065\u3089\u304f\u306a\u3063\u3066\u304d\u305f\u3093\u3067\u3059\u3002\u5c11\u3057\u5916\u306b\u51fa\u3066\u3001\u30c4\u30eb\u306e\u5b9f\u30925\u500b\u3060\u3051\u96c6\u3081\u3066\u3044\u305f\u3060\u3051\u307e\u305b\u3093\u304b\uff1f"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":1180.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"11"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u6211\u4f1a\u7ed9\u4f60\u62a5\u916c\u7684\u3002","_text_en":"
+    I will reward you for your help.","_text_jp":"\u5831\u916c\u3092\u3042\u3052\u307e\u3059\u3002"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":1300.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"12"},{"availableChoices":[{"statement":{"_text":"\u6211\u6709\u4e9b\u5fd9","_text_en":"I''m
+    a bit busy...  ","_text_jp":"\u5c11\u3057\u5fd9\u3057\u3044\u3093\u3067\u3059\u3051\u3069\u3002"}},{"statement":{"_text":"\u597d\u5440","_text_en":"okay.","_text_jp":"\u3044\u3044\u3067\u3059\u3088\u3002"}}],"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":1420.0},"$type":"NodeCanvas.DialogueTrees.MultipleChoiceNode","$id":"13"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u6ca1\u5173\u7cfb\u6211\u4e00\u4f1a\u81ea\u5df1\u53bb\u5427","_text_en":"No
+    worries, I''ll go myself later if you can''t.","_text_jp":"\u5927\u4e08\u592b\u3001\u5f8c\u3067\u81ea\u5206\u3067\u884c\u304d\u307e\u3059\u304b\u3089\u3002"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":40.0,"y":1540.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"14"},{"_action":{"Visible":{"_value":true},"$type":"Game.GameRuntime.Story.Node.FightingPanelVisibleActionTask"},"_position":{"x":200.0,"y":1660.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"15"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u592a\u611f\u8c22\u4e86","_text_en":"Thank
+    you so much.","_text_jp":"\u672c\u5f53\u306b\u611f\u8b1d\u3057\u3066\u3044\u307e\u3059\u3002"},"_actorName":"NPC3","_actorParameterID":"d3223ff5-7c08-4bb9-ab22-07cae31192e6","_position":{"x":200.0,"y":1540.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"16"},{"_action":{"questId":{"_value":"Quest_002"},"$type":"Game.GameRuntime.Story.Node.QuestAcceptAction"},"_position":{"x":200.0,"y":1600.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"17"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"1"},"_targetNode":{"$ref":"2"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"2"},"_targetNode":{"$ref":"3"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"3"},"_targetNode":{"$ref":"4"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"4"},"_targetNode":{"$ref":"5"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"5"},"_targetNode":{"$ref":"6"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"6"},"_targetNode":{"$ref":"7"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"7"},"_targetNode":{"$ref":"8"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"8"},"_targetNode":{"$ref":"9"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"9"},"_targetNode":{"$ref":"10"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"10"},"_targetNode":{"$ref":"11"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"11"},"_targetNode":{"$ref":"12"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"12"},"_targetNode":{"$ref":"13"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"13"},"_targetNode":{"$ref":"14"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"13"},"_targetNode":{"$ref":"16"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"14"},"_targetNode":{"$ref":"15"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"16"},"_targetNode":{"$ref":"17"},"$type":"NodeCanvas.DialogueTrees.DTConnection"},{"_sourceNode":{"$ref":"17"},"_targetNode":{"$ref":"15"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"NPC2","_id":"e123c05b-5a92-4535-8929-f9960bc49ec2"},{"_keyName":"NPC3","_id":"d3223ff5-7c08-4bb9-ab22-07cae31192e6"},{"_keyName":"\u96c5\u5c14","_id":"db315802-9d72-49b7-9447-6bcf7d072f3d"}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
   _boundGraphObjectReferences: []
   _boundGraphSource:
     _version: 3.31
     _category: 
     _comments: 
-    _translation: {x: -104, y: 0}
+    _translation: {x: 245, y: -1178}
     _zoomFactor: 1
   _firstActivation: 0
   _enableAction: 1
@@ -189,17 +204,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parentBlackboard: {fileID: 0}
-  _serializedBlackboard: '{"_variables":{"GoOutStoryYaerPainting":{"_value":1,"_name":"GoOutStoryYaerPainting","_id":"d7436528-6689-41dd-8c70-f3eba53896ba","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+  _serializedBlackboard: '{"_variables":{"GoOutStoryYaerPainting":{"_name":"GoOutStoryYaerPainting","_id":"d7436528-6689-41dd-8c70-f3eba53896ba","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
     UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
-  _objectReferences:
-  - {fileID: 0}
-  - {fileID: 8129792323373277873}
+  _objectReferences: []
   _serializedVariables:
-  - _json: '{"_value":1,"_name":"GoOutStoryYaerPainting","_id":"d7436528-6689-41dd-8c70-f3eba53896ba","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
+  - _json: '{"_name":"GoOutStoryYaerPainting","_id":"d7436528-6689-41dd-8c70-f3eba53896ba","$type":"NodeCanvas.Framework.Variable`1[[UnityEngine.CanvasGroup,
       UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}'
-    _references:
-    - {fileID: 0}
-    - {fileID: 8129792323373277873}
+    _references: []
+--- !u!1 &4328705271279572122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5755262025651472319}
+  m_Layer: 0
+  m_Name: 'Recovery GameObject for RectTransform (ID in file: 5755262025651472319)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5755262025651472319
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
+    type: 3}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4328705271279572122}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 37704741067304273}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8418881810847900565
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,141 +300,3 @@ MonoBehaviour:
   _dialogueColor: {r: 1, g: 1, b: 1, a: 1}
   _dialogueOffset: {x: 0, y: 0, z: 0}
   _roleName: 0
---- !u!1001 &7950158712227046876
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 37704741067304273}
-    m_Modifications:
-    - target: {fileID: 829091939895077973, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_Name
-      value: GoOutStoryYaerPainting
-      objectReference: {fileID: 0}
-    # 只藏左侧大半身，不关物体。关根节点会把同名小头像一起关掉。
-    # 开场淡入已删，不会再把透明度拉回 1。母体和对话框 Mask 里那份小头像不改。
-    - target: {fileID: 2199568825687050093, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_Alpha
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 853.9938
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 949.0917
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -559
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 52
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4c0e9909764ce6e4eb37971a6fe20fd3, type: 3}
---- !u!224 &5755262025651472319 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 2416866658779226723, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-    type: 3}
-  m_PrefabInstance: {fileID: 7950158712227046876}
-  m_PrefabAsset: {fileID: 0}
---- !u!225 &8129792323373277873 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 2199568825687050093, guid: 4c0e9909764ce6e4eb37971a6fe20fd3,
-    type: 3}
-  m_PrefabInstance: {fileID: 7950158712227046876}
-  m_PrefabAsset: {fileID: 0}
