@@ -4,8 +4,10 @@ using Game.GameMgr.Component;
 using Game.GameMgr.Component.ChangeScene;
 using Game.GameMgr.Component.UI;
 using Game.GameRuntime.GameSceneManager.Base;
+using Game.GameRuntime.UI.Component.BlackFade;
 using Game.GameRuntime.UI.FormLogic.Black;
 using Game.Static.Path;
+using GameFramework.UnityRuntime.UI;
 using UnityEngine;
 
 namespace Game.GameRuntime.GameSceneManager.Component
@@ -76,6 +78,9 @@ namespace Game.GameRuntime.GameSceneManager.Component
             onStartLoadingSceneEvent?.Invoke();
             if (blackFade)
             {
+                // 0923 C：开新换场黑幕前清残留（换古莎 Close 失败叠层 → 二进永久黑）
+                ForceCloseResidualBlackPanels("LoadScene-beforeOpen");
+
                 // 打开黑幕
                 GameManager.GetGMComponent<UIComponentGM>().OpenUIForm(UIPrefabPath.GetUIPrefabPath("BlackPanel"), EUIGroup.System, new OpenFormArgs()
                 {
@@ -158,6 +163,46 @@ namespace Game.GameRuntime.GameSceneManager.Component
             
         }
         
+        /// <summary>
+        /// 0923 C：立刻关掉所有已加载 BlackPanel（清忙态后 CloseUIForm），避免叠层残留。
+        /// 换场新开之前调用；勿对「即将打开」的新实例使用。
+        /// </summary>
+        public static void ForceCloseResidualBlackPanels(string reason)
+        {
+            var uiGm = GameManager.GetGMComponent<UIComponentGM>();
+            var ui = GameManager.GetGFComponent<UIComponent>();
+            if (uiGm == null || ui == null)
+            {
+                return;
+            }
+
+            string path = UIPrefabPath.GetUIPrefabPath("BlackPanel");
+            var forms = ui.GetUIForms(path);
+            if (forms == null || forms.Length == 0)
+            {
+                return;
+            }
+
+            Debug.Log($"[SceneLoad] 清残留 BlackPanel count={forms.Length} reason={reason}");
+            for (int i = 0; i < forms.Length; i++)
+            {
+                var form = forms[i];
+                if (form == null)
+                {
+                    continue;
+                }
+
+                // 先清忙态，避免池化复用后 Show/Hide 空 return
+                if (form.Logic is BlackFormLogic)
+                {
+                    var fade = form.Logic.GetComponentInChildren<BlackFadeComponent>(true);
+                    fade?.ForceClearBusyFlags();
+                }
+
+                uiGm.CloseUIForm(form);
+            }
+        }
+
         public void OnBlackFadeEnd() => onEndLoadingSceneEvent?.Invoke();
         public void OnSceneManagerInit()
         {

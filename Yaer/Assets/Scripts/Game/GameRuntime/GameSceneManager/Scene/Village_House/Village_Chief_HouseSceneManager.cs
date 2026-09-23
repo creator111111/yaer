@@ -45,6 +45,10 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_House
     /// 0902 开场分层（T1′）：Defer 揭黑须等续聊树 Instantiate 且白名单 alpha=0 备好，让玩家看见 0→1；
     /// 禁止幕下播完再揭；禁止广扫 Painting 名误伤 Mask。PrepareMask 续聊须 false（对齐门口空框）。
     /// </para>
+    /// <para>
+    /// 0923 二进卡黑：A 进场 <c>!ShouldPlay</c> 清残留 BlackPanel；B ShutDown 先 Invoke defer；
+    /// 全球 Close 排队见 BlackMask / BlackFadeComponent；换场前清残留见 LoadSceneComponentGSM。
+    /// </para>
     /// </remarks>
     public class Village_Chief_HouseSceneManager : BaseGameSceneManager
     {
@@ -141,6 +145,13 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_House
 
             var lastScene = GameManager.GetGMComponent<ChangeSceneComponentGM>().LastSceneName;
             Debug.Log($"[VillageChiefHouseDebug] lastScene={lastScene} place={PlaceName.KenMuNi}");
+
+            // 0923 A：二进（不应续聊）若仍有系统黑幕残留 → 强制揭幕（Close 静默失败 / 换古莎叠层）
+            // 仅 !ShouldPlay 才强关，避免打断首进 Defer 持黑。
+            if (!ShouldPlayChiefContinue())
+            {
+                LoadSceneComponentGSM.ForceCloseResidualBlackPanels("ChiefHouse-OnEnter-noContinue");
+            }
 
             // 读档/再进：旗已立（或续聊已用但旗未立 Q7）→ 静默正确 Active，不再黑幕
             ApplyGushaVisualFromArchive();
@@ -366,7 +377,22 @@ namespace Game.GameRuntime.GameSceneManager.Scene.Village_House
                 storyGsm.onStoryTriggered -= OnChiefContinueStoryTriggeredForCover;
             }
 
-            deferredCloseBlackAndNotify = null;
+            // 0923 B：出屋若仍持着未 Finalize 的 defer，先 Invoke 再清——否则换场黑幕无人关 → 永久黑
+            if (deferredCloseBlackAndNotify != null)
+            {
+                var close = deferredCloseBlackAndNotify;
+                deferredCloseBlackAndNotify = null;
+                Debug.LogWarning("[ChiefContinue] OnShutDown 仍有 deferredClose，强制 Invoke 防卡黑");
+                try
+                {
+                    close.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning("[ChiefContinue] OnShutDown Invoke deferredClose 异常：" + ex.Message);
+                }
+            }
+
             continueTreeReadyPolling = false;
             UnsubscribeContinueStoryEnd();
             base.OnShutDown();

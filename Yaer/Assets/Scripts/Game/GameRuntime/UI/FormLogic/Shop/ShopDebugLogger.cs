@@ -99,6 +99,88 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         }
 
         /// <summary>
+        /// 购买每次 Commit 必打一行（过滤 <c>[ShopBuyCommit]</c>）：
+        /// 输入数量、单价、金币、持有、空位、可买力、上限、提交后数量、归零原因。
+        /// 用于对拍「有 800 金为何变 0」——多数是 stackRoom=0，不是钱不够。
+        /// </summary>
+        public static void LogBuyCommitTrace(
+            string itemId,
+            int inputQty,
+            int price,
+            int gold,
+            int otherCost,
+            int held,
+            int maxStack,
+            int stackRoom,
+            int afford,
+            int maxQty,
+            int afterQty,
+            string reason)
+        {
+            Debug.Log(
+                $"[ShopBuyCommit] item={itemId} " +
+                $"输入数量={inputQty} 单价={price} 金币={gold} 其它行占金={otherCost} " +
+                $"持有={held}/{maxStack} 空位stackRoom={stackRoom} 钱够买afford={afford} 上限max={maxQty} " +
+                $"提交后数量={afterQty} 原因={reason}");
+        }
+
+        /// <summary>
+        /// 输入/上限侧：有金但堆叠已满 → max=0。与「金币不足」区分，避免误判 UI/读金坏了。
+        /// </summary>
+        public static void LogBuyBlockedByFullStack(
+            string itemId,
+            int held,
+            int maxStack,
+            int gold,
+            int price)
+        {
+            if (gold < 0)
+            {
+                Debug.LogWarning(
+                    $"{LogPrefix} 堆叠已满无法再买：{itemId} 持有 {held}/{maxStack}（stackRoom=0）；输入钳 0 属业务预期");
+                return;
+            }
+
+            Debug.LogWarning(
+                $"{LogPrefix} 堆叠已满无法再买：{itemId} 持有 {held}/{maxStack}（stackRoom=0）；" +
+                $"当前金币 {gold}、单价 {price} 仍够买，但空位为 0 → 输入变 0 属业务预期，非读金失败");
+        }
+
+        /// <summary>Commit：键入被钳因堆叠已满（Tips 键未齐时 Console 可辨）。</summary>
+        public static void LogBuyCommitClampedStackFull(
+            string itemId, int held, int maxStack, int beforeQty, int afterQty)
+        {
+            Debug.LogWarning(
+                $"{LogPrefix} 提交后数量调整：{itemId} 该道具已满（持有 {held}/{maxStack}），" +
+                $"输入 {beforeQty} → {afterQty}");
+        }
+
+        /// <summary>Commit：键入被钳因金币不足。</summary>
+        public static void LogBuyCommitClampedInsufficientGold(
+            string itemId, int gold, int price, int beforeQty, int afterQty)
+        {
+            Debug.LogWarning(
+                $"{LogPrefix} 提交后数量调整：{itemId} 金币不足（持有金 {gold}、单价 {price}），" +
+                $"输入 {beforeQty} → {afterQty}");
+        }
+
+        /// <summary>Commit：键入超过联合可买上限（有空位且有金，多行占金等）。</summary>
+        public static void LogBuyCommitClampedToMax(
+            string itemId, int beforeQty, int afterQty, int maxQty)
+        {
+            Debug.LogWarning(
+                $"{LogPrefix} 提交后数量调整：{itemId} 超过可买上限 {maxQty}，输入 {beforeQty} → {afterQty}");
+        }
+
+        /// <summary>出售 Commit：超过持有钳回。</summary>
+        public static void LogSellCommitClampedToHeld(
+            string itemId, int beforeQty, int afterQty, int held)
+        {
+            Debug.LogWarning(
+                $"{LogPrefix} 提交后数量调整：{itemId} 超过持有 {held}，输入 {beforeQty} → {afterQty}");
+        }
+
+        /// <summary>
         /// 出售出包成功：明细 + 加币额，便于 Console 对账。
         /// </summary>
         /// <param name="itemIds">成交行道具 ID</param>

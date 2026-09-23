@@ -124,15 +124,11 @@ namespace Game.GameRuntime.UI.Component.BlackFade
         }
 
         /// <summary>
-        /// 淡入黑幕后关闭面板
+        /// 淡入黑幕后关闭面板。
+        /// 0923：Showing 时不再空 return，改由 BlackMask 排队。
         /// </summary>
         public void CloseFormShowFade(UIForm uiForm, Action callBack = null)
         {
-            if (blackMask.Showing)
-            {
-                return;
-            }
-
             SetInteractive(false);
 
             blackMask.ShowFade(() =>
@@ -144,15 +140,12 @@ namespace Game.GameRuntime.UI.Component.BlackFade
         }
 
         /// <summary>
-        /// 淡出黑幕后关闭面板
+        /// 淡出黑幕后关闭面板。
+        /// 0923：禁止 <c>if (Showing) return</c>——否则换场/换古莎 Close 静默失败 → 永久黑屏。
+        /// Busy 时由 <see cref="BlackMask.HideFade"/> 排队/链式回调，保证 callBack + CloseUIForm 终会跑。
         /// </summary>
         public void CloseFormHideFade(UIForm uiForm, Action callBack = null)
         {
-            if (blackMask.Showing)
-            {
-                return;
-            }
-
             SetInteractive(false);
 
             blackMask.HideFade(() =>
@@ -168,11 +161,6 @@ namespace Game.GameRuntime.UI.Component.BlackFade
         /// </summary>
         public void CloseFormShowRow(UIForm uiForm, Action callBack = null)
         {
-            if (blackMask.Showing)
-            {
-                return;
-            }
-
             SetInteractive(false);
 
             blackMask.ShowRow(() =>
@@ -188,11 +176,6 @@ namespace Game.GameRuntime.UI.Component.BlackFade
         /// </summary>
         public void CloseFormHideRow(UIForm uiForm, Action callBack = null)
         {
-            if (blackMask.Showing)
-            {
-                return;
-            }
-
             SetInteractive(false);
             blackMask.HideRow(() =>
             {
@@ -206,6 +189,12 @@ namespace Game.GameRuntime.UI.Component.BlackFade
         public void ResetHideState()
         {
             blackMask.SetHidingState(false);
+        }
+
+        /// <summary>0923：关残留实例前清 Showing/Hiding，避免池化脏态。</summary>
+        public void ForceClearBusyFlags()
+        {
+            blackMask.ForceClearBusyFlags();
         }
     }
 }

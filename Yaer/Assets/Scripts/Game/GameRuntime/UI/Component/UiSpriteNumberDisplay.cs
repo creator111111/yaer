@@ -492,6 +492,8 @@ namespace Game.GameRuntime.UI.Component
             }
 
             var sprite = digitSprites[digit];
+            // 数字图不挡点击，单击就能打到下面的输入框（否则要点两次）
+            image.raycastTarget = false;
             image.sprite = sprite;
             image.enabled = sprite != null;
 

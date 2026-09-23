@@ -38,27 +38,34 @@ namespace Game.GameRuntime.UI.FormLogic.Shop.Editor
                 controller = composite.AddComponent<ShopkeeperFaceController>();
             }
 
+            // 产品关闭数字键切脸：不新增 DebugInput；若场景已有则禁用并关热键。
+            // 原因：Alpha1～5 会抢商店数量输入，表现为商人莫名切表情。
             var debugInput = composite.GetComponent<ShopkeeperFaceDebugInput>();
-            if (debugInput == null)
+            if (debugInput != null)
             {
-                debugInput = composite.AddComponent<ShopkeeperFaceDebugInput>();
+                debugInput.enabled = false;
+                var soDebug = new SerializedObject(debugInput);
+                soDebug.FindProperty("controller").objectReferenceValue = controller;
+                var hotkeysProp = soDebug.FindProperty("enableDebugHotkeys");
+                if (hotkeysProp != null)
+                {
+                    hotkeysProp.boolValue = false;
+                }
+
+                soDebug.ApplyModifiedPropertiesWithoutUndo();
+                EditorUtility.SetDirty(debugInput);
             }
 
             controller.EditorResetDefaultActiveState();
 
-            var soDebug = new SerializedObject(debugInput);
-            soDebug.FindProperty("controller").objectReferenceValue = controller;
-            soDebug.ApplyModifiedPropertiesWithoutUndo();
-
             EditorUtility.SetDirty(controller);
-            EditorUtility.SetDirty(debugInput);
             EditorUtility.SetDirty(composite);
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
 
             Debug.Log(
-                $"[ShopkeeperFaceSetup] 已挂载并校正「{CompositeRootName}」Body/Face Toggle 默认（Normal + Face1）。");
+                $"[ShopkeeperFaceSetup] 已挂载并校正「{CompositeRootName}」Body/Face Toggle 默认（Normal + Face1）；数字键切脸已关闭。");
         }
     }
 }

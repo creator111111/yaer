@@ -62,8 +62,10 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         /// </summary>
         /// <remarks>
         /// 原因：仅 caretColor alpha=0 不够——默认 caretWidth=1 + caretBlinkRate≈0.85 仍画/闪网格，
-        /// 叠在 DigitStrip 上会看到竖线残影。须 width=0、blink=0，且 selection 全透明（OnFocusSelectAll 蓝块）。
-        /// 替代（未采用）：逐行改 Prefab YAML（易漏，下次 Bake 又冒）；拆 InputField 改加减钮（过大）。
+        /// 叠在 DigitStrip 上会看到竖线残影。须 width=0、blink=0，且 selection 全透明（全选无蓝块闪）。
+        /// 0923：同时强制 <c>onFocusSelectAll=true</c>——逻辑全选支撑「点击后覆盖输入」；
+        /// selection 仍透明（0830 不回潮），靠行组件点选后补 SelectAll 挡鼠标清选。
+        /// 替代（未采用）：逐行改 Prefab YAML；恢复可见蓝选区；拆 InputField 改加减钮。
         /// </remarks>
         public static void ApplyInvisibleInputTextStyle(TMP_InputField inputField)
         {
@@ -98,6 +100,24 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             // 聚焦全选时的蓝块也关掉，避免「闪一下」被当成 caret。
             var selection = inputField.selectionColor;
             inputField.selectionColor = new Color(selection.r, selection.g, selection.b, 0f);
+
+            // K1：逻辑全选（覆盖输入）。selection 仍透明，与 0830 无闪烁并存。
+            inputField.onFocusSelectAll = true;
+        }
+
+        /// <summary>
+        /// K1：当帧逻辑全选。禁止延帧；禁止再设 stringPosition=Length（会收成末尾 caret）。
+        /// </summary>
+        public static void SelectAllQuantityText(TMP_InputField inputField)
+        {
+            if (inputField == null || !inputField.isFocused)
+            {
+                return;
+            }
+
+            var text = inputField.text ?? string.Empty;
+            inputField.selectionStringAnchorPosition = 0;
+            inputField.selectionStringFocusPosition = text.Length;
         }
 
         /// <summary>确保 Number 下 DigitStrip 存在并刷默认数量图。</summary>
@@ -118,17 +138,50 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             display.SetNumber(defaultQuantity);
         }
 
-        /// <summary>同步 Number 列图片数字（供 ShopBuyRowQuantityInput 在 onValueChanged 调用）。</summary>
-        public static void SyncNumberDigitDisplay(Transform numberNode, string rawText)
+        /// <summary>
+        /// 同步 Number 列图片数字。
+        /// 0923：Find 失败不再静默——打 Warning，并尝试 <see cref="UiSpriteNumberDisplay.EnsureOn"/> 补 DigitStrip。
+        /// </summary>
+        /// <param name="numberNode">TxtStock / Number 节点</param>
+        /// <param name="rawText">TMP 当前文本</param>
+        /// <param name="logContext">可选；日志用（行组件 this）</param>
+        public static void SyncNumberDigitDisplay(
+            Transform numberNode,
+            string rawText,
+            UnityEngine.Object logContext = null)
         {
             if (numberNode == null)
             {
+                Debug.LogWarning(
+                    "[ShopQuantity] SyncNumberDigitDisplay：numberNode 为空，DigitStrip 无法刷新。",
+                    logContext);
                 return;
             }
 
             var display = UiSpriteNumberDisplay.FindUnder(numberNode);
             if (display == null)
             {
+                // 补挂 DigitStrip（Bake 漏了或节点被拆过）
+                display = UiSpriteNumberDisplay.EnsureOn(
+                    numberNode,
+                    TextAnchor.MiddleRight,
+                    stripSpacing: UiSpriteNumberDisplay.ShopNumberSpacing,
+                    capacity: MaxQuantityDigits);
+                if (display != null)
+                {
+                    display.TryLoadDefaultSpritesIfEmpty();
+                    display.SetSpacing(UiSpriteNumberDisplay.ShopNumberSpacing);
+                    Debug.LogWarning(
+                        $"[ShopQuantity] DigitStrip 缺失已 EnsureOn：{numberNode.name}",
+                        logContext != null ? logContext : numberNode);
+                }
+            }
+
+            if (display == null)
+            {
+                Debug.LogError(
+                    $"[ShopQuantity] Sync 失败：{numberNode.name} 下仍无 UiSpriteNumberDisplay。",
+                    logContext != null ? logContext : numberNode);
                 return;
             }
 
@@ -199,6 +252,24 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
             var safeValue = Mathf.Max(0, quantity);
             inputField.SetTextWithoutNotify(safeValue.ToString());
+        }
+
+        /// <summary>
+        /// 进入数量编辑：TMP 置空（WithoutNotify，避免立刻钳回 0），DigitStrip 隐藏全部位图。
+        /// 失焦空串仍由行组件 EndEdit → Parse→0 写回。
+        /// </summary>
+        public static void ClearQuantityForEdit(
+            TMP_InputField inputField,
+            Transform numberNode,
+            UnityEngine.Object logContext = null)
+        {
+            if (inputField == null)
+            {
+                return;
+            }
+
+            inputField.SetTextWithoutNotify(string.Empty);
+            SyncNumberDigitDisplay(numberNode, string.Empty, logContext);
         }
 
         private static void RemoveLegacyText(GameObject host)
@@ -287,6 +358,8 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             inputField.characterLimit = MaxQuantityDigits;
             inputField.lineType = TMP_InputField.LineType.SingleLine;
             inputField.richText = false;
+            // 与 ApplyInvisibleInputTextStyle 一致：新建 TMP 时也开逻辑全选（K1）。
+            inputField.onFocusSelectAll = true;
 
             if (inputField.textComponent != null)
             {

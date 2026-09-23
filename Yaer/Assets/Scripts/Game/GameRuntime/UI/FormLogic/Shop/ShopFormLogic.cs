@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.DataTable.MainItem;
 using Game.GameMgr;
 using Game.GameMgr.Component.Archive;
 using Game.GameMgr.Component.Archive.ArchiveDataClass.Player;
@@ -89,6 +90,13 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         [Header("联合验收 · 货币旁路（正式默认关；联调可手开）")]
         [SerializeField] private bool bypassGoldCheckForBagJoint = false;
 
+        /// <summary>
+        /// 0923 复验热修：<c>[ShopBuyMax]</c> 诊断。
+        /// true=每次 Resolve 都打；false=仅签名变化时打（减刷屏，仍能钉 G2）。
+        /// </summary>
+        [Header("诊断 · 购买 max 拆解（过滤 [ShopBuyMax]）")]
+        [SerializeField] private bool shopBuyMaxVerbose = false;
+
         [Header("离店 · 回 Village_KenMuNi1（纯 UI 商店无走路出门）")]
         [SerializeField] private Button btnExit;
 
@@ -101,6 +109,20 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         /// 购买行联合钳制中：改一行后回扫其它行时置位，避免 OnQuantityValueChanged 递归。
         /// </summary>
         private bool _isReclampingBuyCart;
+
+        /// <summary>上次 [ShopBuyMax] 签名（按 item），用于非 Verbose 时去重。</summary>
+        private readonly Dictionary<string, string> _lastShopBuyMaxSignatureByItem =
+            new Dictionary<string, string>();
+
+        /// <summary>本店打开期间已提示过「堆叠已满」的道具，避免 Warning 刷屏。</summary>
+        private readonly HashSet<string> _stackFullWarnedItemIds = new HashSet<string>();
+
+        /// <summary>
+        /// 仅 Commit / 决定路径允许打 [ShopBuyMax]（编辑 ValueChanged 禁刷）。
+        /// shopBuyMaxVerbose=true 时仍走 LogBuyMaxBreakdown 的 Verbose 分支。
+        /// </summary>
+        private bool _shopBuyMaxLogEnabled;
+
 
         /// <summary>
         /// 是否已完成运行时绑定。幂等守卫：Awake（场景 UI_Shop）与 OnInit（GF Prefab）都会调 Ensure。
@@ -152,6 +174,9 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             AllowOpenMenu(false);
             // SN-8：每次开店再刷一次名图（池化复开 / 进店前已改语言）。
             RefreshAllShopNamesForLanguage();
+            // 0923 复验：每店一次堆叠满提示；max 签名缓存也清，便于验收贴新日志。
+            _stackFullWarnedItemIds.Clear();
+            _lastShopBuyMaxSignatureByItem.Clear();
             Debug.Log("[ShopEscExit] ShopPanel OnOpen AllowOpenMenu(false) 店内 ESC=离店非菜单");
         }
 
@@ -340,16 +365,16 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             return 0;
         }
 
-        /// <summary>购买 Tab：Σ(每行 QuantityForTotal × ShopBarRowView.Price)。</summary>
+        /// <summary>购买 Tab：Σ(每行 QuantityForTotal × ResolveBuyUnitPrice)。</summary>
         public int GetCurrentBuyTotal()
         {
-            return SumRowTotals(_buyRowViews);
+            return SumBuyRowTotals(_buyRowViews);
         }
 
         /// <summary>出售 Tab：Σ(每行 QuantityForTotal × ShopBarRowView.Price)。</summary>
         public int GetCurrentSellTotal()
         {
-            return SumRowTotals(_sellRowViews);
+            return SumSellRowTotals(_sellRowViews);
         }
 
         /// <summary>按当前 Tab 刷新 Total2 文案。</summary>
@@ -377,6 +402,9 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 OnConfirmSellClick();
                 return;
             }
+
+            // 决定前强制 Commit 所有买行（含仍聚焦），再扫数量结算。
+            CommitAllWiredQuantityInputs();
 
             var lines = CollectBuyLinesWithQuantity();
             var total = 0;
@@ -460,6 +488,9 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         /// </summary>
         private void OnConfirmSellClick()
         {
+            // 与买同步：决定前先 Commit 卖行编辑中数量。
+            CommitAllWiredQuantityInputs();
+
             var lines = CollectSellLinesWithQuantity();
             var total = 0;
             for (var i = 0; i < lines.Count; i++)
@@ -600,7 +631,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 {
                     ItemId = rowView.ItemId,
                     Quantity = quantity,
-                    UnitPrice = rowView.Price
+                    UnitPrice = ResolveBuyUnitPrice(rowView)
                 });
             }
 
@@ -796,8 +827,30 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             return scrollRoot.Find("Content");
         }
 
-        /// <summary>Σ qty×price；单价来自 Bake 的 ShopBarRowView.Price，数量空串按 0。</summary>
-        private static int SumRowTotals(IReadOnlyList<ShopBarRowView> rows)
+        /// <summary>
+        /// 购买合计：单价与联合 max / 决定扣款同走 <see cref="ResolveBuyUnitPrice"/>
+        /// （Bake 价 0 时回退表价，避免口径分裂导致 max/Total2/扣款不一致）。
+        /// </summary>
+        private static int SumBuyRowTotals(IReadOnlyList<ShopBarRowView> rows)
+        {
+            var sum = 0;
+            foreach (var rowView in rows)
+            {
+                if (rowView == null)
+                {
+                    continue;
+                }
+
+                var input = rowView.GetComponent<ShopBuyRowQuantityInput>();
+                var quantity = input != null ? input.QuantityForTotal : 0;
+                sum += quantity * ResolveBuyUnitPrice(rowView);
+            }
+
+            return sum;
+        }
+
+        /// <summary>出售合计：单价用行上 Bake 卖价。</summary>
+        private static int SumSellRowTotals(IReadOnlyList<ShopBarRowView> rows)
         {
             var sum = 0;
             foreach (var rowView in rows)
@@ -914,16 +967,30 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
                 // 捕获本行引用：闭包在失焦/输入时再读最新金币与持有，勿缓存成打开店时的快照。
                 var capturedRow = rowView;
+                var capturedInput = input;
+                // T3：Begin 前先 Commit 其它聚焦行。
+                capturedInput.SetBeforeBeginEdit(() => CommitFocusedQuantityInputsExcept(capturedInput));
+
                 if (isBuyRow)
                 {
                     input.SetMaxQuantityResolver(() => ResolveBuyMaxQuantity(capturedRow));
-                    // 买：先联合回扫整车再刷合计（改 A 可能迫使 B 下调）
+                    // 买：正式提交后联合回扫整车再刷合计
                     input.OnQuantityValueChanged += OnBuyQuantityChangedForJointCart;
+                    // 清空 / 编辑预览：只刷 Total2，不 Reclamp
+                    input.OnQuantityClearedForEdit += RefreshTotal2;
+                    input.OnQuantityEditPreview += RefreshTotal2;
+                    // Commit：打 [ShopBuyMax] + max=0 可辨反馈
+                    input.OnQuantityCommitted += (before, after) =>
+                        OnBuyQuantityCommitted(capturedRow, before, after);
                 }
                 else
                 {
                     input.SetMaxQuantityResolver(() => ResolveSellMaxQuantity(capturedRow));
                     input.OnQuantityValueChanged += RefreshTotal2;
+                    input.OnQuantityClearedForEdit += RefreshTotal2;
+                    input.OnQuantityEditPreview += RefreshTotal2;
+                    input.OnQuantityCommitted += (before, after) =>
+                        OnSellQuantityCommitted(capturedRow, before, after);
                 }
 
                 _wiredQuantityInputs.Add(input);
@@ -946,7 +1013,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
         /// <summary>
         /// 静默回扫购买列表：每行用「金币−其它行合计」再钳一次。
-        /// 替代：只钳当前行——其它行可能仍超联合预算，点决定才整单失败，已否决。
+        /// T2：跳过正在编辑的行（编辑锁定期不写回）。
         /// </summary>
         private void ReclampAllBuyRowsForJointGold()
         {
@@ -962,7 +1029,12 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                     }
 
                     var input = row.GetComponent<ShopBuyRowQuantityInput>();
-                    input?.ApplyBusinessMaxClampSilent();
+                    if (input == null || input.IsQuantityFocused)
+                    {
+                        continue;
+                    }
+
+                    input.ApplyBusinessMaxClampSilent();
                 }
             }
             finally
@@ -971,51 +1043,344 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             }
         }
 
+        /// <summary>决定前 / 切行：Commit 全部已接线数量框。</summary>
+        private void CommitAllWiredQuantityInputs()
+        {
+            for (var i = 0; i < _wiredQuantityInputs.Count; i++)
+            {
+                _wiredQuantityInputs[i]?.CommitQuantity();
+            }
+        }
+
+        /// <summary>Begin 前：Commit 其它聚焦行（本行随后清空）。</summary>
+        private void CommitFocusedQuantityInputsExcept(ShopBuyRowQuantityInput except)
+        {
+            for (var i = 0; i < _wiredQuantityInputs.Count; i++)
+            {
+                var input = _wiredQuantityInputs[i];
+                if (input == null || input == except)
+                {
+                    continue;
+                }
+
+                if (input.IsQuantityFocused)
+                {
+                    input.CommitQuantity();
+                }
+            }
+        }
+
         /// <summary>
-        /// 购买行最大可填数量（联合总价）：
-        /// remainingGold = 当前金币 − Σ(其它行 qty×price)，再 min(remaining/price, 堆叠空位)。
-        /// 旁路开：只钳堆叠空位。单价 ≤0 → 0。
+        /// 购买 Commit：每次必打 <c>[ShopBuyCommit]</c> 对账行（输入/价/金/空位/钳后）；
+        /// 另保留 [ShopBuyMax]；超限时再打分支 Warning。
         /// </summary>
+        private void OnBuyQuantityCommitted(ShopBarRowView row, int beforeParsed, int afterClamped)
+        {
+            if (row == null)
+            {
+                return;
+            }
+
+            var breakdown = ComputeBuyMaxBreakdown(row);
+            var maxStack = PlayerBagData.MaxStackPerItem;
+            var reason = ResolveBuyCommitZeroReason(breakdown, beforeParsed, afterClamped);
+
+            // 产品对账：每次提交都打，不过滤、不去重。
+            ShopDebugLogger.LogBuyCommitTrace(
+                breakdown.ItemKey,
+                beforeParsed,
+                breakdown.Price,
+                breakdown.Gold,
+                breakdown.OtherCost,
+                breakdown.Held,
+                maxStack,
+                breakdown.StackRoom,
+                breakdown.AffordByGold,
+                breakdown.Max,
+                afterClamped,
+                reason);
+
+            _shopBuyMaxLogEnabled = true;
+            try
+            {
+                LogBuyMaxBreakdown(breakdown);
+            }
+            finally
+            {
+                _shopBuyMaxLogEnabled = false;
+            }
+
+            // 键入正数被提交钳到更小（含 0）：必须有反馈，禁止静默。
+            if (beforeParsed <= afterClamped)
+            {
+                return;
+            }
+
+            if (breakdown.StackRoom <= 0)
+            {
+                ShopDebugLogger.LogBuyCommitClampedStackFull(
+                    breakdown.ItemKey, breakdown.Held, maxStack,
+                    beforeParsed, afterClamped);
+            }
+            else if (breakdown.AffordByGold <= 0)
+            {
+                ShopDebugLogger.LogBuyCommitClampedInsufficientGold(
+                    breakdown.ItemKey, breakdown.Gold, breakdown.Price,
+                    beforeParsed, afterClamped);
+            }
+            else
+            {
+                ShopDebugLogger.LogBuyCommitClampedToMax(
+                    breakdown.ItemKey, beforeParsed, afterClamped, breakdown.Max);
+            }
+        }
+
+        /// <summary>
+        /// 人话原因：有金仍变 0 时优先写「背包已满」；钱不够才写「金币不足」。
+        /// </summary>
+        private static string ResolveBuyCommitZeroReason(
+            BuyMaxBreakdown b, int inputQty, int afterQty)
+        {
+            if (inputQty == afterQty)
+            {
+                return afterQty == 0 && inputQty == 0 ? "未输入(空/0)" : "未调整(在上限内)";
+            }
+
+            if (b.StackRoom <= 0)
+            {
+                return $"背包已满(持有{b.Held}/顶{PlayerBagData.MaxStackPerItem})→空位0→上限0【不是没钱】";
+            }
+
+            if (b.Price <= 0)
+            {
+                return "单价≤0→上限0";
+            }
+
+            if (b.AffordByGold <= 0)
+            {
+                return $"金币不够买1件(金{b.Gold}-其它行{b.OtherCost})/价{b.Price}";
+            }
+
+            if (afterQty < inputQty)
+            {
+                return $"超过可买上限max={b.Max}(钱够{b.AffordByGold}件∩空位{b.StackRoom})";
+            }
+
+            return "其它";
+        }
+
+        /// <summary>出售 Commit：超持有钳回时打可辨 Warning（无 [ShopBuyMax]）。</summary>
+        private void OnSellQuantityCommitted(ShopBarRowView row, int beforeParsed, int afterClamped)
+        {
+            if (row == null || beforeParsed <= afterClamped)
+            {
+                return;
+            }
+
+            var held = ResolveSellMaxQuantity(row);
+            ShopDebugLogger.LogSellCommitClampedToHeld(
+                row.ItemId.ToString(), beforeParsed, afterClamped, held);
+        }
+
+        /// <summary>
+        /// 购买行最大可填数量（联合总价）。公式不变；诊断日志仅 Commit 时打。
+        /// </summary>
+        /// <remarks>
+        /// 0923 公式审计：编辑锁定期不调本方法写回；提交瞬间 B1=stackRoom∩afford。
+        /// </remarks>
         private int ResolveBuyMaxQuantity(ShopBarRowView row)
+        {
+            return ComputeBuyMaxBreakdown(row).Max;
+        }
+
+        /// <summary>
+        /// 购买上限拆解（供 Commit 日志 / Tips 分支）。
+        /// <para>
+        /// 0923 逐项查错（F1）：本档 held=MaxStack → stackRoom=0 → max=0 是<strong>设计空位门</strong>
+        /// （读数正确），不是 gold/price/otherCost 算错。禁止关 stackRoom；满堆叠提交归 0 + Console「已满」为预期。
+        /// 验收须先 held&lt;MaxStack，再验 max≥1。
+        /// </para>
+        /// </summary>
+        private struct BuyMaxBreakdown
+        {
+            public string ItemKey;
+            public int Held;
+            public int StackRoom;
+            public int Price;
+            public int Gold;
+            public int OtherCost;
+            public int AffordByGold;
+            public int Max;
+            public bool BypassGold;
+        }
+
+        /// <summary>
+        /// 计算购买 max（公式保留）：
+        /// <c>min((gold−otherCost)/price, max(0, MaxStack−held))</c>；旁路则仅 stackRoom。
+        /// </summary>
+        private BuyMaxBreakdown ComputeBuyMaxBreakdown(ShopBarRowView row)
+        {
+            var result = new BuyMaxBreakdown
+            {
+                ItemKey = row != null ? row.ItemId.ToString() : string.Empty,
+                Held = 0,
+                StackRoom = 0,
+                Price = 0,
+                Gold = 0,
+                OtherCost = 0,
+                AffordByGold = 0,
+                Max = 0,
+                BypassGold = bypassGoldCheckForBagJoint
+            };
+
+            if (row == null)
+            {
+                return result;
+            }
+
+            var bag = ResolvePlayerBagData();
+            result.Held = bag != null ? bag.GetMainItemCount(row.ItemId) : 0;
+            result.StackRoom = Mathf.Max(0, PlayerBagData.MaxStackPerItem - result.Held);
+
+            if (bypassGoldCheckForBagJoint)
+            {
+                result.Max = result.StackRoom;
+                return result;
+            }
+
+            result.Price = ResolveBuyUnitPrice(row);
+            if (result.Price <= 0)
+            {
+                result.Max = 0;
+                return result;
+            }
+
+            var goldData = QuestManager.getInstance()?.GetPlayerGoldData();
+            result.Gold = goldData != null ? goldData.gold : 0;
+            result.OtherCost = SumBuyRowsCostExcluding(row);
+            var remainingGold = result.Gold - result.OtherCost;
+            if (remainingGold < 0)
+            {
+                remainingGold = 0;
+            }
+
+            result.AffordByGold = remainingGold / result.Price;
+            result.Max = Mathf.Min(result.AffordByGold, result.StackRoom);
+            return result;
+        }
+
+        private void LogBuyMaxBreakdown(BuyMaxBreakdown b)
+        {
+            if (!shopBuyMaxVerbose && !_shopBuyMaxLogEnabled)
+            {
+                return;
+            }
+
+            string fields;
+            if (b.BypassGold)
+            {
+                // 旁路无金币门：afford 不适用，显式标 -，避免与正式路径混淆。
+                fields =
+                    $"gold=(bypass) price=- held={b.Held} stackRoom={b.StackRoom} otherCost=- afford=- max={b.Max} bypassGoldCheck=1";
+            }
+            else if (b.Price <= 0)
+            {
+                fields =
+                    $"gold=? price={b.Price} held={b.Held} stackRoom={b.StackRoom} otherCost=- afford=0 max=0 bypassGoldCheck=0";
+            }
+            else
+            {
+                // 0923 F1：显式 afford，便于一眼看出 min(afford,stackRoom)=max（满堆叠时 afford 仍可>0）。
+                fields =
+                    $"gold={b.Gold} price={b.Price} held={b.Held} stackRoom={b.StackRoom} otherCost={b.OtherCost} afford={b.AffordByGold} max={b.Max} bypassGoldCheck=0";
+            }
+
+            LogShopBuyMaxLine(b.ItemKey, fields);
+
+            var affordForWarn = b.BypassGold ? (b.StackRoom == 0 ? 1 : 0) : b.AffordByGold;
+            MaybeWarnBuyBlockedByFullStack(
+                b.ItemKey,
+                b.Held,
+                b.StackRoom,
+                b.BypassGold ? -1 : b.Gold,
+                b.BypassGold ? -1 : b.Price,
+                affordForWarn);
+        }
+
+        /// <summary>
+        /// 写 <c>[ShopBuyMax]</c>。Verbose 每次打；否则仅签名变化时打（含首次 max=0）。
+        /// </summary>
+        private void LogShopBuyMaxLine(string itemKey, string fields)
+        {
+            var signature = $"{itemKey}|{fields}";
+            if (!shopBuyMaxVerbose
+                && _lastShopBuyMaxSignatureByItem.TryGetValue(itemKey, out var previous)
+                && previous == signature)
+            {
+                return;
+            }
+
+            _lastShopBuyMaxSignatureByItem[itemKey] = signature;
+            Debug.Log($"[ShopBuyMax] item={itemKey} {fields}", this);
+        }
+
+        /// <summary>
+        /// 堆叠已满且本有购买力时 Warning 一次（每店每道具），避免被误判成读金/UI 坏。
+        /// Tips/对白键另票；本期 Console 可辨即可。
+        /// </summary>
+        private void MaybeWarnBuyBlockedByFullStack(
+            string itemKey,
+            int held,
+            int stackRoom,
+            int gold,
+            int price,
+            int affordByGold)
+        {
+            if (stackRoom > 0 || affordByGold <= 0)
+            {
+                return;
+            }
+
+            if (!_stackFullWarnedItemIds.Add(itemKey))
+            {
+                return;
+            }
+
+            ShopDebugLogger.LogBuyBlockedByFullStack(
+                itemKey,
+                held,
+                PlayerBagData.MaxStackPerItem,
+                gold,
+                price);
+        }
+
+        /// <summary>
+        /// 购买单价：优先行上 Bake 价；Bake 为 0 时回退道具表买价。
+        /// 原因：买价 ≤0 会让上限恒为 0，购买框任何输入都被钳没；贩卖上限不看单价所以不受影响。
+        /// </summary>
+        private static int ResolveBuyUnitPrice(ShopBarRowView row)
         {
             if (row == null)
             {
                 return 0;
             }
 
-            var bag = ResolvePlayerBagData();
-            var held = bag != null ? bag.GetMainItemCount(row.ItemId) : 0;
-            var stackRoom = Mathf.Max(0, PlayerBagData.MaxStackPerItem - held);
-
-            // 旁路跳过金币门：数量仍受堆叠约束，与结算 TryValidateBuyStackLimits 同构。
-            if (bypassGoldCheckForBagJoint)
+            if (row.Price > 0)
             {
-                return stackRoom;
+                return row.Price;
             }
 
-            var price = row.Price;
-            if (price <= 0)
+            if (MainItemDefProvider.TryGetBuyPrice(row.ItemId, out var tablePrice) && tablePrice > 0)
             {
-                return 0;
+                return tablePrice;
             }
 
-            var goldData = QuestManager.getInstance()?.GetPlayerGoldData();
-            var gold = goldData != null ? goldData.gold : 0;
-            // 联合：先扣掉其它购买行已填金额，剩余才给本行
-            var otherRowsCost = SumBuyRowsCostExcluding(row);
-            var remainingGold = gold - otherRowsCost;
-            if (remainingGold < 0)
-            {
-                remainingGold = 0;
-            }
-
-            var affordByGold = remainingGold / price;
-            return Mathf.Min(affordByGold, stackRoom);
+            return 0;
         }
 
         /// <summary>
-        /// Σ(其它购买行 QuantityForTotal × Price)；不含 <paramref name="excludeRow"/>。
-        /// 与 Total2 / 决定扣款同口径，供联合购买力计算。
+        /// Σ(其它购买行 QuantityForTotal × ResolveBuyUnitPrice)；不含 <paramref name="excludeRow"/>。
+        /// 与 Total2 / 决定扣款 / ResolveBuyMaxQuantity 同单价口径。
         /// </summary>
         private int SumBuyRowsCostExcluding(ShopBarRowView excludeRow)
         {
@@ -1035,7 +1400,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                     continue;
                 }
 
-                sum += quantity * rowView.Price;
+                sum += quantity * ResolveBuyUnitPrice(rowView);
             }
 
             return sum;
@@ -1057,11 +1422,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         {
             foreach (var input in _wiredQuantityInputs)
             {
-                if (input != null)
-                {
-                    input.OnQuantityValueChanged -= RefreshTotal2;
-                    input.OnQuantityValueChanged -= OnBuyQuantityChangedForJointCart;
-                }
+                input?.ClearFormCallbacks();
             }
 
             _wiredQuantityInputs.Clear();

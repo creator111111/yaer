@@ -2,15 +2,17 @@ using System;
 using Game.GameRuntime.UI.Component;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Game.GameRuntime.UI.FormLogic.Shop
 {
     /// <summary>
-    /// 商店列表单行数量输入（购买 / 出售共用）：隐形 TMP_InputField + DigitStrip 图片数字。
-    /// 挂在 Shop_Bar 根节点；合计通过 <see cref="QuantityForTotal"/> 参与 Total2 Σ 计算。
+    /// 商店列表单行数量输入（购买 / 出售共用）：隐形 TMP + DigitStrip。
+    /// 挂在 Shop_Bar 根节点。
     /// <para>
-    /// 0922：失焦/输入超限时按 <see cref="SetMaxQuantityResolver"/> 钳回上限
-    /// （卖=持有，买=金币购买力∩堆叠空位），并同步 DigitStrip + 合计。
+    /// 0923 公式审计（T1）：编辑中只 Sync 显示，不 TryClamp；失焦/Enter/切行/决定前
+    /// <see cref="CommitQuantity"/> 再跑上限。买卖同一时序。禁止关 Form 联合公式。
     /// </para>
     /// </summary>
     [DisallowMultipleComponent]
@@ -20,33 +22,66 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
         private Transform _quantityNode;
 
-        /// <summary>
-        /// 当前行可填最大数量（由 <see cref="ShopFormLogic"/> 按买/卖公式注入）。
-        /// 未绑定时不钳业务上限（仅 ≥0），避免孤立 Prefab 预览误砍。
-        /// </summary>
         private Func<int> _resolveMaxQuantity;
 
-        /// <summary>防钳制写回触发 onValueChanged 重入。</summary>
         private bool _isClampingQuantity;
 
-        /// <summary>失焦后的购买数量（空串回退默认值，供阶段四交易用）。</summary>
+        /// <summary>防止 BeginQuantityEdit / onSelect 清空时重入。</summary>
+        private bool _isClearingForEdit;
+
+        /// <summary>Commit 进行中：避免 EndEdit/Begin 重入。</summary>
+        private bool _isCommitting;
+
+        private Button _rowButton;
+
+        private QuantityPointerClickRelay _quantityClickRelay;
+
+        private Action _beforeBeginEdit;
+
         public int Quantity => ShopQuantityInputHelper.ParseAndClampQuantity(
             quantityInput != null ? quantityInput.text : string.Empty);
 
-        /// <summary>合计用数量：空串或非法按 0。</summary>
         public int QuantityForTotal => ShopQuantityInputHelper.ParseQuantityForTotal(
             quantityInput != null ? quantityInput.text : string.Empty);
 
-        /// <summary>数量输入框每次变化时触发（含 onValueChanged）。</summary>
+        /// <summary>数量框是否正在编辑（聚焦）。联合 Reclamp 应跳过本行。</summary>
+        public bool IsQuantityFocused =>
+            quantityInput != null && quantityInput.isFocused && !_isCommitting;
+
+        /// <summary>正式提交后（失焦/Enter/切行/决定前）：买侧联合回扫+Total2。</summary>
         public event Action OnQuantityValueChanged;
 
+        /// <summary>清空进编辑：静默刷合计，不 Reclamp。</summary>
+        public event Action OnQuantityClearedForEdit;
+
+        /// <summary>编辑中键入：只 Sync 后软刷合计（不 Reclamp）。</summary>
+        public event Action OnQuantityEditPreview;
+
         /// <summary>
-        /// 注入本行上限回调（买=金币/堆叠，卖=持有）。
-        /// 原因：行组件不直读存档，公式集中在 Form，切 Tab/旁路语义由 Form 定。
+        /// Commit 完成：beforeParsed → afterClamped。Form 打 [ShopBuyMax] / max=0 Tips。
         /// </summary>
+        public event Action<int, int> OnQuantityCommitted;
+
         public void SetMaxQuantityResolver(Func<int> resolver)
         {
             _resolveMaxQuantity = resolver;
+        }
+
+        /// <summary>Begin 前先 Commit 其它聚焦行（Form 注入）。</summary>
+        public void SetBeforeBeginEdit(Action beforeBeginEdit)
+        {
+            _beforeBeginEdit = beforeBeginEdit;
+        }
+
+        /// <summary>Form Unwire 时清掉所有外部回调，避免重复订阅闭包。</summary>
+        public void ClearFormCallbacks()
+        {
+            OnQuantityValueChanged = null;
+            OnQuantityClearedForEdit = null;
+            OnQuantityEditPreview = null;
+            OnQuantityCommitted = null;
+            _beforeBeginEdit = null;
+            _resolveMaxQuantity = null;
         }
 
         private void Awake()
@@ -57,14 +92,16 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         private void OnEnable()
         {
             RegisterInputListeners();
+            WireRowButtonClick();
         }
 
         private void OnDisable()
         {
             UnregisterInputListeners();
+            UnwireRowButtonClick();
         }
 
-        /// <summary>打开商店或切 Tab 时重置为默认数量（ST：0）并同步图片。</summary>
+        /// <summary>打开商店或切 Tab 时重置为默认数量并同步图片。</summary>
         public void ResetToDefault(int defaultQuantity = ShopQuantityInputHelper.DefaultQuantity)
         {
             BindQuantityInput();
@@ -83,18 +120,78 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
         {
             BindQuantityInput();
             RegisterInputListeners();
+            WireRowButtonClick();
         }
 
         /// <summary>
-        /// 绑定数量框：无引用则 Ensure；已有引用也强制刷隐形样式（关 caret 闪烁）。
+        /// 统一进编辑：先 Commit 其它行 → 清空 → Activate。
         /// </summary>
-        /// <remarks>
-        /// 原因：Prefab 预绑 quantityInput 时旧逻辑直接 return，不跑 Ensure → 磁盘上 width/blink 仍闪。
-        /// 施工要求：已有引用也 Apply 一次，运行时覆盖旧序列化，不必手改 11 行 YAML。
-        /// </remarks>
+        public void BeginQuantityEdit()
+        {
+            BindQuantityInput();
+            if (quantityInput == null)
+            {
+                return;
+            }
+
+            // T3：切商品行前显式提交旧行（不依赖失焦副作用）。
+            _beforeBeginEdit?.Invoke();
+
+            ClearForEditInternal();
+            quantityInput.Select();
+            quantityInput.ActivateInputField();
+            OnQuantityClearedForEdit?.Invoke();
+        }
+
+        /// <summary>
+        /// 提交节点：合法化 → 业务上限钳 → DigitStrip → 正式通知。
+        /// 覆盖：失焦、Enter、切行前、决定前。
+        /// </summary>
+        public void CommitQuantity()
+        {
+            if (quantityInput == null || _isCommitting || _isClearingForEdit)
+            {
+                return;
+            }
+
+            _isCommitting = true;
+            try
+            {
+                var beforeParsed = ShopQuantityInputHelper.ParseQuantityForTotal(quantityInput.text);
+                ShopQuantityInputHelper.ApplyQuantityText(quantityInput, beforeParsed);
+                TryClampQuantityToBusinessMax(invokeChanged: false);
+                RefreshDigitDisplay();
+                var afterClamped = ShopQuantityInputHelper.ParseQuantityForTotal(quantityInput.text);
+
+                OnQuantityCommitted?.Invoke(beforeParsed, afterClamped);
+                OnQuantityValueChanged?.Invoke();
+            }
+            finally
+            {
+                _isCommitting = false;
+            }
+        }
+
+        private void ClearForEditInternal()
+        {
+            if (quantityInput == null)
+            {
+                return;
+            }
+
+            _isClearingForEdit = true;
+            try
+            {
+                ShopQuantityInputHelper.ClearQuantityForEdit(quantityInput, _quantityNode, this);
+            }
+            finally
+            {
+                _isClearingForEdit = false;
+            }
+        }
+
         private void BindQuantityInput()
         {
-            // 已绑定：仍刷隐形样式（关 caret），再保证 _quantityNode 给 DigitStrip 用。
             if (quantityInput != null)
             {
                 ShopQuantityInputHelper.ApplyInvisibleInputTextStyle(quantityInput);
@@ -103,13 +200,15 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                     _quantityNode = transform.Find("TxtStock") ?? transform.Find("Number");
                 }
 
+                quantityInput.onValidateInput = null;
+                EnsureQuantityHitArea();
+                EnsureQuantityClickRelay();
                 return;
             }
 
             _quantityNode = transform.Find("TxtStock") ?? transform.Find("Number");
             if (_quantityNode != null)
             {
-                // Ensure 内部已含 ApplyInvisible；此处走完整升级路径。
                 quantityInput = ShopQuantityInputHelper.EnsureTmpIntegerInputField(
                     _quantityNode,
                     ShopQuantityInputHelper.DefaultQuantity);
@@ -120,10 +219,107 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 Debug.LogWarning(
                     $"[ShopBuyRowQuantityInput] 未找到 TxtStock 或 Number：{GetHierarchyPath(transform)}",
                     this);
+                return;
+            }
+
+            quantityInput.onValidateInput = null;
+            EnsureQuantityHitArea();
+            EnsureQuantityClickRelay();
+        }
+
+        private void EnsureQuantityHitArea()
+        {
+            if (quantityInput == null)
+            {
+                return;
+            }
+
+            if (_quantityNode == null)
+            {
+                _quantityNode = transform.Find("TxtStock") ?? transform.Find("Number");
+            }
+
+            var numberRt = _quantityNode as RectTransform;
+            var inputRt = quantityInput.transform as RectTransform;
+            if (numberRt != null && inputRt != null && inputRt != numberRt && inputRt.IsChildOf(numberRt))
+            {
+                StretchFull(inputRt);
+            }
+
+            var root = _quantityNode != null ? _quantityNode : quantityInput.transform;
+            var graphics = root.GetComponentsInChildren<Graphic>(true);
+            for (var i = 0; i < graphics.Length; i++)
+            {
+                var graphic = graphics[i];
+                if (graphic == null)
+                {
+                    continue;
+                }
+
+                graphic.raycastTarget = graphic.gameObject == quantityInput.gameObject;
+            }
+
+            var hitImage = quantityInput.GetComponent<Image>();
+            if (hitImage == null)
+            {
+                hitImage = quantityInput.gameObject.AddComponent<Image>();
+                hitImage.color = new Color(1f, 1f, 1f, 0.02f);
+            }
+
+            hitImage.raycastTarget = true;
+            if (quantityInput.targetGraphic == null)
+            {
+                quantityInput.targetGraphic = hitImage;
             }
         }
 
-        /// <summary>把 TMP 当前文本同步到 Number/DigitStrip 图片层。</summary>
+        private void EnsureQuantityClickRelay()
+        {
+            if (quantityInput == null)
+            {
+                return;
+            }
+
+            _quantityClickRelay = quantityInput.GetComponent<QuantityPointerClickRelay>();
+            if (_quantityClickRelay == null)
+            {
+                _quantityClickRelay = quantityInput.gameObject.AddComponent<QuantityPointerClickRelay>();
+            }
+
+            _quantityClickRelay.Owner = this;
+        }
+
+        private void WireRowButtonClick()
+        {
+            if (_rowButton == null)
+            {
+                _rowButton = GetComponent<Button>();
+            }
+
+            if (_rowButton == null)
+            {
+                return;
+            }
+
+            _rowButton.onClick.RemoveListener(OnRowButtonClicked);
+            _rowButton.onClick.AddListener(OnRowButtonClicked);
+        }
+
+        private void UnwireRowButtonClick()
+        {
+            if (_rowButton == null)
+            {
+                return;
+            }
+
+            _rowButton.onClick.RemoveListener(OnRowButtonClicked);
+        }
+
+        private void OnRowButtonClicked()
+        {
+            BeginQuantityEdit();
+        }
+
         private void RefreshDigitDisplay()
         {
             if (_quantityNode == null)
@@ -132,7 +328,7 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             }
 
             var text = quantityInput != null ? quantityInput.text : string.Empty;
-            ShopQuantityInputHelper.SyncNumberDigitDisplay(_quantityNode, text);
+            ShopQuantityInputHelper.SyncNumberDigitDisplay(_quantityNode, text, this);
         }
 
         private void RegisterInputListeners()
@@ -142,8 +338,14 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
                 return;
             }
 
+            quantityInput.onEndEdit.RemoveListener(OnQuantityEndEdit);
+            quantityInput.onValueChanged.RemoveListener(OnQuantityValueChangedInternal);
+            quantityInput.onSelect.RemoveListener(OnQuantitySelected);
+
             quantityInput.onEndEdit.AddListener(OnQuantityEndEdit);
             quantityInput.onValueChanged.AddListener(OnQuantityValueChangedInternal);
+            quantityInput.onSelect.AddListener(OnQuantitySelected);
+            quantityInput.onValidateInput = null;
         }
 
         private void UnregisterInputListeners()
@@ -155,46 +357,74 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
 
             quantityInput.onEndEdit.RemoveListener(OnQuantityEndEdit);
             quantityInput.onValueChanged.RemoveListener(OnQuantityValueChangedInternal);
+            quantityInput.onSelect.RemoveListener(OnQuantitySelected);
+            quantityInput.onValidateInput = null;
+        }
+
+        private void OnQuantitySelected(string _)
+        {
+            if (quantityInput == null || _isClearingForEdit || _isClampingQuantity || _isCommitting)
+            {
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(quantityInput.text))
+            {
+                ClearForEditInternal();
+                OnQuantityClearedForEdit?.Invoke();
+            }
+            else
+            {
+                RefreshDigitDisplay();
+            }
         }
 
         private void OnQuantityValueChangedInternal(string text)
         {
-            if (_isClampingQuantity)
+            if (_isClampingQuantity || _isClearingForEdit || _isCommitting)
             {
                 return;
             }
 
-            // 边输边钳：超持有/超购买力立刻写回，DigitStrip 与 Total2 同步变。
-            if (TryClampQuantityToBusinessMax(invokeChanged: false))
+            ApplyValueChangedPipeline(text);
+        }
+
+        /// <summary>
+        /// T1 编辑锁：聚焦中禁止 TryClamp；只刷 DigitStrip + 软合计。
+        /// 提交钳制只走 <see cref="CommitQuantity"/>。
+        /// </summary>
+        private void ApplyValueChangedPipeline(string text)
+        {
+            RefreshDigitDisplay();
+
+            if (quantityInput != null && quantityInput.isFocused)
             {
-                RefreshDigitDisplay();
-                OnQuantityValueChanged?.Invoke();
+                // 编辑中：允许短暂超钱包/超持有显示；合计软刷，不联合 Reclamp。
+                if (string.IsNullOrWhiteSpace(quantityInput.text))
+                {
+                    OnQuantityClearedForEdit?.Invoke();
+                }
+                else
+                {
+                    OnQuantityEditPreview?.Invoke();
+                }
+
                 return;
             }
 
-            ShopQuantityInputHelper.SyncNumberDigitDisplay(_quantityNode, text);
-            OnQuantityValueChanged?.Invoke();
+            // 未聚焦却收到 ValueChanged（少见）：按提交处理，避免漏钳。
+            CommitQuantity();
         }
 
         private void OnQuantityEndEdit(string _)
         {
-            if (quantityInput == null)
-            {
-                return;
-            }
-
-            // 失焦：先规整非负整数，再按业务上限钳（空串→0）。
-            var sanitized = ShopQuantityInputHelper.ParseQuantityForTotal(quantityInput.text);
-            ShopQuantityInputHelper.ApplyQuantityText(quantityInput, sanitized);
-            TryClampQuantityToBusinessMax(invokeChanged: false);
-            RefreshDigitDisplay();
-            OnQuantityValueChanged?.Invoke();
+            // 失焦 + Enter 均到此 → Commit。
+            CommitQuantity();
         }
 
         /// <summary>
-        /// 按 Form 注入的 max 钳 TMP；超限则写回并刷图。
+        /// 按 Form 注入的 max 写回。Commit / 联合回扫（非编辑行）调用。
         /// </summary>
-        /// <returns>是否发生了写回（调用方可据此决定是否再 Sync）。</returns>
         private bool TryClampQuantityToBusinessMax(bool invokeChanged)
         {
             if (quantityInput == null || _resolveMaxQuantity == null)
@@ -238,12 +468,29 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             return true;
         }
 
-        /// <summary>
-        /// Form 在其它行改数量后回扫本行：按最新联合总价再钳一次，不触发 OnQuantityValueChanged（防循环）。
-        /// </summary>
+        /// <summary>Form 联合回扫：静默钳（编辑中行应由 Form 跳过）。</summary>
         public bool ApplyBusinessMaxClampSilent()
         {
+            if (IsQuantityFocused)
+            {
+                return false;
+            }
+
             return TryClampQuantityToBusinessMax(invokeChanged: false);
+        }
+
+        private static void StretchFull(RectTransform rectTransform)
+        {
+            if (rectTransform == null)
+            {
+                return;
+            }
+
+            rectTransform.anchorMin = Vector2.zero;
+            rectTransform.anchorMax = Vector2.one;
+            rectTransform.offsetMin = Vector2.zero;
+            rectTransform.offsetMax = Vector2.zero;
+            rectTransform.pivot = new Vector2(0.5f, 0.5f);
         }
 
         private static string GetHierarchyPath(Transform node)
@@ -254,6 +501,26 @@ namespace Game.GameRuntime.UI.FormLogic.Shop
             }
 
             return node.parent == null ? node.name : $"{GetHierarchyPath(node.parent)}/{node.name}";
+        }
+
+        private sealed class QuantityPointerClickRelay : MonoBehaviour, IPointerClickHandler
+        {
+            public ShopBuyRowQuantityInput Owner;
+
+            public void OnPointerClick(PointerEventData eventData)
+            {
+                if (Owner == null || eventData == null)
+                {
+                    return;
+                }
+
+                if (eventData.button != PointerEventData.InputButton.Left)
+                {
+                    return;
+                }
+
+                Owner.BeginQuantityEdit();
+            }
         }
     }
 }
