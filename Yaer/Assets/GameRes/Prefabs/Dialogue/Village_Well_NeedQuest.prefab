@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serializedExposedParameters: []
-  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1},"Duration":{"_value":1},"Delay":{},"EndActonOnAnimationEnd":{"_value":true},"PrepareMaskAvatarOnFadeIn":{},"MaskAvatarRole":{},"MaskAvatarFace":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":200,"y":-20},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"statement":{"_text":"\u5f97\u5148\u8ddf\u8001\u519c\u6253\u4e2a\u62db\u547c\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"a1b2c3d4-e5f6-4789-a012-3456789abcde","_position":{"x":200,"y":100},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"1"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"a1b2c3d4-e5f6-4789-a012-3456789abcde","_actorObject":1}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
+  _boundGraphSerialization: '{"type":"NodeCanvas.DialogueTrees.DialogueTree","nodes":[{"_action":{"StartAlpha":{},"EndAlpha":{"_value":1.0},"Duration":{"_value":1.0},"Delay":{},"EndActonOnAnimationEnd":{"_value":true},"PrepareMaskAvatarOnFadeIn":{},"MaskAvatarRole":{},"MaskAvatarFace":{},"$type":"Game.GameRuntime.Story.Node.NormalDialogueUIAlphaAnimationTaskAction"},"_position":{"x":200.0,"y":-20.0},"$type":"NodeCanvas.DialogueTrees.ActionNode","$id":"0"},{"FaceType":{"_value":12},"UseShopkeeperPortrait":{},"ShopBody":{},"ShopFace":{},"UseChiefPortrait":{},"ChiefFace":{},"statement":{"_text":"\u5f97\u5148\u8ddf\u8001\u519c\u6253\u4e2a\u62db\u547c\u3002"},"_actorName":"\u96c5\u5c14","_actorParameterID":"a1b2c3d4-e5f6-4789-a012-3456789abcde","_position":{"x":200.0,"y":100.0},"$type":"Game.GameRuntime.Story.NodeCanvasExtend.StatementNodeEx","$id":"1"}],"connections":[{"_sourceNode":{"$ref":"0"},"_targetNode":{"$ref":"1"},"$type":"NodeCanvas.DialogueTrees.DTConnection"}],"canvasGroups":[],"localBlackboard":{"_variables":{}},"derivedData":{"actorParameters":[{"_keyName":"\u96c5\u5c14","_id":"a1b2c3d4-e5f6-4789-a012-3456789abcde","_actorObject":1}],"$type":"NodeCanvas.DialogueTrees.DialogueTree+DerivedSerializationData"}}'
   _boundGraphObjectReferences:
   - {fileID: 0}
   - {fileID: 1529277230957411804}
@@ -59,7 +59,7 @@ MonoBehaviour:
     _version: 3.31
     _category: 
     _comments: "\u672C\u5BF9\u767D\u65E0\u7ACB\u7ED8"
-    _translation: {x: 0, y: 0}
+    _translation: {x: -10, y: 223}
     _zoomFactor: 1
   _firstActivation: 0
   _enableAction: 0
