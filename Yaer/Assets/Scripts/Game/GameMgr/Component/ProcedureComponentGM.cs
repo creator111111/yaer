@@ -96,7 +96,7 @@ namespace Game.GameMgr.Component
             // 加载部分配置（成就、任务静态表与 Achievement / Monster 并列）
             AchievementDataMgr.getInstance().Init();
             QuestConfigMgr.getInstance().Init();
-            // 0922：主菜单即显示左下角版本；进局 CloseAll 会 filter+Ensure 保活
+            // 0924：仅主菜单显示左下版本号；进局 CloseAll 会关掉，回菜单再 Ensure。
             uiComponentGM.EnsureVersionForm();
             // 进入主菜单
             uiComponentGM.OpenUIForm(UIPrefabPath.StartPanel, EUIGroup.Bottom, new OpenFormArgs()

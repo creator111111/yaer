@@ -12,7 +12,7 @@ namespace Game.Static.Path
         public const string AchievementPanel = "Assets/GameRes/Prefabs/UI/AchievementPanel.prefab";
         public const string SelectHardPanel = "Assets/GameRes/Prefabs/UI/SelectHardPanel.prefab";
         public const string LoadingPanel = "Assets/GameRes/Prefabs/UI/LoadingPanel.prefab";
-        /// <summary>左下角常驻版本号 Form（0922）；与 <see cref="GetUIPrefabPath"/>("VersionPanel") 同源。</summary>
+        /// <summary>左下角版本号 Form（0924：仅主界面 Ensure；进局随 CloseAll 关）。</summary>
         public const string VersionPanel = "Assets/GameRes/Prefabs/UI/VersionPanel.prefab";
 
         public static string GetUIPrefabPath(string prefabName)

@@ -10,6 +10,7 @@ using Game.GameRuntime.GameSceneManager.Base;
 using Game.GameRuntime.UI.FormLogic;
 using Game.GameMgr.Manager.Settings;
 using Game.GameMgr.Manager.Settings.Helper;
+using Game.GameRuntime.UI.FormLogic.ChapterEndPanel;
 using Game.GameRuntime.UI.FormLogic.Story.Dialogue;
 using Game.Static.Path;
 using GameFramework.UnityRuntime.Utility;
@@ -202,6 +203,15 @@ namespace Game.GameRuntime.GameSceneManager.Component.Story
             var uiForm = GameManager.GetGMComponent<UIComponentGM>().GetUIForm(fightingPanelPath);
             if (uiForm != null && uiForm.Logic is FightingFormLogic fightingFormLogic)
             {
+                // 0924 双保险：章末面板已开时，OnStoryEnd 恢复改为强制关，不走延迟显。
+                if (isStoryEndRestore && ChapterEndFormLogic.IsChapterEndPanelBlockingBattleImage)
+                {
+                    fightingFormLogic.CancelPendingStoryEndBattleImageShow();
+                    fightingFormLogic.UpdateBattleImageVisiable(false, fromStoryEndRestore: false);
+                    Debug.Log("[ChapterEnd] StoryComponentGSM OnStoryEnd 恢复改强制关（章末拦截）");
+                    return;
+                }
+
                 fightingFormLogic.UpdateBattleImageVisiable(isVisible, isStoryEndRestore);
             }
         }
