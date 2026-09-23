@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Game\Static\Path\UIPrefabPath.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\CommonEntity\RandomExclusiveChildActive.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopkeeperFaceType.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Manager\Res\SceneRes\Config\InitSceneResConfig.cs" />
     <Compile Include="Assets\Easy Save 3\Types\ES3UserType_PlayerClothesData.cs" />
@@ -458,6 +459,7 @@
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\Base\BaseComponentGM.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Shop\ShopScrollShellHelper.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Settings\LanguageNodeLogic.cs" />
+    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Version\VersionFormLogic.cs" />
     <Compile Include="Assets\Scripts\Game\GameRuntime\CameraTool\EnvironmentShadowCamera.cs" />
     <Compile Include="Assets\Scripts\GameFramework\UnityRuntime\WebRequest\WebRequestComponent.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\Settings\LanguageType.cs" />
@@ -1280,8 +1282,6 @@
     <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Control\ToggleGroupScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameMgr\Component\ChangeScene\UnloadSceneArgs.cs" />
     <Compile Include="Assets\Scripts\Game\Static\Name\Res\RuntimeControllerName.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\Entities\SceneEntities\CommonEntity\RandomExclusiveChildActive.cs" />
-    <Compile Include="Assets\Scripts\Game\GameRuntime\UI\FormLogic\Version\VersionFormLogic.cs" />
     <None Include="Assets\GameRes\Config\MonsterConfig\MonsterConfig.json" />
     <None Include="Assets\GameRes\Config\AchievementConfig\AchievementConfig.json" />
     <None Include="Assets\Packages\System.Memory.4.5.0\lib\netstandard2.0\System.Memory.xml" />
